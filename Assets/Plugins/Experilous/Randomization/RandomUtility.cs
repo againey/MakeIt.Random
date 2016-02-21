@@ -2,6 +2,14 @@
 
 namespace Experilous.Randomization
 {
+	/// <summary>
+	/// A utility class for providing more advanced random number generation on top of a basic random engine.
+	/// </summary>
+	/// <remarks>
+	/// <para>This class can be used both as a static utility class, accepting a random engine parameter for each
+	/// of its functions, or as an instantiated class which stores a reference to a random engine supplied at
+	/// construction, obviating the need to pass the random engine to the class methods.</para>
+	/// </remarks>
 	public sealed class RandomUtility
 	{
 		private IRandomEngine _engine;
@@ -264,7 +272,7 @@ namespace Experilous.Randomization
 
 		#endregion
 
-		#region Spatial
+		#region Circular/Spherical
 
 		public static Vector2 UnitVector2(IRandomEngine engine)
 		{
@@ -275,6 +283,253 @@ namespace Experilous.Randomization
 		public Vector2 UnitVector2()
 		{
 			return UnitVector2(_engine);
+		}
+
+		public static Vector2 CircleVector2(IRandomEngine engine)
+		{
+			var distance = Mathf.Sqrt(ClosedFloatUnit(engine));
+			return UnitVector2(engine) * distance;
+		}
+
+		public Vector2 CircleVector2()
+		{
+			return CircleVector2(_engine);
+		}
+
+		public static Vector2 CircleVector2(float radius, IRandomEngine engine)
+		{
+			var distance = Mathf.Sqrt(ClosedFloatUnit(engine)) * radius;
+			return UnitVector2(engine) * distance;
+		}
+
+		public Vector2 CircleVector2(float radius)
+		{
+			return CircleVector2(radius, _engine);
+		}
+
+		public static Vector2 RingVector2(float innerRadius, float outerRadius, IRandomEngine engine)
+		{
+			var unitMin = innerRadius / outerRadius;
+			var unitRange = 1f - unitMin;
+			var distance = Mathf.Sqrt(ClosedFloatUnit(engine) * unitRange + unitMin) * outerRadius;
+			return UnitVector2(engine) * distance;
+		}
+
+		public Vector2 RingVector2(float innerRadius, float outerRadius)
+		{
+			return RingVector2(innerRadius, outerRadius, _engine);
+		}
+
+		public static Vector3 UnitVector3(IRandomEngine engine)
+		{
+			var longitude = HalfOpenRange(0f, Mathf.PI * 2f, engine);
+			var latitude = Mathf.Acos(HalfOpenRange(-1f, +1f, engine));
+			var cosineLatitude = Mathf.Cos(latitude);
+			return new Vector3(Mathf.Cos(longitude) * cosineLatitude, Mathf.Sin(latitude), Mathf.Sin(longitude) * cosineLatitude);
+		}
+
+		public Vector3 UnitVector3()
+		{
+			return UnitVector3(_engine);
+		}
+
+		public static Vector3 SphereVector3(IRandomEngine engine)
+		{
+			var distance = Mathf.Pow(ClosedFloatUnit(engine), 1f / 3f);
+			return UnitVector3(engine) * distance;
+		}
+
+		public Vector3 SphereVector3()
+		{
+			return SphereVector3(_engine);
+		}
+
+		public static Vector3 SphereVector3(float radius, IRandomEngine engine)
+		{
+			var distance = Mathf.Pow(ClosedFloatUnit(engine), 1f / 3f) * radius;
+			return UnitVector3(engine) * distance;
+		}
+
+		public Vector3 SphereVector3(float radius)
+		{
+			return SphereVector3(radius, _engine);
+		}
+
+		public static Vector3 ShellVector3(float innerRadius, float outerRadius, IRandomEngine engine)
+		{
+			var unitMin = innerRadius / outerRadius;
+			var unitRange = 1f - unitMin;
+			var distance = Mathf.Pow(ClosedFloatUnit(engine) * unitRange + unitMin, 1f / 3f) * outerRadius;
+			return UnitVector3(engine) * distance;
+		}
+
+		public Vector3 ShellVector3(float innerRadius, float outerRadius)
+		{
+			return ShellVector3(innerRadius, outerRadius, _engine);
+		}
+
+		#endregion
+
+		#region Rectangular/Cubic
+
+		public static Vector2 HalfOpenUnitSquare(IRandomEngine engine)
+		{
+			return new Vector2(HalfOpenFloatUnit(engine), HalfOpenFloatUnit(engine));
+		}
+
+		public Vector2 HalfOpenUnitSquare()
+		{
+			return HalfOpenUnitSquare(_engine);
+		}
+
+		public static Vector2 ClosedUnitSquare(IRandomEngine engine)
+		{
+			return new Vector2(ClosedFloatUnit(engine), ClosedFloatUnit(engine));
+		}
+
+		public Vector2 ClosedUnitSquare()
+		{
+			return ClosedUnitSquare(_engine);
+		}
+
+		public static Vector2 HalfOpenSquare(float sideLength, IRandomEngine engine)
+		{
+			return new Vector2(HalfOpenRange(sideLength, engine), HalfOpenRange(sideLength, engine));
+		}
+
+		public Vector2 HalfOpenSquare(float sideLength)
+		{
+			return HalfOpenSquare(sideLength, _engine);
+		}
+
+		public static Vector2 ClosedSquare(float sideLength, IRandomEngine engine)
+		{
+			return new Vector2(ClosedRange(sideLength, engine), ClosedRange(sideLength, engine));
+		}
+
+		public Vector2 ClosedSquare(float sideLength)
+		{
+			return ClosedSquare(sideLength, _engine);
+		}
+
+		public static Vector2 HalfOpenRectangle(Vector2 size, IRandomEngine engine)
+		{
+			return new Vector2(HalfOpenRange(size.x, engine), HalfOpenRange(size.y, engine));
+		}
+
+		public Vector2 HalfOpenRectangle(Vector2 size)
+		{
+			return HalfOpenRectangle(size, _engine);
+		}
+
+		public static Vector2 ClosedRectangle(Vector2 size, IRandomEngine engine)
+		{
+			return new Vector2(ClosedRange(size.x, engine), ClosedRange(size.y, engine));
+		}
+
+		public Vector2 ClosedRectangle(Vector2 size)
+		{
+			return ClosedRectangle(size, _engine);
+		}
+
+		public static Vector2 HalfOpenParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			return HalfOpenFloatUnit(engine) * axis0 + HalfOpenFloatUnit(engine) * axis1;
+		}
+
+		public Vector2 HalfOpenParallelogram(Vector2 axis0, Vector2 axis1)
+		{
+			return HalfOpenParallelogram(axis0, axis1, _engine);
+		}
+
+		public static Vector2 ClosedParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			return ClosedFloatUnit(engine) * axis0 + ClosedFloatUnit(engine) * axis1;
+		}
+
+		public Vector2 ClosedParallelogram(Vector2 axis0, Vector2 axis1)
+		{
+			return ClosedParallelogram(axis0, axis1, _engine);
+		}
+
+		public static Vector3 HalfOpenUnitCube(IRandomEngine engine)
+		{
+			return new Vector3(HalfOpenFloatUnit(engine), HalfOpenFloatUnit(engine), HalfOpenFloatUnit(engine));
+		}
+
+		public Vector3 HalfOpenUnitCube()
+		{
+			return HalfOpenUnitCube(_engine);
+		}
+
+		public static Vector3 ClosedUnitCube(IRandomEngine engine)
+		{
+			return new Vector3(ClosedFloatUnit(engine), ClosedFloatUnit(engine), ClosedFloatUnit(engine));
+		}
+
+		public Vector3 ClosedUnitCube()
+		{
+			return ClosedUnitCube(_engine);
+		}
+
+		public static Vector3 HalfOpenCube(float sideLength, IRandomEngine engine)
+		{
+			return new Vector3(HalfOpenRange(sideLength, engine), HalfOpenRange(sideLength, engine), HalfOpenRange(sideLength, engine));
+		}
+
+		public Vector3 HalfOpenCube(float sideLength)
+		{
+			return HalfOpenCube(sideLength, _engine);
+		}
+
+		public static Vector3 ClosedCube(float sideLength, IRandomEngine engine)
+		{
+			return new Vector3(ClosedRange(sideLength, engine), ClosedRange(sideLength, engine), ClosedRange(sideLength, engine));
+		}
+
+		public Vector3 ClosedCube(float sideLength)
+		{
+			return ClosedCube(sideLength, _engine);
+		}
+
+		public static Vector3 HalfOpenRectangularCuboid(Vector3 size, IRandomEngine engine)
+		{
+			return new Vector3(HalfOpenRange(size.x, engine), HalfOpenRange(size.y, engine), HalfOpenRange(size.z, engine));
+		}
+
+		public Vector3 HalfOpenRectangularCuboid(Vector3 size)
+		{
+			return HalfOpenRectangularCuboid(size, _engine);
+		}
+
+		public static Vector3 ClosedRectangularCuboid(Vector3 size, IRandomEngine engine)
+		{
+			return new Vector3(ClosedRange(size.x, engine), ClosedRange(size.y, engine), ClosedRange(size.z, engine));
+		}
+
+		public Vector3 ClosedRectangularCuboid(Vector3 size)
+		{
+			return ClosedRectangularCuboid(size, _engine);
+		}
+
+		public static Vector3 HalfOpenRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2, IRandomEngine engine)
+		{
+			return HalfOpenFloatUnit(engine) * axis0 + HalfOpenFloatUnit(engine) * axis1 + HalfOpenFloatUnit(engine) * axis2;
+		}
+
+		public Vector3 HalfOpenRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2)
+		{
+			return HalfOpenRhomboid(axis0, axis1, axis2, _engine);
+		}
+
+		public static Vector3 ClosedRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2, IRandomEngine engine)
+		{
+			return ClosedFloatUnit(engine) * axis0 + ClosedFloatUnit(engine) * axis1 + ClosedFloatUnit(engine) * axis2;
+		}
+
+		public Vector3 ClosedRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2)
+		{
+			return ClosedRhomboid(axis0, axis1, axis2, _engine);
 		}
 
 		#endregion

@@ -2,6 +2,12 @@
 
 namespace Experilous.Randomization
 {
+	/// <summary>
+	/// Adapts the standard random engine class from the .NET libary to the <see cref="IRandomEngine"/> interface.
+	/// </summary>
+	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="BaseRandomEngine"/>
+	/// <seealso cref="System.Random"/>
 	public class NativeRandomEngine : BaseRandomEngine, IRandomEngine
 	{
 		[SerializeField] private System.Random _random;
@@ -42,52 +48,52 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public void Seed()
+		public override void Seed()
 		{
 			_random = new System.Random();
 		}
 
-		public void Seed(int seed)
+		public override void Seed(int seed)
 		{
 			_random = new System.Random(seed);
 		}
 
-		public void Seed(params int[] seed)
+		public override void Seed(params int[] seed)
 		{
 			_random = new System.Random((int)RandomSeedUtility.Seed32(seed));
 		}
 
-		public void Seed(string seed)
+		public override void Seed(string seed)
 		{
 			_random = new System.Random((int)RandomSeedUtility.Seed32(seed));
 		}
 
-		public void Seed(IRandomEngine seeder)
+		public override void Seed(IRandomEngine seeder)
 		{
 			_random = new System.Random((int)seeder.Next32());
 		}
 
-		public void MergeSeed()
+		public override void MergeSeed()
 		{
 			_random = new System.Random((int)(Next32() ^ RandomSeedUtility.Seed32()));
 		}
 
-		public void MergeSeed(int seed)
+		public override void MergeSeed(int seed)
 		{
 			_random = new System.Random((int)(Next32() ^ RandomSeedUtility.Seed32(seed)));
 		}
 
-		public void MergeSeed(params int[] seed)
+		public override void MergeSeed(params int[] seed)
 		{
 			_random = new System.Random((int)(Next32() ^ RandomSeedUtility.Seed32(seed)));
 		}
 
-		public void MergeSeed(string seed)
+		public override void MergeSeed(string seed)
 		{
 			_random = new System.Random((int)(Next32() ^ RandomSeedUtility.Seed32(seed)));
 		}
 
-		public void MergeSeed(IRandomEngine seeder)
+		public override void MergeSeed(IRandomEngine seeder)
 		{
 			_random = new System.Random((int)(Next32() ^ seeder.Next32()));
 		}
@@ -103,7 +109,7 @@ namespace Experilous.Randomization
 			return ((ulong)Next32() << 32) | Next32();
 		}
 
-		public System.Random AsSystemRandom()
+		public override System.Random AsSystemRandom()
 		{
 			return _random;
 		}

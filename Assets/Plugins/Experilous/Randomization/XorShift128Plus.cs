@@ -2,6 +2,21 @@
 
 namespace Experilous.Randomization
 {
+	/// <summary>
+	/// An implementation of the <see cref="IRandomEngine"/> interface using the 128-bit XorShift+ generator.
+	/// </summary>
+	/// <remarks>
+	/// <para>This PRNG is based on Marsaglia's XorShift class of generators, and modified by Sebastiano Vigna
+	/// in his paper <a href="http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf">Further scramblings of
+	/// Marsaglia's xorshift generators</a>.</para>
+	/// 
+	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
+	/// random data at a time.  It uses the <see cref="SplitMix64"/> random engine for many of its seeding
+	/// functions, as recommended by Sebastiano Vigna.</para>
+	/// </remarks>
+	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="BaseRandomEngine"/>
+	/// <seealso cref="SplitMix64"/>
 	public class XorShift128Plus : BaseRandomEngine, IRandomEngine
 	{
 		[SerializeField] private ulong _state0;
@@ -42,53 +57,53 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public void Seed()
+		public override void Seed()
 		{
 			Seed(SplitMix64.Create());
 		}
 
-		public void Seed(int seed)
+		public override void Seed(int seed)
 		{
 			Seed(SplitMix64.Create(seed));
 		}
 
-		public void Seed(params int[] seed)
+		public override void Seed(params int[] seed)
 		{
 			Seed(SplitMix64.Create(seed));
 		}
 
-		public void Seed(string seed)
+		public override void Seed(string seed)
 		{
 			Seed(SplitMix64.Create(seed));
 		}
 
-		public void Seed(IRandomEngine seeder)
+		public override void Seed(IRandomEngine seeder)
 		{
 			_state0 = seeder.Next64();
 			_state1 = seeder.Next64();
 		}
 
-		public void MergeSeed()
+		public override void MergeSeed()
 		{
 			MergeSeed(SplitMix64.Create());
 		}
 
-		public void MergeSeed(int seed)
+		public override void MergeSeed(int seed)
 		{
 			MergeSeed(SplitMix64.Create(seed));
 		}
 
-		public void MergeSeed(params int[] seed)
+		public override void MergeSeed(params int[] seed)
 		{
 			MergeSeed(SplitMix64.Create(seed));
 		}
 
-		public void MergeSeed(string seed)
+		public override void MergeSeed(string seed)
 		{
 			MergeSeed(SplitMix64.Create(seed));
 		}
 
-		public void MergeSeed(IRandomEngine seeder)
+		public override void MergeSeed(IRandomEngine seeder)
 		{
 			_state0 ^= seeder.Next64();
 			_state1 ^= seeder.Next64();
@@ -109,7 +124,7 @@ namespace Experilous.Randomization
 			return _state1 + y;
 		}
 
-		public System.Random AsSystemRandom()
+		public override System.Random AsSystemRandom()
 		{
 			return new SystemRandomWrapper64(this);
 		}

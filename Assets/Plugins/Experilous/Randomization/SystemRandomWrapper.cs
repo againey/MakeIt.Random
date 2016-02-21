@@ -1,5 +1,14 @@
 ﻿namespace Experilous.Randomization
 {
+	/// <summary>
+	/// Wraps an implementation of <see cref="IRandomEngine"/> in a derivation of <see cref="System.Random"/>.
+	/// </summary>
+	/// <remarks>
+	/// This wrapper is preferable for random engines that optimally produce random numbers 32 bits at a time.
+	/// </remarks>
+	/// <seealso cref="System.Random"/>
+	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="SystemRandomWrapper64"/>
 	public class SystemRandomWrapper32 : System.Random
 	{
 		private IRandomEngine _randomEngine;
@@ -50,6 +59,15 @@
 		}
 	}
 
+	/// <summary>
+	/// Wraps an implementation of <see cref="IRandomEngine"/> in a derivation of <see cref="System.Random"/>.
+	/// </summary>
+	/// <remarks>
+	/// This wrapper is preferable for random engines that optimally produce random numbers 64 bits at a time.
+	/// </remarks>
+	/// <seealso cref="System.Random"/>
+	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="SystemRandomWrapper32"/>
 	public class SystemRandomWrapper64 : System.Random
 	{
 		private IRandomEngine _randomEngine;
