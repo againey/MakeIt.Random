@@ -254,7 +254,7 @@ namespace Experilous.Randomization
 
 		#endregion
 
-		#region CloseUnit
+		#region ClosedUnit
 
 		public static float ClosedFloatUnit(IRandomEngine engine)
 		{
@@ -542,21 +542,70 @@ namespace Experilous.Randomization
 
 		#endregion
 
+		#region Chance
+
+		public static bool Chance(int ratioNumerator, int ratioDenominator, IRandomEngine engine)
+		{
+			return HalfOpenRange(ratioDenominator, engine) < ratioNumerator;
+		}
+
+		public bool Chance(int ratioNumerator, int ratioDenominator)
+		{
+			return Chance(ratioNumerator, ratioDenominator, _engine);
+		}
+
+		public static bool Chance(uint ratioNumerator, uint ratioDenominator, IRandomEngine engine)
+		{
+			return HalfOpenRange(ratioDenominator, engine) < ratioNumerator;
+		}
+
+		public bool Chance(uint ratioNumerator, uint ratioDenominator)
+		{
+			return Chance(ratioNumerator, ratioDenominator, _engine);
+		}
+
+		public static bool Chance(float probability, IRandomEngine engine)
+		{
+			return HalfOpenFloatUnit(engine) < probability;
+		}
+
+		public bool Chance(float probability)
+		{
+			return Chance(probability, _engine);
+		}
+
+		public static bool Chance(double probability, IRandomEngine engine)
+		{
+			return HalfOpenDoubleUnit(engine) < probability;
+		}
+
+		public bool Chance(double probability)
+		{
+			return Chance(probability, _engine);
+		}
+
+		#endregion
+
 		#region Miscellaneous
 
-		private char[] _hexadecimalCharacters =
+		private static char[] _hexadecimalCharacters =
 		{
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
 		};
 
-		public string HexadecimalString(int length)
+		public static string HexadecimalString(int length, IRandomEngine engine)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
 			{
-				buffer[i] = _hexadecimalCharacters[_engine.Next32(4)];
+				buffer[i] = _hexadecimalCharacters[engine.Next32(4)];
 			}
 			return new string(buffer);
+		}
+
+		public string HexadecimalString(int length)
+		{
+			return HexadecimalString(length, _engine);
 		}
 
 		#endregion
