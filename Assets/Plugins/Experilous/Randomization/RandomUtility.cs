@@ -586,6 +586,150 @@ namespace Experilous.Randomization
 
 		#endregion
 
+		#region Weighted Index
+
+		public static int WeightedIndex(int[] weights, IRandomEngine engine)
+		{
+			int weightSum = 0;
+			foreach (var weight in weights)
+			{
+				weightSum += weight;
+			}
+			return WeightedIndex(weights, weightSum, engine);
+		}
+
+		public int WeightedIndex(params int[] weights)
+		{
+			return WeightedIndex(weights, _engine);
+		}
+
+		public static int WeightedIndex(int[] weights, int weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < weights.Length)
+			{
+				if (HalfOpenRange(weightSum, engine) < weights[index])
+				{
+					return index;
+				}
+
+				weightSum -= weights[index++];
+			}
+			return index;
+		}
+
+		public int WeightedIndex(int[] weights, int weightSum)
+		{
+			return WeightedIndex(weights, weightSum, _engine);
+		}
+
+		public static int WeightedIndex(uint[] weights, IRandomEngine engine)
+		{
+			uint weightSum = 0;
+			foreach (var weight in weights)
+			{
+				weightSum += weight;
+			}
+			return WeightedIndex(weights, weightSum, engine);
+		}
+
+		public int WeightedIndex(params uint[] weights)
+		{
+			return WeightedIndex(weights, _engine);
+		}
+
+		public static int WeightedIndex(uint[] weights, uint weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < weights.Length)
+			{
+				if (HalfOpenRange(weightSum, engine) < weights[index])
+				{
+					return index;
+				}
+
+				weightSum -= weights[index++];
+			}
+			return index;
+		}
+
+		public int WeightedIndex(uint[] weights, uint weightSum)
+		{
+			return WeightedIndex(weights, weightSum, _engine);
+		}
+
+		public static int WeightedIndex(float[] weights, IRandomEngine engine)
+		{
+			float weightSum = 0;
+			foreach (var weight in weights)
+			{
+				weightSum += weight;
+			}
+			return WeightedIndex(weights, weightSum, engine);
+		}
+
+		public int WeightedIndex(params float[] weights)
+		{
+			return WeightedIndex(weights, _engine);
+		}
+
+		public static int WeightedIndex(float[] weights, float weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < weights.Length)
+			{
+				if (HalfOpenRange(weightSum, engine) < weights[index])
+				{
+					return index;
+				}
+
+				weightSum -= weights[index++];
+			}
+			return index;
+		}
+
+		public int WeightedIndex(float[] weights, float weightSum)
+		{
+			return WeightedIndex(weights, weightSum, _engine);
+		}
+
+		public static int WeightedIndex(double[] weights, IRandomEngine engine)
+		{
+			double weightSum = 0;
+			foreach (var weight in weights)
+			{
+				weightSum += weight;
+			}
+			return WeightedIndex(weights, weightSum, engine);
+		}
+
+		public int WeightedIndex(params double[] weights)
+		{
+			return WeightedIndex(weights, _engine);
+		}
+
+		public static int WeightedIndex(double[] weights, double weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < weights.Length)
+			{
+				if (HalfOpenRange(weightSum, engine) < weights[index])
+				{
+					return index;
+				}
+
+				weightSum -= weights[index++];
+			}
+			return index;
+		}
+
+		public int WeightedIndex(double[] weights, double weightSum)
+		{
+			return WeightedIndex(weights, weightSum, _engine);
+		}
+
+		#endregion
+
 		#region Miscellaneous
 
 		private static char[] _hexadecimalCharacters =
