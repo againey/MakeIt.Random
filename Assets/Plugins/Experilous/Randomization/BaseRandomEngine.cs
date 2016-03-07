@@ -42,13 +42,13 @@ namespace Experilous.Randomization
 		public uint Next32(int bitCount)
 		{
 			if (bitCount == 0) return 0U;
-			return Next32() & (uint.MaxValue >> (32 - bitCount));
+			return Next32() >> (32 - bitCount);
 		}
 
 		public ulong Next64(int bitCount)
 		{
 			if (bitCount == 0) return 0UL;
-			return Next64() & (ulong.MaxValue >> (64 - bitCount));
+			return Next64() >> (64 - bitCount);
 		}
 
 		public uint NextLessThan(uint upperBound)
