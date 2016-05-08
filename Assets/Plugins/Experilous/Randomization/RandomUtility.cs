@@ -582,6 +582,376 @@ namespace Experilous.Randomization
 
 		#endregion
 
+		#region Dice
+
+		public static int Dice(int sides, IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan((uint)sides) + 1;
+		}
+
+		public static int Dice(int quantity, int sides, IRandomEngine engine)
+		{
+			uint sum = 0;
+			for (int i = 0; i < quantity; ++i)
+			{
+				sum += engine.NextLessThan((uint)sides) + 1;
+			}
+			return (int)sum;
+		}
+
+		public static int DiceKeepHighest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			var rolls = new uint[quantity];
+			for (int i = 0; i < quantity; ++i)
+			{
+				rolls[i] = engine.NextLessThan((uint)sides);
+			}
+			System.Array.Sort(rolls);
+			uint sum = 0;
+			for (int i = quantity - keepQuantity; i < quantity; ++i)
+			{
+				sum += rolls[i];
+			}
+			return (int)sum;
+		}
+
+		public static int DiceKeepLowest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			var rolls = new uint[quantity];
+			for (int i = 0; i < quantity; ++i)
+			{
+				rolls[i] = engine.NextLessThan((uint)sides);
+			}
+			System.Array.Sort(rolls);
+			uint sum = 0;
+			for (int i = 0; i < keepQuantity; ++i)
+			{
+				sum += rolls[i];
+			}
+			return (int)sum;
+		}
+
+		public static int DiceDropHighest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		{
+			return DiceKeepLowest(quantity, sides, quantity - dropQuantity, engine);
+		}
+
+		public static int DiceDropLowest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		{
+			return DiceKeepHighest(quantity, sides, quantity - dropQuantity, engine);
+		}
+
+		private static System.Text.RegularExpressions.Regex _diceNotationRegex = new System.Text.RegularExpressions.Regex(
+			@"\A(?<quantity>[1-9][0-9]*)?(?:d|D)(?<sides>[1-9][0-9]*)(?:(?<keepDrop>k|K|\-)(?<keepDropQuantity>[1-9][0-9]*)?(?<keepDropWhat>h|H|l|L))?(?:(?<mulDiv>\*|x|/)(?<mulDivAmount>[1-9][0-9]*))?(?:(?<addSub>\+|\-)(?<addSubAmount>[1-9][0-9]*))?\z");
+
+		public static int Dice(string dNotation, IRandomEngine engine)
+		{
+			return PrepareDice(dNotation)(engine);
+		}
+
+		public delegate int DiceDelegate();
+		public delegate int StaticDiceDelegate(IRandomEngine engine);
+
+		public static StaticDiceDelegate PrepareDice(string dNotation)
+		{
+			var match = _diceNotationRegex.Match(dNotation);
+			if (match.Success)
+			{
+				int quantity;
+				int sides;
+				int keepQuantity;
+				bool keepHigh;
+				int mul;
+				int div;
+				int add;
+
+				#region Consume Regex Results
+
+				if (match.Groups["quantity"].Success)
+				{
+					quantity = int.Parse(match.Groups["quantity"].Value);
+				}
+				else
+				{
+					quantity = 1;
+				}
+
+				sides = int.Parse(match.Groups["sides"].Value);
+
+				if (match.Groups["keepDrop"].Success)
+				{
+					if (match.Groups["keepDrop"].Value == "-")
+					{
+						if (match.Groups["keepDropQuantity"].Success)
+						{
+							keepQuantity = quantity - int.Parse(match.Groups["keepDropQuantity"].Value);
+						}
+						else
+						{
+							keepQuantity = quantity - 1;
+						}
+					}
+					else
+					{
+						if (match.Groups["keepDropQuantity"].Success)
+						{
+							keepQuantity = int.Parse(match.Groups["keepDropQuantity"].Value);
+						}
+						else
+						{
+							keepQuantity = 1;
+						}
+					}
+
+					if (match.Groups["keepDropWhat"].Value == "l" || match.Groups["keepDropWhat"].Value == "L")
+					{
+						keepHigh = false;
+					}
+					else
+					{
+						keepHigh = true;
+					}
+				}
+				else
+				{
+					keepQuantity = 0;
+					keepHigh = false;
+				}
+
+				if (match.Groups["mulDiv"].Success)
+				{
+					if (match.Groups["mulDiv"].Value == "/")
+					{
+						div = int.Parse(match.Groups["mulDivAmount"].Value);
+						mul = 1;
+					}
+					else
+					{
+						mul = int.Parse(match.Groups["mulDivAmount"].Value);
+						div = 1;
+					}
+				}
+				else
+				{
+					mul = 1;
+					div = 1;
+				}
+
+				if (match.Groups["addSub"].Success)
+				{
+					if (match.Groups["addSub"].Value == "+")
+					{
+						add = int.Parse(match.Groups["addSubAmount"].Value);
+					}
+					else
+					{
+						add = -int.Parse(match.Groups["addSubAmount"].Value);
+					}
+				}
+				else
+				{
+					add = 0;
+				}
+
+				#endregion
+
+				if (keepQuantity == 0)
+				{
+					#region No Keep or Drop
+					if (mul == 1 && div == 1)
+					{
+						if (add == 0)
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine);
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine);
+							}
+						}
+						else
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine) + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine) + add;
+							}
+						}
+					}
+					else if (mul != 1)
+					{
+						if (add == 0)
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine) * mul;
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine) * mul;
+							}
+						}
+						else
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine) * mul + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine) * mul + add;
+							}
+						}
+					}
+					else
+					{
+						if (add == 0)
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine) / div;
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine) / div;
+							}
+						}
+						else
+						{
+							if (quantity == 1)
+							{
+								return (IRandomEngine engine) => Dice(sides, engine) / div + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => Dice(quantity, sides, engine) / div + add;
+							}
+						}
+					}
+					#endregion
+				}
+				else
+				{
+					#region Keep or Drop
+					if (quantity == 1 || keepQuantity >= quantity)
+					{
+						throw new System.ArgumentException();
+					}
+
+					if (mul == 1 && div == 1)
+					{
+						if (add == 0)
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine);
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine);
+							}
+						}
+						else
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine) + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine) + add;
+							}
+						}
+					}
+					else if (mul != 1)
+					{
+						if (add == 0)
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine) * mul;
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine) * mul;
+							}
+						}
+						else
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine) * mul + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine) * mul + add;
+							}
+						}
+					}
+					else
+					{
+						if (add == 0)
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine) / div;
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine) / div;
+							}
+						}
+						else
+						{
+							if (keepHigh)
+							{
+								return (IRandomEngine engine) => DiceKeepHighest(quantity, sides, keepQuantity, engine) / div + add;
+							}
+							else
+							{
+								return (IRandomEngine engine) => DiceKeepLowest(quantity, sides, keepQuantity, engine) / div + add;
+							}
+						}
+					}
+					#endregion
+				}
+			}
+
+			throw new System.ArgumentException();
+		}
+
+		public static int D6(IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan(6) + 1;
+		}
+
+		public static int D8(IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan(8) + 1;
+		}
+
+		public static int D10(IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan(10) + 1;
+		}
+
+		public static int D12(IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan(12) + 1;
+		}
+
+		public static int D20(IRandomEngine engine)
+		{
+			return (int)engine.NextLessThan(20) + 1;
+		}
+
+		#endregion
+
 		#region Weighted Index
 
 		public static int WeightedIndex(int[] weights, IRandomEngine engine)
