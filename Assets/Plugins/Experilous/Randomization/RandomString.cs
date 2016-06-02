@@ -8,6 +8,11 @@ namespace Experilous.Randomization
 	{
 		#region UsingCharacters
 
+		public static string UsingCharacters(int length, char[] characters)
+		{
+			return UsingCharacters(length, characters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string UsingCharacters(int length, char[] characters, IRandomEngine engine)
 		{
 			char[] buffer = new char[length];
@@ -18,6 +23,11 @@ namespace Experilous.Randomization
 			return new string(buffer);
 		}
 
+		public static string UsingCharacters(int length, char[] characters, char otherCharacter, float otherFrequency)
+		{
+			return UsingCharacters(length, characters, otherCharacter, otherFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string UsingCharacters(int length, char[] characters, char otherCharacter, float otherFrequency, IRandomEngine engine)
 		{
 			char[] buffer = new char[length];
@@ -26,6 +36,11 @@ namespace Experilous.Randomization
 				buffer[i] = Chance.Probability(otherFrequency, engine) ? otherCharacter : characters.RandomElement(engine);
 			}
 			return new string(buffer);
+		}
+
+		public static string UsingCharacters(int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength)
+		{
+			return UsingCharacters(length, characters, otherCharacter, otherCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string UsingCharacters(int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength, IRandomEngine engine)
@@ -53,6 +68,11 @@ namespace Experilous.Randomization
 			'0', '1',
 		};
 
+		public static string Binary(int length)
+		{
+			return UsingCharacters(length, _binaryCharacters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Binary(int length, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _binaryCharacters, engine);
@@ -67,6 +87,11 @@ namespace Experilous.Randomization
 			'0', '1', '2', '3', '4', '5', '6', '7',
 		};
 
+		public static string Octal(int length)
+		{
+			return UsingCharacters(length, _octalCharacters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Octal(int length, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _octalCharacters, engine);
@@ -80,6 +105,11 @@ namespace Experilous.Randomization
 		{
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 		};
+
+		public static string Decimal(int length)
+		{
+			return UsingCharacters(length, _decimalCharacters, DefaultRandomEngine.sharedInstance);
+		}
 
 		public static string Decimal(int length, IRandomEngine engine)
 		{
@@ -108,6 +138,11 @@ namespace Experilous.Randomization
 				case Casing.Upper: return _upperHexadecimalCharacters;
 				default: throw new System.NotImplementedException();
 			}
+		}
+
+		public static string Hexadecimal(int length, Casing casing)
+		{
+			return UsingCharacters(length, GetHexadecimalCharacters(casing), DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string Hexadecimal(int length, Casing casing, IRandomEngine engine)
@@ -148,9 +183,19 @@ namespace Experilous.Randomization
 			}
 		}
 
+		public static string AlphaNumeric(int length)
+		{
+			return UsingCharacters(length, _alphaNumericCharacters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphaNumeric(int length, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _alphaNumericCharacters, engine);
+		}
+
+		public static string AlphaNumericWithSpaces(int length)
+		{
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', 1, 62, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphaNumericWithSpaces(int length, IRandomEngine engine)
@@ -158,9 +203,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, _alphaNumericCharacters, ' ', 1, 62, engine);
 		}
 
+		public static string AlphaNumericWithSpaces(int length, float spaceFrequency)
+		{
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphaNumericWithSpaces(int length, float spaceFrequency, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceFrequency, engine);
+		}
+
+		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength)
+		{
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, IRandomEngine engine)
@@ -168,9 +223,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength, engine);
 		}
 
+		public static string AlphaNumeric(int length, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphaNumeric(int length, Casing casing, IRandomEngine engine)
 		{
 			return UsingCharacters(length, GetAlphaNumericCharacters(casing), engine);
+		}
+
+		public static string AlphaNumericWithSpaces(int length, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', 1, 62, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphaNumericWithSpaces(int length, Casing casing, IRandomEngine engine)
@@ -178,9 +243,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', 1, 62, engine);
 		}
 
+		public static string AlphaNumericWithSpaces(int length, float spaceFrequency, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphaNumericWithSpaces(int length, float spaceFrequency, Casing casing, IRandomEngine engine)
 		{
 			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency, engine);
+		}
+
+		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
@@ -218,9 +293,19 @@ namespace Experilous.Randomization
 			}
 		}
 
+		public static string Alphabetic(int length)
+		{
+			return UsingCharacters(length, _alphabeticCharacters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Alphabetic(int length, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _alphabeticCharacters, engine);
+		}
+
+		public static string AlphabeticWithSpaces(int length)
+		{
+			return UsingCharacters(length, _alphabeticCharacters, ' ', 1, 52, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphabeticWithSpaces(int length, IRandomEngine engine)
@@ -228,9 +313,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, _alphabeticCharacters, ' ', 1, 52, engine);
 		}
 
+		public static string AlphabeticWithSpaces(int length, float spaceFrequency)
+		{
+			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphabeticWithSpaces(int length, float spaceFrequency, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceFrequency, engine);
+		}
+
+		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength)
+		{
+			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, IRandomEngine engine)
@@ -238,9 +333,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength, engine);
 		}
 
+		public static string Alphabetic(int length, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Alphabetic(int length, Casing casing, IRandomEngine engine)
 		{
 			return UsingCharacters(length, GetAlphabeticCharacters(casing), engine);
+		}
+
+		public static string AlphabeticWithSpaces(int length, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', 1, 52, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphabeticWithSpaces(int length, Casing casing, IRandomEngine engine)
@@ -248,9 +353,19 @@ namespace Experilous.Randomization
 			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', 1, 52, engine);
 		}
 
+		public static string AlphabeticWithSpaces(int length, float spaceFrequency, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string AlphabeticWithSpaces(int length, float spaceFrequency, Casing casing, IRandomEngine engine)
 		{
 			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency, engine);
+		}
+
+		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
+		{
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
@@ -327,10 +442,20 @@ namespace Experilous.Randomization
 			}
 		}
 
+		public static string Identifier(int length)
+		{
+			return Identifier(length, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Identifier(int length, IRandomEngine engine)
 		{
 			if (length <= 0) return "";
 			return _identifierFirstCharacters.RandomElement(engine) + UsingCharacters(length - 1, _identifierCharacters, engine);
+		}
+
+		public static string IdentifierWithUnderscores(int length)
+		{
+			return IdentifierWithUnderscores(length, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string IdentifierWithUnderscores(int length, IRandomEngine engine)
@@ -339,10 +464,20 @@ namespace Experilous.Randomization
 			return UsingCharacters(1, _alphabeticCharacters, '_', 1, 52, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', 1, 62, engine);
 		}
 
+		public static string IdentifierWithUnderscores(int length, float underscoreFrequency)
+		{
+			return IdentifierWithUnderscores(length, underscoreFrequency, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string IdentifierWithUnderscores(int length, float underscoreFrequency, IRandomEngine engine)
 		{
 			if (length <= 0) return "";
 			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreFrequency, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreFrequency, engine);
+		}
+
+		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength)
+		{
+			return IdentifierWithUnderscores(length, underscoreCountPerChunk, averageChunkLength, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, IRandomEngine engine)
@@ -351,10 +486,20 @@ namespace Experilous.Randomization
 			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreCountPerChunk, averageChunkLength, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreCountPerChunk, averageChunkLength, engine);
 		}
 
+		public static string Identifier(int length, Casing casing)
+		{
+			return Identifier(length, casing, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Identifier(int length, Casing casing, IRandomEngine engine)
 		{
 			if (length <= 0) return "";
 			return GetIdentifierFirstCharacters(casing).RandomElement(engine) + UsingCharacters(length - 1, GetIdentifierCharacters(casing), engine);
+		}
+
+		public static string IdentifierWithUnderscores(int length, Casing casing)
+		{
+			return IdentifierWithUnderscores(length, casing, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string IdentifierWithUnderscores(int length, Casing casing, IRandomEngine engine)
@@ -363,10 +508,20 @@ namespace Experilous.Randomization
 			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', 1, 52, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', 1, 62, engine);
 		}
 
+		public static string IdentifierWithUnderscores(int length, float underscoreFrequency, Casing casing)
+		{
+			return IdentifierWithUnderscores(length, underscoreFrequency, casing, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string IdentifierWithUnderscores(int length, float underscoreFrequency, Casing casing, IRandomEngine engine)
 		{
 			if (length <= 0) return "";
 			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreFrequency, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreFrequency, engine);
+		}
+
+		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing)
+		{
+			return IdentifierWithUnderscores(length, underscoreCountPerChunk, averageChunkLength, casing, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
@@ -447,9 +602,19 @@ namespace Experilous.Randomization
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '~', '-',
 		};
 
+		public static string Base64(int length)
+		{
+			return UsingCharacters(length, _base64PlusSlashCharacters, DefaultRandomEngine.sharedInstance);
+		}
+
 		public static string Base64(int length, IRandomEngine engine)
 		{
 			return UsingCharacters(length, _base64PlusSlashCharacters, engine);
+		}
+
+		public static string Base64(int length, Base64CharacterPairs characterPairs)
+		{
+			return Base64(length, characterPairs, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string Base64(int length, Base64CharacterPairs characterPairs, IRandomEngine engine)

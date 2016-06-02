@@ -10,6 +10,11 @@ namespace Experilous.Randomization
 	{
 		#region Public Interface
 
+		public static IList<T> InPlace<T>(IList<T> list, bool cyclic = false)
+		{
+			return InPlace(list, DefaultRandomEngine.sharedInstance, cyclic);
+		}
+
 		public static IList<T> InPlace<T>(IList<T> list, IRandomEngine engine, bool cyclic = false)
 		{
 			T[] array = list as T[];
@@ -36,6 +41,11 @@ namespace Experilous.Randomization
 				}
 			}
 			return list;
+		}
+
+		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target, bool cyclic = false)
+		{
+			return Into(source, target, DefaultRandomEngine.sharedInstance, cyclic);
 		}
 
 		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target, IRandomEngine engine, bool cyclic = false)
@@ -279,9 +289,19 @@ namespace Experilous.Randomization
 
 	public static class ShuffleExtensions
 	{
+		public static IList<T> Shuffle<T>(this IList<T> list, bool cyclic = false)
+		{
+			return Randomization.Shuffle.InPlace(list, DefaultRandomEngine.sharedInstance, cyclic);
+		}
+
 		public static IList<T> Shuffle<T>(this IList<T> list, IRandomEngine engine, bool cyclic = false)
 		{
 			return Randomization.Shuffle.InPlace(list, engine, cyclic);
+		}
+
+		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, bool cyclic = false)
+		{
+			return Randomization.Shuffle.Into(source, target, DefaultRandomEngine.sharedInstance, cyclic);
 		}
 
 		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, IRandomEngine engine, bool cyclic = false)
