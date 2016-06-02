@@ -14,13 +14,11 @@ namespace Experilous.Randomization
 	/// following <a href="http://xorshift.di.unimi.it/splitmix64.c">implementation in C</a>.</para>
 	/// 
 	/// <para>As its name implies, it maintains 64 bits of state.  It natively generates 64 bits of pseudo-
-	/// random data at a time.  It can serve as a convenient helper for seeding another PRNG with a larger
-	/// state when starting from a small seed.</para>
+	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	/// <seealso cref="XorShift128Plus"/>
-	public class SplitMix64 : BaseRandomEngine, IRandomEngine
+	public sealed class SplitMix64 : BaseRandomEngine, IRandomEngine
 	{
 		[SerializeField] private ulong _state;
 
@@ -52,6 +50,13 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static SplitMix64 Create(RandomStateGenerator stateGenerator)
+		{
+			var instance = CreateInstance<SplitMix64>();
+			instance.Seed(stateGenerator);
+			return instance;
+		}
+
 		public static SplitMix64 Create(IRandomEngine seeder)
 		{
 			var instance = CreateInstance<SplitMix64>();
@@ -59,24 +64,33 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public override void Seed()
+		public static SplitMix64 CreateWithState(ulong state)
 		{
-			_state = RandomSeedUtility.Seed64();
+			var instance = CreateInstance<SplitMix64>();
+			return instance.CopyState(state);
 		}
 
-		public override void Seed(int seed)
+		public SplitMix64 Clone()
 		{
-			_state = RandomSeedUtility.Seed64(seed);
+			var instance = CreateInstance<SplitMix64>();
+			return instance.CopyState(this);
 		}
 
-		public override void Seed(params int[] seed)
+		public SplitMix64 CopyState(SplitMix64 source)
 		{
-			_state = RandomSeedUtility.Seed64(seed);
+			_state = source._state;
+			return this;
 		}
 
-		public override void Seed(string seed)
+		public SplitMix64 CopyState(ulong state)
 		{
-			_state = RandomSeedUtility.Seed64(seed);
+			_state = state;
+			return this;
+		}
+
+		public override void Seed(RandomStateGenerator stateGenerator)
+		{
+			_state = stateGenerator.Next64();
 		}
 
 		public override void Seed(IRandomEngine seeder)
@@ -84,24 +98,9 @@ namespace Experilous.Randomization
 			_state = seeder.Next64();
 		}
 
-		public override void MergeSeed()
+		public override void MergeSeed(RandomStateGenerator stateGenerator)
 		{
-			_state ^= RandomSeedUtility.Seed64();
-		}
-
-		public override void MergeSeed(int seed)
-		{
-			_state ^= RandomSeedUtility.Seed64(seed);
-		}
-
-		public override void MergeSeed(params int[] seed)
-		{
-			_state ^= RandomSeedUtility.Seed64(seed);
-		}
-
-		public override void MergeSeed(string seed)
-		{
-			_state ^= RandomSeedUtility.Seed64(seed);
+			_state ^= stateGenerator.Next64();
 		}
 
 		public override void MergeSeed(IRandomEngine seeder)
@@ -109,9 +108,18 @@ namespace Experilous.Randomization
 			_state ^= seeder.Next64();
 		}
 
+		public override void Step()
+		{
+			_state += 0x9E3779B97F4A7C15UL;
+		}
+
 		public override uint Next32()
 		{
-			return (uint)Next64();
+			_state += 0x9E3779B97F4A7C15UL;
+			var z = _state;
+			z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+			z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+			return (uint)(z ^ (z >> 31));
 		}
 
 		public override ulong Next64()

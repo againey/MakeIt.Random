@@ -19,70 +19,77 @@ namespace Experilous.Randomization
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a transient value (such as system time).
 		/// </summary>
-		/// <seealso cref="RandomSeedUtility"/>
 		void Seed();
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with the supplied integer value.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void Seed(int seed);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with the supplied array of integer values.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void Seed(params int[] seed);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with the supplied string.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void Seed(string seed);
+
+		/// <summary>
+		/// Reseed the psueod-random sequence with the supplied random state generator.
+		/// </summary>
+		/// <param name="stateGenerator"></param>
+		void Seed(RandomStateGenerator stateGenerator);
 
 		/// <summary>
 		/// Reseed the psueod-random sequence with random data pulled from the supplied random engine.
 		/// </summary>
 		/// <param name="seeder"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void Seed(IRandomEngine seeder);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and a transient value (such as system time).
 		/// </summary>
-		/// <seealso cref="RandomSeedUtility"/>
 		void MergeSeed();
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied integer value.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void MergeSeed(int seed);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied array of integer values.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void MergeSeed(params int[] seed);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied string.
 		/// </summary>
 		/// <param name="seed"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void MergeSeed(string seed);
+
+		/// <summary>
+		/// Reseed the psueod-random sequence with a combination of its current state and the supplied random state generator.
+		/// </summary>
+		/// <param name="stateGenerator"></param>
+		void MergeSeed(RandomStateGenerator stateGenerator);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and random data pulled from the supplied random engine.
 		/// </summary>
 		/// <param name="seeder"></param>
-		/// <seealso cref="RandomSeedUtility"/>
 		void MergeSeed(IRandomEngine seeder);
+
+		/// <summary>
+		/// Step the state ahead by a single iteration, and throw away the output.
+		/// </summary>
+		void Step();
 
 		/// <summary>
 		/// Get the next 32 bits of random data.
@@ -137,6 +144,37 @@ namespace Experilous.Randomization
 		/// <param name="upperBound">The inclusive upper bound of the range in which a pseudo-random integer should be generated.</param>
 		/// <returns>A uniformly distributed random 64-bit unsigned integer greater than or equal to 0 and less than or equal to <paramref name="upperBound"/>.</returns>
 		ulong NextLessThanOrEqual(ulong upperBound);
+
+		/// <summary>
+		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
+		/// </summary>
+		/// <remarks>
+		/// <para><see cref="SkipAhead"/>() is guaranteed to skip forward at least <code>2^skipAheadMagnitude</code> steps each time it is called.</para>
+		/// <para>This property is guaranteed to be non-negative.  A value of 0 indicates that <see cref="SkipAhead"/>() is not guaranteed to do anything
+		/// other than advance the state one single iteration.</para>
+		/// </remarks>
+		int skipAheadMagnitude { get; }
+
+		/// <summary>
+		/// The binary order of magnitude size of the interveral that <see cref="SkipBack"/>() skips over.
+		/// </summary>
+		/// <remarks>
+		/// <para><see cref="SkipBack"/>() is guaranteed to skip backward at least <code>2^skipBackMagnitude</code> steps each time it is called.</para>
+		/// <para>This property may be negative.  A value of 0 indicates that <see cref="SkipBack"/>() is not guaranteed to do anything other than reverse
+		/// the state one single iteration.  A negative value indicates that <see cref="SkipBack"/>() is not supported and will throw an exception.</para>
+		/// </remarks>
+		int skipBackMagnitude { get; }
+
+		/// <summary>
+		/// Advances the state forward by a fixed number of iterations, generally in logarithmic time.
+		/// </summary>
+		/// <remarks>
+		/// <para>For some pseudo-random number generators, their state can be advanced by a large number of steps relatively quickly, generally in
+		/// logarithmic time based on the size of the skip interval.  This can be useful for independently accessing multiple subsequences within a
+		/// long sequence initialized by a single seed, often but not exclusively for the purpose of parallel computation.</para>
+		/// </remarks>
+		void SkipAhead();
+		void SkipBack();
 
 		/// <summary>
 		/// Adapts the random engine to the interface provided by <see cref="System.Random"/>, for use in interfaces that require this common .NET type.

@@ -26,7 +26,7 @@ namespace Experilous.Randomization
 
 		protected override double Sample()
 		{
-			return RandomUtility.ClosedDoubleUnit(_randomEngine);
+			return RandomUnit.ClosedDouble(_randomEngine);
 		}
 
 		public override int Next()
@@ -85,7 +85,7 @@ namespace Experilous.Randomization
 
 		protected override double Sample()
 		{
-			return RandomUtility.ClosedDoubleUnit(_randomEngine);
+			return RandomUnit.ClosedDouble(_randomEngine);
 		}
 
 		public override int Next()

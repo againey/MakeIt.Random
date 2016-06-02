@@ -20,18 +20,53 @@ namespace Experilous.Randomization
 	/// <seealso cref="IRandomEngine"/>
 	public abstract class BaseRandomEngine : ScriptableObject, IRandomEngine
 	{
-		public abstract void Seed();
-		public abstract void Seed(int seed);
-		public abstract void Seed(params int[] seed);
-		public abstract void Seed(string seed);
+		public virtual void Seed()
+		{
+			Seed(new RandomStateGenerator());
+		}
+
+		public virtual void Seed(int seed)
+		{
+			Seed(new RandomStateGenerator(seed));
+		}
+
+		public virtual void Seed(params int[] seed)
+		{
+			Seed(new RandomStateGenerator(seed));
+		}
+
+		public virtual void Seed(string seed)
+		{
+			Seed(new RandomStateGenerator(seed));
+		}
+
+		public abstract void Seed(RandomStateGenerator stateGenerator);
 		public abstract void Seed(IRandomEngine seeder);
 
-		public abstract void MergeSeed();
-		public abstract void MergeSeed(int seed);
-		public abstract void MergeSeed(params int[] seed);
-		public abstract void MergeSeed(string seed);
+		public virtual void MergeSeed()
+		{
+			MergeSeed(new RandomStateGenerator());
+		}
+
+		public virtual void MergeSeed(int seed)
+		{
+			MergeSeed(new RandomStateGenerator(seed));
+		}
+
+		public virtual void MergeSeed(params int[] seed)
+		{
+			MergeSeed(new RandomStateGenerator(seed));
+		}
+
+		public virtual void MergeSeed(string seed)
+		{
+			MergeSeed(new RandomStateGenerator(seed));
+		}
+
+		public abstract void MergeSeed(RandomStateGenerator stateGenerator);
 		public abstract void MergeSeed(IRandomEngine seeder);
 
+		public abstract void Step();
 		public abstract uint Next32();
 		public abstract ulong Next64();
 
@@ -96,6 +131,12 @@ namespace Experilous.Randomization
 			while (random > upperBound);
 			return random;
 		}
+
+		public virtual int skipAheadMagnitude { get { return 0; } }
+		public virtual int skipBackMagnitude { get { return -1; } }
+
+		public virtual void SkipAhead() { Step(); }
+		public virtual void SkipBack() { throw new System.NotSupportedException("Skipping backward in the sequence is not supported by this random engine."); }
 
 		public abstract System.Random AsSystemRandom();
 	}

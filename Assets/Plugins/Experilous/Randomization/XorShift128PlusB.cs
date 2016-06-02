@@ -13,79 +13,83 @@ namespace Experilous.Randomization
 	/// <para>This PRNG is based on Marsaglia's XorShift class of generators, and modified by Sebastiano Vigna
 	/// in his paper <a href="http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf">Further scramblings of
 	/// Marsaglia's xorshift generators</a>.</para>
-	/// 
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
+	/// <para>This is an earlier version of the XorShift128Plus class, available for backwards-compatible
+	/// consistency of earlier random sequences.  It differs from the up-to-date version in how it uses
+	/// seeds of various types to initialize its state, as well as with the set of bit shift amounts that
+	/// it uses to step through subsequent states.</para>
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XorShift128Plus : BaseRandomEngine, IRandomEngine
+	/// <seealso cref="XorShift128Plus"/>
+	public sealed class XorShift128PlusB : BaseRandomEngine, IRandomEngine
 	{
 		[SerializeField] private ulong _state0 = 0UL;
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state
 
-		public static XorShift128Plus Create()
+		public static XorShift128PlusB Create()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed();
 			return instance;
 		}
 
-		public static XorShift128Plus Create(int seed)
+		public static XorShift128PlusB Create(int seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(params int[] seed)
+		public static XorShift128PlusB Create(params int[] seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(string seed)
+		public static XorShift128PlusB Create(string seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(RandomStateGenerator stateGenerator)
+		public static XorShift128PlusB Create(RandomStateGenerator stateGenerator)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed(stateGenerator);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(IRandomEngine seeder)
+		public static XorShift128PlusB Create(IRandomEngine seeder)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			instance.Seed(seeder);
 			return instance;
 		}
 
-		public static XorShift128Plus CreateWithState(ulong state0, ulong state1)
+		public static XorShift128PlusB CreateWithState(ulong state0, ulong state1)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			return instance.CopyState(state0, state1);
 		}
 
-		public XorShift128Plus Clone()
+		public XorShift128PlusB Clone()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XorShift128PlusB>();
 			return instance.CopyState(this);
 		}
 
-		public XorShift128Plus CopyState(XorShift128Plus source)
+		public XorShift128PlusB CopyState(XorShift128PlusB source)
 		{
 			_state0 = source._state0;
 			_state1 = source._state1;
 			return this;
 		}
 
-		public XorShift128Plus CopyState(ulong state0, ulong state1)
+		public XorShift128PlusB CopyState(ulong state0, ulong state1)
 		{
 			if (state0 == 0 && state1 == 0)
 			{
@@ -94,6 +98,26 @@ namespace Experilous.Randomization
 			_state0 = state0;
 			_state1 = state1;
 			return this;
+		}
+
+		public override void Seed()
+		{
+			Seed(SplitMix64B.Create());
+		}
+
+		public override void Seed(int seed)
+		{
+			Seed(SplitMix64B.Create(seed));
+		}
+
+		public override void Seed(params int[] seed)
+		{
+			Seed(SplitMix64B.Create(seed));
+		}
+
+		public override void Seed(string seed)
+		{
+			Seed(SplitMix64B.Create(seed));
 		}
 
 		public override void Seed(RandomStateGenerator stateGenerator)
@@ -133,6 +157,26 @@ namespace Experilous.Randomization
 			} while (++tryCount < 4);
 
 			throw new System.ArgumentException("The provided random engine was unable to generate a non-zero state, which is required by this random engine.");
+		}
+
+		public override void MergeSeed()
+		{
+			MergeSeed(SplitMix64B.Create());
+		}
+
+		public override void MergeSeed(int seed)
+		{
+			MergeSeed(SplitMix64B.Create(seed));
+		}
+
+		public override void MergeSeed(params int[] seed)
+		{
+			MergeSeed(SplitMix64B.Create(seed));
+		}
+
+		public override void MergeSeed(string seed)
+		{
+			MergeSeed(SplitMix64B.Create(seed));
 		}
 
 		public override void MergeSeed(RandomStateGenerator stateGenerator)
@@ -180,29 +224,27 @@ namespace Experilous.Randomization
 			var y = _state1;
 			_state0 = y;
 			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5); //earlier versions used values 17 and 26; changed to 18 and 5 as justified at http://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html?showComment=1450389868643#c2004131565745698275
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
 		}
 
 		public override uint Next32()
 		{
 			var x = _state0;
 			var y = _state1;
-			var next = (uint)(x + y);
 			_state0 = y;
 			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
-			return next;
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+			return (uint)(_state1 + y);
 		}
 
 		public override ulong Next64()
 		{
 			var x = _state0;
 			var y = _state1;
-			var next = x + y;
 			_state0 = y;
 			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
-			return next;
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+			return _state1 + y;
 		}
 
 		public override int skipAheadMagnitude { get { return 64; } }

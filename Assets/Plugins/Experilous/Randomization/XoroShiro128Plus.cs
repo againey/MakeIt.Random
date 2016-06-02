@@ -7,89 +7,88 @@ using UnityEngine;
 namespace Experilous.Randomization
 {
 	/// <summary>
-	/// An implementation of the <see cref="IRandomEngine"/> interface using the 128-bit XorShift+ generator.
+	/// An implementation of the <see cref="IRandomEngine"/> interface using the 128-bit XoroShiro+ generator.
 	/// </summary>
 	/// <remarks>
-	/// <para>This PRNG is based on Marsaglia's XorShift class of generators, and modified by Sebastiano Vigna
-	/// in his paper <a href="http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf">Further scramblings of
-	/// Marsaglia's xorshift generators</a>.</para>
+	/// <para>This PRNG is based on David Blackman's and Sebastiano Vigna's xoroshiro128+ generator, adapted from
+	/// a <a href="http://xorshift.di.unimi.it/xoroshiro128plus.c">C code reference implementation</a>.</para>
 	/// 
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XorShift128Plus : BaseRandomEngine, IRandomEngine
+	public sealed class XoroShiro128Plus : BaseRandomEngine, IRandomEngine
 	{
 		[SerializeField] private ulong _state0 = 0UL;
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state
 
-		public static XorShift128Plus Create()
+		public static XoroShiro128Plus Create()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed();
 			return instance;
 		}
 
-		public static XorShift128Plus Create(int seed)
+		public static XoroShiro128Plus Create(int seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(params int[] seed)
+		public static XoroShiro128Plus Create(params int[] seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(string seed)
+		public static XoroShiro128Plus Create(string seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(RandomStateGenerator stateGenerator)
+		public static XoroShiro128Plus Create(RandomStateGenerator stateGenerator)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed(stateGenerator);
 			return instance;
 		}
 
-		public static XorShift128Plus Create(IRandomEngine seeder)
+		public static XoroShiro128Plus Create(IRandomEngine seeder)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			instance.Seed(seeder);
 			return instance;
 		}
 
-		public static XorShift128Plus CreateWithState(ulong state0, ulong state1)
+		public static XoroShiro128Plus CreateWithState(ulong state0, ulong state1)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			return instance.CopyState(state0, state1);
 		}
 
-		public XorShift128Plus Clone()
+		public XoroShiro128Plus Clone()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateInstance<XoroShiro128Plus>();
 			return instance.CopyState(this);
 		}
 
-		public XorShift128Plus CopyState(XorShift128Plus source)
+		public XoroShiro128Plus CopyState(XoroShiro128Plus source)
 		{
 			_state0 = source._state0;
 			_state1 = source._state1;
 			return this;
 		}
 
-		public XorShift128Plus CopyState(ulong state0, ulong state1)
+		public XoroShiro128Plus CopyState(ulong state0, ulong state1)
 		{
 			if (state0 == 0 && state1 == 0)
 			{
-				throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift128+ random number generator.");
+				throw new System.ArgumentException("All 0 bits is an invalid state for the XoroShiro128+ random number generator.");
 			}
 			_state0 = state0;
 			_state1 = state1;
@@ -178,9 +177,9 @@ namespace Experilous.Randomization
 		{
 			var x = _state0;
 			var y = _state1;
-			_state0 = y;
-			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5); //earlier versions used values 17 and 26; changed to 18 and 5 as justified at http://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html?showComment=1450389868643#c2004131565745698275
+			y ^= x;
+			_state0 = ((x << 55) | (x >> 9)) ^ y ^ (y << 14);
+			_state1 = (y << 36) | (y >> 28);
 		}
 
 		public override uint Next32()
@@ -188,9 +187,9 @@ namespace Experilous.Randomization
 			var x = _state0;
 			var y = _state1;
 			var next = (uint)(x + y);
-			_state0 = y;
-			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
+			y ^= x;
+			_state0 = ((x << 55) | (x >> 9)) ^ y ^ (y << 14);
+			_state1 = (y << 36) | (y >> 28);
 			return next;
 		}
 
@@ -199,9 +198,9 @@ namespace Experilous.Randomization
 			var x = _state0;
 			var y = _state1;
 			var next = x + y;
-			_state0 = y;
-			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
+			y ^= x;
+			_state0 = ((x << 55) | (x >> 9)) ^ y ^ (y << 14);
+			_state1 = (y << 36) | (y >> 28);
 			return next;
 		}
 
@@ -212,7 +211,7 @@ namespace Experilous.Randomization
 			ulong x = 0;
 			ulong y = 0;
 
-			ulong b = 0x8A5CD789635D2DFFUL;
+			ulong b = 0xBEAC0467EBA5FACBUL;
 			for (int i = 0; i < 64; ++i)
 			{
 				if ((b & 1UL) != 0UL)
@@ -224,7 +223,7 @@ namespace Experilous.Randomization
 				Step();
 			}
 
-			b = 0x121FD2155C472F96UL;
+			b = 0xD86B048B86AA9922UL;
 			for (int i = 0; i < 64; ++i)
 			{
 				if ((b & 1UL) != 0UL)
