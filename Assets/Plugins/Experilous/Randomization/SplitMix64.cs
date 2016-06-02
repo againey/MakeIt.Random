@@ -18,7 +18,7 @@ namespace Experilous.Randomization
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class SplitMix64 : BaseRandomEngine, IRandomEngine
+	public sealed class SplitMix64 : BaseRandomEngine
 	{
 		[SerializeField] private ulong _state;
 

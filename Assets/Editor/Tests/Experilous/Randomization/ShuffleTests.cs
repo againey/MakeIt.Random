@@ -205,7 +205,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleArrayInPlaceMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			array.Shuffle(XorShift128Plus.Create(seed), true);
+			array.ShuffleCyclic(XorShift128Plus.Create(seed));
 			ValidateIsCycle(array);
 		}
 
@@ -213,7 +213,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleListInPlaceMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			list.Shuffle(XorShift128Plus.Create(seed), true);
+			list.ShuffleCyclic(XorShift128Plus.Create(seed));
 			ValidateIsCycle(list);
 		}
 
@@ -221,7 +221,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleArrayCopyMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			int[] shuffledArray = (int[])array.ShuffleInto(new int[100], XorShift128Plus.Create(seed), true);
+			int[] shuffledArray = (int[])array.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
@@ -229,7 +229,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleListCopyMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			int[] shuffledArray = (int[])list.ShuffleInto(new int[100], XorShift128Plus.Create(seed), true);
+			int[] shuffledArray = (int[])list.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
@@ -237,7 +237,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleLinkedListCopyMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			int[] shuffledArray = (int[])list.ShuffleInto(new int[100], XorShift128Plus.Create(seed), true);
+			int[] shuffledArray = (int[])list.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
@@ -245,7 +245,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleArrayCopyAppendMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			List<int> shuffledList = (List<int>)array.ShuffleInto(new List<int>(100), XorShift128Plus.Create(seed), true);
+			List<int> shuffledList = (List<int>)array.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
@@ -253,7 +253,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleListCopyAppendMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			List<int> shuffledList = (List<int>)list.ShuffleInto(new List<int>(100), XorShift128Plus.Create(seed), true);
+			List<int> shuffledList = (List<int>)list.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
@@ -261,7 +261,7 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleLinkedListCopyAppendMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			List<int> shuffledList = (List<int>)list.ShuffleInto(new List<int>(100), XorShift128Plus.Create(seed), true);
+			List<int> shuffledList = (List<int>)list.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
@@ -290,21 +290,21 @@ namespace Experilous.Randomization.Tests
 		public void CycleShuffleArrayCopyThrowsForTooSmallTarget()
 		{
 			int[] array = CreateLinearArray(100);
-			Assert.Throws<System.ArgumentException>(() => array.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
+			Assert.Throws<System.ArgumentException>(() => array.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]
 		public void CycleShuffleListCopyThrowsForTooSmallTarget()
 		{
 			List<int> list = CreateLinearList(100);
-			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
+			Assert.Throws<System.ArgumentException>(() => list.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]
 		public void CycleShuffleLinkedListCopyThrowsForTooSmallTarget()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
+			Assert.Throws<System.ArgumentException>(() => list.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]

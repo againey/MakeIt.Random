@@ -18,7 +18,7 @@ namespace Experilous.Randomization
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XoroShiro128Plus : BaseRandomEngine, IRandomEngine
+	public sealed class XoroShiro128Plus : BaseRandomEngine
 	{
 		[SerializeField] private ulong _state0 = 0UL;
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state

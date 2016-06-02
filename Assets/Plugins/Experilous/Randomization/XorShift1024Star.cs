@@ -18,7 +18,7 @@ namespace Experilous.Randomization
 	/// </remarks>
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XorShift1024Star : BaseRandomEngine, IRandomEngine
+	public sealed class XorShift1024Star : BaseRandomEngine
 	{
 		[SerializeField] private ulong[] _state = new ulong[] { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 1UL, };
 		[SerializeField] private int _offset;

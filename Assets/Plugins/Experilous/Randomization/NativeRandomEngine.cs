@@ -13,7 +13,7 @@ namespace Experilous.Randomization
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
 	/// <seealso cref="System.Random"/>
-	public sealed class NativeRandomEngine : BaseRandomEngine, IRandomEngine
+	public sealed class NativeRandomEngine : BaseRandomEngine
 	{
 		[SerializeField] private System.Random _random;
 		[SerializeField] private byte[] _buffer = new byte[4];

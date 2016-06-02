@@ -147,7 +147,7 @@ namespace Experilous.Randomization.Tests
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
 				var random = RandomUnit.HalfClosedFloat(engine);
-				buckets[Mathf.FloorToInt(random * bucketCount)] += 1;
+				buckets[Mathf.CeilToInt(random * bucketCount) - 1] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
@@ -159,7 +159,7 @@ namespace Experilous.Randomization.Tests
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
 				var random = RandomUnit.HalfClosedDouble(engine);
-				buckets[(int)System.Math.Floor(random * bucketCount)] += 1;
+				buckets[(int)System.Math.Ceiling(random * bucketCount) - 1] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
@@ -247,7 +247,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateOpenDoubleUnitRange(10, mock);
 			ValidateOpenDoubleUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -260,7 +260,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateHalfOpenFloatUnitRange(10, mock);
 			ValidateHalfOpenFloatUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateHalfOpenFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfOpenFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -273,7 +273,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateHalfOpenDoubleUnitRange(10, mock);
 			ValidateHalfOpenDoubleUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateHalfOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -286,7 +286,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateHalfClosedFloatUnitRange(10, mock);
 			ValidateHalfClosedFloatUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateHalfClosedFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -299,7 +299,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateHalfClosedDoubleUnitRange(10, mock);
 			ValidateHalfClosedDoubleUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateHalfClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -312,7 +312,7 @@ namespace Experilous.Randomization.Tests
 		{
 			var mock = Substitute.For<IRandomEngine>();
 			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U);
-			ValidateOpenFloatUnitRange(10, mock);
+			ValidateClosedFloatUnitRange(10, mock);
 			ValidateClosedFloatUnitRange(10000, NativeRandomEngine.Create(seed));
 			ValidateClosedFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
