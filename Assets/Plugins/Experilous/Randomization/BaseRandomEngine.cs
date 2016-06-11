@@ -20,6 +20,16 @@ namespace Experilous.Randomization
 	/// <seealso cref="IRandomEngine"/>
 	public abstract class BaseRandomEngine : ScriptableObject, IRandomEngine
 	{
+		public virtual byte[] SaveState()
+		{
+			throw new System.NotSupportedException("This random engine is unable to save its state to a byte array.");
+		}
+
+		public virtual void RestoreState(byte[] stateArray)
+		{
+			throw new System.NotSupportedException("This random engine is unable to restore its state from a byte array.");
+		}
+
 		public virtual void Seed()
 		{
 			Seed(new RandomStateGenerator());
@@ -139,5 +149,41 @@ namespace Experilous.Randomization
 		public virtual void SkipBack() { throw new System.NotSupportedException("Skipping backward in the sequence is not supported by this random engine."); }
 
 		public abstract System.Random AsSystemRandom();
+
+		protected static void SaveState(System.IO.BinaryWriter stream, byte stateElement)
+		{
+			stream.Write(stateElement);
+		}
+
+		protected static void SaveState(System.IO.BinaryWriter stream, uint stateElement)
+		{
+			for (int i = sizeof(uint) * 8 - 8; i >= 0; i -= 8)
+				stream.Write((byte)(stateElement >> i));
+		}
+
+		protected static void SaveState(System.IO.BinaryWriter stream, ulong stateElement)
+		{
+			for (int i = sizeof(ulong) * 8 - 8; i >= 0; i -= 8)
+				stream.Write((byte)(stateElement >> i));
+		}
+
+		protected static void RestoreState(System.IO.BinaryReader reader, out byte stateElement)
+		{
+			stateElement = reader.ReadByte();
+		}
+
+		protected static void RestoreState(System.IO.BinaryReader reader, out uint stateElement)
+		{
+			stateElement = 0;
+			for (int i = sizeof(uint) * 8 - 8; i >= 0; i -= 8)
+				stateElement |= ((uint)reader.ReadByte()) << i;
+		}
+
+		protected static void RestoreState(System.IO.BinaryReader reader, out ulong stateElement)
+		{
+			stateElement = 0;
+			for (int i = sizeof(ulong) * 8 - 8; i >= 0; i -= 8)
+				stateElement |= ((ulong)reader.ReadByte()) << i;
+		}
 	}
 }

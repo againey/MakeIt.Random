@@ -65,26 +65,69 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static XoroShiro128Plus CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<XoroShiro128Plus>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
 		public static XoroShiro128Plus CreateWithState(ulong state0, ulong state1)
 		{
 			var instance = CreateInstance<XoroShiro128Plus>();
-			return instance.CopyState(state0, state1);
+			instance.RestoreState(state0, state1);
+			return instance;
 		}
 
 		public XoroShiro128Plus Clone()
 		{
 			var instance = CreateInstance<XoroShiro128Plus>();
-			return instance.CopyState(this);
+			instance.CopyStateFrom(this);
+			return instance;
 		}
 
-		public XoroShiro128Plus CopyState(XoroShiro128Plus source)
+		public void CopyStateFrom(XoroShiro128Plus source)
 		{
 			_state0 = source._state0;
 			_state1 = source._state1;
-			return this;
 		}
 
-		public XoroShiro128Plus CopyState(ulong state0, ulong state1)
+		public override byte[] SaveState()
+		{
+			var stateArray = new byte[sizeof(ulong) * 2];
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var writer = new System.IO.BinaryWriter(stream))
+				{
+					SaveState(writer, _state0);
+					SaveState(writer, _state1);
+				}
+			}
+			return stateArray;
+		}
+
+		public void SaveState(out ulong state0, out ulong state1)
+		{
+			state0 = _state0;
+			state1 = _state1;
+		}
+
+		public override void RestoreState(byte[] stateArray)
+		{
+			ulong state0;
+			ulong state1;
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var reader = new System.IO.BinaryReader(stream))
+				{
+					RestoreState(reader, out state0);
+					RestoreState(reader, out state1);
+				}
+			}
+			RestoreState(state0, state1);
+		}
+
+		public void RestoreState(ulong state0, ulong state1)
 		{
 			if (state0 == 0 && state1 == 0)
 			{
@@ -92,7 +135,6 @@ namespace Experilous.Randomization
 			}
 			_state0 = state0;
 			_state1 = state1;
-			return this;
 		}
 
 		public override void Seed(RandomStateGenerator stateGenerator)

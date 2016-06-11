@@ -14,6 +14,16 @@ namespace Experilous.Randomization
 	public interface IRandomEngine
 	{
 		/// <summary>
+		/// Saves the pseudo-random sequence's internal state as a byte array, which can be restored later.
+		/// </summary>
+		byte[] SaveState();
+
+		/// <summary>
+		/// Restores the pseudo-random sequence's internal state from a byte array which had been previously saved.
+		/// </summary>
+		void RestoreState(byte[] stateArray);
+
+		/// <summary>
 		/// Reseed the pseudo-random sequence with a transient value (such as system time).
 		/// </summary>
 		void Seed();

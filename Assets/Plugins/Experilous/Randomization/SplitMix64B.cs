@@ -67,28 +67,66 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static SplitMix64B CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<SplitMix64B>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
 		public static SplitMix64B CreateWithState(ulong state)
 		{
 			var instance = CreateInstance<SplitMix64B>();
-			return instance.CopyState(state);
+			instance.RestoreState(state);
+			return instance;
 		}
 
 		public SplitMix64B Clone()
 		{
 			var instance = CreateInstance<SplitMix64B>();
-			return instance.CopyState(this);
+			instance.CopyStateFrom(this);
+			return instance;
 		}
 
-		public SplitMix64B CopyState(SplitMix64B source)
+		public void CopyStateFrom(SplitMix64B source)
 		{
 			_state = source._state;
-			return this;
 		}
 
-		public SplitMix64B CopyState(ulong state)
+		public override byte[] SaveState()
+		{
+			var stateArray = new byte[sizeof(ulong)];
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var writer = new System.IO.BinaryWriter(stream))
+				{
+					SaveState(writer, _state);
+				}
+			}
+			return stateArray;
+		}
+
+		public void SaveState(out ulong state)
+		{
+			state = _state;
+		}
+
+		public override void RestoreState(byte[] stateArray)
+		{
+			ulong state;
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var reader = new System.IO.BinaryReader(stream))
+				{
+					RestoreState(reader, out state);
+				}
+			}
+			RestoreState(state);
+		}
+
+		public void RestoreState(ulong state)
 		{
 			_state = state;
-			return this;
 		}
 
 		private static ulong Hash(byte[] seed)

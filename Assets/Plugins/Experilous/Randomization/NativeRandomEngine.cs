@@ -53,13 +53,21 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static NativeRandomEngine CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<NativeRandomEngine>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
 		public NativeRandomEngine Clone()
 		{
 			var instance = CreateInstance<NativeRandomEngine>();
-			return instance.CopyState(this);
+			instance.CopyStateFrom(this);
+			return instance;
 		}
 
-		public NativeRandomEngine CopyState(NativeRandomEngine source)
+		public void CopyStateFrom(NativeRandomEngine source)
 		{
 			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 			using (var stream = new System.IO.MemoryStream())
@@ -67,7 +75,25 @@ namespace Experilous.Randomization
 				binaryFormatter.Serialize(stream, source._random);
 				_random = (System.Random)binaryFormatter.Deserialize(stream);
 			}
-			return this;
+		}
+
+		public override byte[] SaveState()
+		{
+			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+			using (var stream = new System.IO.MemoryStream())
+			{
+				binaryFormatter.Serialize(stream, _random);
+				return stream.ToArray();
+			}
+		}
+
+		public override void RestoreState(byte[] stateArray)
+		{
+			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				_random = (System.Random)binaryFormatter.Deserialize(stream);
+			}
 		}
 
 		public override void Seed()

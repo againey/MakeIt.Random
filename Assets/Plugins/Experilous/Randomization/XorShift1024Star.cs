@@ -65,29 +65,78 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static XorShift1024Star CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<XorShift1024Star>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
 		public static XorShift1024Star CreateWithState(ulong[] state, int offset)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
-			return instance.CopyState(state, offset);
+			instance.RestoreState(state, offset);
+			return instance;
 		}
 
 		public XorShift1024Star Clone()
 		{
 			var instance = CreateInstance<XorShift1024Star>();
-			return instance.CopyState(this);
+			instance.CopyStateFrom(this);
+			return instance;
 		}
 
-		public XorShift1024Star CopyState(XorShift1024Star source)
+		public void CopyStateFrom(XorShift1024Star source)
 		{
 			for (int i = 0; i < 16; ++i)
 			{
 				_state[i] = source._state[i];
 			}
 			_offset = source._offset;
-			return this;
 		}
 
-		public XorShift1024Star CopyState(ulong[] state, int offset)
+		public override byte[] SaveState()
+		{
+			var stateArray = new byte[sizeof(ulong) * 16 + sizeof(byte)];
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var writer = new System.IO.BinaryWriter(stream))
+				{
+					for (int i = 0; i < _state.Length; ++i)
+					{
+						SaveState(writer, _state[i]);
+					}
+					SaveState(writer, (byte)_offset);
+				}
+			}
+			return stateArray;
+		}
+
+		public void SaveState(out ulong[] state, out int offset)
+		{
+			state = _state.Clone() as ulong[];
+			offset = _offset;
+		}
+
+		public override void RestoreState(byte[] stateArray)
+		{
+			ulong[] state = new ulong[16];
+			byte offset;
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var reader = new System.IO.BinaryReader(stream))
+				{
+					for (int i = 0; i < state.Length; ++i)
+					{
+						RestoreState(reader, out state[i]);
+					}
+					RestoreState(reader, out offset);
+				}
+			}
+			RestoreState(state, offset);
+		}
+
+		public void RestoreState(ulong[] state, int offset)
 		{
 			if (state == null) throw new System.ArgumentNullException("state");
 			if (state.Length != 16) throw new System.ArgumentException("The provided state array must have a length of exactly 16.", "state");
@@ -100,7 +149,7 @@ namespace Experilous.Randomization
 					{
 						_state[i] = state[i];
 					}
-					return this;
+					return;
 				}
 			}
 			_offset = offset;

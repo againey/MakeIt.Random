@@ -64,28 +64,66 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
+		public static SplitMix64 CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<SplitMix64>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
 		public static SplitMix64 CreateWithState(ulong state)
 		{
 			var instance = CreateInstance<SplitMix64>();
-			return instance.CopyState(state);
+			instance.RestoreState(state);
+			return instance;
 		}
 
 		public SplitMix64 Clone()
 		{
 			var instance = CreateInstance<SplitMix64>();
-			return instance.CopyState(this);
+			instance.CopyStateFrom(this);
+			return instance;
 		}
 
-		public SplitMix64 CopyState(SplitMix64 source)
+		public void CopyStateFrom(SplitMix64 source)
 		{
 			_state = source._state;
-			return this;
 		}
 
-		public SplitMix64 CopyState(ulong state)
+		public override byte[] SaveState()
+		{
+			var stateArray = new byte[sizeof(ulong)];
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var writer = new System.IO.BinaryWriter(stream))
+				{
+					SaveState(writer, _state);
+				}
+			}
+			return stateArray;
+		}
+
+		public void SaveState(out ulong state)
+		{
+			state = _state;
+		}
+
+		public override void RestoreState(byte[] stateArray)
+		{
+			ulong state;
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				using (var reader = new System.IO.BinaryReader(stream))
+				{
+					RestoreState(reader, out state);
+				}
+			}
+			RestoreState(state);
+		}
+
+		public void RestoreState(ulong state)
 		{
 			_state = state;
-			return this;
 		}
 
 		public override void Seed(RandomStateGenerator stateGenerator)
