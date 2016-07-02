@@ -80,19 +80,19 @@ namespace Experilous.Randomization
 		public abstract uint Next32();
 		public abstract ulong Next64();
 
-		public uint Next32(int bitCount)
+		public virtual uint Next32(int bitCount)
 		{
 			if (bitCount == 0) return 0U;
 			return Next32() >> (32 - bitCount);
 		}
 
-		public ulong Next64(int bitCount)
+		public virtual ulong Next64(int bitCount)
 		{
 			if (bitCount == 0) return 0UL;
 			return Next64() >> (64 - bitCount);
 		}
 
-		public uint NextLessThan(uint upperBound)
+		public virtual uint NextLessThan(uint upperBound)
 		{
 			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			var bitsNeeded = MathUtility.Log2Ceil(upperBound);
@@ -105,7 +105,7 @@ namespace Experilous.Randomization
 			return random;
 		}
 
-		public uint NextLessThanOrEqual(uint upperBound)
+		public virtual uint NextLessThanOrEqual(uint upperBound)
 		{
 			var bitsNeeded = MathUtility.Plus1Log2Ceil(upperBound);
 			uint random;
@@ -117,7 +117,7 @@ namespace Experilous.Randomization
 			return random;
 		}
 
-		public ulong NextLessThan(ulong upperBound)
+		public virtual ulong NextLessThan(ulong upperBound)
 		{
 			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			var bitsNeeded = MathUtility.Log2Ceil(upperBound);
@@ -130,7 +130,7 @@ namespace Experilous.Randomization
 			return random;
 		}
 
-		public ulong NextLessThanOrEqual(ulong upperBound)
+		public virtual ulong NextLessThanOrEqual(ulong upperBound)
 		{
 			var bitsNeeded = MathUtility.Plus1Log2Ceil(upperBound);
 			ulong random;
