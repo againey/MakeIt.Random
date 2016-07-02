@@ -8,29 +8,14 @@ namespace Experilous.Randomization
 {
 	public static class RandomEnum
 	{
-		public static T PickValue<T>() where T : struct
-		{
-			return (T)System.Enum.GetValues(typeof(T)).RandomElement(DefaultRandomEngine.sharedInstance);
-		}
-
 		public static T PickValue<T>(IRandomEngine engine) where T : struct
 		{
 			return (T)System.Enum.GetValues(typeof(T)).RandomElement(engine);
 		}
 
-		public static T PickDistinctValue<T>() where T : struct
-		{
-			return BuildDistinctValuesArray<T>().RandomElement(DefaultRandomEngine.sharedInstance);
-		}
-
 		public static T PickDistinctValue<T>(IRandomEngine engine) where T : struct
 		{
 			return BuildDistinctValuesArray<T>().RandomElement(engine);
-		}
-
-		public static string PickName<T>() where T : struct
-		{
-			return System.Enum.GetNames(typeof(T)).RandomElement(DefaultRandomEngine.sharedInstance);
 		}
 
 		public static string PickName<T>(IRandomEngine engine) where T : struct

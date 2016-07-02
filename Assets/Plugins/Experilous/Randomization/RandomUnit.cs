@@ -8,19 +8,9 @@ namespace Experilous.Randomization
 	{
 		#region Open
 
-		public static float OpenFloat()
-		{
-			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)(DefaultRandomEngine.sharedInstance.NextLessThan(0x7FFFFFu) + 1U) << 29))) - 1.0f;
-		}
-
 		public static float OpenFloat(IRandomEngine engine)
 		{
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)(engine.NextLessThan(0x7FFFFFu) + 1U) << 29))) - 1.0f;
-		}
-
-		public static double OpenDouble()
-		{
-			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & (DefaultRandomEngine.sharedInstance.NextLessThan(0x000FFFFFFFFFFFFFUL) + 1UL))) - 1.0;
 		}
 
 		public static double OpenDouble(IRandomEngine engine)
@@ -32,19 +22,9 @@ namespace Experilous.Randomization
 
 		#region HalfOpen
 
-		public static float HalfOpenFloat()
-		{
-			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)DefaultRandomEngine.sharedInstance.Next32() << 29))) - 1.0f;
-		}
-
 		public static float HalfOpenFloat(IRandomEngine engine)
 		{
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)engine.Next32() << 29))) - 1.0f;
-		}
-
-		public static double HalfOpenDouble()
-		{
-			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & DefaultRandomEngine.sharedInstance.Next64())) - 1.0;
 		}
 
 		public static double HalfOpenDouble(IRandomEngine engine)
@@ -56,19 +36,9 @@ namespace Experilous.Randomization
 
 		#region HalfClosed
 
-		public static float HalfClosedFloat()
-		{
-			return 2.0f - (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)DefaultRandomEngine.sharedInstance.Next32() << 29)));
-		}
-
 		public static float HalfClosedFloat(IRandomEngine engine)
 		{
 			return 2.0f - (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)engine.Next32() << 29)));
-		}
-
-		public static double HalfClosedDouble()
-		{
-			return 2.0 - System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & DefaultRandomEngine.sharedInstance.Next64()));
 		}
 
 		public static double HalfClosedDouble(IRandomEngine engine)
@@ -80,22 +50,10 @@ namespace Experilous.Randomization
 
 		#region Closed
 
-		public static float ClosedFloat()
-		{
-			var random = DefaultRandomEngine.sharedInstance.NextLessThanOrEqual(0x00800000U);
-			return (random != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random << 29))) - 1.0f : 1.0f;
-		}
-
 		public static float ClosedFloat(IRandomEngine engine)
 		{
 			var random = engine.NextLessThanOrEqual(0x00800000U);
 			return (random != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random << 29))) - 1.0f : 1.0f;
-		}
-
-		public static double ClosedDouble()
-		{
-			var random = DefaultRandomEngine.sharedInstance.NextLessThanOrEqual(0x0010000000000000UL);
-			return (random != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & random)) - 1.0 : 1.0;
 		}
 
 		public static double ClosedDouble(IRandomEngine engine)

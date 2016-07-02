@@ -8,19 +8,9 @@ namespace Experilous.Randomization
 	{
 		#region Uniform
 
-		public static int Uniform(int length)
-		{
-			return RandomRange.HalfOpen(length, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Uniform(int length, IRandomEngine engine)
 		{
 			return RandomRange.HalfOpen(length, engine);
-		}
-
-		public static uint Uniform(uint length)
-		{
-			return RandomRange.HalfOpen(length, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static uint Uniform(uint length, IRandomEngine engine)
@@ -28,19 +18,9 @@ namespace Experilous.Randomization
 			return RandomRange.HalfOpen(length, engine);
 		}
 
-		public static int Uniform<T>(T[] array)
-		{
-			return RandomRange.HalfOpen(array.Length, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Uniform<T>(T[] array, IRandomEngine engine)
 		{
 			return RandomRange.HalfOpen(array.Length, engine);
-		}
-
-		public static int Uniform(System.Collections.IList list)
-		{
-			return RandomRange.HalfOpen(list.Count, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Uniform(System.Collections.IList list, IRandomEngine engine)
@@ -48,29 +28,14 @@ namespace Experilous.Randomization
 			return RandomRange.HalfOpen(list.Count, engine);
 		}
 
-		public static int Uniform(System.Collections.ArrayList list)
-		{
-			return RandomRange.HalfOpen(list.Count, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Uniform(System.Collections.ArrayList list, IRandomEngine engine)
 		{
 			return RandomRange.HalfOpen(list.Count, engine);
 		}
 
-		public static int Uniform<T>(System.Collections.Generic.IList<T> list)
-		{
-			return RandomRange.HalfOpen(list.Count, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Uniform<T>(System.Collections.Generic.IList<T> list, IRandomEngine engine)
 		{
 			return RandomRange.HalfOpen(list.Count, engine);
-		}
-
-		public static int Uniform<T>(System.Collections.Generic.List<T> list)
-		{
-			return RandomRange.HalfOpen(list.Count, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Uniform<T>(System.Collections.Generic.List<T> list, IRandomEngine engine)
@@ -82,19 +47,9 @@ namespace Experilous.Randomization
 
 		#region RandomElement (extensions)
 
-		public static T RandomElement<T>(this T[] array)
-		{
-			return array[Uniform(array, DefaultRandomEngine.sharedInstance)];
-		}
-
 		public static T RandomElement<T>(this T[] array, IRandomEngine engine)
 		{
 			return array[Uniform(array, engine)];
-		}
-
-		public static object RandomElement(this System.Collections.IList list)
-		{
-			return list[Uniform(list, DefaultRandomEngine.sharedInstance)];
 		}
 
 		public static object RandomElement(this System.Collections.IList list, IRandomEngine engine)
@@ -102,29 +57,14 @@ namespace Experilous.Randomization
 			return list[Uniform(list, engine)];
 		}
 
-		public static object RandomElement(this System.Collections.ArrayList list)
-		{
-			return list[Uniform(list, DefaultRandomEngine.sharedInstance)];
-		}
-
 		public static object RandomElement(this System.Collections.ArrayList list, IRandomEngine engine)
 		{
 			return list[Uniform(list, engine)];
 		}
 
-		public static T RandomElement<T>(this System.Collections.Generic.IList<T> list)
-		{
-			return list[Uniform(list, DefaultRandomEngine.sharedInstance)];
-		}
-
 		public static T RandomElement<T>(this System.Collections.Generic.IList<T> list, IRandomEngine engine)
 		{
 			return list[Uniform(list, engine)];
-		}
-
-		public static T RandomElement<T>(this System.Collections.Generic.List<T> list)
-		{
-			return list[Uniform(list, DefaultRandomEngine.sharedInstance)];
 		}
 
 		public static T RandomElement<T>(this System.Collections.Generic.List<T> list, IRandomEngine engine)
@@ -136,11 +76,6 @@ namespace Experilous.Randomization
 
 		#region Weighted
 
-		public static int Weighted(int[] weights)
-		{
-			return Weighted(weights, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Weighted(int[] weights, IRandomEngine engine)
 		{
 			int weightSum = 0;
@@ -149,11 +84,6 @@ namespace Experilous.Randomization
 				weightSum += weight;
 			}
 			return Weighted(weights, weightSum, engine);
-		}
-
-		public static int Weighted(int[] weights, int weightSum)
-		{
-			return Weighted(weights, weightSum, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Weighted(int[] weights, int weightSum, IRandomEngine engine)
@@ -171,11 +101,6 @@ namespace Experilous.Randomization
 			return index;
 		}
 
-		public static int Weighted(uint[] weights)
-		{
-			return Weighted(weights, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Weighted(uint[] weights, IRandomEngine engine)
 		{
 			uint weightSum = 0;
@@ -184,11 +109,6 @@ namespace Experilous.Randomization
 				weightSum += weight;
 			}
 			return Weighted(weights, weightSum, engine);
-		}
-
-		public static int Weighted(uint[] weights, uint weightSum)
-		{
-			return Weighted(weights, weightSum, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Weighted(uint[] weights, uint weightSum, IRandomEngine engine)
@@ -206,11 +126,6 @@ namespace Experilous.Randomization
 			return index;
 		}
 
-		public static int Weighted(float[] weights)
-		{
-			return Weighted(weights, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Weighted(float[] weights, IRandomEngine engine)
 		{
 			float weightSum = 0;
@@ -219,11 +134,6 @@ namespace Experilous.Randomization
 				weightSum += weight;
 			}
 			return Weighted(weights, weightSum, engine);
-		}
-
-		public static int Weighted(float[] weights, float weightSum)
-		{
-			return Weighted(weights, weightSum, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Weighted(float[] weights, float weightSum, IRandomEngine engine)
@@ -241,11 +151,6 @@ namespace Experilous.Randomization
 			return index;
 		}
 
-		public static int Weighted(double[] weights)
-		{
-			return Weighted(weights, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Weighted(double[] weights, IRandomEngine engine)
 		{
 			double weightSum = 0;
@@ -254,11 +159,6 @@ namespace Experilous.Randomization
 				weightSum += weight;
 			}
 			return Weighted(weights, weightSum, engine);
-		}
-
-		public static int Weighted(double[] weights, double weightSum)
-		{
-			return Weighted(weights, weightSum, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Weighted(double[] weights, double weightSum, IRandomEngine engine)

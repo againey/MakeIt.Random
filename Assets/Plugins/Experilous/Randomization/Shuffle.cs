@@ -10,11 +10,6 @@ namespace Experilous.Randomization
 	{
 		#region Public Interface
 
-		public static IList<T> InPlace<T>(IList<T> list)
-		{
-			return InPlace(list, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static IList<T> InPlace<T>(IList<T> list, IRandomEngine engine)
 		{
 			T[] array = list as T[];
@@ -27,11 +22,6 @@ namespace Experilous.Randomization
 				Knuth_ShuffleList(list, engine);
 			}
 			return list;
-		}
-
-		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target)
-		{
-			return Into(source, target, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target, IRandomEngine engine)
@@ -169,11 +159,6 @@ namespace Experilous.Randomization
 	{
 		#region Public Interface
 
-		public static IList<T> InPlace<T>(IList<T> list)
-		{
-			return InPlace(list, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static IList<T> InPlace<T>(IList<T> list, IRandomEngine engine)
 		{
 			T[] array = list as T[];
@@ -186,11 +171,6 @@ namespace Experilous.Randomization
 				Sattolo_ShuffleList(list, engine);
 			}
 			return list;
-		}
-
-		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target)
-		{
-			return Into(source, target, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static IList<T> Into<T>(IEnumerable<T> source, IList<T> target, IRandomEngine engine)
@@ -306,19 +286,9 @@ namespace Experilous.Randomization
 
 	public static class ShuffleExtensions
 	{
-		public static IList<T> Shuffle<T>(this IList<T> list)
-		{
-			return Randomization.Shuffle.InPlace(list, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static IList<T> Shuffle<T>(this IList<T> list, IRandomEngine engine)
 		{
 			return Randomization.Shuffle.InPlace(list, engine);
-		}
-
-		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target)
-		{
-			return Randomization.Shuffle.Into(source, target, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, IRandomEngine engine)
@@ -326,19 +296,9 @@ namespace Experilous.Randomization
 			return Randomization.Shuffle.Into(source, target, engine);
 		}
 
-		public static IList<T> ShuffleCyclic<T>(this IList<T> list)
-		{
-			return Randomization.ShuffleCyclic.InPlace(list, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static IList<T> ShuffleCyclic<T>(this IList<T> list, IRandomEngine engine)
 		{
 			return Randomization.ShuffleCyclic.InPlace(list, engine);
-		}
-
-		public static IList<T> ShuffleCyclicInto<T>(this IEnumerable<T> source, IList<T> target)
-		{
-			return Randomization.ShuffleCyclic.Into(source, target, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static IList<T> ShuffleCyclicInto<T>(this IEnumerable<T> source, IList<T> target, IRandomEngine engine)

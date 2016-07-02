@@ -6,19 +6,9 @@ namespace Experilous.Randomization
 {
 	public static class Dice
 	{
-		public static int Roll(int sides)
-		{
-			return Roll(sides, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int Roll(int sides, IRandomEngine engine)
 		{
 			return (int)engine.NextLessThan((uint)sides) + 1;
-		}
-
-		public static int Roll(int quantity, int sides)
-		{
-			return Roll(quantity, sides, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int Roll(int quantity, int sides, IRandomEngine engine)
@@ -29,11 +19,6 @@ namespace Experilous.Randomization
 				sum += engine.NextLessThan((uint)sides) + 1;
 			}
 			return (int)sum;
-		}
-
-		public static int RollKeepHighest(int quantity, int sides, int keepQuantity)
-		{
-			return RollKeepHighest(quantity, sides, keepQuantity, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int RollKeepHighest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
@@ -52,11 +37,6 @@ namespace Experilous.Randomization
 			return (int)sum + keepQuantity;
 		}
 
-		public static int RollKeepLowest(int quantity, int sides, int keepQuantity)
-		{
-			return RollKeepLowest(quantity, sides, keepQuantity, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int RollKeepLowest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
 		{
 			var rolls = new uint[quantity];
@@ -73,19 +53,9 @@ namespace Experilous.Randomization
 			return (int)sum + keepQuantity;
 		}
 
-		public static int RollDropHighest(int quantity, int sides, int dropQuantity)
-		{
-			return RollDropHighest(quantity, sides, dropQuantity, DefaultRandomEngine.sharedInstance);
-		}
-
 		public static int RollDropHighest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
 		{
 			return RollKeepLowest(quantity, sides, quantity - dropQuantity, engine);
-		}
-
-		public static int RollDropLowest(int quantity, int sides, int dropQuantity)
-		{
-			return RollDropLowest(quantity, sides, dropQuantity, DefaultRandomEngine.sharedInstance);
 		}
 
 		public static int RollDropLowest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
@@ -113,11 +83,6 @@ namespace Experilous.Randomization
 		/// </remarks>
 		private static System.Text.RegularExpressions.Regex _diceNotationRegex = new System.Text.RegularExpressions.Regex(
 			@"\A(?<quantity>[1-9][0-9]*)?(?:d|D)(?<sides>[1-9][0-9]*)(?:\s*(?<keepDrop>k|K|d|D|\-)(?<keepDropQuantity>[1-9][0-9]*)?(?<keepDropWhat>h|H|l|L))?(?:\s*(?<mulDiv>\*|x|/)\s*(?<mulDivAmount>[1-9][0-9]*))?(?:\s*(?<addSub>\+|\-)\s*(?<addSubAmount>[1-9][0-9]*))?\z");
-
-		public static int Roll(string dNotation)
-		{
-			return Roll(dNotation, DefaultRandomEngine.sharedInstance);
-		}
 
 		public static int Roll(string dNotation, IRandomEngine engine)
 		{
@@ -401,19 +366,9 @@ namespace Experilous.Randomization
 			throw new System.ArgumentException();
 		}
 
-		public static int D4()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(4) + 1;
-		}
-
 		public static int D4(IRandomEngine engine)
 		{
 			return (int)engine.NextLessThan(4) + 1;
-		}
-
-		public static int D6()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(6) + 1;
 		}
 
 		public static int D6(IRandomEngine engine)
@@ -421,19 +376,9 @@ namespace Experilous.Randomization
 			return (int)engine.NextLessThan(6) + 1;
 		}
 
-		public static int D8()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(8) + 1;
-		}
-
 		public static int D8(IRandomEngine engine)
 		{
 			return (int)engine.NextLessThan(8) + 1;
-		}
-
-		public static int D10()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(10) + 1;
 		}
 
 		public static int D10(IRandomEngine engine)
@@ -441,19 +386,9 @@ namespace Experilous.Randomization
 			return (int)engine.NextLessThan(10) + 1;
 		}
 
-		public static int D12()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(12) + 1;
-		}
-
 		public static int D12(IRandomEngine engine)
 		{
 			return (int)engine.NextLessThan(12) + 1;
-		}
-
-		public static int D20()
-		{
-			return (int)DefaultRandomEngine.sharedInstance.NextLessThan(20) + 1;
 		}
 
 		public static int D20(IRandomEngine engine)
