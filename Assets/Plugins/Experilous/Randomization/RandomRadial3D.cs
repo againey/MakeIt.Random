@@ -11,9 +11,9 @@ namespace Experilous.Randomization
 		public static Vector3 UnitVector(IRandomEngine engine)
 		{
 			var longitude = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
-			var latitude = Mathf.Acos(RandomRange.HalfOpen(-1f, +1f, engine));
-			var cosineLatitude = Mathf.Cos(latitude);
-			return new Vector3(Mathf.Cos(longitude) * cosineLatitude, Mathf.Sin(latitude), Mathf.Sin(longitude) * cosineLatitude);
+			var z = RandomRange.Closed(-1f, +1f, engine);
+			var invertedZ = Mathf.Sqrt(1f - z * z);
+			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 		}
 
 		public static Vector3 ScaledVector(float radius, IRandomEngine engine)
@@ -38,8 +38,9 @@ namespace Experilous.Randomization
 		public static Vector3 PointWithinOpenSphericalShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Pow(RandomUnit.OpenFloat(engine) * unitRange + unitMin, 1f / 3f) * outerRadius;
+			var unitMinPow3 = unitMin * unitMin * unitMin;
+			var unitRange = 1f - unitMinPow3;
+			var distance = Mathf.Pow(RandomUnit.OpenFloat(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -62,8 +63,9 @@ namespace Experilous.Randomization
 		public static Vector3 PointWithinHalfOpenSphericalShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Pow(RandomUnit.HalfOpenFloat(engine) * unitRange + unitMin, 1f / 3f) * outerRadius;
+			var unitMinPow3 = unitMin * unitMin * unitMin;
+			var unitRange = 1f - unitMinPow3;
+			var distance = Mathf.Pow(RandomUnit.HalfOpenFloat(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -86,8 +88,9 @@ namespace Experilous.Randomization
 		public static Vector3 PointWithinHalfClosedSphericalShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Pow(RandomUnit.HalfClosedFloat(engine) * unitRange + unitMin, 1f / 3f) * outerRadius;
+			var unitMinPow3 = unitMin * unitMin * unitMin;
+			var unitRange = 1f - unitMinPow3;
+			var distance = Mathf.Pow(RandomUnit.HalfClosedFloat(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -110,8 +113,9 @@ namespace Experilous.Randomization
 		public static Vector3 PointWithinClosedSphericalShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Pow(RandomUnit.ClosedFloat(engine) * unitRange + unitMin, 1f / 3f) * outerRadius;
+			var unitMinPow3 = unitMin * unitMin * unitMin;
+			var unitRange = 1f - unitMinPow3;
+			var distance = Mathf.Pow(RandomUnit.ClosedFloat(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 

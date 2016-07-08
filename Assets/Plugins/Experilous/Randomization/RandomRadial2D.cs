@@ -36,8 +36,9 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinOpenCircularShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Sqrt(RandomUnit.OpenFloat(engine) * unitRange + unitMin) * outerRadius;
+			var unitMinSquared = unitMin * unitMin;
+			var unitRange = 1f - unitMinSquared;
+			var distance = Mathf.Sqrt(RandomUnit.OpenFloat(engine) * unitRange + unitMinSquared) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -60,8 +61,9 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinHalfOpenCircularShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Sqrt(RandomUnit.HalfOpenFloat(engine) * unitRange + unitMin) * outerRadius;
+			var unitMinSquared = unitMin * unitMin;
+			var unitRange = 1f - unitMinSquared;
+			var distance = Mathf.Sqrt(RandomUnit.HalfOpenFloat(engine) * unitRange + unitMinSquared) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -84,8 +86,9 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinHalfClosedCircularShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Sqrt(RandomUnit.HalfClosedFloat(engine) * unitRange + unitMin) * outerRadius;
+			var unitMinSquared = unitMin * unitMin;
+			var unitRange = 1f - unitMinSquared;
+			var distance = Mathf.Sqrt(RandomUnit.HalfClosedFloat(engine) * unitRange + unitMinSquared) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 
@@ -108,8 +111,9 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinClosedCircularShell(float innerRadius, float outerRadius, IRandomEngine engine)
 		{
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Sqrt(RandomUnit.ClosedFloat(engine) * unitRange + unitMin) * outerRadius;
+			var unitMinSquared = unitMin * unitMin;
+			var unitRange = 1f - unitMinSquared;
+			var distance = Mathf.Sqrt(RandomUnit.ClosedFloat(engine) * unitRange + unitMinSquared) * outerRadius;
 			return ScaledVector(distance, engine);
 		}
 

@@ -30,6 +30,13 @@ namespace Experilous.Randomization
 			return RandomUnit.OpenFloat(engine) * axis0 + RandomUnit.OpenFloat(engine) * axis1;
 		}
 
+		public static Vector2 PointWithinOpenTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			float u = Mathf.Sqrt(RandomUnit.OpenFloat(engine));
+			float v = RandomRange.Open(u, engine);
+			return (1f - u) * axis0 + v * axis1;
+		}
+
 		#endregion
 
 		#region HalfOpen
@@ -52,6 +59,13 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinHalfOpenParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
 		{
 			return RandomUnit.HalfOpenFloat(engine) * axis0 + RandomUnit.HalfOpenFloat(engine) * axis1;
+		}
+
+		public static Vector2 PointWithinHalfOpenTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			float u = Mathf.Sqrt(RandomUnit.HalfOpenFloat(engine));
+			float v = RandomRange.HalfOpen(u, engine);
+			return (1f - u) * axis0 + v * axis1;
 		}
 
 		#endregion
@@ -78,6 +92,13 @@ namespace Experilous.Randomization
 			return RandomUnit.HalfClosedFloat(engine) * axis0 + RandomUnit.HalfClosedFloat(engine) * axis1;
 		}
 
+		public static Vector2 PointWithinHalfClosedTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			float u = Mathf.Sqrt(RandomUnit.HalfClosedFloat(engine));
+			float v = RandomRange.HalfClosed(u, engine);
+			return (1f - u) * axis0 + v * axis1;
+		}
+
 		#endregion
 
 		#region Closed
@@ -100,6 +121,13 @@ namespace Experilous.Randomization
 		public static Vector2 PointWithinClosedParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
 		{
 			return RandomUnit.ClosedFloat(engine) * axis0 + RandomUnit.ClosedFloat(engine) * axis1;
+		}
+
+		public static Vector2 PointWithinClosedTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		{
+			float u = Mathf.Sqrt(RandomUnit.ClosedFloat(engine));
+			float v = RandomRange.Closed(u, engine);
+			return (1f - u) * axis0 + v * axis1;
 		}
 
 		#endregion
