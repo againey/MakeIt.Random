@@ -582,7 +582,7 @@ namespace Experilous.Randomization
 		public static ColorHCY HCY(float a, IRandomEngine engine)
 		{
 			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaLuma = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, ColorHCY.LumaAtMaxChroma(hue)), new Vector2(0f, 1f), engine);
+			Vector2 chromaLuma = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f), engine);
 			return new ColorHCY(hue, chromaLuma.x, chromaLuma.y, a);
 		}
 
@@ -593,32 +593,36 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeHue(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, hcy.y, hcy.a);
+			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, hcy.y, hcy.a));
 		}
 
 		public static ColorHCY ChangeHue(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, hcy.y, hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, hcy.y, hcy.a));
 		}
 
 		public static ColorHCY ChangeChroma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, RandomUnit.ClosedFloat(engine), hcy.y, hcy.a);
+			return new ColorHCY(hcy.h, RandomRange.Closed(ColorHCY.GetMaxChroma(hcy.h, hcy.y), engine), hcy.y, hcy.a);
 		}
 
 		public static ColorHCY ChangeChroma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, engine), hcy.y, hcy.a);
+			return new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, 0f, ColorHCY.GetMaxChroma(hcy.h, hcy.y), engine), hcy.y, hcy.a);
 		}
 
 		public static ColorHCY ChangeLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, hcy.c, RandomUnit.ClosedFloat(engine), hcy.a);
+			float yMin, yMax;
+			ColorHCY.GetMinMaxLuma(hcy.h, hcy.c, out yMin, out yMax);
+			return new ColorHCY(hcy.h, hcy.c, RandomRange.Closed(yMin, yMax, engine), hcy.a);
 		}
 
 		public static ColorHCY ChangeLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, hcy.c, ChangeClamped(hcy.y, maxChange, engine), hcy.a);
+			float yMin, yMax;
+			ColorHCY.GetMinMaxLuma(hcy.h, hcy.c, out yMin, out yMax);
+			return new ColorHCY(hcy.h, hcy.c, ChangeClamped(hcy.y, maxChange, yMin, yMax, engine), hcy.a);
 		}
 
 		public static ColorHCY ChangeAlpha(ColorHCY hcy, IRandomEngine engine)
@@ -633,82 +637,98 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeHueChroma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.y, hcy.a);
+			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.y, hcy.a));
 		}
 
 		public static ColorHCY ChangeHueChroma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), hcy.y, hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), hcy.y, hcy.a));
 		}
 
 		public static ColorHCY ChangeHueChroma(ColorHCY hcy, float maxHueChange, float maxChromaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), hcy.y, hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), hcy.y, hcy.a));
 		}
 
 		public static ColorHCY ChangeHueLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, RandomUnit.ClosedFloat(engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, RandomUnit.ClosedFloat(engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeHueLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, ChangeClamped(hcy.y, maxChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, ChangeClamped(hcy.y, maxChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeHueLuma(ColorHCY hcy, float maxHueChange, float maxLumaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), hcy.c, ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), hcy.c, ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(hcy.h, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, float maxChromaChange, float maxLumaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a);
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
 		}
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, IRandomEngine engine)
 		{
-			return new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine)));
 		}
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, float maxChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxChange, engine));
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxChange, engine)));
 		}
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, float maxChange, float maxAlphaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine));
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine)));
 		}
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange, float maxAlphaChange, IRandomEngine engine)
 		{
-			return new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine));
+			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine)));
+		}
+
+		private static ColorHCY Change(ColorHCY hcy, System.Func<ColorHCY> generator)
+		{
+			int maxIterations = hcy.canConvertToRGB ? 100 : 5; // If the input color already can't convert to RGB, then there's no guarantee that the generator will produce a convertible color, so be much more eager to give up in that case.
+			int iterations = 0;
+
+			ColorHCY hcyRandom;
+			do
+			{
+				hcyRandom = generator();
+				++iterations;
+			}
+			while (!hcyRandom.canConvertToRGB && iterations < maxIterations);
+
+			return hcyRandom;
 		}
 
 		#endregion
@@ -718,6 +738,11 @@ namespace Experilous.Randomization
 		private static float ChangeClamped(float original, float maxChange, IRandomEngine engine)
 		{
 			return RandomRange.Closed(Mathf.Max(0f, original - maxChange), Mathf.Min(original + maxChange, 1f), engine);
+		}
+
+		private static float ChangeClamped(float original, float maxChange, float min, float max, IRandomEngine engine)
+		{
+			return RandomRange.Closed(Mathf.Max(min, original - maxChange), Mathf.Min(original + maxChange, max), engine);
 		}
 
 		private static float ChangeRepeated(float original, float maxChange, IRandomEngine engine)
