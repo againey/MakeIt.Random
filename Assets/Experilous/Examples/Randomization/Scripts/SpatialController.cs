@@ -41,7 +41,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial2D.UnitVector(_random);
+				pointObject.position = RandomVector.UnitVector2(_random);
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial2D.PointWithinClosedCircle(_random);
+				pointObject.position = RandomVector.PointWithinCircle(_random);
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial2D.PointWithinClosedCircularShell(1f - narrowShellThickness, 1f, _random);
+				pointObject.position = RandomVector.PointWithinCircularShell(1f - narrowShellThickness, 1f, _random);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial2D.PointWithinClosedCircularShell(1f - wideShellThickness, 1f, _random);
+				pointObject.position = RandomVector.PointWithinCircularShell(1f - wideShellThickness, 1f, _random);
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial3D.UnitVector(_random);
+				pointObject.position = RandomVector.UnitVector3(_random);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial3D.PointWithinClosedSphere(_random);
+				pointObject.position = RandomVector.PointWithinSphere(_random);
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial3D.PointWithinClosedSphericalShell(1f - narrowShellThickness, 1f, _random);
+				pointObject.position = RandomVector.PointWithinSphericalShell(1f - narrowShellThickness, 1f, _random);
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRadial3D.PointWithinClosedSphericalShell(1f - wideShellThickness, 1f, _random);
+				pointObject.position = RandomVector.PointWithinSphericalShell(1f - wideShellThickness, 1f, _random);
 			}
 		}
 
@@ -105,7 +105,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRange2D.PointWithinClosedSquare(2f, _random) - Vector2.one;
+				pointObject.position = RandomVector.PointWithinSquare(2f, _random) - Vector2.one;
 			}
 		}
 
@@ -114,36 +114,36 @@ namespace Experilous.Examples.Randomization
 			Vector2 size = new Vector2(RandomRange.Closed(1f, 2f, _random), RandomRange.Closed(1f, 2f, _random));
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRange2D.PointWithinClosedRectangle(size, _random) - size * 0.5f;
+				pointObject.position = RandomVector.PointWithinRectangle(size, _random) - size * 0.5f;
 			}
 		}
 
 		public void PositionWithinParallelogram()
 		{
-			Vector2 axis0 = RandomRadial2D.UnitVector(_random);
-			Vector2 axis1 = RandomRadial2D.UnitVector(_random);
+			Vector2 axis0 = RandomVector.UnitVector2(_random);
+			Vector2 axis1 = RandomVector.UnitVector2(_random);
 			float dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			while (dot < 0.4f || dot > 0.8f)
 			{
-				axis1 = RandomRadial2D.UnitVector(_random);
+				axis1 = RandomVector.UnitVector2(_random);
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
 			axis0 *= RandomRange.Closed(1f, 2f, _random);
 			axis1 *= RandomRange.Closed(1f, 2f, _random);
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRange2D.PointWithinClosedParallelogram(axis0, axis1, _random) - (axis0 + axis1) * 0.5f;
+				pointObject.position = RandomVector.PointWithinParallelogram(axis0, axis1, _random) - (axis0 + axis1) * 0.5f;
 			}
 		}
 
 		public void PositionWithinTriangle()
 		{
-			Vector2 axis0 = RandomRadial2D.UnitVector(_random);
-			Vector2 axis1 = RandomRadial2D.UnitVector(_random);
+			Vector2 axis0 = RandomVector.UnitVector2(_random);
+			Vector2 axis1 = RandomVector.UnitVector2(_random);
 			float dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			while (dot < 0.4f || dot > 0.8f)
 			{
-				axis1 = RandomRadial2D.UnitVector(_random);
+				axis1 = RandomVector.UnitVector2(_random);
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
 			axis0 *= RandomRange.Closed(1f, 2f, _random);
@@ -151,7 +151,7 @@ namespace Experilous.Examples.Randomization
 			Vector2 offset = (axis0 + axis1) / 3f;
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomRange2D.PointWithinClosedTriangle(axis0, axis1, _random) - offset;
+				pointObject.position = RandomVector.PointWithinTriangle(axis0, axis1, _random) - offset;
 			}
 		}
 	}

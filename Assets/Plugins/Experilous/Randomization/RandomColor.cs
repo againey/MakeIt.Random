@@ -254,7 +254,7 @@ namespace Experilous.Randomization
 		public static ColorHSV HSV(float a, IRandomEngine engine)
 		{
 			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaValue = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, 1f), new Vector2(0f, 1f), engine);
+			Vector2 chromaValue = RandomVector.PointWithinTriangle(new Vector2(1f, 1f), new Vector2(0f, 1f), engine);
 			if (chromaValue.y > 0f)
 			{
 				float saturation = chromaValue.x / chromaValue.y;
@@ -418,7 +418,7 @@ namespace Experilous.Randomization
 		public static ColorHSL HSL(float a, IRandomEngine engine)
 		{
 			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaLightness = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, 0.5f), new Vector2(0f, 1f), engine);
+			Vector2 chromaLightness = RandomVector.PointWithinTriangle(new Vector2(1f, 0.5f), new Vector2(0f, 1f), engine);
 			if (chromaLightness.y > 0f && chromaLightness.y < 1f)
 			{
 				float saturation = chromaLightness.x / (1f - Mathf.Abs(2f * chromaLightness.y - 1f));
@@ -582,7 +582,7 @@ namespace Experilous.Randomization
 		public static ColorHCY HCY(float a, IRandomEngine engine)
 		{
 			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaLuma = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f), engine);
+			Vector2 chromaLuma = RandomVector.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f), engine);
 			return new ColorHCY(hue, chromaLuma.x, chromaLuma.y, a);
 		}
 
@@ -667,7 +667,7 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			Vector2 chromaLuma = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hcy.h)), new Vector2(0f, 1f), engine);
+			Vector2 chromaLuma = RandomVector.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hcy.h)), new Vector2(0f, 1f), engine);
 			return new ColorHCY(hcy.h, chromaLuma.x, chromaLuma.y, hcy.a);
 		}
 

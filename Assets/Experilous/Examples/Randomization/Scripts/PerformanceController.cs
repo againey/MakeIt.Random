@@ -1145,25 +1145,25 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
 
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
 
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
 
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
-				_generatedFloat = RandomRadial2D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
+				_generatedFloat = RandomVector.UnitVector2(random).x;
 			}
 		}
 
@@ -1172,25 +1172,25 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
 
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
 
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
 
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
-				_generatedFloat = RandomRadial3D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
+				_generatedFloat = RandomVector.UnitVector3(random).x;
 			}
 		}
 
@@ -1199,25 +1199,25 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				/*_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
+				/*_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
 
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
 
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
 
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;
-				_generatedFloat = RandomRadial4D.UnitVector(random).x;*/
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;*/
 			}
 		}
 
@@ -1226,25 +1226,25 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
 
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
 
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
 
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
-				_generatedFloat = RandomRadial2D.PointWithinHalfOpenCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				_generatedFloat = RandomVector.PointWithinCircle(random).x;
 			}
 		}
 
@@ -1253,25 +1253,25 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
 
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
 
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
 
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
-				_generatedFloat = RandomRadial3D.PointWithinHalfOpenSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				_generatedFloat = RandomVector.PointWithinSphere(random).x;
 			}
 		}
 
