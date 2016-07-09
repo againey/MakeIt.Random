@@ -13,61 +13,61 @@ namespace Experilous.Randomization
 	/// <seealso cref="IRandomEngine"/>
 	/// <seealso cref="BaseRandomEngine"/>
 	/// <seealso cref="System.Random"/>
-	public sealed class NativeRandomEngine : BaseRandomEngine
+	public sealed class SystemRandomEngine : BaseRandomEngine
 	{
 		[SerializeField] private System.Random _random;
 		[SerializeField] private byte[] _buffer = new byte[4];
 
-		public static NativeRandomEngine Create()
+		public static SystemRandomEngine Create()
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.Seed();
 			return instance;
 		}
 
-		public static NativeRandomEngine Create(int seed)
+		public static SystemRandomEngine Create(int seed)
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static NativeRandomEngine Create(params int[] seed)
+		public static SystemRandomEngine Create(params int[] seed)
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static NativeRandomEngine Create(string seed)
+		public static SystemRandomEngine Create(string seed)
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static NativeRandomEngine Create(IRandomEngine seeder)
+		public static SystemRandomEngine Create(IRandomEngine seeder)
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.Seed(seeder);
 			return instance;
 		}
 
-		public static NativeRandomEngine CreateWithState(byte[] stateArray)
+		public static SystemRandomEngine CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
 
-		public NativeRandomEngine Clone()
+		public SystemRandomEngine Clone()
 		{
-			var instance = CreateInstance<NativeRandomEngine>();
+			var instance = CreateInstance<SystemRandomEngine>();
 			instance.CopyStateFrom(this);
 			return instance;
 		}
 
-		public void CopyStateFrom(NativeRandomEngine source)
+		public void CopyStateFrom(SystemRandomEngine source)
 		{
 			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 			using (var stream = new System.IO.MemoryStream())

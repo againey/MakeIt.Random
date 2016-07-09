@@ -354,7 +354,7 @@ namespace Experilous.Examples.Randomization
 				else if (generatorToggle == systemRandomToggle)
 				{
 					_currentGeneratorName = "System.Random";
-					random = NativeRandomEngine.Create();
+					random = SystemRandomEngine.Create();
 				}
 				else
 				{
