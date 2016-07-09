@@ -2,6 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+// Uncomment this if you want perfect uniformity at the expense of performance
+// in some cases, in particular the ClosedFloat() and ClosedDouble() functions.
+#define FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
+
 using System.Runtime.InteropServices;
 
 namespace Experilous.Randomization
@@ -36,32 +40,12 @@ namespace Experilous.Randomization
 			return value.number - 1f;
 		}
 
-		public static float OpenFloatFast32(IRandomEngine engine)
-		{
-			return (float)((engine.Next32() & 0x7FFFFFFFU) + 1U) / 0x80000081U;
-		}
-
-		public static float OpenFloatFast64(IRandomEngine engine)
-		{
-			return (float)((engine.Next64() & 0x7FFFFFFFUL) + 1UL) / 0x80000081UL;
-		}
-
 		public static double OpenDouble(IRandomEngine engine)
 		{
 			BitwiseDouble value;
 			value.number = 0.0;
 			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & (engine.NextLessThan(0x000FFFFFFFFFFFFFUL) + 1UL);
 			return value.number - 1.0;
-		}
-
-		public static double OpenDoubleFast32(IRandomEngine engine)
-		{
-			return (double)((engine.Next32() & 0x7FFFFFFFUL) + 1UL) / 0x80000001UL;
-		}
-
-		public static double OpenDoubleFast64(IRandomEngine engine)
-		{
-			return (double)((engine.Next64() & 0x7FFFFFFFFFFFFFFFUL) + 1UL) / 0x8000000000000401UL;
 		}
 
 		#endregion
@@ -110,42 +94,58 @@ namespace Experilous.Randomization
 
 		public static float ClosedFloat(IRandomEngine engine)
 		{
-			var random = engine.NextLessThanOrEqual(0x00800000U);
-			if (random == 0x00800000U) return 1f;
+#if FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
+			return ClosedFloatFast(engine);
+#else
+			return ClosedFloatPerfect(engine);
+#endif
+		}
+
+		public static float ClosedFloatFast(IRandomEngine engine)
+		{
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & random;
+			uint random = engine.Next32() & 0x00FFFFFFU; // Generate within a range that is nearly double what we need.
+			random = (random + 1U) >> 1; // Offset and divide in half such that the min and max values have half the probability of the other values.
+			value.bits = 0x3F800000U + random;
 			return value.number - 1f;
 		}
 
-		public static float ClosedFloatFast32(IRandomEngine engine)
+		public static float ClosedFloatPerfect(IRandomEngine engine)
 		{
-			return (float)engine.Next32() / uint.MaxValue;
-		}
-
-		public static float ClosedFloatFast64(IRandomEngine engine)
-		{
-			return (float)engine.Next64() / ulong.MaxValue;
+			BitwiseFloat value;
+			value.number = 0f;
+			uint random = engine.NextLessThanOrEqual(0x00800000U);
+			value.bits = 0x3F800000U + random;
+			return value.number - 1f;
 		}
 
 		public static double ClosedDouble(IRandomEngine engine)
 		{
-			var random = engine.NextLessThanOrEqual(0x0010000000000000UL);
-			if (random == 0x0010000000000000UL) return 1.0;
+#if FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
+			return ClosedDoubleFast(engine);
+#else
+			return ClosedDoublePerfect(engine);
+#endif
+		}
+
+		public static double ClosedDoubleFast(IRandomEngine engine)
+		{
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random;
+			ulong random = engine.Next64() & 0x001FFFFFFFFFFFFFUL; // Generate within a range that is nearly double what we need.
+			random = (random + 1UL) >> 1; // Offset and divide in half such that the min and max values have half the probability of the other values.
+			value.bits = 0x3FF0000000000000UL + random;
 			return value.number - 1.0;
 		}
 
-		public static double ClosedDoubleFast32(IRandomEngine engine)
+		public static double ClosedDoublePerfect(IRandomEngine engine)
 		{
-			return (double)engine.Next32() / uint.MaxValue;
-		}
-
-		public static double ClosedDoubleFast64(IRandomEngine engine)
-		{
-			return (double)engine.Next64() / ulong.MaxValue;
+			BitwiseDouble value;
+			value.number = 0.0;
+			ulong random = engine.NextLessThanOrEqual(0x0010000000000000UL);
+			value.bits = 0x3FF0000000000000UL + random;
+			return value.number - 1.0;
 		}
 
 		#endregion
