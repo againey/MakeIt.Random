@@ -95,51 +95,55 @@ namespace Experilous.Randomization
 		public virtual uint NextLessThan(uint upperBound)
 		{
 			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
-			var bitsNeeded = MathUtility.Log2Ceil(upperBound);
+			uint scaledUpperBound = uint.MaxValue / upperBound * upperBound;
 			uint random;
 			do
 			{
-				random = Next32(bitsNeeded);
+				random = Next32();
 			}
-			while (random >= upperBound);
-			return random;
+			while (random >= scaledUpperBound);
+			return random % upperBound;
 		}
 
 		public virtual uint NextLessThanOrEqual(uint upperBound)
 		{
-			var bitsNeeded = MathUtility.Plus1Log2Ceil(upperBound);
+			if (upperBound == uint.MaxValue) return Next32();
+			upperBound += 1;
+			uint scaledUpperBound = uint.MaxValue / upperBound * upperBound;
 			uint random;
 			do
 			{
-				random = Next32(bitsNeeded);
+				random = Next32();
 			}
-			while (random > upperBound);
-			return random;
+			while (random >= scaledUpperBound);
+			return random % upperBound;
 		}
 
 		public virtual ulong NextLessThan(ulong upperBound)
 		{
 			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
-			var bitsNeeded = MathUtility.Log2Ceil(upperBound);
+			ulong scaledUpperBound = ulong.MaxValue / upperBound * upperBound;
 			ulong random;
 			do
 			{
-				random = Next64(bitsNeeded);
+				random = Next64();
 			}
-			while (random >= upperBound);
-			return random;
+			while (random >= scaledUpperBound);
+			return random % upperBound;
 		}
 
 		public virtual ulong NextLessThanOrEqual(ulong upperBound)
 		{
-			var bitsNeeded = MathUtility.Plus1Log2Ceil(upperBound);
+			if (upperBound == ulong.MaxValue) return Next64();
+			upperBound += 1;
+			ulong scaledUpperBound = ulong.MaxValue / upperBound * upperBound;
 			ulong random;
 			do
 			{
-				random = Next64(bitsNeeded);
+				random = Next64();
 			}
-			while (random > upperBound);
-			return random;
+			while (random >= scaledUpperBound);
+			return random % upperBound;
 		}
 
 		public virtual int skipAheadMagnitude { get { return 0; } }
