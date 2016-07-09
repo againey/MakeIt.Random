@@ -667,7 +667,8 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return Change(hcy, () => new ColorHCY(hcy.h, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a));
+			Vector2 chromaLuma = RandomRange2D.PointWithinClosedTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hcy.h)), new Vector2(0f, 1f), engine);
+			return new ColorHCY(hcy.h, chromaLuma.x, chromaLuma.y, hcy.a);
 		}
 
 		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
@@ -682,7 +683,7 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, IRandomEngine engine)
 		{
-			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.a));
+			return HCY(hcy.a, engine);
 		}
 
 		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
@@ -697,7 +698,7 @@ namespace Experilous.Randomization
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, IRandomEngine engine)
 		{
-			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine)));
+			return HCYA(engine);
 		}
 
 		public static ColorHCY ChangeAll(ColorHCY hcy, float maxChange, IRandomEngine engine)
