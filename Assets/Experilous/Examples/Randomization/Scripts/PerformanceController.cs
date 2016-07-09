@@ -1199,11 +1199,6 @@ namespace Experilous.Examples.Randomization
 			int unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				/*_generatedFloat = RandomVector.UnitVector4(random).x;
-				_generatedFloat = RandomVector.UnitVector4(random).x;
-				_generatedFloat = RandomVector.UnitVector4(random).x;
-				_generatedFloat = RandomVector.UnitVector4(random).x;
-
 				_generatedFloat = RandomVector.UnitVector4(random).x;
 				_generatedFloat = RandomVector.UnitVector4(random).x;
 				_generatedFloat = RandomVector.UnitVector4(random).x;
@@ -1217,7 +1212,12 @@ namespace Experilous.Examples.Randomization
 				_generatedFloat = RandomVector.UnitVector4(random).x;
 				_generatedFloat = RandomVector.UnitVector4(random).x;
 				_generatedFloat = RandomVector.UnitVector4(random).x;
-				_generatedFloat = RandomVector.UnitVector4(random).x;*/
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
+				_generatedFloat = RandomVector.UnitVector4(random).x;
 			}
 		}
 

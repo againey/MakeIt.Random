@@ -24,6 +24,20 @@ namespace Experilous.Randomization
 			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 		}
 
+		public static Vector4 UnitVector4(IRandomEngine engine)
+		{
+			var theta0 = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
+			var theta1 = Mathf.Acos(RandomRange.ClosedFast(-1f, +1f, engine));
+			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloatFast(engine)) + Mathf.PI * 0.5f);
+			var sinTheta1 = Mathf.Sin(theta1);
+			var sinTheta2 = Mathf.Sin(theta2);
+			return new Vector4(
+				Mathf.Sin(theta0) * sinTheta1 * sinTheta2,
+				Mathf.Cos(theta0) * sinTheta1 * sinTheta2,
+				Mathf.Cos(theta1) * sinTheta2,
+				Mathf.Cos(theta2));
+		}
+
 		#endregion
 
 		#region Scaled Vector
@@ -36,6 +50,11 @@ namespace Experilous.Randomization
 		public static Vector3 ScaledVector3(float radius, IRandomEngine engine)
 		{
 			return UnitVector3(engine) * radius;
+		}
+
+		public static Vector4 ScaledVector4(float radius, IRandomEngine engine)
+		{
+			return UnitVector4(engine) * radius;
 		}
 
 		#endregion
