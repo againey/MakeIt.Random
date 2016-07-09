@@ -263,7 +263,7 @@ namespace Experilous.Examples.Randomization
 			_currentOperationName = "";
 			_currentPerformanceMeasurement = 0.0;
 
-			Action<int> operation = null;
+			Action<long> operation = null;
 
 			if (useNativeCallsToggle.isOn)
 			{
@@ -271,7 +271,12 @@ namespace Experilous.Examples.Randomization
 				{
 					_currentGeneratorName = "UnityEngine.Random (native)";
 
-					if (operationToggle == floatClosedToggle)
+					if (operationToggle == uintLessThan6Toggle)
+					{
+						_currentOperationName = "Integer Less Than 6 (Random.Range(0, 6))";
+						operation = MeasurePerformance_UnityRandomUIntLessThan6;
+					}
+					else if (operationToggle == floatClosedToggle)
 					{
 						_currentOperationName = "Closed Unit Float (Random.value)";
 						operation = MeasurePerformance_UnityRandomFloatClosed;
@@ -305,19 +310,19 @@ namespace Experilous.Examples.Randomization
 					{
 						_currentOperationName = "31-bit Integer (Random.Next())";
 						System.Random systemRandom = new System.Random();
-						operation = (int iterations) => { MeasurePerformance_SystemRandomUInt31bit(systemRandom, iterations); };
+						operation = (long iterations) => { MeasurePerformance_SystemRandomUInt31bit(systemRandom, iterations); };
 					}
 					else if (operationToggle == uintLessThan6Toggle)
 					{
-						_currentOperationName = "Integer < 6 (Random.Next(max))";
+						_currentOperationName = "Integer Less Than 6 (Random.Next(6))";
 						System.Random systemRandom = new System.Random();
-						operation = (int iterations) => { MeasurePerformance_SystemRandomUIntLessThan6(systemRandom, iterations); };
+						operation = (long iterations) => { MeasurePerformance_SystemRandomUIntLessThan6(systemRandom, iterations); };
 					}
 					else if (operationToggle == doubleHalfOpenToggle)
 					{
 						_currentOperationName = "Half Open Unit Double (Random.NextDouble())";
 						System.Random systemRandom = new System.Random();
-						operation = (int iterations) => { MeasurePerformance_SystemRandomDoubleHalfOpen(systemRandom, iterations); };
+						operation = (long iterations) => { MeasurePerformance_SystemRandomDoubleHalfOpen(systemRandom, iterations); };
 					}
 				}
 			}
@@ -364,87 +369,87 @@ namespace Experilous.Examples.Randomization
 				if (operationToggle == uint31bitToggle)
 				{
 					_currentOperationName = "31-bit Integer";
-					operation = (int iterations) => { MeasurePerformance_UIntLessThan6(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UInt31bit(random, iterations); };
 				}
 				else if (operationToggle == uint32bitToggle)
 				{
 					_currentOperationName = "32-bit Integer";
-					operation = (int iterations) => { MeasurePerformance_UIntLessThan6(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UInt32bit(random, iterations); };
 				}
 				else if (operationToggle == uint64bitToggle)
 				{
 					_currentOperationName = "64-bit Integer";
-					operation = (int iterations) => { MeasurePerformance_UIntLessThan6(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UInt64bit(random, iterations); };
 				}
 				else if (operationToggle == uintLessThan6Toggle)
 				{
-					_currentOperationName = "64-bit Integer";
-					operation = (int iterations) => { MeasurePerformance_UIntLessThan6(random, iterations); };
+					_currentOperationName = "Integer Less Than 6";
+					operation = (long iterations) => { MeasurePerformance_UIntLessThan6(random, iterations); };
 				}
 				else if (operationToggle == floatOpenToggle)
 				{
 					_currentOperationName = "Open Unit Float";
-					operation = (int iterations) => { MeasurePerformance_FloatOpen(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_FloatOpen(random, iterations); };
 				}
 				else if (operationToggle == floatHalfOpenToggle)
 				{
 					_currentOperationName = "HalfOpen Unit Float";
-					operation = (int iterations) => { MeasurePerformance_FloatHalfOpen(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_FloatHalfOpen(random, iterations); };
 				}
 				else if (operationToggle == floatHalfClosedToggle)
 				{
 					_currentOperationName = "HalfClosed Unit Float";
-					operation = (int iterations) => { MeasurePerformance_FloatHalfClosed(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_FloatHalfClosed(random, iterations); };
 				}
 				else if (operationToggle == floatClosedToggle)
 				{
 					_currentOperationName = "Closed Unit Float";
-					operation = (int iterations) => { MeasurePerformance_FloatClosed(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_FloatClosed(random, iterations); };
 				}
 				else if (operationToggle == doubleOpenToggle)
 				{
 					_currentOperationName = "Open Unit Double";
-					operation = (int iterations) => { MeasurePerformance_DoubleOpen(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_DoubleOpen(random, iterations); };
 				}
 				else if (operationToggle == doubleHalfOpenToggle)
 				{
 					_currentOperationName = "HalfOpen Unit Double";
-					operation = (int iterations) => { MeasurePerformance_DoubleHalfOpen(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_DoubleHalfOpen(random, iterations); };
 				}
 				else if (operationToggle == doubleHalfClosedToggle)
 				{
 					_currentOperationName = "HalfClosed Unit Double";
-					operation = (int iterations) => { MeasurePerformance_DoubleHalfClosed(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_DoubleHalfClosed(random, iterations); };
 				}
 				else if (operationToggle == doubleClosedToggle)
 				{
 					_currentOperationName = "Closed Unit Double";
-					operation = (int iterations) => { MeasurePerformance_DoubleClosed(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_DoubleClosed(random, iterations); };
 				}
 				else if (operationToggle == unitVector2Toggle)
 				{
 					_currentOperationName = "Unit Vector2";
-					operation = (int iterations) => { MeasurePerformance_UnitVector2(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UnitVector2(random, iterations); };
 				}
 				else if (operationToggle == unitVector3Toggle)
 				{
 					_currentOperationName = "Unit Vector3";
-					operation = (int iterations) => { MeasurePerformance_UnitVector3(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UnitVector3(random, iterations); };
 				}
 				else if (operationToggle == unitVector4Toggle)
 				{
 					_currentOperationName = "Unit Vector4";
-					operation = (int iterations) => { MeasurePerformance_UnitVector4(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_UnitVector4(random, iterations); };
 				}
 				else if (operationToggle == vector2WithinCircleToggle)
 				{
 					_currentOperationName = "Within Circle";
-					operation = (int iterations) => { MeasurePerformance_Vector2WithinCircle(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_Vector2WithinCircle(random, iterations); };
 				}
 				else if (operationToggle == vector3WithinSphereToggle)
 				{
 					_currentOperationName = "Within Sphere";
-					operation = (int iterations) => { MeasurePerformance_Vector3WithinSphere(random, iterations); };
+					operation = (long iterations) => { MeasurePerformance_Vector3WithinSphere(random, iterations); };
 				}
 				else
 				{
@@ -483,7 +488,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance(Action<int> operationLoop)
+		private void MeasurePerformance(Action<long> operationLoop)
 		{
 			System.Diagnostics.Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
 			IntPtr originalProcessorAffinity = currentProcess.ProcessorAffinity;
@@ -505,9 +510,9 @@ namespace Experilous.Examples.Randomization
 				long targetWarmupBatchDurationTickCount = Math.Min(ticksPerSecond, warmupDurationTickCount / 4L);
 				long targetMeasurementBatchDurationTickCount = Math.Min(ticksPerSecond, measurementDurationTickCount / 16L);
 
-				int batchIterationCount = 1024;
-				int warmupIterationCount = 0;
-				int measurementIterationCount = 0;
+				long batchIterationCount = 1024L;
+				long warmupIterationCount = 0L;
+				long measurementIterationCount = 0L;
 
 				GC.Collect();
 				GC.WaitForPendingFinalizers();
@@ -541,13 +546,13 @@ namespace Experilous.Examples.Randomization
 					// Convert the estimated clamped batch duration back into an iteration count for the next batch.
 					batchIterationCount = (int)(nextBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks);
 					// Make the batch iteration count a multiple of 16.
-					batchIterationCount = (batchIterationCount + 15) & ~0xF;
+					batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 				}
 
 				// Use the warmup phase performance and the target measurement batch duration to estimate the iteration count of the first measurement batch.
 				batchIterationCount = (int)(targetMeasurementBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks);
 				// Make the batch iteration count a multiple of 16.
-				batchIterationCount = (batchIterationCount + 15) & ~0xF;
+				batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 
 				timer.Reset();
 
@@ -577,7 +582,7 @@ namespace Experilous.Examples.Randomization
 					// Convert the estimated clamped batch duration back into an iteration count for the next batch.
 					batchIterationCount = (int)(nextBatchDurationTickCount * measurementIterationCount / timer.ElapsedTicks);
 					// Make the batch iteration count a multiple of 16.
-					batchIterationCount = (batchIterationCount + 15) & ~0xF;
+					batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 				}
 
 				_currentPerformanceMeasurement = (double)measurementIterationCount * ticksPerSecond / timer.ElapsedTicks;
@@ -596,9 +601,36 @@ namespace Experilous.Examples.Randomization
 
 		#region Native Operations
 
-		private void MeasurePerformance_UnityRandomFloatClosed(int iterations)
+		private void MeasurePerformance_UnityRandomUIntLessThan6(long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
+			for (int i = 0; i < unrolledIterations; ++i)
+			{
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+				_generatedInt = UnityEngine.Random.Range(0, 6);
+			}
+		}
+
+		private void MeasurePerformance_UnityRandomFloatClosed(long iterations)
+		{
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = UnityEngine.Random.value;
@@ -623,9 +655,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomUnitVector3(int iterations)
+		private void MeasurePerformance_UnityRandomUnitVector3(long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = UnityEngine.Random.onUnitSphere.x;
@@ -650,9 +682,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomUnitVector4(int iterations)
+		private void MeasurePerformance_UnityRandomUnitVector4(long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = UnityEngine.Random.rotationUniform.x;
@@ -677,9 +709,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomVector2WithinCircle(int iterations)
+		private void MeasurePerformance_UnityRandomVector2WithinCircle(long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = UnityEngine.Random.insideUnitCircle.x;
@@ -704,9 +736,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomVector3WithinSphere(int iterations)
+		private void MeasurePerformance_UnityRandomVector3WithinSphere(long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = UnityEngine.Random.insideUnitSphere.x;
@@ -731,9 +763,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_SystemRandomUInt31bit(System.Random random, int iterations)
+		private void MeasurePerformance_SystemRandomUInt31bit(System.Random random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedInt = random.Next();
@@ -758,9 +790,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_SystemRandomUIntLessThan6(System.Random random, int iterations)
+		private void MeasurePerformance_SystemRandomUIntLessThan6(System.Random random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedInt = random.Next(6);
@@ -785,9 +817,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_SystemRandomDoubleHalfOpen(System.Random random, int iterations)
+		private void MeasurePerformance_SystemRandomDoubleHalfOpen(System.Random random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedDouble = random.NextDouble();
@@ -816,9 +848,9 @@ namespace Experilous.Examples.Randomization
 
 		#region Generic Operations
 
-		private void MeasurePerformance_UInt31bit(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UInt31bit(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedUInt = random.Next32(31);
@@ -843,9 +875,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UInt32bit(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UInt32bit(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedUInt = random.Next32();
@@ -870,9 +902,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UInt64bit(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UInt64bit(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedULong = random.Next64();
@@ -897,9 +929,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UIntLessThan6(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UIntLessThan6(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedUInt = random.NextLessThan(6);
@@ -924,9 +956,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatOpen(IRandomEngine random, int iterations)
+		private void MeasurePerformance_FloatOpen(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomUnit.OpenFloat(random);
@@ -951,9 +983,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatHalfOpen(IRandomEngine random, int iterations)
+		private void MeasurePerformance_FloatHalfOpen(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomUnit.HalfOpenFloat(random);
@@ -978,9 +1010,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatHalfClosed(IRandomEngine random, int iterations)
+		private void MeasurePerformance_FloatHalfClosed(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomUnit.HalfClosedFloat(random);
@@ -1005,9 +1037,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatClosed(IRandomEngine random, int iterations)
+		private void MeasurePerformance_FloatClosed(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomUnit.ClosedFloat(random);
@@ -1032,9 +1064,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleOpen(IRandomEngine random, int iterations)
+		private void MeasurePerformance_DoubleOpen(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedDouble = RandomUnit.OpenDouble(random);
@@ -1059,9 +1091,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleHalfOpen(IRandomEngine random, int iterations)
+		private void MeasurePerformance_DoubleHalfOpen(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedDouble = RandomUnit.HalfOpenDouble(random);
@@ -1086,9 +1118,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleHalfClosed(IRandomEngine random, int iterations)
+		private void MeasurePerformance_DoubleHalfClosed(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedDouble = RandomUnit.HalfClosedDouble(random);
@@ -1113,9 +1145,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleClosed(IRandomEngine random, int iterations)
+		private void MeasurePerformance_DoubleClosed(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedDouble = RandomUnit.ClosedDouble(random);
@@ -1140,9 +1172,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector2(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UnitVector2(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomVector.UnitVector2(random).x;
@@ -1167,9 +1199,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector3(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UnitVector3(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomVector.UnitVector3(random).x;
@@ -1194,9 +1226,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector4(IRandomEngine random, int iterations)
+		private void MeasurePerformance_UnitVector4(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomVector.UnitVector4(random).x;
@@ -1221,9 +1253,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_Vector2WithinCircle(IRandomEngine random, int iterations)
+		private void MeasurePerformance_Vector2WithinCircle(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomVector.PointWithinCircle(random).x;
@@ -1248,9 +1280,9 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_Vector3WithinSphere(IRandomEngine random, int iterations)
+		private void MeasurePerformance_Vector3WithinSphere(IRandomEngine random, long iterations)
 		{
-			int unrolledIterations = iterations >> 4;
+			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedFloat = RandomVector.PointWithinSphere(random).x;

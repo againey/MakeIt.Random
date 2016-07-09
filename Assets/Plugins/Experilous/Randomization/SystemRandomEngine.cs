@@ -16,7 +16,6 @@ namespace Experilous.Randomization
 	public sealed class SystemRandomEngine : BaseRandomEngine
 	{
 		[SerializeField] private System.Random _random;
-		[SerializeField] private byte[] _buffer = new byte[4];
 
 		public static SystemRandomEngine Create()
 		{
@@ -158,18 +157,22 @@ namespace Experilous.Randomization
 
 		public override void Step()
 		{
-			_random.NextBytes(_buffer);
+			_random.Next();
 		}
 
 		public override uint Next32()
 		{
-			_random.NextBytes(_buffer);
-			return BitConverter.ToUInt32(_buffer, 0);
+			return
+				(uint)_random.Next() << 1 & 0xFFFF0000U |
+				(uint)_random.Next() & 0x0000FFFFU;
 		}
 
 		public override ulong Next64()
 		{
-			return ((ulong)Next32() << 32) | Next32();
+			return
+				(ulong)_random.Next() << 33 & 0xFFFFFF0000000000UL |
+				(ulong)_random.Next() << 12 & 0x000000FFFFFF0000UL |
+				(ulong)_random.Next() & 0x000000000000FFFFUL;
 		}
 
 		public override System.Random AsSystemRandom()
