@@ -77,6 +77,10 @@ namespace Experilous.Examples.Randomization
 
 		protected void Start()
 		{
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+			performanceResultItemsScrollRect.scrollSensitivity = 25;
+#endif
+
 			OnWarmupDurationSliderValueChanged();
 			OnMeasurementDurationSliderValueChanged();
 			EnableDisableMeasurePerformanceButton();
