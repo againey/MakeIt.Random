@@ -30,9 +30,10 @@ namespace Experilous.Randomization.Tests
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
 			var buckets = new int[bucketCount];
+			uint mask = ~(0xFFFFFFFFU << bitCount);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = engine.Next32(bitCount);
+				var random = engine.Next32() & mask;
 				buckets[random] += 1;
 			}
 
@@ -44,9 +45,10 @@ namespace Experilous.Randomization.Tests
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
 			var buckets = new int[bucketCount];
+			ulong mask = ~(0xFFFFFFFFFFFFFFFFUL << bitCount);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = engine.Next64(bitCount);
+				var random = engine.Next64() & mask;
 				buckets[random] += 1;
 			}
 
@@ -87,23 +89,31 @@ namespace Experilous.Randomization.Tests
 		[Test]
 		public void Next4BitsDistribution()
 		{
-			ValidateNext32BitsDistribution(NativeRandomEngine.Create(seed), 4, 10000, 0.02f);
+			ValidateNext32BitsDistribution(SystemRandomEngine.Create(seed), 4, 10000, 0.02f);
 			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f);
 			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f);
+
+			ValidateNext64BitsDistribution(SystemRandomEngine.Create(seed), 4, 10000, 0.02f);
+			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f);
+			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f);
 		}
 
 		[Test]
 		public void Next5BitsDistribution()
 		{
-			ValidateNext32BitsDistribution(NativeRandomEngine.Create(seed), 5, 10000, 0.02f);
-			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.02f);
-			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.02f);
+			ValidateNext32BitsDistribution(SystemRandomEngine.Create(seed), 5, 10000, 0.03f);
+			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f);
+			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f);
+
+			ValidateNext64BitsDistribution(SystemRandomEngine.Create(seed), 5, 10000, 0.03f);
+			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f);
+			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f);
 		}
 
 		[Test]
 		public void NextLessThanPowerOfTwoBucketDistribution()
 		{
-			ValidateNextLessThanBucketDistribution(NativeRandomEngine.Create(seed), 32, 3000, 0.05f);
+			ValidateNextLessThanBucketDistribution(SystemRandomEngine.Create(seed), 32, 3000, 0.05f);
 			ValidateNextLessThanBucketDistribution(SplitMix64.Create(seed), 32, 3000, 0.05f);
 			ValidateNextLessThanBucketDistribution(XorShift128Plus.Create(seed), 32, 3000, 0.05f);
 		}
@@ -111,7 +121,7 @@ namespace Experilous.Randomization.Tests
 		[Test]
 		public void NextLessThanNonPowerOfTwoBucketDistribution()
 		{
-			ValidateNextLessThanBucketDistribution(NativeRandomEngine.Create(seed), 25, 4000, 0.04f);
+			ValidateNextLessThanBucketDistribution(SystemRandomEngine.Create(seed), 25, 4000, 0.04f);
 			ValidateNextLessThanBucketDistribution(SplitMix64.Create(seed), 25, 4000, 0.04f);
 			ValidateNextLessThanBucketDistribution(XorShift128Plus.Create(seed), 25, 4000, 0.04f);
 		}
@@ -119,7 +129,7 @@ namespace Experilous.Randomization.Tests
 		[Test]
 		public void ChancePowerOfTwoDenominatorDistribution()
 		{
-			ValidateChanceDistribution(NativeRandomEngine.Create(seed), 25, 32, 100000, 0.002f);
+			ValidateChanceDistribution(SystemRandomEngine.Create(seed), 25, 32, 100000, 0.002f);
 			ValidateChanceDistribution(SplitMix64.Create(seed), 25, 32, 100000, 0.002f);
 			ValidateChanceDistribution(XorShift128Plus.Create(seed), 25, 32, 100000, 0.002f);
 		}
@@ -127,7 +137,7 @@ namespace Experilous.Randomization.Tests
 		[Test]
 		public void ChanceNonPowerOfTwoDenominatorDistribution()
 		{
-			ValidateChanceDistribution(NativeRandomEngine.Create(seed), 17, 25, 100000, 0.003f);
+			ValidateChanceDistribution(SystemRandomEngine.Create(seed), 17, 25, 100000, 0.003f);
 			ValidateChanceDistribution(SplitMix64.Create(seed), 17, 25, 100000, 0.003f);
 			ValidateChanceDistribution(XorShift128Plus.Create(seed), 17, 25, 100000, 0.003f);
 		}
@@ -137,7 +147,7 @@ namespace Experilous.Randomization.Tests
 		{
 			System.Action<int, int> validateRatio = (int numerator, int denominator) =>
 			{
-				ValidateChanceDistribution(NativeRandomEngine.Create(seed), numerator, denominator, 1000, 0.04f);
+				ValidateChanceDistribution(SystemRandomEngine.Create(seed), numerator, denominator, 1000, 0.04f);
 				ValidateChanceDistribution(SplitMix64.Create(seed), numerator, denominator, 1000, 0.04f);
 				ValidateChanceDistribution(XorShift128Plus.Create(seed), numerator, denominator, 10000, 0.04f);
 			};
