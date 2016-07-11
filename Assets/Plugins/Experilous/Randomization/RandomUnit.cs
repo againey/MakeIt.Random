@@ -34,11 +34,11 @@ namespace Experilous.Randomization
 			do
 			{
 				random = engine.Next32() & 0x007FFFFFU;
-			} while (random == 0x007FFFFFU);
+			} while (random == 0U);
 
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | (random + 1U);
+			value.bits = 0x3F800000U | random;
 			return value.number - 1f;
 		}
 
@@ -48,11 +48,11 @@ namespace Experilous.Randomization
 			do
 			{
 				random = engine.Next64() & 0x000FFFFFFFFFFFFFUL;
-			} while (random == 0x000FFFFFFFFFFFFFUL);
+			} while (random == 0UL);
 
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | (random + 1UL);
+			value.bits = 0x3FF0000000000000UL | random;
 			return value.number - 1.0;
 		}
 
