@@ -2,66 +2,593 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+using System.Collections.Generic;
+
 namespace Experilous.Randomization
 {
 	public static class Dice
 	{
+		#region Roll
+
 		public static int Roll(int sides, IRandomEngine engine)
 		{
 			return (int)engine.NextLessThan((uint)sides) + 1;
 		}
 
-		public static int Roll(int quantity, int sides, IRandomEngine engine)
+		public static int[] Roll(int quantity, int sides, IRandomEngine engine)
+		{
+			var dice = new int[quantity];
+			for (int i = 0; i < quantity; ++i)
+			{
+				dice[i] = (int)engine.NextLessThan((uint)sides) + 1;
+			}
+			return dice;
+		}
+
+		public static void Roll(int quantity, int sides, int[] dice, IRandomEngine engine)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
+			for (int i = 0; i < quantity; ++i)
+			{
+				dice[i] = (int)engine.NextLessThan((uint)sides) + 1;
+			}
+		}
+
+		public static void Roll(int quantity, int sides, List<int> dice, IRandomEngine engine)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			dice.Clear();
+			while (dice.Count < quantity)
+			{
+				dice.Add((int)engine.NextLessThan((uint)sides) + 1);
+			}
+		}
+
+		#endregion
+
+		#region SumRoll
+
+		public static int SumRoll(int quantity, int sides, IRandomEngine engine)
 		{
 			uint sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				sum += engine.NextLessThan((uint)sides) + 1;
+				sum += engine.NextLessThan((uint)sides);
 			}
-			return (int)sum;
+			return (int)sum + quantity;
 		}
 
-		public static int RollKeepHighest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		public static int SumRoll(int quantity, int sides, out int[] dice, IRandomEngine engine)
 		{
-			var rolls = new uint[quantity];
+			dice = new int[quantity];
+			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				rolls[i] = engine.NextLessThan((uint)sides);
+				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				dice[i] = die;
+				sum += die;
 			}
-			System.Array.Sort(rolls);
-			uint sum = 0;
-			for (int i = quantity - keepQuantity; i < quantity; ++i)
-			{
-				sum += rolls[i];
-			}
-			return (int)sum + keepQuantity;
+			return sum;
 		}
 
-		public static int RollKeepLowest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		public static int SumRoll(int quantity, int sides, int[] dice, IRandomEngine engine)
 		{
-			var rolls = new uint[quantity];
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
+			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				rolls[i] = engine.NextLessThan((uint)sides);
+				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				dice[i] = die;
+				sum += die;
 			}
-			System.Array.Sort(rolls);
-			uint sum = 0;
-			for (int i = 0; i < keepQuantity; ++i)
-			{
-				sum += rolls[i];
-			}
-			return (int)sum + keepQuantity;
+			return sum;
 		}
 
-		public static int RollDropHighest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		public static int SumRoll(int quantity, int sides, List<int> dice, IRandomEngine engine)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			dice.Clear();
+			int sum = 0;
+			while (dice.Count < quantity)
+			{
+				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				dice.Add(die);
+				sum += die;
+			}
+			return sum;
+		}
+
+		#endregion
+
+		#region Private Keep/Drop Helper Functions
+
+		private static int Sum(int[] dice)
+		{
+			int sum = 0;
+			for (int i = 0; i < dice.Length; ++i)
+			{
+				sum += dice[i];
+			}
+			return sum;
+		}
+
+		private static int Sum(List<int> dice)
+		{
+			int sum = 0;
+			for (int i = 0; i < dice.Count; ++i)
+			{
+				sum += dice[i];
+			}
+			return sum;
+		}
+
+		private static int FindMinIndex(IList<int> dice)
+		{
+			int minIndex = 0;
+			int min = dice[0];
+			for (int i = 1; i < dice.Count; ++i)
+			{
+				if (dice[i] < min)
+				{
+					minIndex = i;
+					min = dice[i];
+				}
+			}
+			return minIndex;
+		}
+
+		private static int FindMaxIndex(IList<int> dice)
+		{
+			int maxIndex = 0;
+			int max = dice[0];
+			for (int i = 1; i < dice.Count; ++i)
+			{
+				if (dice[i] > max)
+				{
+					maxIndex = i;
+					max = dice[i];
+				}
+			}
+			return maxIndex;
+		}
+
+		private static void RollAdditionalKeepHighest(int additionalQuantity, int sides, IList<int> dice, IRandomEngine engine)
+		{
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				do
+				{
+					if (i >= additionalQuantity) return;
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					++i;
+				} while (die <= min);
+
+				dice[minIndex] = die;
+			}
+		}
+
+		private static void RollAdditionalKeepHighest(int additionalQuantity, int sides, IList<int> dice, int[] discardedDice, IRandomEngine engine)
+		{
+			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
+			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
+
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				while (true)
+				{
+					if (i >= additionalQuantity) return;
+
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					if (die <= min)
+					{
+						discardedDice[i++] = die;
+					}
+					else
+					{
+						discardedDice[i++] = min;
+						dice[minIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		private static void RollAdditionalKeepHighest(int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			discardedDice.Clear();
+
+			while (discardedDice.Count < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				while (true)
+				{
+					
+					if (discardedDice.Count >= additionalQuantity) return;
+
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					if (die <= min)
+					{
+						discardedDice.Add(die);
+					}
+					else
+					{
+						discardedDice.Add(min);
+						dice[minIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		private static void RollAdditionalKeepLowest(int additionalQuantity, int sides, IList<int> dice, IRandomEngine engine)
+		{
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				do
+				{
+					if (i >= additionalQuantity) return;
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					++i;
+				} while (die >= max);
+
+				dice[maxIndex] = die;
+			}
+		}
+
+		private static void RollAdditionalKeepLowest(int additionalQuantity, int sides, IList<int> dice, int[] discardedDice, IRandomEngine engine)
+		{
+			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
+			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
+
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				while (true)
+				{
+					if (i >= additionalQuantity) return;
+
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					if (die >= max)
+					{
+						discardedDice[i++] = die;
+					}
+					else
+					{
+						discardedDice[i++] = max;
+						dice[maxIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		private static void RollAdditionalKeepLowest(int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			discardedDice.Clear();
+
+			while (discardedDice.Count < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				while (true)
+				{
+					
+					if (discardedDice.Count >= additionalQuantity) return;
+
+					die = (int)engine.NextLessThan((uint)sides) + 1;
+					if (die >= max)
+					{
+						discardedDice.Add(die);
+					}
+					else
+					{
+						discardedDice.Add(max);
+						dice[maxIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		#endregion
+
+		#region RollKeep/Drop
+
+		public static int[] RollKeepHighest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			int[] dice = Roll(keepQuantity, sides, engine);
+			RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, engine);
+			return dice;
+		}
+
+		public static void RollKeepHighest(int quantity, int sides, int keepQuantity, int[] dice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, engine);
+		}
+
+		public static void RollKeepHighest(int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, discardedDice, engine);
+		}
+
+		public static void RollKeepHighest(int quantity, int sides, int keepQuantity, List<int> dice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, engine);
+		}
+
+		public static void RollKeepHighest(int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, discardedDice, engine);
+		}
+
+		public static int[] RollKeepLowest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			int[] dice = Roll(keepQuantity, sides, engine);
+			RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, engine);
+			return dice;
+		}
+
+		public static void RollKeepLowest(int quantity, int sides, int keepQuantity, int[] dice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, engine);
+		}
+
+		public static void RollKeepLowest(int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, discardedDice, engine);
+		}
+
+		public static void RollKeepLowest(int quantity, int sides, int keepQuantity, List<int> dice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, engine);
+		}
+
+		public static void RollKeepLowest(int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			Roll(keepQuantity, sides, dice, engine);
+			RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, discardedDice, engine);
+		}
+
+		public static int[] RollDropHighest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
 		{
 			return RollKeepLowest(quantity, sides, quantity - dropQuantity, engine);
 		}
 
-		public static int RollDropLowest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		public static void RollDropHighest(int quantity, int sides, int dropQuantity, int[] dice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static void RollDropHighest(int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static void RollDropHighest(int quantity, int sides, int dropQuantity, List<int> dice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static void RollDropHighest(int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static int[] RollDropLowest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
 		{
 			return RollKeepHighest(quantity, sides, quantity - dropQuantity, engine);
 		}
+
+		public static void RollDropLowest(int quantity, int sides, int dropQuantity, int[] dice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static void RollDropLowest(int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static void RollDropLowest(int quantity, int sides, int dropQuantity, List<int> dice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static void RollDropLowest(int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		#endregion
+
+		#region SumRollKeep/Drop
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			int[] dice = RollKeepHighest(quantity, sides, keepQuantity, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, out int[] dice, IRandomEngine engine)
+		{
+			dice = RollKeepHighest(quantity, sides, keepQuantity, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice, IRandomEngine engine)
+		{
+			dice = new int[keepQuantity];
+			discardedDice = new int[quantity - keepQuantity];
+			RollKeepHighest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, int[] dice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, keepQuantity, dice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, List<int> dice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, keepQuantity, dice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepHighest(int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			RollKeepHighest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, IRandomEngine engine)
+		{
+			int[] dice = RollKeepLowest(quantity, sides, keepQuantity, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, out int[] dice, IRandomEngine engine)
+		{
+			dice = RollKeepLowest(quantity, sides, keepQuantity, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice, IRandomEngine engine)
+		{
+			dice = new int[keepQuantity];
+			discardedDice = new int[quantity - keepQuantity];
+			RollKeepLowest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, int[] dice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, keepQuantity, dice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, List<int> dice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, keepQuantity, dice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollKeepLowest(int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			RollKeepLowest(quantity, sides, keepQuantity, dice, discardedDice, engine);
+			return Sum(dice);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, out int[] dice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, out dice, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, out dice, out discardedDice, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, int[] dice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, List<int> dice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static int SumRollDropHighest(int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, out int[] dice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, out dice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, out dice, out discardedDice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, int[] dice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, List<int> dice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, dice, engine);
+		}
+
+		public static int SumRollDropLowest(int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice, IRandomEngine engine)
+		{
+			return SumRollKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice, engine);
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Regex for parsing dice notation
@@ -84,7 +611,7 @@ namespace Experilous.Randomization
 		private static System.Text.RegularExpressions.Regex _diceNotationRegex = new System.Text.RegularExpressions.Regex(
 			@"\A(?<quantity>[1-9][0-9]*)?(?:d|D)(?<sides>[1-9][0-9]*)(?:\s*(?<keepDrop>k|K|d|D|\-)(?<keepDropQuantity>[1-9][0-9]*)?(?<keepDropWhat>h|H|l|L))?(?:\s*(?<mulDiv>\*|x|/)\s*(?<mulDivAmount>[1-9][0-9]*))?(?:\s*(?<addSub>\+|\-)\s*(?<addSubAmount>[1-9][0-9]*))?\z");
 
-		public static int Roll(string dNotation, IRandomEngine engine)
+		public static int SumRoll(string dNotation, IRandomEngine engine)
 		{
 			return Prepare(dNotation)(engine);
 		}
@@ -209,7 +736,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine);
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine);
 							}
 						}
 						else
@@ -220,7 +747,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine) + add;
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine) + add;
 							}
 						}
 					}
@@ -234,7 +761,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine) * mul;
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine) * mul;
 							}
 						}
 						else
@@ -245,7 +772,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine) * mul + add;
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine) * mul + add;
 							}
 						}
 					}
@@ -259,7 +786,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine) / div;
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine) / div;
 							}
 						}
 						else
@@ -270,7 +797,7 @@ namespace Experilous.Randomization
 							}
 							else
 							{
-								return (IRandomEngine engine) => Roll(quantity, sides, engine) / div + add;
+								return (IRandomEngine engine) => SumRoll(quantity, sides, engine) / div + add;
 							}
 						}
 					}
@@ -290,22 +817,22 @@ namespace Experilous.Randomization
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine);
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine);
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine);
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine);
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine) + add;
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine) + add;
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine) + add;
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine) + add;
 							}
 						}
 					}
@@ -315,22 +842,22 @@ namespace Experilous.Randomization
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine) * mul;
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine) * mul;
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine) * mul;
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine) * mul;
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine) * mul + add;
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine) * mul + add;
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine) * mul + add;
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine) * mul + add;
 							}
 						}
 					}
@@ -340,22 +867,22 @@ namespace Experilous.Randomization
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine) / div;
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine) / div;
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine) / div;
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine) / div;
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine engine) => RollKeepHighest(quantity, sides, keepQuantity, engine) / div + add;
+								return (IRandomEngine engine) => SumRollKeepHighest(quantity, sides, keepQuantity, engine) / div + add;
 							}
 							else
 							{
-								return (IRandomEngine engine) => RollKeepLowest(quantity, sides, keepQuantity, engine) / div + add;
+								return (IRandomEngine engine) => SumRollKeepLowest(quantity, sides, keepQuantity, engine) / div + add;
 							}
 						}
 					}
