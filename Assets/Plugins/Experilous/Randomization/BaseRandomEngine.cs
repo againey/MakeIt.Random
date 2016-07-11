@@ -142,7 +142,7 @@ namespace Experilous.Randomization
 			deBruijn |= deBruijn >> 8;
 			deBruijn |= deBruijn >> 16;
 			deBruijn |= deBruijn >> 32;
-			int rightShift = _shiftTable32[deBruijn * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[deBruijn * 0x03F6EAF2CD271461UL >> 58];
 			ulong random;
 			do
 			{
@@ -162,7 +162,7 @@ namespace Experilous.Randomization
 			deBruijn |= deBruijn >> 8;
 			deBruijn |= deBruijn >> 16;
 			deBruijn |= deBruijn >> 32;
-			int rightShift = _shiftTable32[deBruijn * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[deBruijn * 0x03F6EAF2CD271461UL >> 58];
 			ulong random;
 			do
 			{
