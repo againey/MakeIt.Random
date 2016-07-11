@@ -19,7 +19,7 @@ namespace Experilous.Randomization
 		public static Vector3 UnitVector3(IRandomEngine engine)
 		{
 			var longitude = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
-			var z = RandomRange.ClosedFast(-1f, +1f, engine);
+			var z = RandomRange.Closed(-1f, +1f, engine);
 			var invertedZ = Mathf.Sqrt(1f - z * z);
 			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 		}
@@ -27,8 +27,8 @@ namespace Experilous.Randomization
 		public static Vector4 UnitVector4(IRandomEngine engine)
 		{
 			var theta0 = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
-			var theta1 = Mathf.Acos(RandomRange.ClosedFast(-1f, +1f, engine));
-			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloatFast(engine)) + Mathf.PI * 0.5f);
+			var theta1 = Mathf.Acos(RandomRange.Closed(-1f, +1f, engine));
+			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloat(engine)) + Mathf.PI * 0.5f);
 			var sinTheta1 = Mathf.Sin(theta1);
 			var sinTheta2 = Mathf.Sin(theta2);
 			return new Vector4(
@@ -63,13 +63,13 @@ namespace Experilous.Randomization
 
 		public static Vector2 PointWithinCircle(IRandomEngine engine)
 		{
-			var distance = Mathf.Sqrt(RandomUnit.ClosedFloatFast(engine));
+			var distance = Mathf.Sqrt(RandomUnit.ClosedFloat(engine));
 			return ScaledVector2(distance, engine);
 		}
 
 		public static Vector2 PointWithinCircle(float radius, IRandomEngine engine)
 		{
-			var distance = Mathf.Sqrt(RandomUnit.ClosedFloatFast(engine)) * radius;
+			var distance = Mathf.Sqrt(RandomUnit.ClosedFloat(engine)) * radius;
 			return ScaledVector2(distance, engine);
 		}
 
@@ -78,19 +78,19 @@ namespace Experilous.Randomization
 			var unitMin = innerRadius / outerRadius;
 			var unitMinSquared = unitMin * unitMin;
 			var unitRange = 1f - unitMinSquared;
-			var distance = Mathf.Sqrt(RandomUnit.ClosedFloatFast(engine) * unitRange + unitMinSquared) * outerRadius;
+			var distance = Mathf.Sqrt(RandomUnit.ClosedFloat(engine) * unitRange + unitMinSquared) * outerRadius;
 			return ScaledVector2(distance, engine);
 		}
 
 		public static Vector3 PointWithinSphere(IRandomEngine engine)
 		{
-			var distance = Mathf.Pow(RandomUnit.ClosedFloatFast(engine), 1f / 3f);
+			var distance = Mathf.Pow(RandomUnit.ClosedFloat(engine), 1f / 3f);
 			return ScaledVector3(distance, engine);
 		}
 
 		public static Vector3 PointWithinSphere(float radius, IRandomEngine engine)
 		{
-			var distance = Mathf.Pow(RandomUnit.ClosedFloatFast(engine), 1f / 3f) * radius;
+			var distance = Mathf.Pow(RandomUnit.ClosedFloat(engine), 1f / 3f) * radius;
 			return ScaledVector3(distance, engine);
 		}
 
@@ -99,7 +99,7 @@ namespace Experilous.Randomization
 			var unitMin = innerRadius / outerRadius;
 			var unitMinPow3 = unitMin * unitMin * unitMin;
 			var unitRange = 1f - unitMinPow3;
-			var distance = Mathf.Pow(RandomUnit.ClosedFloatFast(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
+			var distance = Mathf.Pow(RandomUnit.ClosedFloat(engine) * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return ScaledVector3(distance, engine);
 		}
 
@@ -109,49 +109,49 @@ namespace Experilous.Randomization
 
 		public static Vector2 PointWithinSquare(IRandomEngine engine)
 		{
-			return new Vector2(RandomUnit.ClosedFloatFast(engine), RandomUnit.ClosedFloatFast(engine));
+			return new Vector2(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
 		}
 
 		public static Vector2 PointWithinSquare(float sideLength, IRandomEngine engine)
 		{
-			return new Vector2(RandomRange.ClosedFast(sideLength, engine), RandomRange.ClosedFast(sideLength, engine));
+			return new Vector2(RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine));
 		}
 
 		public static Vector2 PointWithinRectangle(Vector2 size, IRandomEngine engine)
 		{
-			return new Vector2(RandomRange.ClosedFast(size.x, engine), RandomRange.ClosedFast(size.y, engine));
+			return new Vector2(RandomRange.Closed(size.x, engine), RandomRange.Closed(size.y, engine));
 		}
 
 		public static Vector2 PointWithinParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
 		{
-			return RandomUnit.ClosedFloatFast(engine) * axis0 + RandomUnit.ClosedFloatFast(engine) * axis1;
+			return RandomUnit.ClosedFloat(engine) * axis0 + RandomUnit.ClosedFloat(engine) * axis1;
 		}
 
 		public static Vector2 PointWithinTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
 		{
-			float u = Mathf.Sqrt(RandomUnit.ClosedFloatFast(engine));
-			float v = RandomRange.ClosedFast(u, engine);
+			float u = Mathf.Sqrt(RandomUnit.ClosedFloat(engine));
+			float v = RandomRange.Closed(u, engine);
 			return (1f - u) * axis0 + v * axis1;
 		}
 
 		public static Vector3 PointWithinCube(IRandomEngine engine)
 		{
-			return new Vector3(RandomUnit.ClosedFloatFast(engine), RandomUnit.ClosedFloatFast(engine), RandomUnit.ClosedFloatFast(engine));
+			return new Vector3(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
 		}
 
 		public static Vector3 PointWithinCube(float sideLength, IRandomEngine engine)
 		{
-			return new Vector3(RandomRange.ClosedFast(sideLength, engine), RandomRange.ClosedFast(sideLength, engine), RandomRange.ClosedFast(sideLength, engine));
+			return new Vector3(RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine));
 		}
 
 		public static Vector3 PointWithinCuboid(Vector3 size, IRandomEngine engine)
 		{
-			return new Vector3(RandomRange.ClosedFast(size.x, engine), RandomRange.ClosedFast(size.y, engine), RandomRange.ClosedFast(size.z, engine));
+			return new Vector3(RandomRange.Closed(size.x, engine), RandomRange.Closed(size.y, engine), RandomRange.Closed(size.z, engine));
 		}
 
 		public static Vector3 PointWithinRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2, IRandomEngine engine)
 		{
-			return RandomUnit.ClosedFloatFast(engine) * axis0 + RandomUnit.ClosedFloatFast(engine) * axis1 + RandomUnit.ClosedFloatFast(engine) * axis2;
+			return RandomUnit.ClosedFloat(engine) * axis0 + RandomUnit.ClosedFloat(engine) * axis1 + RandomUnit.ClosedFloat(engine) * axis2;
 		}
 
 		#endregion

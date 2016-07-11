@@ -11,8 +11,8 @@ namespace Experilous.Randomization
 		public static Quaternion Rotation(IRandomEngine engine)
 		{
 			var theta0 = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
-			var theta1 = Mathf.Acos(RandomRange.ClosedFast(-1f, +1f, engine));
-			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloatFast(engine)) + Mathf.PI * 0.5f);
+			var theta1 = Mathf.Acos(RandomRange.Closed(-1f, +1f, engine));
+			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloat(engine)) + Mathf.PI * 0.5f);
 			var sinTheta1 = Mathf.Sin(theta1);
 			var sinTheta2 = Mathf.Sin(theta2);
 			return new Quaternion(

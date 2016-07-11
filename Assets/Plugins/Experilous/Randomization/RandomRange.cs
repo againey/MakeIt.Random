@@ -6,11 +6,6 @@
 // some cases, in particular all integer-based and closed floating point ranges.
 #define FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
 
-// Uncomment both this and the above define if you want the above define to apply
-// to generation of floating point ranges regardless of the state of the similar
-// setting in the RandomUnit file.
-#define DEFER_TO_RANDOM_UNIT_IMPLEMENTATION
-
 namespace Experilous.Randomization
 {
 	public static class RandomRange
@@ -699,88 +694,24 @@ namespace Experilous.Randomization
 
 		public static float Closed(float lowerInclusive, float upperInclusive, IRandomEngine engine)
 		{
-#if DEFER_TO_RANDOM_UNIT_IMPLEMENTATION
 			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedFloat(engine) + lowerInclusive;
-#elif FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
-			return ClosedFast(lowerInclusive, upperInclusive, engine);
-#else
-			return ClosedPerfect(lowerInclusive, upperInclusive, engine);
-#endif
-		}
-
-		public static float ClosedPerfect(float lowerInclusive, float upperInclusive, IRandomEngine engine)
-		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedFloatPerfect(engine) + lowerInclusive;
-		}
-
-		public static float ClosedFast(float lowerInclusive, float upperInclusive, IRandomEngine engine)
-		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedFloatFast(engine) + lowerInclusive;
 		}
 
 		public static float Closed(float upperInclusive, IRandomEngine engine)
 		{
-#if DEFER_TO_RANDOM_UNIT_IMPLEMENTATION
 			return upperInclusive * RandomUnit.ClosedFloat(engine);
-#elif FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
-			return ClosedFast(upperInclusive, engine);
-#else
-			return ClosedPerfect(upperInclusive, engine);
-#endif
-		}
-
-		public static float ClosedPerfect(float upperInclusive, IRandomEngine engine)
-		{
-			return upperInclusive * RandomUnit.ClosedFloatPerfect(engine);
-		}
-
-		public static float ClosedFast(float upperInclusive, IRandomEngine engine)
-		{
-			return upperInclusive * RandomUnit.ClosedFloatFast(engine);
 		}
 
 		public static double Closed(double lowerInclusive, double upperInclusive, IRandomEngine engine)
 		{
-#if DEFER_TO_RANDOM_UNIT_IMPLEMENTATION
 			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedDouble(engine) + lowerInclusive;
-#elif FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
-			return ClosedFast(lowerInclusive, upperInclusive, engine);
-#else
-			return ClosedPerfect(lowerInclusive, upperInclusive, engine);
-#endif
-		}
-
-		public static double ClosedPerfect(double lowerInclusive, double upperInclusive, IRandomEngine engine)
-		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedDoublePerfect(engine) + lowerInclusive;
-		}
-
-		public static double ClosedFast(double lowerInclusive, double upperInclusive, IRandomEngine engine)
-		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedDoubleFast(engine) + lowerInclusive;
 		}
 
 		public static double Closed(double upperInclusive, IRandomEngine engine)
 		{
-#if DEFER_TO_RANDOM_UNIT_IMPLEMENTATION
 			return upperInclusive * RandomUnit.ClosedDouble(engine);
-#elif FAVOR_CONSISTENT_SPEED_OVER_PERFECT_UNIFORMITY
-			return ClosedFast(upperInclusive, engine);
-#else
-			return ClosedPerfect(upperInclusive, engine);
-#endif
 		}
 
-		public static double ClosedPerfect(double upperInclusive, IRandomEngine engine)
-		{
-			return upperInclusive * RandomUnit.ClosedDoublePerfect(engine);
-		}
-
-		public static double ClosedFast(double upperInclusive, IRandomEngine engine)
-		{
-			return upperInclusive * RandomUnit.ClosedDoubleFast(engine);
-		}
-
-#endregion
+		#endregion
 	}
 }
