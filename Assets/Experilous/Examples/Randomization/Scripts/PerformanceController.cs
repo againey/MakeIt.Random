@@ -229,7 +229,7 @@ namespace Experilous.Examples.Randomization
 						if (_cancelPending) goto MeasurementsComplete;
 					}
 
-					bool isScrollbarAtBottom = performanceResultItemsScrollRect.verticalNormalizedPosition == 0f;
+					bool isScrollbarAtBottom = performanceResultItemsScrollRect.verticalNormalizedPosition < 0.0001f;
 
 					PerformanceResultItem performanceResultItem = Instantiate(performanceResultItemPrefab);
 					performanceResultItem.generator.text = _currentGeneratorName;
