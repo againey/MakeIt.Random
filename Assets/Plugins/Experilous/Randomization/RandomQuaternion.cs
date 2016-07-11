@@ -10,16 +10,24 @@ namespace Experilous.Randomization
 	{
 		public static Quaternion Rotation(IRandomEngine engine)
 		{
-			var theta0 = RandomRange.HalfOpen(0f, Mathf.PI * 2f, engine);
-			var theta1 = Mathf.Acos(RandomRange.Closed(-1f, +1f, engine));
-			var theta2 = 0.5f * (RandomRange.HalfOpen(0f, Mathf.PI, engine) + Mathf.Asin(RandomUnit.ClosedFloat(engine)) + Mathf.PI * 0.5f);
-			var sinTheta1 = Mathf.Sin(theta1);
-			var sinTheta2 = Mathf.Sin(theta2);
-			return new Quaternion(
-				Mathf.Sin(theta0) * sinTheta1 * sinTheta2,
-				Mathf.Cos(theta0) * sinTheta1 * sinTheta2,
-				Mathf.Cos(theta1) * sinTheta2,
-				Mathf.Cos(theta2));
+			Start1:
+			float u1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float v1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float uSqr1 = u1 * u1;
+			float vSqr1 = v1 * v1;
+			float uvSqr1 = uSqr1 + vSqr1;
+			if (uvSqr1 >= 1f) goto Start1;
+
+			Start2:
+			float u2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float v2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float uSqr2 = u2 * u2;
+			float vSqr2 = v2 * v2;
+			float uvSqr2 = uSqr2 + vSqr2;
+			if (uvSqr2 >= 1f) goto Start2;
+
+			float t = Mathf.Sqrt((1f - uvSqr1) / uvSqr2);
+			return new Quaternion(u1, v1, u2 * t, v2 * t);
 		}
 	}
 }
