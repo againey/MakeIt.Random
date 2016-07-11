@@ -30,17 +30,29 @@ namespace Experilous.Randomization
 
 		public static float OpenFloat(IRandomEngine engine)
 		{
+			uint random;
+			do
+			{
+				random = engine.Next32() & 0x007FFFFFU;
+			} while (random == 0x007FFFFFU);
+
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & (engine.NextLessThan(0x007FFFFFU) + 1U);
+			value.bits = 0x3F800000U | (random + 1U);
 			return value.number - 1f;
 		}
 
 		public static double OpenDouble(IRandomEngine engine)
 		{
+			ulong random;
+			do
+			{
+				random = engine.Next64() & 0x000FFFFFFFFFFFFFUL;
+			} while (random == 0x000FFFFFFFFFFFFFUL);
+
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & (engine.NextLessThan(0x000FFFFFFFFFFFFFUL) + 1UL);
+			value.bits = 0x3FF0000000000000UL | (random + 1UL);
 			return value.number - 1.0;
 		}
 
