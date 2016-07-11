@@ -105,24 +105,11 @@ namespace Experilous.Randomization
 		uint Next32();
 
 		/// <summary>
-		/// Get the next <paramref name="bitCount"/> bits of random data, up to 32 bits.
-		/// </summary>
-		/// <param name="bitCount">The number of bits of random data desired.</param>
-		/// <returns>A 32-bit unsigned integer, where the lowest <paramref name="bitCount"/> bits are random, and the remaining high bits are all 0.</returns>
-		uint Next32(int bitCount);
-
 		/// <summary>
 		/// Get the next 64 bits of random data.
 		/// </summary>
 		/// <returns>A 64-bit unsigned integer full of pseudo-random bits.</returns>
 		ulong Next64();
-
-		/// <summary>
-		/// Get the next <paramref name="bitCount"/> bits of random data, up to 64 bits.
-		/// </summary>
-		/// <param name="bitCount">The number of bits of random data desired.</param>
-		/// <returns>A 64-bit unsigned integer, where the lowest <paramref name="bitCount"/> bits are random, and the remaining high bits are all 0.</returns>
-		ulong Next64(int bitCount);
 
 		/// <summary>
 		/// Get a uniformly distributed random unsigned integer greater than or equal to 0 and less than <paramref name="upperBound"/>.

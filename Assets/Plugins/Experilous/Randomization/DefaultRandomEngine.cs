@@ -193,32 +193,12 @@ namespace Experilous.Randomization
 		}
 
 		/// <summary>
-		/// Get the next <paramref name="bitCount"/> bits of random data, up to 32 bits.
-		/// </summary>
-		/// <param name="bitCount">The number of bits of random data desired.</param>
-		/// <returns>A 32-bit unsigned integer, where the lowest <paramref name="bitCount"/> bits are random, and the remaining high bits are all 0.</returns>
-		public static uint Next32(int bitCount)
-		{
-			return sharedInstance.Next32(bitCount);
-		}
-
-		/// <summary>
 		/// Get the next 64 bits of random data.
 		/// </summary>
 		/// <returns>A 64-bit unsigned integer full of pseudo-random bits.</returns>
 		public static ulong Next64()
 		{
 			return sharedInstance.Next64();
-		}
-
-		/// <summary>
-		/// Get the next <paramref name="bitCount"/> bits of random data, up to 64 bits.
-		/// </summary>
-		/// <param name="bitCount">The number of bits of random data desired.</param>
-		/// <returns>A 64-bit unsigned integer, where the lowest <paramref name="bitCount"/> bits are random, and the remaining high bits are all 0.</returns>
-		public static ulong Next64(int bitCount)
-		{
-			return sharedInstance.Next64(bitCount);
 		}
 
 		/// <summary>

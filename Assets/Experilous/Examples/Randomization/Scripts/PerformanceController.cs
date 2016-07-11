@@ -853,25 +853,25 @@ namespace Experilous.Examples.Randomization
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
 
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
 
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
 
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
-				_generatedUInt = random.Next32(31);
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
+				_generatedUInt = random.Next32() & 0x7FFFFFFFU;
 			}
 		}
 
