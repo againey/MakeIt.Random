@@ -115,7 +115,6 @@ namespace Experilous.Randomization
 
 		public virtual uint NextLessThanOrEqual(uint upperBound)
 		{
-			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint deBruijn = upperBound;
 			deBruijn |= deBruijn >> 1;
 			deBruijn |= deBruijn >> 2;
@@ -128,7 +127,7 @@ namespace Experilous.Randomization
 			{
 				random = Next32() >> rightShift;
 			}
-			while (random >= upperBound);
+			while (random > upperBound);
 			return random;
 		}
 
@@ -154,7 +153,6 @@ namespace Experilous.Randomization
 
 		public virtual ulong NextLessThanOrEqual(ulong upperBound)
 		{
-			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			ulong deBruijn = upperBound;
 			deBruijn |= deBruijn >> 1;
 			deBruijn |= deBruijn >> 2;
@@ -168,7 +166,7 @@ namespace Experilous.Randomization
 			{
 				random = Next64() >> rightShift;
 			}
-			while (random >= upperBound);
+			while (random > upperBound);
 			return random;
 		}
 
