@@ -205,7 +205,7 @@ namespace Experilous.Randomization
 
 		private static char[] _upperAlphabeticCharacters =
 		{
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 		};
 
 		private static char[] GetAlphabeticCharacters(Casing casing)
@@ -262,57 +262,12 @@ namespace Experilous.Randomization
 
 		#region Identifier
 
-		private static char[] _identifierFirstCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'_',
-		};
-
-		private static char[] _identifierCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			'_',
-		};
-
-		private static char[] _lowerIdentifierFirstCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'_',
-		};
-
-		private static char[] _lowerIdentifierCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			'_',
-		};
-
-		private static char[] _upperIdentifierFirstCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'_',
-		};
-
-		private static char[] _upperIdentifierCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			'_',
-		};
-
 		private static char[] GetIdentifierFirstCharacters(Casing casing)
 		{
 			switch (casing)
 			{
-				case Casing.Lower: return _lowerIdentifierFirstCharacters;
-				case Casing.Upper: return _upperIdentifierFirstCharacters;
+				case Casing.Lower: return _lowerAlphabeticCharacters;
+				case Casing.Upper: return _upperAlphabeticCharacters;
 				default: throw new System.NotImplementedException();
 			}
 		}
@@ -321,8 +276,8 @@ namespace Experilous.Randomization
 		{
 			switch (casing)
 			{
-				case Casing.Lower: return _lowerIdentifierCharacters;
-				case Casing.Upper: return _upperIdentifierCharacters;
+				case Casing.Lower: return _lowerAlphaNumericCharacters;
+				case Casing.Upper: return _upperAlphaNumericCharacters;
 				default: throw new System.NotImplementedException();
 			}
 		}
@@ -330,7 +285,7 @@ namespace Experilous.Randomization
 		public static string Identifier(int length, IRandomEngine engine)
 		{
 			if (length <= 0) return "";
-			return _identifierFirstCharacters.RandomElement(engine) + UsingCharacters(length - 1, _identifierCharacters, engine);
+			return _alphabeticCharacters.RandomElement(engine) + UsingCharacters(length - 1, _alphaNumericCharacters, engine);
 		}
 
 		public static string IdentifierWithUnderscores(int length, IRandomEngine engine)
