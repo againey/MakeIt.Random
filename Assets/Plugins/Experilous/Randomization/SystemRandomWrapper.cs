@@ -31,12 +31,12 @@ namespace Experilous.Randomization
 
 		public override int Next()
 		{
-			return (int)_randomEngine.NextLessThan(int.MaxValue);
+			return RandomRange.HalfOpen(int.MaxValue, _randomEngine);
 		}
 
 		public override int Next(int minValue, int maxValue)
 		{
-			return (int)_randomEngine.NextLessThan((uint)(maxValue - minValue)) + minValue;
+			return RandomRange.HalfOpen(minValue, maxValue, _randomEngine);
 		}
 
 		public override void NextBytes(byte[] buffer)
@@ -90,12 +90,12 @@ namespace Experilous.Randomization
 
 		public override int Next()
 		{
-			return (int)_randomEngine.NextLessThan(int.MaxValue);
+			return RandomRange.HalfOpen(int.MaxValue, _randomEngine);
 		}
 
 		public override int Next(int minValue, int maxValue)
 		{
-			return (int)_randomEngine.NextLessThan((uint)(maxValue - minValue)) + minValue;
+			return RandomRange.HalfOpen(minValue, maxValue, _randomEngine);
 		}
 
 		public override void NextBytes(byte[] buffer)

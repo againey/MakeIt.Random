@@ -112,34 +112,6 @@ namespace Experilous.Randomization
 		ulong Next64();
 
 		/// <summary>
-		/// Get a uniformly distributed random unsigned integer greater than or equal to 0 and less than <paramref name="upperBound"/>.
-		/// </summary>
-		/// <param name="upperBound">The exclusive upper bound of the range in which a pseudo-random integer should be generated.</param>
-		/// <returns>A uniformly distributed random 32-bit unsigned integer greater than or equal to 0 and less than <paramref name="upperBound"/>.</returns>
-		uint NextLessThan(uint upperBound);
-
-		/// <summary>
-		/// Get a uniformly distributed random unsigned integer greater than or equal to 0 and less than or equal to <paramref name="upperBound"/>.
-		/// </summary>
-		/// <param name="upperBound">The inclusive upper bound of the range in which a pseudo-random integer should be generated.</param>
-		/// <returns>A uniformly distributed random 32-bit unsigned integer greater than or equal to 0 and less than or equal to <paramref name="upperBound"/>.</returns>
-		uint NextLessThanOrEqual(uint upperBound);
-
-		/// <summary>
-		/// Get a uniformly distributed random unsigned integer greater than or equal to 0 and less than <paramref name="upperBound"/>.
-		/// </summary>
-		/// <param name="upperBound">The exclusive upper bound of the range in which a pseudo-random integer should be generated.</param>
-		/// <returns>A uniformly distributed random 64-bit unsigned integer greater than or equal to 0 and less than <paramref name="upperBound"/>.</returns>
-		ulong NextLessThan(ulong upperBound);
-
-		/// <summary>
-		/// Get a uniformly distributed random unsigned integer greater than or equal to 0 and less than or equal to <paramref name="upperBound"/>.
-		/// </summary>
-		/// <param name="upperBound">The inclusive upper bound of the range in which a pseudo-random integer should be generated.</param>
-		/// <returns>A uniformly distributed random 64-bit unsigned integer greater than or equal to 0 and less than or equal to <paramref name="upperBound"/>.</returns>
-		ulong NextLessThanOrEqual(ulong upperBound);
-
-		/// <summary>
 		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
 		/// </summary>
 		/// <remarks>

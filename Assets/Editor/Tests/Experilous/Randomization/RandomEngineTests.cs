@@ -55,18 +55,6 @@ namespace Experilous.Randomization.Tests
 			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateNextLessThanBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
-		{
-			var buckets = new int[bucketCount];
-			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
-			{
-				var random = engine.NextLessThan((uint)bucketCount);
-				buckets[random] += 1;
-			}
-
-			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
-		}
-
 		public static void ValidateChanceDistribution(IRandomEngine engine, int numerator, int denominator, int trialCount, float tolerance)
 		{
 			int falseCount = 0;
@@ -108,22 +96,6 @@ namespace Experilous.Randomization.Tests
 			ValidateNext64BitsDistribution(SystemRandomEngine.Create(seed), 5, 10000, 0.03f);
 			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f);
 			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f);
-		}
-
-		[Test]
-		public void NextLessThanPowerOfTwoBucketDistribution()
-		{
-			ValidateNextLessThanBucketDistribution(SystemRandomEngine.Create(seed), 32, 3000, 0.05f);
-			ValidateNextLessThanBucketDistribution(SplitMix64.Create(seed), 32, 3000, 0.05f);
-			ValidateNextLessThanBucketDistribution(XorShift128Plus.Create(seed), 32, 3000, 0.05f);
-		}
-
-		[Test]
-		public void NextLessThanNonPowerOfTwoBucketDistribution()
-		{
-			ValidateNextLessThanBucketDistribution(SystemRandomEngine.Create(seed), 25, 4000, 0.04f);
-			ValidateNextLessThanBucketDistribution(SplitMix64.Create(seed), 25, 4000, 0.04f);
-			ValidateNextLessThanBucketDistribution(XorShift128Plus.Create(seed), 25, 4000, 0.04f);
 		}
 
 		[Test]

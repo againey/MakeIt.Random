@@ -126,54 +126,6 @@ namespace Experilous.Randomization
 			return ((ulong)Next16() << 48) | ((ulong)Next24() << 24) | Next24();
 		}
 
-		public override uint NextLessThan(uint upperBound)
-		{
-			if (upperBound < int.MaxValue)
-			{
-				return (uint)UnityEngine.Random.Range(0, (int)upperBound);
-			}
-			else
-			{
-				return base.NextLessThan(upperBound);
-			}
-		}
-
-		public override uint NextLessThanOrEqual(uint upperBound)
-		{
-			if (upperBound > 0 && upperBound - 1 < int.MaxValue)
-			{
-				return (uint)UnityEngine.Random.Range(0, (int)upperBound + 1);
-			}
-			else
-			{
-				return base.NextLessThan(upperBound);
-			}
-		}
-
-		public override ulong NextLessThan(ulong upperBound)
-		{
-			if (upperBound < int.MaxValue)
-			{
-				return (ulong)UnityEngine.Random.Range(0, (int)upperBound);
-			}
-			else
-			{
-				return base.NextLessThan(upperBound);
-			}
-		}
-
-		public override ulong NextLessThanOrEqual(ulong upperBound)
-		{
-			if (upperBound > 0 && upperBound - 1 < int.MaxValue)
-			{
-				return (ulong)UnityEngine.Random.Range(0, (int)upperBound + 1);
-			}
-			else
-			{
-				return base.NextLessThan(upperBound);
-			}
-		}
-
 		public override System.Random AsSystemRandom()
 		{
 			return new SystemRandomWrapper64(this);

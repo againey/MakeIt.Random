@@ -12,7 +12,7 @@ namespace Experilous.Randomization
 
 		public static int Roll(int sides, IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan((uint)sides) + 1;
+			return RandomRange.HalfOpen(sides, engine) + 1;
 		}
 
 		public static int[] Roll(int quantity, int sides, IRandomEngine engine)
@@ -20,7 +20,7 @@ namespace Experilous.Randomization
 			var dice = new int[quantity];
 			for (int i = 0; i < quantity; ++i)
 			{
-				dice[i] = (int)engine.NextLessThan((uint)sides) + 1;
+				dice[i] = RandomRange.HalfOpen(sides, engine) + 1;
 			}
 			return dice;
 		}
@@ -31,7 +31,7 @@ namespace Experilous.Randomization
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
 			for (int i = 0; i < quantity; ++i)
 			{
-				dice[i] = (int)engine.NextLessThan((uint)sides) + 1;
+				dice[i] = RandomRange.HalfOpen(sides, engine) + 1;
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace Experilous.Randomization
 			dice.Clear();
 			while (dice.Count < quantity)
 			{
-				dice.Add((int)engine.NextLessThan((uint)sides) + 1);
+				dice.Add(RandomRange.HalfOpen(sides, engine) + 1);
 			}
 		}
 
@@ -51,12 +51,12 @@ namespace Experilous.Randomization
 
 		public static int SumRoll(int quantity, int sides, IRandomEngine engine)
 		{
-			uint sum = 0;
+			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				sum += engine.NextLessThan((uint)sides);
+				sum += RandomRange.HalfOpen(sides, engine);
 			}
-			return (int)sum + quantity;
+			return sum + quantity;
 		}
 
 		public static int SumRoll(int quantity, int sides, out int[] dice, IRandomEngine engine)
@@ -65,7 +65,7 @@ namespace Experilous.Randomization
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				int die = RandomRange.HalfOpen(sides, engine) + 1;
 				dice[i] = die;
 				sum += die;
 			}
@@ -79,7 +79,7 @@ namespace Experilous.Randomization
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				int die = RandomRange.HalfOpen(sides, engine) + 1;
 				dice[i] = die;
 				sum += die;
 			}
@@ -93,7 +93,7 @@ namespace Experilous.Randomization
 			int sum = 0;
 			while (dice.Count < quantity)
 			{
-				int die = (int)engine.NextLessThan((uint)sides) + 1;
+				int die = RandomRange.HalfOpen(sides, engine) + 1;
 				dice.Add(die);
 				sum += die;
 			}
@@ -165,7 +165,7 @@ namespace Experilous.Randomization
 				do
 				{
 					if (i >= additionalQuantity) return;
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					++i;
 				} while (die <= min);
 
@@ -188,7 +188,7 @@ namespace Experilous.Randomization
 				{
 					if (i >= additionalQuantity) return;
 
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					if (die <= min)
 					{
 						discardedDice[i++] = die;
@@ -217,7 +217,7 @@ namespace Experilous.Randomization
 					
 					if (discardedDice.Count >= additionalQuantity) return;
 
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					if (die <= min)
 					{
 						discardedDice.Add(die);
@@ -243,7 +243,7 @@ namespace Experilous.Randomization
 				do
 				{
 					if (i >= additionalQuantity) return;
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					++i;
 				} while (die >= max);
 
@@ -266,7 +266,7 @@ namespace Experilous.Randomization
 				{
 					if (i >= additionalQuantity) return;
 
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					if (die >= max)
 					{
 						discardedDice[i++] = die;
@@ -295,7 +295,7 @@ namespace Experilous.Randomization
 					
 					if (discardedDice.Count >= additionalQuantity) return;
 
-					die = (int)engine.NextLessThan((uint)sides) + 1;
+					die = RandomRange.HalfOpen(sides, engine) + 1;
 					if (die >= max)
 					{
 						discardedDice.Add(die);
@@ -895,32 +895,32 @@ namespace Experilous.Randomization
 
 		public static int D4(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(4) + 1;
+			return RandomRange.Closed(1, 4, engine);
 		}
 
 		public static int D6(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(6) + 1;
+			return RandomRange.Closed(1, 6, engine);
 		}
 
 		public static int D8(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(8) + 1;
+			return RandomRange.Closed(1, 8, engine);
 		}
 
 		public static int D10(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(10) + 1;
+			return RandomRange.Closed(1, 10, engine);
 		}
 
 		public static int D12(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(12) + 1;
+			return RandomRange.Closed(1, 12, engine);
 		}
 
 		public static int D20(IRandomEngine engine)
 		{
-			return (int)engine.NextLessThan(20) + 1;
+			return RandomRange.Closed(1, 20, engine);
 		}
 	}
 }

@@ -938,25 +938,25 @@ namespace Experilous.Examples.Randomization
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
 
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
 
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
 
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
-				_generatedUInt = random.NextLessThan(6);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
+				_generatedUInt = RandomRange.HalfOpen(6U, random);
 			}
 		}
 

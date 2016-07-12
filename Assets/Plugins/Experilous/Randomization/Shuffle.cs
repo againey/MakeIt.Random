@@ -46,7 +46,7 @@ namespace Experilous.Randomization
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				Utility.Swap(ref array[i], ref array[engine.NextLessThanOrEqual((uint)i)]);
+				Utility.Swap(ref array[i], ref array[RandomRange.Closed(i, engine)]);
 			}
 			return array;
 		}
@@ -55,7 +55,7 @@ namespace Experilous.Randomization
 		{
 			for (int i = list.Count - 1; i > 0; --i)
 			{
-				int j = (int)engine.NextLessThanOrEqual((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				T temp = list[i];
 				list[i] = list[j];
 				list[j] = temp;
@@ -70,7 +70,7 @@ namespace Experilous.Randomization
 			if (target.Count < source.Count) throw new System.ArgumentException("The target list must either be empty or be at least as large as the source list.", "target");
 			for (int i = 0; i < source.Count; ++i)
 			{
-				int j = (int)engine.NextLessThanOrEqual((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				if (i != j)
 				{
 					target[i] = target[j];
@@ -84,7 +84,7 @@ namespace Experilous.Randomization
 		{
 			for (int i = 0; i < source.Count; ++i)
 			{
-				int j = (int)engine.NextLessThanOrEqual((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				if (i != j)
 				{
 					target.Add(target[j]);
@@ -111,7 +111,7 @@ namespace Experilous.Randomization
 			{
 				++i;
 				if (i >= target.Count) throw new System.ArgumentException("The target list must either be empty or be at least as large as the source enumerable.", "target");
-				int j = (int)engine.NextLessThanOrEqual((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				if (i != j)
 				{
 					target[i] = target[j];
@@ -137,7 +137,7 @@ namespace Experilous.Randomization
 			while (enumerator.MoveNext())
 			{
 				++i;
-				int j = (int)engine.NextLessThanOrEqual((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				if (i != j)
 				{
 					target.Add(target[j]);
@@ -195,7 +195,7 @@ namespace Experilous.Randomization
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				Utility.Swap(ref array[i], ref array[engine.NextLessThan((uint)i)]);
+				Utility.Swap(ref array[i], ref array[RandomRange.Closed(i, engine)]);
 			}
 			return array;
 		}
@@ -204,7 +204,7 @@ namespace Experilous.Randomization
 		{
 			for (int i = list.Count - 1; i > 0; --i)
 			{
-				int j = (int)engine.NextLessThan((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				T temp = list[i];
 				list[i] = list[j];
 				list[j] = temp;
@@ -220,7 +220,7 @@ namespace Experilous.Randomization
 			target[0] = source[0];
 			for (int i = 1; i < source.Count; ++i)
 			{
-				int j = (int)engine.NextLessThan((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				target[i] = target[j];
 				target[j] = source[i];
 			}
@@ -232,7 +232,7 @@ namespace Experilous.Randomization
 			target.Add(source[0]);
 			for (int i = 1; i < source.Count; ++i)
 			{
-				int j = (int)engine.NextLessThan((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				target.Add(target[j]);
 				target[j] = source[i];
 			}
@@ -252,7 +252,7 @@ namespace Experilous.Randomization
 			{
 				++i;
 				if (i >= target.Count) throw new System.ArgumentException("The target list must either be empty or be at least as large as the source enumerable.", "target");
-				int j = (int)engine.NextLessThan((uint)i);
+				int j = RandomRange.Closed(i, engine);
 				target[i] = target[j];
 				target[j] = enumerator.Current;
 			}
@@ -273,7 +273,7 @@ namespace Experilous.Randomization
 
 			while (enumerator.MoveNext())
 			{
-				int j = (int)engine.NextLessThan((uint)target.Count);
+				int j = RandomRange.Closed(target.Count, engine);
 				target.Add(target[j]);
 				target[j] = enumerator.Current;
 			}

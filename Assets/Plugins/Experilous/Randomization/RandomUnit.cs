@@ -115,7 +115,7 @@ namespace Experilous.Randomization
 			// of secondary random checks additively has the requisite 2^23 in 2^23 + 1 chance of passing, but over 99.95%
 			// of the time only one call to Next32() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
-			// on how NextLessThan() is implemented.
+			// on how RandomRange.HalfOpen() is implemented.
 
 			uint random = engine.Next32();
 			BitwiseFloat value;
@@ -126,7 +126,7 @@ namespace Experilous.Randomization
 			{
 				return value.number - 1f;
 			}
-			else if (engine.NextLessThan(0x00800001U) < 0x007FF801U)
+			else if (RandomRange.HalfOpen(0x00800001U, engine) < 0x007FF801U)
 			{
 				return value.number - 1f;
 			}
@@ -151,7 +151,7 @@ namespace Experilous.Randomization
 			// of secondary random checks additively has the requisite 2^52 in 2^52 + 1 chance of passing, but over 99.97%
 			// of the time only one call to Next64() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
-			// on how NextLessThan() is implemented.
+			// on how RandomRange.HalfOpen() is implemented.
 
 			ulong random = engine.Next64();
 			BitwiseDouble value;
@@ -162,7 +162,7 @@ namespace Experilous.Randomization
 			{
 				return value.number - 1.0;
 			}
-			else if (engine.NextLessThan(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			else if (RandomRange.HalfOpen(0x0010000000000001UL, engine) < 0x000FFFFFFFFFF001UL)
 			{
 				return value.number - 1.0;
 			}
