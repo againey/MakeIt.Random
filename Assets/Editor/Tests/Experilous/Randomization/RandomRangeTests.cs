@@ -5,7 +5,6 @@
 #if UNITY_5_3
 using UnityEngine;
 using NUnit.Framework;
-using NSubstitute;
 
 namespace Experilous.Randomization.Tests
 {
@@ -764,17 +763,12 @@ namespace Experilous.Randomization.Tests
 			ValidateOpenRange(10000, 127, 384, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 127, 384, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 43, mock);
 			ValidateOpenRange(10000, 43, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 43, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 43, XorShift128Plus.Create(seed));
 			ValidateOpenRange(10000, 43, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 43, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 140, 183, mock);
 			ValidateOpenRange(10000, 140, 183, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 140, 183, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 140, 183, XorShift128Plus.Create(seed));
@@ -797,17 +791,12 @@ namespace Experilous.Randomization.Tests
 			ValidateOpenRange(10000, 127U, 384U, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 127U, 384U, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 43U, mock);
 			ValidateOpenRange(10000, 43U, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 43U, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 43U, XorShift128Plus.Create(seed));
 			ValidateOpenRange(10000, 43U, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 43U, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 140U, 183U, mock);
 			ValidateOpenRange(10000, 140U, 183U, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 140U, 183U, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
@@ -836,17 +825,12 @@ namespace Experilous.Randomization.Tests
 			ValidateOpenRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 43L, mock);
 			ValidateOpenRange(10000, 43L, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 43L, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 43L, XorShift128Plus.Create(seed));
 			ValidateOpenRange(10000, 43L, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 43L, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 140L, 183L, mock);
 			ValidateOpenRange(10000, 140L, 183L, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 140L, 183L, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
@@ -875,17 +859,12 @@ namespace Experilous.Randomization.Tests
 			ValidateOpenRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 43UL, mock);
 			ValidateOpenRange(10000, 43UL, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 43UL, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 43UL, XorShift128Plus.Create(seed));
 			ValidateOpenRange(10000, 43UL, XoroShiro128Plus.Create(seed));
 			ValidateOpenRange(10000, 43UL, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateOpenRange(8, 140UL, 183UL, mock);
 			ValidateOpenRange(10000, 140UL, 183UL, SystemRandomEngine.Create(seed));
 			ValidateOpenRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
 			ValidateOpenRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
@@ -908,17 +887,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfOpenRange(10000, 128, 384, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 128, 384, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 43, mock);
 			ValidateHalfOpenRange(10000, 43, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 43, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 43, XorShift128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 140, 183, mock);
 			ValidateHalfOpenRange(10000, 140, 183, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 140, 183, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 140, 183, XorShift128Plus.Create(seed));
@@ -941,17 +915,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfOpenRange(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 128U, 384U, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 43U, mock);
 			ValidateHalfOpenRange(10000, 43U, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 43U, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 43U, XorShift128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43U, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43U, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 140U, 183U, mock);
 			ValidateHalfOpenRange(10000, 140U, 183U, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 140U, 183U, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
@@ -980,17 +949,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfOpenRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 43L, mock);
 			ValidateHalfOpenRange(10000, 43L, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 43L, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 43L, XorShift128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43L, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43L, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 140L, 183L, mock);
 			ValidateHalfOpenRange(10000, 140L, 183L, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 140L, 183L, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
@@ -1018,18 +982,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfOpenRange(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
-
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 43UL, mock);
 			ValidateHalfOpenRange(10000, 43UL, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 43UL, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 43UL, XorShift128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43UL, XoroShiro128Plus.Create(seed));
 			ValidateHalfOpenRange(10000, 43UL, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfOpenRange(8, 140UL, 183UL, mock);
 			ValidateHalfOpenRange(10000, 140UL, 183UL, SystemRandomEngine.Create(seed));
 			ValidateHalfOpenRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
 			ValidateHalfOpenRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
@@ -1052,17 +1010,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfClosedRange(10000, 128, 384, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 128, 384, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 43, mock);
 			ValidateHalfClosedRange(10000, 43, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 43, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 43, XorShift128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 140, 183, mock);
 			ValidateHalfClosedRange(10000, 140, 183, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 140, 183, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 140, 183, XorShift128Plus.Create(seed));
@@ -1085,17 +1038,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfClosedRange(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 128U, 384U, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 43U, mock);
 			ValidateHalfClosedRange(10000, 43U, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 43U, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 43U, XorShift128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43U, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43U, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 140U, 183U, mock);
 			ValidateHalfClosedRange(10000, 140U, 183U, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 140U, 183U, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
@@ -1124,17 +1072,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfClosedRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 43L, mock);
 			ValidateHalfClosedRange(10000, 43L, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 43L, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 43L, XorShift128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43L, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43L, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 140L, 183L, mock);
 			ValidateHalfClosedRange(10000, 140L, 183L, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 140L, 183L, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
@@ -1163,17 +1106,12 @@ namespace Experilous.Randomization.Tests
 			ValidateHalfClosedRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 43UL, mock);
 			ValidateHalfClosedRange(10000, 43UL, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 43UL, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 43UL, XorShift128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43UL, XoroShiro128Plus.Create(seed));
 			ValidateHalfClosedRange(10000, 43UL, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateHalfClosedRange(8, 140UL, 183UL, mock);
 			ValidateHalfClosedRange(10000, 140UL, 183UL, SystemRandomEngine.Create(seed));
 			ValidateHalfClosedRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
 			ValidateHalfClosedRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
@@ -1196,17 +1134,12 @@ namespace Experilous.Randomization.Tests
 			ValidateClosedRange(10000, 128, 383, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 128, 383, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 43, mock);
 			ValidateClosedRange(10000, 43, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 43, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 43, XorShift128Plus.Create(seed));
 			ValidateClosedRange(10000, 43, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 43, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 140, 183, mock);
 			ValidateClosedRange(10000, 140, 183, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 140, 183, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 140, 183, XorShift128Plus.Create(seed));
@@ -1229,17 +1162,12 @@ namespace Experilous.Randomization.Tests
 			ValidateClosedRange(10000, 128U, 383U, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 128U, 383U, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 43U, mock);
 			ValidateClosedRange(10000, 43U, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 43U, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 43U, XorShift128Plus.Create(seed));
 			ValidateClosedRange(10000, 43U, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 43U, XorShift1024Star.Create(seed));
 
-			mock.Next32().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 140U, 183U, mock);
 			ValidateClosedRange(10000, 140U, 183U, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 140U, 183U, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
@@ -1268,17 +1196,12 @@ namespace Experilous.Randomization.Tests
 			ValidateClosedRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 43L, mock);
 			ValidateClosedRange(10000, 43L, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 43L, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 43L, XorShift128Plus.Create(seed));
 			ValidateClosedRange(10000, 43L, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 43L, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 140L, 183L, mock);
 			ValidateClosedRange(10000, 140L, 183L, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 140L, 183L, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
@@ -1307,17 +1230,12 @@ namespace Experilous.Randomization.Tests
 			ValidateClosedRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			var mock = Substitute.For<IRandomEngine>();
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 43UL, mock);
 			ValidateClosedRange(10000, 43UL, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 43UL, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 43UL, XorShift128Plus.Create(seed));
 			ValidateClosedRange(10000, 43UL, XoroShiro128Plus.Create(seed));
 			ValidateClosedRange(10000, 43UL, XorShift1024Star.Create(seed));
 
-			mock.Next64().Returns(0U, 1U, 20U, 41U, 42U, 19U, 43U, 18U, 63U, 17U, 64U);
-			ValidateClosedRange(8, 140UL, 183UL, mock);
 			ValidateClosedRange(10000, 140UL, 183UL, SystemRandomEngine.Create(seed));
 			ValidateClosedRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
 			ValidateClosedRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
