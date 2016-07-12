@@ -80,10 +80,52 @@ namespace Experilous.Randomization
 		public abstract uint Next32();
 		public abstract ulong Next64();
 
-		private static readonly byte[] _shiftTable32 = new byte[]
+		private static readonly byte[] _maskShiftTable32 = new byte[]
 		{
 			31, 22, 30, 21, 18, 10, 29,  2, 20, 17, 15, 13,  9,  6, 28,  1,
 			23, 19, 11,  3, 16, 14,  7, 24, 12,  4,  8, 25,  5, 26, 27,  0,
+		};
+
+		private static readonly byte[] _log2CeilTable32 = new byte[]
+		{
+			 1, 10,  2, 11, 14, 22,  3, 30, 12, 15, 17, 19, 23, 26,  4, 31,
+			 9, 13, 21, 29, 16, 18, 25,  8, 20, 28, 24,  7, 27,  6,  5, 32,
+		};
+
+		private static readonly uint[] _maskTable32 = new uint[]
+		{
+			0x00000001U,
+			0x000003FFU,
+			0x00000003U,
+			0x000007FFU,
+			0x00003FFFU,
+			0x003FFFFFU,
+			0x00000007U,
+			0x3FFFFFFFU,
+			0x00000FFFU,
+			0x00007FFFU,
+			0x0001FFFFU,
+			0x0007FFFFU,
+			0x007FFFFFU,
+			0x03FFFFFFU,
+			0x0000000FU,
+			0x7FFFFFFFU,
+			0x000001FFU,
+			0x00001FFFU,
+			0x001FFFFFU,
+			0x1FFFFFFFU,
+			0x0000FFFFU,
+			0x0003FFFFU,
+			0x01FFFFFFU,
+			0x000000FFU,
+			0x000FFFFFU,
+			0x0FFFFFFFU,
+			0x00FFFFFFU,
+			0x0000007FU,
+			0x07FFFFFFU,
+			0x0000003FU,
+			0x0000001FU,
+			0xFFFFFFFFU,
 		};
 
 		private static readonly byte[] _shiftTable64 = new byte[]
@@ -97,20 +139,39 @@ namespace Experilous.Randomization
 		public virtual uint NextLessThan(uint upperBound)
 		{
 			if (upperBound == 0) throw new System.ArgumentOutOfRangeException("upperBound");
+
 			uint deBruijn = upperBound - 1U;
 			deBruijn |= deBruijn >> 1;
 			deBruijn |= deBruijn >> 2;
 			deBruijn |= deBruijn >> 4;
 			deBruijn |= deBruijn >> 8;
 			deBruijn |= deBruijn >> 16;
-			int rightShift = _shiftTable32[deBruijn * 0x07C4ACDDU >> 27];
-			uint random;
-			do
+			deBruijn = deBruijn * 0x07C4ACDDU >> 27;
+
+			uint mask = _maskTable32[deBruijn];
+			int bitsNeeded = _log2CeilTable32[deBruijn];
+
+			Start:
+
+			int bitsRemaining = 32;
+			uint random = Next32();
+			uint randomMasked = random & mask;
+
+			while (randomMasked >= upperBound)
 			{
-				random = Next32() >> rightShift;
+				bitsRemaining -= bitsNeeded;
+				if (bitsRemaining < bitsNeeded)
+				{
+					goto Start;
+				}
+				else
+				{
+					random = random >> bitsNeeded;
+					randomMasked = random & mask;
+				}
 			}
-			while (random >= upperBound);
-			return random;
+
+			return randomMasked;
 		}
 
 		public virtual uint NextLessThanOrEqual(uint upperBound)
@@ -121,7 +182,7 @@ namespace Experilous.Randomization
 			deBruijn |= deBruijn >> 4;
 			deBruijn |= deBruijn >> 8;
 			deBruijn |= deBruijn >> 16;
-			int rightShift = _shiftTable32[deBruijn * 0x07C4ACDDU >> 27];
+			int rightShift = _maskShiftTable32[deBruijn * 0x07C4ACDDU >> 27];
 			uint random;
 			do
 			{
