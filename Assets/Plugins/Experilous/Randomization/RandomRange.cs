@@ -108,20 +108,17 @@ namespace Experilous.Randomization
 		public static uint HalfOpen(uint upperExclusive, IRandomEngine engine)
 		{
 			if (upperExclusive == 0) throw new System.ArgumentOutOfRangeException("upperBound");
-			uint deBruijn = upperExclusive - 1U;
-			deBruijn |= deBruijn >> 1;
-			deBruijn |= deBruijn >> 2;
-			deBruijn |= deBruijn >> 4;
-			deBruijn |= deBruijn >> 8;
-			deBruijn |= deBruijn >> 16;
-			int rightShift = _shiftTable32[deBruijn * 0x07C4ACDDU >> 27];
+
+			// Effectively computes (uint.MaxValue + 1) % upperExclusive
+			uint min = (uint)(-upperExclusive) % upperExclusive;
 			uint random;
+
 			do
 			{
-				random = engine.Next32() >> rightShift;
-			}
-			while (random >= upperExclusive);
-			return random;
+				random = engine.Next32();
+			} while (random < min);
+
+			return random % upperExclusive;
 		}
 
 		public static long HalfOpen(long lowerInclusive, long upperExclusive, IRandomEngine engine)
