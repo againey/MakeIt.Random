@@ -162,17 +162,19 @@ namespace Experilous.Randomization
 
 		public override uint Next32()
 		{
+			// System.Random.Next() cannot quite provide 31 uniform bits, so we use Next(0x40000000) to get 30 bits at a time.
 			return
-				(uint)_random.Next() << 1 & 0xFFFF0000U |
-				(uint)_random.Next() & 0x0000FFFFU;
+				(uint)_random.Next(0x40000000) << 2 & 0xFFFF0000U | // Use the upper 16 bits of the first 30 bits generated.
+				(uint)_random.Next(0x40000000)      & 0x0000FFFFU;  // Use the lower 16 bits of the final 30 bits generated.
 		}
 
 		public override ulong Next64()
 		{
+			// System.Random.Next() cannot quite provide 31 uniform bits, so we use Next(0x40000000) to get 30 bits at a time.
 			return
-				(ulong)_random.Next() << 33 & 0xFFFFFF0000000000UL |
-				(ulong)_random.Next() << 12 & 0x000000FFFFFF0000UL |
-				(ulong)_random.Next() & 0x000000000000FFFFUL;
+				(ulong)_random.Next(0x40000000) << 34 & 0xFFFFF80000000000UL | // Use the upper 21 bits of the first 30 bits generated.
+				(ulong)_random.Next(0x40000000) << 17 & 0x000007FFFFE00000UL | // Use the middle 22 bits of the next 30 bits generated.
+				(ulong)_random.Next(0x40000000)       & 0x00000000001FFFFFUL;  // Use the lower 21 bits of the final 30 bits generated.
 		}
 
 		public override System.Random AsSystemRandom()
