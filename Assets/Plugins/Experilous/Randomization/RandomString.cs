@@ -117,6 +117,99 @@ namespace Experilous.Randomization
 
 		#endregion
 
+		#region Base64
+
+		public enum Base64CharacterPairs
+		{
+			PlusSlash,
+			HyphenUnderscore,
+			PeriodUnderscore,
+			PeriodHyphen,
+			UnderscoreColon,
+			UnderscoreHyphen,
+			BangHyphen,
+			TildeHyphen,
+		}
+
+		private static char[] _base64PlusSlashCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
+		};
+
+		private static char[] _base64HyphenUnderscoreCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_',
+		};
+
+		private static char[] _base64PeriodUnderscoreCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '_',
+		};
+
+		private static char[] _base64PeriodHyphenCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-',
+		};
+
+		private static char[] _base64UnderscoreColonCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
+		};
+
+		private static char[] _base64UnderscoreHyphenCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_', '-',
+		};
+
+		private static char[] _base64BangHyphenCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '-',
+		};
+
+		private static char[] _base64TildeHyphenCharacters =
+		{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '~', '-',
+		};
+
+		public static string Base64(int length, IRandomEngine engine)
+		{
+			return UsingCharacters(length, _base64PlusSlashCharacters, engine);
+		}
+
+		public static string Base64(int length, Base64CharacterPairs characterPairs, IRandomEngine engine)
+		{
+			switch (characterPairs)
+			{
+				case Base64CharacterPairs.PlusSlash: return UsingCharacters(length, _base64PlusSlashCharacters, engine);
+				case Base64CharacterPairs.HyphenUnderscore: return UsingCharacters(length, _base64HyphenUnderscoreCharacters, engine);
+				case Base64CharacterPairs.PeriodUnderscore: return UsingCharacters(length, _base64PeriodUnderscoreCharacters, engine);
+				case Base64CharacterPairs.PeriodHyphen: return UsingCharacters(length, _base64PeriodHyphenCharacters, engine);
+				case Base64CharacterPairs.UnderscoreColon: return UsingCharacters(length, _base64UnderscoreColonCharacters, engine);
+				case Base64CharacterPairs.UnderscoreHyphen: return UsingCharacters(length, _base64UnderscoreHyphenCharacters, engine);
+				case Base64CharacterPairs.BangHyphen: return UsingCharacters(length, _base64BangHyphenCharacters, engine);
+				case Base64CharacterPairs.TildeHyphen: return UsingCharacters(length, _base64TildeHyphenCharacters, engine);
+				default: throw new System.NotImplementedException();
+			}
+		}
+
+		#endregion
+
 		#region Alpha-Numeric
 
 		private static char[] _alphaNumericCharacters =
@@ -328,99 +421,6 @@ namespace Experilous.Randomization
 		{
 			if (length <= 0) return "";
 			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength, engine);
-		}
-
-		#endregion
-
-		#region Base64
-
-		public enum Base64CharacterPairs
-		{
-			PlusSlash,
-			HyphenUnderscore,
-			PeriodUnderscore,
-			PeriodHyphen,
-			UnderscoreColon,
-			UnderscoreHyphen,
-			BangHyphen,
-			TildeHyphen,
-		}
-
-		private static char[] _base64PlusSlashCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
-		};
-
-		private static char[] _base64HyphenUnderscoreCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_',
-		};
-
-		private static char[] _base64PeriodUnderscoreCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '_',
-		};
-
-		private static char[] _base64PeriodHyphenCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-',
-		};
-
-		private static char[] _base64UnderscoreColonCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
-		};
-
-		private static char[] _base64UnderscoreHyphenCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_', '-',
-		};
-
-		private static char[] _base64BangHyphenCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '-',
-		};
-
-		private static char[] _base64TildeHyphenCharacters =
-		{
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '~', '-',
-		};
-
-		public static string Base64(int length, IRandomEngine engine)
-		{
-			return UsingCharacters(length, _base64PlusSlashCharacters, engine);
-		}
-
-		public static string Base64(int length, Base64CharacterPairs characterPairs, IRandomEngine engine)
-		{
-			switch (characterPairs)
-			{
-				case Base64CharacterPairs.PlusSlash: return UsingCharacters(length, _base64PlusSlashCharacters, engine);
-				case Base64CharacterPairs.HyphenUnderscore: return UsingCharacters(length, _base64HyphenUnderscoreCharacters, engine);
-				case Base64CharacterPairs.PeriodUnderscore: return UsingCharacters(length, _base64PeriodUnderscoreCharacters, engine);
-				case Base64CharacterPairs.PeriodHyphen: return UsingCharacters(length, _base64PeriodHyphenCharacters, engine);
-				case Base64CharacterPairs.UnderscoreColon: return UsingCharacters(length, _base64UnderscoreColonCharacters, engine);
-				case Base64CharacterPairs.UnderscoreHyphen: return UsingCharacters(length, _base64UnderscoreHyphenCharacters, engine);
-				case Base64CharacterPairs.BangHyphen: return UsingCharacters(length, _base64BangHyphenCharacters, engine);
-				case Base64CharacterPairs.TildeHyphen: return UsingCharacters(length, _base64TildeHyphenCharacters, engine);
-				default: throw new System.NotImplementedException();
-			}
 		}
 
 		#endregion
