@@ -176,6 +176,106 @@ namespace Experilous.Randomization
 			return index;
 		}
 
+		public static int Weighted(int elementCount, System.Func<int, int> weightsAccessor, IRandomEngine engine)
+		{
+			int weightSum = 0;
+			for (int i = 0; i < elementCount; ++i)
+			{
+				weightSum += weightsAccessor(i);
+			}
+			return Weighted(elementCount, weightsAccessor, weightSum, engine);
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, int> weightsAccessor, int weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < elementCount)
+			{
+				if (RandomRange.HalfOpen(weightSum, engine) < weightsAccessor(index))
+				{
+					return index;
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return index;
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, uint> weightsAccessor, IRandomEngine engine)
+		{
+			uint weightSum = 0;
+			for (int i = 0; i < elementCount; ++i)
+			{
+				weightSum += weightsAccessor(i);
+			}
+			return Weighted(elementCount, weightsAccessor, weightSum, engine);
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, uint> weightsAccessor, uint weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < elementCount)
+			{
+				if (RandomRange.HalfOpen(weightSum, engine) < weightsAccessor(index))
+				{
+					return index;
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return index;
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, float> weightsAccessor, IRandomEngine engine)
+		{
+			float weightSum = 0;
+			for (int i = 0; i < elementCount; ++i)
+			{
+				weightSum += weightsAccessor(i);
+			}
+			return Weighted(elementCount, weightsAccessor, weightSum, engine);
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, float> weightsAccessor, float weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < elementCount)
+			{
+				if (RandomRange.HalfOpen(weightSum, engine) < weightsAccessor(index))
+				{
+					return index;
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return index;
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, double> weightsAccessor, IRandomEngine engine)
+		{
+			double weightSum = 0;
+			for (int i = 0; i < elementCount; ++i)
+			{
+				weightSum += weightsAccessor(i);
+			}
+			return Weighted(elementCount, weightsAccessor, weightSum, engine);
+		}
+
+		public static int Weighted(int elementCount, System.Func<int, double> weightsAccessor, double weightSum, IRandomEngine engine)
+		{
+			int index = 0;
+			while (index < elementCount)
+			{
+				if (RandomRange.HalfOpen(weightSum, engine) < weightsAccessor(index))
+				{
+					return index;
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return index;
+		}
+
 		#endregion
 	}
 }

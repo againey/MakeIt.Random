@@ -166,12 +166,7 @@ namespace Experilous.Examples.Randomization
 
 		public void OnSelectWeightedRandomItem()
 		{
-			float[] weights = new float[_items.Count];
-			for (int i = 0; i < _items.Count; ++i)
-			{
-				weights[i] = _items[i].weight;
-			}
-			int index = RandomIndex.Weighted(weights, _random);
+			int index = RandomIndex.Weighted(_items.Count, (int i) => _items[i].weight, _random);
 			WeightedShuffleItemPanel itemPanel = _itemPanels[index];
 			if (itemPanel != _selectedItemPanel)
 			{
