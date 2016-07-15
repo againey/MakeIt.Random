@@ -6,24 +6,6 @@ namespace Experilous.Randomization
 {
 	public static class RandomRange
 	{
-		#region Private Helper Tables
-
-		private static readonly byte[] _shiftTable32 = new byte[]
-		{
-			31, 22, 30, 21, 18, 10, 29,  2, 20, 17, 15, 13,  9,  6, 28,  1,
-			23, 19, 11,  3, 16, 14,  7, 24, 12,  4,  8, 25,  5, 26, 27,  0,
-		};
-
-		private static readonly byte[] _shiftTable64 = new byte[]
-		{
-			63,  5, 62,  4, 16, 10, 61,  3, 24, 15, 36,  9, 30, 21, 60,  2,
-			12, 26, 23, 14, 45, 35, 43,  8, 33, 29, 52, 20, 49, 41, 59,  1,
-			 6, 17, 11, 25, 37, 31, 22, 13, 27, 46, 44, 34, 53, 50, 42,  7,
-			18, 38, 32, 28, 47, 54, 51, 19, 39, 48, 55, 40, 56, 57, 58,  0, 
-		};
-
-		#endregion
-
 		#region Open
 
 		public static int Open(int lowerExclusive, int upperExclusive, IRandomEngine engine)
@@ -108,17 +90,16 @@ namespace Experilous.Randomization
 		public static uint HalfOpen(uint upperExclusive, IRandomEngine engine)
 		{
 			if (upperExclusive == 0) throw new System.ArgumentOutOfRangeException("upperBound");
-			uint deBruijn = upperExclusive - 1U;
-			deBruijn |= deBruijn >> 1;
-			deBruijn |= deBruijn >> 2;
-			deBruijn |= deBruijn >> 4;
-			deBruijn |= deBruijn >> 8;
-			deBruijn |= deBruijn >> 16;
-			int rightShift = _shiftTable32[deBruijn * 0x07C4ACDDU >> 27];
+			uint mask = upperExclusive - 1U;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
 			uint random;
 			do
 			{
-				random = engine.Next32() >> rightShift;
+				random = engine.Next32() & mask;
 			}
 			while (random >= upperExclusive);
 			return random;
@@ -142,18 +123,17 @@ namespace Experilous.Randomization
 		public static ulong HalfOpen(ulong upperExclusive, IRandomEngine engine)
 		{
 			if (upperExclusive == 0) throw new System.ArgumentOutOfRangeException("upperBound");
-			ulong deBruijn = upperExclusive - 1UL;
-			deBruijn |= deBruijn >> 1;
-			deBruijn |= deBruijn >> 2;
-			deBruijn |= deBruijn >> 4;
-			deBruijn |= deBruijn >> 8;
-			deBruijn |= deBruijn >> 16;
-			deBruijn |= deBruijn >> 32;
-			int rightShift = _shiftTable64[deBruijn * 0x03F6EAF2CD271461UL >> 58];
+			ulong mask = upperExclusive - 1UL;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
+			mask |= mask >> 32;
 			ulong random;
 			do
 			{
-				random = engine.Next64() >> rightShift;
+				random = engine.Next64() & mask;
 			}
 			while (random >= upperExclusive);
 			return random;
@@ -264,17 +244,16 @@ namespace Experilous.Randomization
 
 		public static uint Closed(uint upperInclusive, IRandomEngine engine)
 		{
-			uint deBruijn = upperInclusive;
-			deBruijn |= deBruijn >> 1;
-			deBruijn |= deBruijn >> 2;
-			deBruijn |= deBruijn >> 4;
-			deBruijn |= deBruijn >> 8;
-			deBruijn |= deBruijn >> 16;
-			int rightShift = _shiftTable32[deBruijn * 0x07C4ACDDU >> 27];
+			uint mask = upperInclusive;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
 			uint random;
 			do
 			{
-				random = engine.Next32() >> rightShift;
+				random = engine.Next32() & mask;
 			}
 			while (random > upperInclusive);
 			return random;
@@ -297,18 +276,17 @@ namespace Experilous.Randomization
 
 		public static ulong Closed(ulong upperInclusive, IRandomEngine engine)
 		{
-			ulong deBruijn = upperInclusive;
-			deBruijn |= deBruijn >> 1;
-			deBruijn |= deBruijn >> 2;
-			deBruijn |= deBruijn >> 4;
-			deBruijn |= deBruijn >> 8;
-			deBruijn |= deBruijn >> 16;
-			deBruijn |= deBruijn >> 32;
-			int rightShift = _shiftTable64[deBruijn * 0x03F6EAF2CD271461UL >> 58];
+			ulong mask = upperInclusive;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
+			mask |= mask >> 32;
 			ulong random;
 			do
 			{
-				random = engine.Next64() >> rightShift;
+				random = engine.Next64() & mask;
 			}
 			while (random > upperInclusive);
 			return random;
