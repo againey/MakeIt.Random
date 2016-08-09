@@ -13,176 +13,176 @@ namespace Experilous.Randomization.Tests
 	{
 		private const string seed = "random seed";
 
-		public static void ValidateOpenFloatUnitRange(int count, IRandomEngine engine)
+		public static void ValidateOpenFloatUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.OpenFloat(engine);
+				var random = RandomUnit.OpenFloat(random);
 				Assert.Greater(random, 0.0f);
 				Assert.Less(random, 1.0f);
 			}
 		}
 
-		public static void ValidateOpenDoubleUnitRange(int count, IRandomEngine engine)
+		public static void ValidateOpenDoubleUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.OpenDouble(engine);
+				var random = RandomUnit.OpenDouble(random);
 				Assert.Greater(random, 0.0);
 				Assert.Less(random, 1.0);
 			}
 		}
 
-		public static void ValidateHalfOpenFloatUnitRange(int count, IRandomEngine engine)
+		public static void ValidateHalfOpenFloatUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.HalfOpenFloat(engine);
+				var random = RandomUnit.HalfOpenFloat(random);
 				Assert.GreaterOrEqual(random, 0.0f);
 				Assert.Less(random, 1.0f);
 			}
 		}
 
-		public static void ValidateHalfOpenDoubleUnitRange(int count, IRandomEngine engine)
+		public static void ValidateHalfOpenDoubleUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.HalfOpenDouble(engine);
+				var random = RandomUnit.HalfOpenDouble(random);
 				Assert.GreaterOrEqual(random, 0.0);
 				Assert.Less(random, 1.0);
 			}
 		}
 
-		public static void ValidateHalfClosedFloatUnitRange(int count, IRandomEngine engine)
+		public static void ValidateHalfClosedFloatUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.HalfClosedFloat(engine);
+				var random = RandomUnit.HalfClosedFloat(random);
 				Assert.Greater(random, 0.0f);
 				Assert.LessOrEqual(random, 1.0f);
 			}
 		}
 
-		public static void ValidateHalfClosedDoubleUnitRange(int count, IRandomEngine engine)
+		public static void ValidateHalfClosedDoubleUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.HalfClosedDouble(engine);
+				var random = RandomUnit.HalfClosedDouble(random);
 				Assert.Greater(random, 0.0);
 				Assert.LessOrEqual(random, 1.0);
 			}
 		}
 
-		public static void ValidateClosedFloatUnitRange(int count, IRandomEngine engine)
+		public static void ValidateClosedFloatUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.ClosedFloat(engine);
+				var random = RandomUnit.ClosedFloat(random);
 				Assert.GreaterOrEqual(random, 0.0f);
 				Assert.LessOrEqual(random, 1.0f);
 			}
 		}
 
-		public static void ValidateClosedDoubleUnitRange(int count, IRandomEngine engine)
+		public static void ValidateClosedDoubleUnitRange(int count, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomUnit.ClosedDouble(engine);
+				var random = RandomUnit.ClosedDouble(random);
 				Assert.GreaterOrEqual(random, 0.0);
 				Assert.LessOrEqual(random, 1.0);
 			}
 		}
 
-		public static void ValidateOpenFloatUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenFloatUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.OpenFloat(engine);
+				var random = RandomUnit.OpenFloat(random);
 				buckets[Mathf.FloorToInt(random * bucketCount)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenDoubleUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenDoubleUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.OpenDouble(engine);
+				var random = RandomUnit.OpenDouble(random);
 				buckets[(int)System.Math.Floor(random * bucketCount)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenFloatUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenFloatUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.HalfOpenFloat(engine);
+				var random = RandomUnit.HalfOpenFloat(random);
 				buckets[Mathf.FloorToInt(random * bucketCount)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenDoubleUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenDoubleUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.HalfOpenDouble(engine);
+				var random = RandomUnit.HalfOpenDouble(random);
 				buckets[(int)System.Math.Floor(random * bucketCount)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedFloatUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedFloatUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.HalfClosedFloat(engine);
+				var random = RandomUnit.HalfClosedFloat(random);
 				buckets[Mathf.CeilToInt(random * bucketCount) - 1] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedDoubleUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedDoubleUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.HalfClosedDouble(engine);
+				var random = RandomUnit.HalfClosedDouble(random);
 				buckets[(int)System.Math.Ceiling(random * bucketCount) - 1] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedFloatUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedFloatUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.ClosedFloat(engine);
+				var random = RandomUnit.ClosedFloat(random);
 				if (random != 1.0f) buckets[Mathf.FloorToInt(random * bucketCount)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedDoubleUnitBucketDistribution(IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedDoubleUnitBucketDistribution(IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomUnit.ClosedDouble(engine);
+				var random = RandomUnit.ClosedDouble(random);
 				if (random != 1.0) buckets[(int)System.Math.Floor(random * bucketCount)] += 1;
 			}
 

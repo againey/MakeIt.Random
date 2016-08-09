@@ -4,36 +4,43 @@
 
 namespace Experilous.Randomization
 {
-	public static class RandomString
+	public struct RandomString
 	{
+		private IRandomEngine _random;
+
+		public RandomString(IRandomEngine random)
+		{
+			_random = random;
+		}
+
 		#region UsingCharacters
 
-		public static string UsingCharacters(int length, char[] characters, IRandomEngine engine)
+		public string UsingCharacters(int length, char[] characters)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
 			{
-				buffer[i] = characters.RandomElement(engine);
+				buffer[i] = characters.RandomElement(_random);
 			}
 			return new string(buffer);
 		}
 
-		public static string UsingCharacters(int length, char[] characters, char otherCharacter, float otherFrequency, IRandomEngine engine)
+		public string UsingCharacters(int length, char[] characters, char otherCharacter, float otherFrequency)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
 			{
-				buffer[i] = Chance.Probability(otherFrequency, engine) ? otherCharacter : characters.RandomElement(engine);
+				buffer[i] = _random.Chance().Probability(otherFrequency) ? otherCharacter : characters.RandomElement(_random);
 			}
 			return new string(buffer);
 		}
 
-		public static string UsingCharacters(int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength, IRandomEngine engine)
+		public string UsingCharacters(int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
 			{
-				buffer[i] = Chance.Probability(otherCountPerChunk, averageChunkLength, engine) ? otherCharacter : characters.RandomElement(engine);
+				buffer[i] = _random.Chance().Probability(otherCountPerChunk, averageChunkLength) ? otherCharacter : characters.RandomElement(_random);
 			}
 			return new string(buffer);
 		}
@@ -53,9 +60,9 @@ namespace Experilous.Randomization
 			'0', '1',
 		};
 
-		public static string Binary(int length, IRandomEngine engine)
+		public string Binary(int length)
 		{
-			return UsingCharacters(length, _binaryCharacters, engine);
+			return UsingCharacters(length, _binaryCharacters);
 		}
 
 		#endregion
@@ -67,9 +74,9 @@ namespace Experilous.Randomization
 			'0', '1', '2', '3', '4', '5', '6', '7',
 		};
 
-		public static string Octal(int length, IRandomEngine engine)
+		public string Octal(int length)
 		{
-			return UsingCharacters(length, _octalCharacters, engine);
+			return UsingCharacters(length, _octalCharacters);
 		}
 
 		#endregion
@@ -81,9 +88,9 @@ namespace Experilous.Randomization
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 		};
 
-		public static string Decimal(int length, IRandomEngine engine)
+		public string Decimal(int length)
 		{
-			return UsingCharacters(length, _decimalCharacters, engine);
+			return UsingCharacters(length, _decimalCharacters);
 		}
 
 		#endregion
@@ -110,9 +117,9 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static string Hexadecimal(int length, Casing casing, IRandomEngine engine)
+		public string Hexadecimal(int length, Casing casing)
 		{
-			return UsingCharacters(length, GetHexadecimalCharacters(casing), engine);
+			return UsingCharacters(length, GetHexadecimalCharacters(casing));
 		}
 
 		#endregion
@@ -187,23 +194,23 @@ namespace Experilous.Randomization
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '~', '-',
 		};
 
-		public static string Base64(int length, IRandomEngine engine)
+		public string Base64(int length)
 		{
-			return UsingCharacters(length, _base64PlusSlashCharacters, engine);
+			return UsingCharacters(length, _base64PlusSlashCharacters);
 		}
 
-		public static string Base64(int length, Base64CharacterPairs characterPairs, IRandomEngine engine)
+		public string Base64(int length, Base64CharacterPairs characterPairs)
 		{
 			switch (characterPairs)
 			{
-				case Base64CharacterPairs.PlusSlash: return UsingCharacters(length, _base64PlusSlashCharacters, engine);
-				case Base64CharacterPairs.HyphenUnderscore: return UsingCharacters(length, _base64HyphenUnderscoreCharacters, engine);
-				case Base64CharacterPairs.PeriodUnderscore: return UsingCharacters(length, _base64PeriodUnderscoreCharacters, engine);
-				case Base64CharacterPairs.PeriodHyphen: return UsingCharacters(length, _base64PeriodHyphenCharacters, engine);
-				case Base64CharacterPairs.UnderscoreColon: return UsingCharacters(length, _base64UnderscoreColonCharacters, engine);
-				case Base64CharacterPairs.UnderscoreHyphen: return UsingCharacters(length, _base64UnderscoreHyphenCharacters, engine);
-				case Base64CharacterPairs.BangHyphen: return UsingCharacters(length, _base64BangHyphenCharacters, engine);
-				case Base64CharacterPairs.TildeHyphen: return UsingCharacters(length, _base64TildeHyphenCharacters, engine);
+				case Base64CharacterPairs.PlusSlash: return UsingCharacters(length, _base64PlusSlashCharacters);
+				case Base64CharacterPairs.HyphenUnderscore: return UsingCharacters(length, _base64HyphenUnderscoreCharacters);
+				case Base64CharacterPairs.PeriodUnderscore: return UsingCharacters(length, _base64PeriodUnderscoreCharacters);
+				case Base64CharacterPairs.PeriodHyphen: return UsingCharacters(length, _base64PeriodHyphenCharacters);
+				case Base64CharacterPairs.UnderscoreColon: return UsingCharacters(length, _base64UnderscoreColonCharacters);
+				case Base64CharacterPairs.UnderscoreHyphen: return UsingCharacters(length, _base64UnderscoreHyphenCharacters);
+				case Base64CharacterPairs.BangHyphen: return UsingCharacters(length, _base64BangHyphenCharacters);
+				case Base64CharacterPairs.TildeHyphen: return UsingCharacters(length, _base64TildeHyphenCharacters);
 				default: throw new System.NotImplementedException();
 			}
 		}
@@ -241,44 +248,44 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static string AlphaNumeric(int length, IRandomEngine engine)
+		public string AlphaNumeric(int length)
 		{
-			return UsingCharacters(length, _alphaNumericCharacters, engine);
+			return UsingCharacters(length, _alphaNumericCharacters);
 		}
 
-		public static string AlphaNumericWithSpaces(int length, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length)
 		{
-			return UsingCharacters(length, _alphaNumericCharacters, ' ', 1, 62, engine);
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', 1, 62);
 		}
 
-		public static string AlphaNumericWithSpaces(int length, float spaceFrequency, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length, float spaceFrequency)
 		{
-			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceFrequency, engine);
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceFrequency);
 		}
 
-		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength)
 		{
-			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
-		public static string AlphaNumeric(int length, Casing casing, IRandomEngine engine)
+		public string AlphaNumeric(int length, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphaNumericCharacters(casing), engine);
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing));
 		}
 
-		public static string AlphaNumericWithSpaces(int length, Casing casing, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', 1, 62, engine);
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', 1, 62);
 		}
 
-		public static string AlphaNumericWithSpaces(int length, float spaceFrequency, Casing casing, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length, float spaceFrequency, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency, engine);
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency);
 		}
 
-		public static string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
+		public string AlphaNumericWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(length, GetAlphaNumericCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
 		#endregion
@@ -311,44 +318,44 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static string Alphabetic(int length, IRandomEngine engine)
+		public string Alphabetic(int length)
 		{
-			return UsingCharacters(length, _alphabeticCharacters, engine);
+			return UsingCharacters(length, _alphabeticCharacters);
 		}
 
-		public static string AlphabeticWithSpaces(int length, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length)
 		{
-			return UsingCharacters(length, _alphabeticCharacters, ' ', 1, 52, engine);
+			return UsingCharacters(length, _alphabeticCharacters, ' ', 1, 52);
 		}
 
-		public static string AlphabeticWithSpaces(int length, float spaceFrequency, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length, float spaceFrequency)
 		{
-			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceFrequency, engine);
+			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceFrequency);
 		}
 
-		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength)
 		{
-			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
-		public static string Alphabetic(int length, Casing casing, IRandomEngine engine)
+		public string Alphabetic(int length, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphabeticCharacters(casing), engine);
+			return UsingCharacters(length, GetAlphabeticCharacters(casing));
 		}
 
-		public static string AlphabeticWithSpaces(int length, Casing casing, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', 1, 52, engine);
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', 1, 52);
 		}
 
-		public static string AlphabeticWithSpaces(int length, float spaceFrequency, Casing casing, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length, float spaceFrequency, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency, engine);
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency);
 		}
 
-		public static string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
+		public string AlphabeticWithSpaces(int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
 		{
-			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(length, GetAlphabeticCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
 		#endregion
@@ -375,54 +382,62 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static string Identifier(int length, IRandomEngine engine)
+		public string Identifier(int length)
 		{
 			if (length <= 0) return "";
-			return _alphabeticCharacters.RandomElement(engine) + UsingCharacters(length - 1, _alphaNumericCharacters, engine);
+			return _alphabeticCharacters.RandomElement(_random) + UsingCharacters(length - 1, _alphaNumericCharacters);
 		}
 
-		public static string IdentifierWithUnderscores(int length, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, _alphabeticCharacters, '_', 1, 52, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', 1, 62, engine);
+			return UsingCharacters(1, _alphabeticCharacters, '_', 1, 52) + UsingCharacters(length, _alphaNumericCharacters, '_', 1, 62);
 		}
 
-		public static string IdentifierWithUnderscores(int length, float underscoreFrequency, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length, float underscoreFrequency)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreFrequency, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreFrequency, engine);
+			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreFrequency) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreFrequency);
 		}
 
-		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreCountPerChunk, averageChunkLength, engine) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(1, _alphabeticCharacters, '_', underscoreCountPerChunk, averageChunkLength) + UsingCharacters(length, _alphaNumericCharacters, '_', underscoreCountPerChunk, averageChunkLength);
 		}
 
-		public static string Identifier(int length, Casing casing, IRandomEngine engine)
+		public string Identifier(int length, Casing casing)
 		{
 			if (length <= 0) return "";
-			return GetIdentifierFirstCharacters(casing).RandomElement(engine) + UsingCharacters(length - 1, GetIdentifierCharacters(casing), engine);
+			return GetIdentifierFirstCharacters(casing).RandomElement(_random) + UsingCharacters(length - 1, GetIdentifierCharacters(casing));
 		}
 
-		public static string IdentifierWithUnderscores(int length, Casing casing, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length, Casing casing)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', 1, 52, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', 1, 62, engine);
+			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', 1, 52) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', 1, 62);
 		}
 
-		public static string IdentifierWithUnderscores(int length, float underscoreFrequency, Casing casing, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length, float underscoreFrequency, Casing casing)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreFrequency, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreFrequency, engine);
+			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreFrequency) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreFrequency);
 		}
 
-		public static string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing, IRandomEngine engine)
+		public string IdentifierWithUnderscores(int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing)
 		{
 			if (length <= 0) return "";
-			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength, engine) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength, engine);
+			return UsingCharacters(1, GetAlphabeticCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength) + UsingCharacters(length, GetAlphaNumericCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength);
 		}
 
 		#endregion
+	}
+
+	public static class RandomStringExtensions
+	{
+		public static RandomString String(this IRandomEngine random)
+		{
+			return new RandomString(random);
+		}
 	}
 }

@@ -6,21 +6,28 @@ using UnityEngine;
 
 namespace Experilous.Randomization
 {
-	public static class RandomQuaternion
+	public struct RandomQuaternion
 	{
-		public static Quaternion Rotation(IRandomEngine engine)
+		private IRandomEngine _random;
+
+		public RandomQuaternion(IRandomEngine random)
+		{
+			_random = random;
+		}
+
+		public Quaternion Rotation()
 		{
 			Start1:
-			float u1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u1 = _random.Unit().OpenFloat() * 2f - 1f;
+			float v1 = _random.Unit().OpenFloat() * 2f - 1f;
 			float uSqr1 = u1 * u1;
 			float vSqr1 = v1 * v1;
 			float uvSqr1 = uSqr1 + vSqr1;
 			if (uvSqr1 >= 1f) goto Start1;
 
 			Start2:
-			float u2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u2 = _random.Unit().OpenFloat() * 2f - 1f;
+			float v2 = _random.Unit().OpenFloat() * 2f - 1f;
 			float uSqr2 = u2 * u2;
 			float vSqr2 = v2 * v2;
 			float uvSqr2 = uSqr2 + vSqr2;
@@ -28,6 +35,14 @@ namespace Experilous.Randomization
 
 			float t = Mathf.Sqrt((1f - uvSqr1) / uvSqr2);
 			return new Quaternion(u1, v1, u2 * t, v2 * t);
+		}
+	}
+
+	public static class RandomQuaternionExtensions
+	{
+		public static RandomQuaternion Quaternion(this IRandomEngine random)
+		{
+			return new RandomQuaternion(random);
 		}
 	}
 }

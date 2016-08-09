@@ -12,736 +12,736 @@ namespace Experilous.Randomization.Tests
 	{
 		private const string seed = "random seed";
 
-		public static void ValidateOpenRange(int count, int max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				Assert.Greater(random, 0);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, uint max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				Assert.Greater(random, 0U);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, long max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				Assert.Greater(random, 0L);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, ulong max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				Assert.Greater(random, 0UL);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, int min, int max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, int min, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				Assert.Greater(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, uint min, uint max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, uint min, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				Assert.Greater(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, long min, long max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, long min, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				Assert.Greater(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, ulong min, ulong max, IRandomEngine engine)
+		public static void ValidateOpenRange(int count, ulong min, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				Assert.Greater(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, int max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				Assert.GreaterOrEqual(random, 0);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, uint max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				Assert.GreaterOrEqual(random, 0U);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, long max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				Assert.GreaterOrEqual(random, 0L);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, ulong max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				Assert.GreaterOrEqual(random, 0UL);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, int min, int max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, int min, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, uint min, uint max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, uint min, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, long min, long max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, long min, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, ulong min, ulong max, IRandomEngine engine)
+		public static void ValidateHalfOpenRange(int count, ulong min, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.Less(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, int max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				Assert.Greater(random, 0);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, uint max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				Assert.Greater(random, 0U);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, long max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				Assert.Greater(random, 0L);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, ulong max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				Assert.Greater(random, 0UL);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, int min, int max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, int min, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				Assert.Greater(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, uint min, uint max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, uint min, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				Assert.Greater(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, long min, long max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, long min, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				Assert.Greater(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, ulong min, ulong max, IRandomEngine engine)
+		public static void ValidateHalfClosedRange(int count, ulong min, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				Assert.Greater(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, int max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				Assert.GreaterOrEqual(random, 0);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, uint max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				Assert.GreaterOrEqual(random, 0U);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, long max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				Assert.GreaterOrEqual(random, 0L);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, ulong max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				Assert.GreaterOrEqual(random, 0UL);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, int min, int max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, int min, int max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, uint min, uint max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, uint min, uint max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, long min, long max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, long min, long max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, ulong min, ulong max, IRandomEngine engine)
+		public static void ValidateClosedRange(int count, ulong min, ulong max, IRandomEngine random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				Assert.GreaterOrEqual(random, min);
 				Assert.LessOrEqual(random, max);
 			}
 		}
 
-		public static void ValidateOpenBucketDistribution(int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				buckets[(uint)System.Math.Floor((random - 1) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(int min, int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(int min, int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min - 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				buckets[(uint)System.Math.Floor((random - 1U) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(uint min, uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(uint min, uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min - 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1U) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				buckets[(uint)System.Math.Floor((random - 1L) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(long min, long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(long min, long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min - 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1L) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(max, engine);
+				var random = RandomRange.Open(max, random);
 				buckets[(uint)System.Math.Floor((random - 1UL) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenBucketDistribution(ulong min, ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenBucketDistribution(ulong min, ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min - 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Open(min, max, engine);
+				var random = RandomRange.Open(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1UL) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(int min, int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(int min, int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(uint min, uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(uint min, uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(long min, long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(long min, long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(max, engine);
+				var random = RandomRange.HalfOpen(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenBucketDistribution(ulong min, ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenBucketDistribution(ulong min, ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfOpen(min, max, engine);
+				var random = RandomRange.HalfOpen(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				buckets[(uint)System.Math.Floor((random - 1) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(int min, int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(int min, int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				buckets[(uint)System.Math.Floor((random - 1U) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(uint min, uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(uint min, uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1U) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				buckets[(uint)System.Math.Floor((random - 1L) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(long min, long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(long min, long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1L) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(max, engine);
+				var random = RandomRange.HalfClosed(max, random);
 				buckets[(uint)System.Math.Floor((random - 1UL) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedBucketDistribution(ulong min, ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedBucketDistribution(ulong min, ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.HalfClosed(min, max, engine);
+				var random = RandomRange.HalfClosed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min - 1UL) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max + 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(int min, int max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(int min, int max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min + 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max + 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(uint min, uint max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(uint min, uint max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min + 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max + 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(long min, long max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(long min, long max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min + 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max + 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(max, engine);
+				var random = RandomRange.Closed(max, random);
 				buckets[(uint)System.Math.Floor((random) * scale)] += 1;
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedBucketDistribution(ulong min, ulong max, IRandomEngine engine, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedBucketDistribution(ulong min, ulong max, IRandomEngine random, int bucketCount, int hitsPerBucket, float tolerance)
 		{
 			var buckets = new int[bucketCount];
 			var scale = (double)bucketCount / (max - min + 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = RandomRange.Closed(min, max, engine);
+				var random = RandomRange.Closed(min, max, random);
 				buckets[(uint)System.Math.Floor((random - min) * scale)] += 1;
 			}
 

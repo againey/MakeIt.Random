@@ -41,7 +41,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.UnitVector2(_random);
+				pointObject.position = _random.Vector().UnitVector2();
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinCircle(_random);
+				pointObject.position = _random.Vector().PointWithinCircle();
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinCircularShell(1f - narrowShellThickness, 1f, _random);
+				pointObject.position = _random.Vector().PointWithinCircularShell(1f - narrowShellThickness, 1f);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinCircularShell(1f - wideShellThickness, 1f, _random);
+				pointObject.position = _random.Vector().PointWithinCircularShell(1f - wideShellThickness, 1f);
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.UnitVector3(_random);
+				pointObject.position = _random.Vector().UnitVector3();
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinSphere(_random);
+				pointObject.position = _random.Vector().PointWithinSphere();
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinSphericalShell(1f - narrowShellThickness, 1f, _random);
+				pointObject.position = _random.Vector().PointWithinSphericalShell(1f - narrowShellThickness, 1f);
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinSphericalShell(1f - wideShellThickness, 1f, _random);
+				pointObject.position = _random.Vector().PointWithinSphericalShell(1f - wideShellThickness, 1f);
 			}
 		}
 
@@ -105,53 +105,53 @@ namespace Experilous.Examples.Randomization
 		{
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinSquare(2f, _random) - Vector2.one;
+				pointObject.position = _random.Vector().PointWithinSquare(2f) - Vector2.one;
 			}
 		}
 
 		public void PositionWithinRectangle()
 		{
-			Vector2 size = new Vector2(RandomRange.Closed(1f, 2f, _random), RandomRange.Closed(1f, 2f, _random));
+			Vector2 size = new Vector2(_random.Range().Closed(1f, 2f), _random.Range().Closed(1f, 2f));
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinRectangle(size, _random) - size * 0.5f;
+				pointObject.position = _random.Vector().PointWithinRectangle(size) - size * 0.5f;
 			}
 		}
 
 		public void PositionWithinParallelogram()
 		{
-			Vector2 axis0 = RandomVector.UnitVector2(_random);
-			Vector2 axis1 = RandomVector.UnitVector2(_random);
+			Vector2 axis0 = _random.Vector().UnitVector2();
+			Vector2 axis1 = _random.Vector().UnitVector2();
 			float dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			while (dot < 0.4f || dot > 0.8f)
 			{
-				axis1 = RandomVector.UnitVector2(_random);
+				axis1 = _random.Vector().UnitVector2();
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
-			axis0 *= RandomRange.Closed(1f, 2f, _random);
-			axis1 *= RandomRange.Closed(1f, 2f, _random);
+			axis0 *= _random.Range().Closed(1f, 2f);
+			axis1 *= _random.Range().Closed(1f, 2f);
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinParallelogram(axis0, axis1, _random) - (axis0 + axis1) * 0.5f;
+				pointObject.position = _random.Vector().PointWithinParallelogram(axis0, axis1) - (axis0 + axis1) * 0.5f;
 			}
 		}
 
 		public void PositionWithinTriangle()
 		{
-			Vector2 axis0 = RandomVector.UnitVector2(_random);
-			Vector2 axis1 = RandomVector.UnitVector2(_random);
+			Vector2 axis0 = _random.Vector().UnitVector2();
+			Vector2 axis1 = _random.Vector().UnitVector2();
 			float dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			while (dot < 0.4f || dot > 0.8f)
 			{
-				axis1 = RandomVector.UnitVector2(_random);
+				axis1 = _random.Vector().UnitVector2();
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
-			axis0 *= RandomRange.Closed(1f, 2f, _random);
-			axis1 *= RandomRange.Closed(1f, 2f, _random);
+			axis0 *= _random.Range().Closed(1f, 2f);
+			axis1 *= _random.Range().Closed(1f, 2f);
 			Vector2 offset = (axis0 + axis1) / 3f;
 			foreach (var pointObject in _pointObjects)
 			{
-				pointObject.position = RandomVector.PointWithinTriangle(axis0, axis1, _random) - offset;
+				pointObject.position = _random.Vector().PointWithinTriangle(axis0, axis1) - offset;
 			}
 		}
 	}

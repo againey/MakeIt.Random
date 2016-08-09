@@ -4,90 +4,97 @@
 
 namespace Experilous.Randomization
 {
-	public static class RandomRange
+	public struct RandomRange
 	{
+		private IRandomEngine _random;
+
+		public RandomRange(IRandomEngine random)
+		{
+			_random = random;
+		}
+
 		#region Open
 
-		public static int Open(int lowerExclusive, int upperExclusive, IRandomEngine engine)
+		public int Open(int lowerExclusive, int upperExclusive)
 		{
-			return (int)HalfOpen((uint)(upperExclusive - lowerExclusive - 1), engine) + lowerExclusive + 1;
+			return (int)HalfOpen((uint)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1;
 		}
 
-		public static int Open(int upperExclusive, IRandomEngine engine)
+		public int Open(int upperExclusive)
 		{
-			return (int)HalfOpen((uint)(upperExclusive - 1), engine) + 1;
+			return (int)HalfOpen((uint)(upperExclusive - 1)) + 1;
 		}
 
-		public static uint Open(uint lowerExclusive, uint upperExclusive, IRandomEngine engine)
+		public uint Open(uint lowerExclusive, uint upperExclusive)
 		{
-			return HalfOpen(upperExclusive - lowerExclusive - 1U, engine) + lowerExclusive + 1U;
+			return HalfOpen(upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U;
 		}
 
-		public static uint Open(uint upperExclusive, IRandomEngine engine)
+		public uint Open(uint upperExclusive)
 		{
-			return HalfOpen(upperExclusive - 1U, engine) + 1U;
+			return HalfOpen(upperExclusive - 1U) + 1U;
 		}
 
-		public static long Open(long lowerExclusive, long upperExclusive, IRandomEngine engine)
+		public long Open(long lowerExclusive, long upperExclusive)
 		{
-			return (long)HalfOpen((ulong)(upperExclusive - lowerExclusive - 1L), engine) + lowerExclusive + 1L;
+			return (long)HalfOpen((ulong)(upperExclusive - lowerExclusive - 1L)) + lowerExclusive + 1L;
 		}
 
-		public static long Open(long upperExclusive, IRandomEngine engine)
+		public long Open(long upperExclusive)
 		{
-			return (long)HalfOpen((ulong)(upperExclusive - 1L), engine) + 1L;
+			return (long)HalfOpen((ulong)(upperExclusive - 1L)) + 1L;
 		}
 
-		public static ulong Open(ulong lowerExclusive, ulong upperExclusive, IRandomEngine engine)
+		public ulong Open(ulong lowerExclusive, ulong upperExclusive)
 		{
-			return HalfOpen(upperExclusive - lowerExclusive - 1UL, engine) + lowerExclusive + 1UL;
+			return HalfOpen(upperExclusive - lowerExclusive - 1UL) + lowerExclusive + 1UL;
 		}
 
-		public static ulong Open(ulong upperExclusive, IRandomEngine engine)
+		public ulong Open(ulong upperExclusive)
 		{
-			return HalfOpen(upperExclusive - 1UL, engine) + 1UL;
+			return HalfOpen(upperExclusive - 1UL) + 1UL;
 		}
 
-		public static float Open(float lowerExclusive, float upperExclusive, IRandomEngine engine)
+		public float Open(float lowerExclusive, float upperExclusive)
 		{
-			return (upperExclusive - lowerExclusive) * RandomUnit.OpenFloat(engine) + lowerExclusive;
+			return (upperExclusive - lowerExclusive) * _random.Unit().OpenFloat() + lowerExclusive;
 		}
 
-		public static float Open(float upperExclusive, IRandomEngine engine)
+		public float Open(float upperExclusive)
 		{
-			return upperExclusive * RandomUnit.OpenFloat(engine);
+			return upperExclusive * _random.Unit().OpenFloat();
 		}
 
-		public static double Open(double lowerExclusive, double upperExclusive, IRandomEngine engine)
+		public double Open(double lowerExclusive, double upperExclusive)
 		{
-			return (upperExclusive - lowerExclusive) * RandomUnit.OpenDouble(engine) + lowerExclusive;
+			return (upperExclusive - lowerExclusive) * _random.Unit().OpenDouble() + lowerExclusive;
 		}
 
-		public static double Open(double upperExclusive, IRandomEngine engine)
+		public double Open(double upperExclusive)
 		{
-			return upperExclusive * RandomUnit.OpenDouble(engine);
+			return upperExclusive * _random.Unit().OpenDouble();
 		}
 
 		#endregion
 
 		#region HalfOpen
 
-		public static int HalfOpen(int lowerInclusive, int upperExclusive, IRandomEngine engine)
+		public int HalfOpen(int lowerInclusive, int upperExclusive)
 		{
-			return (int)HalfOpen((uint)(upperExclusive - lowerInclusive), engine) + lowerInclusive;
+			return (int)HalfOpen((uint)(upperExclusive - lowerInclusive)) + lowerInclusive;
 		}
 
-		public static int HalfOpen(int upperExclusive, IRandomEngine engine)
+		public int HalfOpen(int upperExclusive)
 		{
-			return (int)HalfOpen((uint)(upperExclusive), engine);
+			return (int)HalfOpen((uint)(upperExclusive));
 		}
 
-		public static uint HalfOpen(uint lowerInclusive, uint upperExclusive, IRandomEngine engine)
+		public uint HalfOpen(uint lowerInclusive, uint upperExclusive)
 		{
-			return HalfOpen(upperExclusive - lowerInclusive, engine) + lowerInclusive;
+			return HalfOpen(upperExclusive - lowerInclusive) + lowerInclusive;
 		}
 
-		public static uint HalfOpen(uint upperExclusive, IRandomEngine engine)
+		public uint HalfOpen(uint upperExclusive)
 		{
 			if (upperExclusive == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint mask = upperExclusive - 1U;
@@ -99,28 +106,28 @@ namespace Experilous.Randomization
 			uint random;
 			do
 			{
-				random = engine.Next32() & mask;
+				random = _random.Next32() & mask;
 			}
 			while (random >= upperExclusive);
 			return random;
 		}
 
-		public static long HalfOpen(long lowerInclusive, long upperExclusive, IRandomEngine engine)
+		public long HalfOpen(long lowerInclusive, long upperExclusive)
 		{
-			return (long)HalfOpen((ulong)(upperExclusive - lowerInclusive), engine) + lowerInclusive;
+			return (long)HalfOpen((ulong)(upperExclusive - lowerInclusive)) + lowerInclusive;
 		}
 
-		public static long HalfOpen(long upperExclusive, IRandomEngine engine)
+		public long HalfOpen(long upperExclusive)
 		{
-			return (long)HalfOpen((ulong)(upperExclusive), engine);
+			return (long)HalfOpen((ulong)(upperExclusive));
 		}
 
-		public static ulong HalfOpen(ulong lowerInclusive, ulong upperExclusive, IRandomEngine engine)
+		public ulong HalfOpen(ulong lowerInclusive, ulong upperExclusive)
 		{
-			return HalfOpen(upperExclusive - lowerInclusive, engine) + lowerInclusive;
+			return HalfOpen(upperExclusive - lowerInclusive) + lowerInclusive;
 		}
 
-		public static ulong HalfOpen(ulong upperExclusive, IRandomEngine engine)
+		public ulong HalfOpen(ulong upperExclusive)
 		{
 			if (upperExclusive == 0) throw new System.ArgumentOutOfRangeException("upperBound");
 			ulong mask = upperExclusive - 1UL;
@@ -133,116 +140,116 @@ namespace Experilous.Randomization
 			ulong random;
 			do
 			{
-				random = engine.Next64() & mask;
+				random = _random.Next64() & mask;
 			}
 			while (random >= upperExclusive);
 			return random;
 		}
 
-		public static float HalfOpen(float lowerInclusive, float upperExclusive, IRandomEngine engine)
+		public float HalfOpen(float lowerInclusive, float upperExclusive)
 		{
-			return (upperExclusive - lowerInclusive) * RandomUnit.HalfOpenFloat(engine) + lowerInclusive;
+			return (upperExclusive - lowerInclusive) * _random.Unit().HalfOpenFloat() + lowerInclusive;
 		}
 
-		public static float HalfOpen(float upperExclusive, IRandomEngine engine)
+		public float HalfOpen(float upperExclusive)
 		{
-			return upperExclusive * RandomUnit.HalfOpenFloat(engine);
+			return upperExclusive * _random.Unit().HalfOpenFloat();
 		}
 
-		public static double HalfOpen(double lowerInclusive, double upperExclusive, IRandomEngine engine)
+		public double HalfOpen(double lowerInclusive, double upperExclusive)
 		{
-			return (upperExclusive - lowerInclusive) * RandomUnit.HalfOpenDouble(engine) + lowerInclusive;
+			return (upperExclusive - lowerInclusive) * _random.Unit().HalfOpenDouble() + lowerInclusive;
 		}
 
-		public static double HalfOpen(double upperExclusive, IRandomEngine engine)
+		public double HalfOpen(double upperExclusive)
 		{
-			return upperExclusive * RandomUnit.HalfOpenDouble(engine);
+			return upperExclusive * _random.Unit().HalfOpenDouble();
 		}
 
 		#endregion
 
 		#region HalfClosed
 
-		public static int HalfClosed(int lowerExclusive, int upperInclusive, IRandomEngine engine)
+		public int HalfClosed(int lowerExclusive, int upperInclusive)
 		{
-			return (int)HalfOpen((uint)(upperInclusive - lowerExclusive), engine) + lowerExclusive + 1;
+			return (int)HalfOpen((uint)(upperInclusive - lowerExclusive)) + lowerExclusive + 1;
 		}
 
-		public static int HalfClosed(int upperInclusive, IRandomEngine engine)
+		public int HalfClosed(int upperInclusive)
 		{
-			return (int)HalfOpen((uint)(upperInclusive), engine) + 1;
+			return (int)HalfOpen((uint)(upperInclusive)) + 1;
 		}
 
-		public static uint HalfClosed(uint lowerExclusive, uint upperInclusive, IRandomEngine engine)
+		public uint HalfClosed(uint lowerExclusive, uint upperInclusive)
 		{
-			return HalfOpen(upperInclusive - lowerExclusive, engine) + lowerExclusive + 1U;
+			return HalfOpen(upperInclusive - lowerExclusive) + lowerExclusive + 1U;
 		}
 
-		public static uint HalfClosed(uint upperInclusive, IRandomEngine engine)
+		public uint HalfClosed(uint upperInclusive)
 		{
-			return HalfOpen(upperInclusive, engine) + 1U;
+			return HalfOpen(upperInclusive) + 1U;
 		}
 
-		public static long HalfClosed(long lowerExclusive, long upperInclusive, IRandomEngine engine)
+		public long HalfClosed(long lowerExclusive, long upperInclusive)
 		{
-			return (long)HalfOpen((ulong)(upperInclusive - lowerExclusive), engine) + lowerExclusive + 1L;
+			return (long)HalfOpen((ulong)(upperInclusive - lowerExclusive)) + lowerExclusive + 1L;
 		}
 
-		public static long HalfClosed(long upperInclusive, IRandomEngine engine)
+		public long HalfClosed(long upperInclusive)
 		{
-			return (long)HalfOpen((ulong)(upperInclusive), engine) + 1L;
+			return (long)HalfOpen((ulong)(upperInclusive)) + 1L;
 		}
 
-		public static ulong HalfClosed(ulong lowerExclusive, ulong upperInclusive, IRandomEngine engine)
+		public ulong HalfClosed(ulong lowerExclusive, ulong upperInclusive)
 		{
-			return HalfOpen(upperInclusive - lowerExclusive, engine) + lowerExclusive + 1UL;
+			return HalfOpen(upperInclusive - lowerExclusive) + lowerExclusive + 1UL;
 		}
 
-		public static ulong HalfClosed(ulong upperInclusive, IRandomEngine engine)
+		public ulong HalfClosed(ulong upperInclusive)
 		{
-			return HalfOpen(upperInclusive, engine) + 1UL;
+			return HalfOpen(upperInclusive) + 1UL;
 		}
 
-		public static float HalfClosed(float lowerExclusive, float upperInclusive, IRandomEngine engine)
+		public float HalfClosed(float lowerExclusive, float upperInclusive)
 		{
-			return (upperInclusive - lowerExclusive) * RandomUnit.HalfClosedFloat(engine) + lowerExclusive;
+			return (upperInclusive - lowerExclusive) * _random.Unit().HalfClosedFloat() + lowerExclusive;
 		}
 
-		public static float HalfClosed(float upperInclusive, IRandomEngine engine)
+		public float HalfClosed(float upperInclusive)
 		{
-			return upperInclusive * RandomUnit.HalfClosedFloat(engine);
+			return upperInclusive * _random.Unit().HalfClosedFloat();
 		}
 
-		public static double HalfClosed(double lowerExclusive, double upperInclusive, IRandomEngine engine)
+		public double HalfClosed(double lowerExclusive, double upperInclusive)
 		{
-			return (upperInclusive - lowerExclusive) * RandomUnit.HalfClosedDouble(engine) + lowerExclusive;
+			return (upperInclusive - lowerExclusive) * _random.Unit().HalfClosedDouble() + lowerExclusive;
 		}
 
-		public static double HalfClosed(double upperInclusive, IRandomEngine engine)
+		public double HalfClosed(double upperInclusive)
 		{
-			return upperInclusive * RandomUnit.HalfClosedDouble(engine);
+			return upperInclusive * _random.Unit().HalfClosedDouble();
 		}
 
 		#endregion
 
 		#region Closed
 
-		public static int Closed(int lowerInclusive, int upperInclusive, IRandomEngine engine)
+		public int Closed(int lowerInclusive, int upperInclusive)
 		{
-			return (int)Closed((uint)(upperInclusive - lowerInclusive), engine) + lowerInclusive;
+			return (int)Closed((uint)(upperInclusive - lowerInclusive)) + lowerInclusive;
 		}
 
-		public static int Closed(int upperInclusive, IRandomEngine engine)
+		public int Closed(int upperInclusive)
 		{
-			return (int)Closed((uint)(upperInclusive), engine);
+			return (int)Closed((uint)(upperInclusive));
 		}
 
-		public static uint Closed(uint lowerInclusive, uint upperInclusive, IRandomEngine engine)
+		public uint Closed(uint lowerInclusive, uint upperInclusive)
 		{
-			return Closed(upperInclusive - lowerInclusive, engine) + lowerInclusive;
+			return Closed(upperInclusive - lowerInclusive) + lowerInclusive;
 		}
 
-		public static uint Closed(uint upperInclusive, IRandomEngine engine)
+		public uint Closed(uint upperInclusive)
 		{
 			uint mask = upperInclusive;
 			mask |= mask >> 1;
@@ -253,28 +260,28 @@ namespace Experilous.Randomization
 			uint random;
 			do
 			{
-				random = engine.Next32() & mask;
+				random = _random.Next32() & mask;
 			}
 			while (random > upperInclusive);
 			return random;
 		}
 
-		public static long Closed(long lowerInclusive, long upperInclusive, IRandomEngine engine)
+		public long Closed(long lowerInclusive, long upperInclusive)
 		{
-			return (long)Closed((ulong)(upperInclusive - lowerInclusive), engine) + lowerInclusive;
+			return (long)Closed((ulong)(upperInclusive - lowerInclusive)) + lowerInclusive;
 		}
 
-		public static long Closed(long upperInclusive, IRandomEngine engine)
+		public long Closed(long upperInclusive)
 		{
-			return (long)Closed((ulong)(upperInclusive), engine);
+			return (long)Closed((ulong)(upperInclusive));
 		}
 
-		public static ulong Closed(ulong lowerInclusive, ulong upperInclusive, IRandomEngine engine)
+		public ulong Closed(ulong lowerInclusive, ulong upperInclusive)
 		{
-			return Closed(upperInclusive - lowerInclusive, engine) + lowerInclusive;
+			return Closed(upperInclusive - lowerInclusive) + lowerInclusive;
 		}
 
-		public static ulong Closed(ulong upperInclusive, IRandomEngine engine)
+		public ulong Closed(ulong upperInclusive)
 		{
 			ulong mask = upperInclusive;
 			mask |= mask >> 1;
@@ -286,32 +293,40 @@ namespace Experilous.Randomization
 			ulong random;
 			do
 			{
-				random = engine.Next64() & mask;
+				random = _random.Next64() & mask;
 			}
 			while (random > upperInclusive);
 			return random;
 		}
 
-		public static float Closed(float lowerInclusive, float upperInclusive, IRandomEngine engine)
+		public float Closed(float lowerInclusive, float upperInclusive)
 		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedFloat(engine) + lowerInclusive;
+			return (upperInclusive - lowerInclusive) * _random.Unit().ClosedFloat() + lowerInclusive;
 		}
 
-		public static float Closed(float upperInclusive, IRandomEngine engine)
+		public float Closed(float upperInclusive)
 		{
-			return upperInclusive * RandomUnit.ClosedFloat(engine);
+			return upperInclusive * _random.Unit().ClosedFloat();
 		}
 
-		public static double Closed(double lowerInclusive, double upperInclusive, IRandomEngine engine)
+		public double Closed(double lowerInclusive, double upperInclusive)
 		{
-			return (upperInclusive - lowerInclusive) * RandomUnit.ClosedDouble(engine) + lowerInclusive;
+			return (upperInclusive - lowerInclusive) * _random.Unit().ClosedDouble() + lowerInclusive;
 		}
 
-		public static double Closed(double upperInclusive, IRandomEngine engine)
+		public double Closed(double upperInclusive)
 		{
-			return upperInclusive * RandomUnit.ClosedDouble(engine);
+			return upperInclusive * _random.Unit().ClosedDouble();
 		}
 
 		#endregion
+	}
+
+	public static class RandomRangeExtensions
+	{
+		public static RandomRange Range(this IRandomEngine random)
+		{
+			return new RandomRange(random);
+		}
 	}
 }

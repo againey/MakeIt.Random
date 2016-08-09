@@ -4,54 +4,69 @@
 
 namespace Experilous.Randomization
 {
-	public static class Chance
+	public struct Chance
 	{
+		private IRandomEngine _random;
+
+		public Chance(IRandomEngine random)
+		{
+			_random = random;
+		}
+
 		#region Ratio
 
-		public static bool Ratio(int ratioTrue, int ratioFalse, IRandomEngine engine)
+		public bool Ratio(int ratioTrue, int ratioFalse)
 		{
-			return RandomRange.HalfOpen(ratioTrue + ratioFalse, engine) < ratioTrue;
+			return _random.Range().HalfOpen(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool Ratio(uint ratioTrue, uint ratioFalse, IRandomEngine engine)
+		public bool Ratio(uint ratioTrue, uint ratioFalse)
 		{
-			return RandomRange.HalfOpen(ratioTrue + ratioFalse, engine) < ratioTrue;
+			return _random.Range().HalfOpen(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool Ratio(float ratioTrue, float ratioFalse, IRandomEngine engine)
+		public bool Ratio(float ratioTrue, float ratioFalse)
 		{
-			return RandomRange.HalfOpen(ratioTrue + ratioFalse, engine) < ratioTrue;
+			return _random.Range().HalfOpen(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool Ratio(double ratioTrue, double ratioFalse, IRandomEngine engine)
+		public bool Ratio(double ratioTrue, double ratioFalse)
 		{
-			return RandomRange.HalfOpen(ratioTrue + ratioFalse, engine) < ratioTrue;
+			return _random.Range().HalfOpen(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
 		#endregion
 
 		#region Probability
 
-		public static bool Probability(int numerator, int denominator, IRandomEngine engine)
+		public bool Probability(int numerator, int denominator)
 		{
-			return RandomRange.HalfOpen(denominator, engine) < numerator;
+			return _random.Range().HalfOpen(denominator) < numerator;
 		}
 
-		public static bool Probability(uint numerator, uint denominator, IRandomEngine engine)
+		public bool Probability(uint numerator, uint denominator)
 		{
-			return RandomRange.HalfOpen(denominator, engine) < numerator;
+			return _random.Range().HalfOpen(denominator) < numerator;
 		}
 
-		public static bool Probability(float probability, IRandomEngine engine)
+		public bool Probability(float probability)
 		{
-			return RandomUnit.HalfOpenFloat(engine) < probability;
+			return _random.Unit().HalfOpenFloat() < probability;
 		}
 
-		public static bool Probability(double probability, IRandomEngine engine)
+		public bool Probability(double probability)
 		{
-			return RandomUnit.HalfOpenDouble(engine) < probability;
+			return _random.Unit().HalfOpenDouble() < probability;
 		}
 
 		#endregion
+	}
+
+	public static class ChanceExtensions
+	{
+		public static Chance Chance(this IRandomEngine random)
+		{
+			return new Chance(random);
+		}
 	}
 }

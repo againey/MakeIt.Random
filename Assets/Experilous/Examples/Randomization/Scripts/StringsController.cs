@@ -108,34 +108,34 @@ namespace Experilous.Examples.Randomization
 
 		public void OnGenerateBinaryStrings()
 		{
-			GenerateStrings(() => RandomString.Binary(stringLength, _random));
+			GenerateStrings(() => _random.String().Binary(stringLength));
 		}
 
 		public void OnGenerateOctalStrings()
 		{
-			GenerateStrings(() => RandomString.Octal(stringLength, _random));
+			GenerateStrings(() => _random.String().Octal(stringLength));
 		}
 
 		public void OnGenerateDecimalStrings()
 		{
-			GenerateStrings(() => RandomString.Decimal(stringLength, _random));
+			GenerateStrings(() => _random.String().Decimal(stringLength));
 		}
 
 		public void OnGenerateHexadecimalStrings()
 		{
 			if (hasCasing)
 			{
-				GenerateStrings(() => RandomString.Hexadecimal(stringLength, casing, _random));
+				GenerateStrings(() => _random.String().Hexadecimal(stringLength, casing));
 			}
 			else
 			{
-				GenerateStrings(() => RandomString.Hexadecimal(stringLength, RandomString.Casing.Upper, _random));
+				GenerateStrings(() => _random.String().Hexadecimal(stringLength, RandomString.Casing.Upper));
 			}
 		}
 
 		public void OnGenerateBase64Strings()
 		{
-			GenerateStrings(() => RandomString.Base64(stringLength, _random));
+			GenerateStrings(() => _random.String().Base64(stringLength));
 		}
 
 		public void OnGenerateAlphaNumericStrings()
@@ -144,22 +144,22 @@ namespace Experilous.Examples.Randomization
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.AlphaNumericWithSpaces(stringLength, spaceFrequency, casing, _random));
+					GenerateStrings(() => _random.String().AlphaNumericWithSpaces(stringLength, spaceFrequency, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.AlphaNumericWithSpaces(stringLength, spaceFrequency, _random));
+					GenerateStrings(() => _random.String().AlphaNumericWithSpaces(stringLength, spaceFrequency));
 				}
 			}
 			else
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.AlphaNumeric(stringLength, casing, _random));
+					GenerateStrings(() => _random.String().AlphaNumeric(stringLength, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.AlphaNumeric(stringLength, _random));
+					GenerateStrings(() => _random.String().AlphaNumeric(stringLength));
 				}
 			}
 		}
@@ -170,22 +170,22 @@ namespace Experilous.Examples.Randomization
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.AlphabeticWithSpaces(stringLength, spaceFrequency, casing, _random));
+					GenerateStrings(() => _random.String().AlphabeticWithSpaces(stringLength, spaceFrequency, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.AlphabeticWithSpaces(stringLength, spaceFrequency, _random));
+					GenerateStrings(() => _random.String().AlphabeticWithSpaces(stringLength, spaceFrequency));
 				}
 			}
 			else
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.Alphabetic(stringLength, casing, _random));
+					GenerateStrings(() => _random.String().Alphabetic(stringLength, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.Alphabetic(stringLength, _random));
+					GenerateStrings(() => _random.String().Alphabetic(stringLength));
 				}
 			}
 		}
@@ -196,22 +196,22 @@ namespace Experilous.Examples.Randomization
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.IdentifierWithUnderscores(stringLength, spaceFrequency, casing, _random));
+					GenerateStrings(() => _random.String().IdentifierWithUnderscores(stringLength, spaceFrequency, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.IdentifierWithUnderscores(stringLength, spaceFrequency, _random));
+					GenerateStrings(() => _random.String().IdentifierWithUnderscores(stringLength, spaceFrequency));
 				}
 			}
 			else
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => RandomString.Identifier(stringLength, casing, _random));
+					GenerateStrings(() => _random.String().Identifier(stringLength, casing));
 				}
 				else
 				{
-					GenerateStrings(() => RandomString.Identifier(stringLength, _random));
+					GenerateStrings(() => _random.String().Identifier(stringLength));
 				}
 			}
 		}

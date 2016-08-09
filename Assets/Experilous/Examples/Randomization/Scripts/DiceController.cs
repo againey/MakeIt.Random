@@ -153,24 +153,24 @@ namespace Experilous.Examples.Randomization
 		{
 			if (keepHighestToggle.isOn && keepHighestToggle.interactable)
 			{
-				Dice.RollKeepHighest(quantityOfDice, sidesPerDie, quantityToKeep, _dice, _discardedDice, _random);
+				_random.Dice().RollKeepHighest(quantityOfDice, sidesPerDie, quantityToKeep, _dice, _discardedDice);
 			}
 			else if (keepLowestToggle.isOn && keepLowestToggle.interactable)
 			{
-				Dice.RollKeepLowest(quantityOfDice, sidesPerDie, quantityToKeep, _dice, _discardedDice, _random);
+				_random.Dice().RollKeepLowest(quantityOfDice, sidesPerDie, quantityToKeep, _dice, _discardedDice);
 			}
 			else if (dropHighestToggle.isOn && dropHighestToggle.interactable)
 			{
-				Dice.RollDropHighest(quantityOfDice, sidesPerDie, quantityToDrop, _dice, _discardedDice, _random);
+				_random.Dice().RollDropHighest(quantityOfDice, sidesPerDie, quantityToDrop, _dice, _discardedDice);
 			}
 			else if (dropLowestToggle.isOn && dropLowestToggle.interactable)
 			{
-				Dice.RollDropLowest(quantityOfDice, sidesPerDie, quantityToDrop, _dice, _discardedDice, _random);
+				_random.Dice().RollDropLowest(quantityOfDice, sidesPerDie, quantityToDrop, _dice, _discardedDice);
 			}
 			else
 			{
 				_discardedDice.Clear();
-				Dice.Roll(quantityOfDice, sidesPerDie, _dice, _random);
+				_random.Dice().Roll(quantityOfDice, sidesPerDie, _dice);
 			}
 
 			int dicePanelCount = diceGrid.childCount;
@@ -187,7 +187,7 @@ namespace Experilous.Examples.Randomization
 				diePanel.transform.SetParent(diceGrid, false);
 			}
 
-			Shuffle.InPlace(_discardedDice, _random);
+			_random.Shuffle().InPlace(_discardedDice);
 
 			foreach (int die in _discardedDice)
 			{

@@ -15,35 +15,35 @@ namespace Experilous.Randomization
 	/// <seealso cref="SystemRandomWrapper64"/>
 	public class SystemRandomWrapper32 : System.Random
 	{
-		private IRandomEngine _randomEngine;
+		private IRandomEngine _random;
 		private uint[] _sourceBuffer;
 
-		public SystemRandomWrapper32(IRandomEngine randomEngine)
+		public SystemRandomWrapper32(IRandomEngine random)
 		{
-			_randomEngine = randomEngine;
+			_random = random;
 			_sourceBuffer = new uint[1];
 		}
 
 		protected override double Sample()
 		{
-			return RandomUnit.HalfOpenDouble(_randomEngine);
+			return _random.Unit().HalfOpenDouble();
 		}
 
 		public override int Next()
 		{
-			return RandomRange.HalfOpen(int.MaxValue, _randomEngine);
+			return _random.Range().HalfOpen(int.MaxValue);
 		}
 
 		public override int Next(int minValue, int maxValue)
 		{
-			return RandomRange.HalfOpen(minValue, maxValue, _randomEngine);
+			return _random.Range().HalfOpen(minValue, maxValue);
 		}
 
 		public override void NextBytes(byte[] buffer)
 		{
 			if (buffer.Length <= 4)
 			{
-				_sourceBuffer[0] = _randomEngine.Next32();
+				_sourceBuffer[0] = _random.Next32();
 				System.Buffer.BlockCopy(_sourceBuffer, 0, buffer, 0, buffer.Length);
 			}
 			else
@@ -51,7 +51,7 @@ namespace Experilous.Randomization
 				var sourceBuffer = new uint[(buffer.Length + 3) / 4];
 				for (int i = 0; i < sourceBuffer.Length; ++i)
 				{
-					sourceBuffer[i] = _randomEngine.Next32();
+					sourceBuffer[i] = _random.Next32();
 				}
 				System.Buffer.BlockCopy(sourceBuffer, 0, buffer, 0, buffer.Length);
 			}
@@ -74,35 +74,35 @@ namespace Experilous.Randomization
 	/// <seealso cref="SystemRandomWrapper32"/>
 	public class SystemRandomWrapper64 : System.Random
 	{
-		private IRandomEngine _randomEngine;
+		private IRandomEngine _random;
 		private ulong[] _sourceBuffer;
 
-		public SystemRandomWrapper64(IRandomEngine randomEngine)
+		public SystemRandomWrapper64(IRandomEngine random)
 		{
-			_randomEngine = randomEngine;
+			_random = random;
 			_sourceBuffer = new ulong[1];
 		}
 
 		protected override double Sample()
 		{
-			return RandomUnit.HalfOpenDouble(_randomEngine);
+			return _random.Unit().HalfOpenDouble();
 		}
 
 		public override int Next()
 		{
-			return RandomRange.HalfOpen(int.MaxValue, _randomEngine);
+			return _random.Range().HalfOpen(int.MaxValue);
 		}
 
 		public override int Next(int minValue, int maxValue)
 		{
-			return RandomRange.HalfOpen(minValue, maxValue, _randomEngine);
+			return _random.Range().HalfOpen(minValue, maxValue);
 		}
 
 		public override void NextBytes(byte[] buffer)
 		{
 			if (buffer.Length <= 8)
 			{
-				_sourceBuffer[0] = _randomEngine.Next64();
+				_sourceBuffer[0] = _random.Next64();
 				System.Buffer.BlockCopy(_sourceBuffer, 0, buffer, 0, buffer.Length);
 			}
 			else
@@ -110,7 +110,7 @@ namespace Experilous.Randomization
 				var sourceBuffer = new ulong[(buffer.Length + 7) / 8];
 				for (int i = 0; i < sourceBuffer.Length; ++i)
 				{
-					sourceBuffer[i] = _randomEngine.Next64();
+					sourceBuffer[i] = _random.Next64();
 				}
 				System.Buffer.BlockCopy(sourceBuffer, 0, buffer, 0, buffer.Length);
 			}
