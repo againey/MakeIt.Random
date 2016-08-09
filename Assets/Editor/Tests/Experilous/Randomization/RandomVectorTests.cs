@@ -18,7 +18,7 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var v = RandomVector.UnitVector2(random);
+				var v = random.UnitVector2();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
@@ -29,7 +29,7 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var v = RandomVector.UnitVector3(random);
+				var v = random.UnitVector3();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
@@ -40,7 +40,7 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var v = RandomVector.UnitVector4(random);
+				var v = random.UnitVector4();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
@@ -57,7 +57,7 @@ namespace Experilous.Randomization.Tests
 			var twoPi = Mathf.PI * 2f;
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var v = RandomVector.UnitVector2(random);
+				var v = random.UnitVector2();
 				var a = Mathf.Atan2(v.y, v.x);
 				buckets[Mathf.FloorToInt((a + Mathf.PI) * bucketCount / twoPi)] += 1;
 			}
@@ -71,9 +71,9 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = RandomRange.Closed(2f, 8f, random);
+				var l = random.ClosedRange(2f, 8f);
 				var l2 = l * l;
-				var v = RandomVector.ScaledVector2(l, random);
+				var v = random.ScaledVector2(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);
 			}
 		}
@@ -84,9 +84,9 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = RandomRange.Closed(2f, 8f, random);
+				var l = random.ClosedRange(2f, 8f);
 				var l2 = l * l;
-				var v = RandomVector.ScaledVector3(l, random);
+				var v = random.ScaledVector3(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);
 			}
 		}
@@ -97,9 +97,9 @@ namespace Experilous.Randomization.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = RandomRange.Closed(2f, 8f, random);
+				var l = random.ClosedRange(2f, 8f);
 				var l2 = l * l;
-				var v = RandomVector.ScaledVector4(l, random);
+				var v = random.ScaledVector4(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);
 			}
 		}

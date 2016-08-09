@@ -19,7 +19,7 @@ namespace Experilous.Randomization.Tests
 
 			for (int i = 0; i < bucketCount; ++i)
 			{
-				int weight = RandomRange.Closed(weightMin, weightMax, random);
+				int weight = random.ClosedRange(weightMin, weightMax);
 				weights[i] = weight;
 				weightSum += weight;
 			}
@@ -33,7 +33,7 @@ namespace Experilous.Randomization.Tests
 
 			for (int i = 0; i < iterations; ++i)
 			{
-				--buckets[RandomIndex.Weighted(weights, weightSum, random)];
+				--buckets[random.WeightedIndex(weights, weightSum)];
 			}
 
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, 0), tolerance * itemsPerBucket);

@@ -240,7 +240,7 @@ namespace Experilous.Examples.Randomization
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					colorButton.colorImage.color = RandomColor.Darken(selectedColor, _random);
+					colorButton.colorImage.color = _random.Darken(selectedColor);
 				}
 			}
 		}
@@ -253,7 +253,7 @@ namespace Experilous.Examples.Randomization
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					colorButton.colorImage.color = RandomColor.Lighten(selectedColor, _random);
+					colorButton.colorImage.color = _random.Lighten(selectedColor);
 				}
 			}
 		}
@@ -276,22 +276,22 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxBlueChange > 0f)
 							{
-								colorButton.colorImage.color = RandomColor.ChangeRedGreenBlue(selectedColor, maxRedChange, maxGreenChange, maxBlueChange, _random);
+								colorButton.colorImage.color = _random.ChangeRedGreenBlue(selectedColor, maxRedChange, maxGreenChange, maxBlueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = RandomColor.ChangeRedGreen(selectedColor, maxRedChange, maxGreenChange, _random);
+								colorButton.colorImage.color = _random.ChangeRedGreen(selectedColor, maxRedChange, maxGreenChange);
 							}
 						}
 						else
 						{
 							if (maxBlueChange > 0f)
 							{
-								colorButton.colorImage.color = RandomColor.ChangeRedBlue(selectedColor, maxRedChange, maxBlueChange, _random);
+								colorButton.colorImage.color = _random.ChangeRedBlue(selectedColor, maxRedChange, maxBlueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = RandomColor.ChangeRed(selectedColor, maxRedChange, _random);
+								colorButton.colorImage.color = _random.ChangeRed(selectedColor, maxRedChange);
 							}
 						}
 					}
@@ -301,18 +301,18 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxBlueChange > 0f)
 							{
-								colorButton.colorImage.color = RandomColor.ChangeGreenBlue(selectedColor, maxGreenChange, maxBlueChange, _random);
+								colorButton.colorImage.color = _random.ChangeGreenBlue(selectedColor, maxGreenChange, maxBlueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = RandomColor.ChangeGreen(selectedColor, maxGreenChange, _random);
+								colorButton.colorImage.color = _random.ChangeGreen(selectedColor, maxGreenChange);
 							}
 						}
 						else
 						{
 							if (maxBlueChange > 0f)
 							{
-								colorButton.colorImage.color = RandomColor.ChangeBlue(selectedColor, maxBlueChange, _random);
+								colorButton.colorImage.color = _random.ChangeBlue(selectedColor, maxBlueChange);
 							}
 							else
 							{
@@ -342,22 +342,22 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxValueChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueSatValue(selectedColor, maxHueChange, maxSatChange, maxValueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueSatValue(selectedColor, maxHueChange, maxSatChange, maxValueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueSat(selectedColor, maxHueChange, maxSatChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueSat(selectedColor, maxHueChange, maxSatChange);
 							}
 						}
 						else
 						{
 							if (maxValueChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueValue(selectedColor, maxHueChange, maxValueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueValue(selectedColor, maxHueChange, maxValueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHue(selectedColor, maxHueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
 							}
 						}
 					}
@@ -367,18 +367,18 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxValueChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeSatValue(selectedColor, maxSatChange, maxValueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeSatValue(selectedColor, maxSatChange, maxValueChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeSat(selectedColor, maxSatChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeSat(selectedColor, maxSatChange);
 							}
 						}
 						else
 						{
 							if (maxValueChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeValue(selectedColor, maxValueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeValue(selectedColor, maxValueChange);
 							}
 							else
 							{
@@ -408,22 +408,22 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxLightChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueSatLight(selectedColor, maxHueChange, maxSatChange, maxLightChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueSatLight(selectedColor, maxHueChange, maxSatChange, maxLightChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueSat(selectedColor, maxHueChange, maxSatChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueSat(selectedColor, maxHueChange, maxSatChange);
 							}
 						}
 						else
 						{
 							if (maxLightChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueLight(selectedColor, maxHueChange, maxLightChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueLight(selectedColor, maxHueChange, maxLightChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHue(selectedColor, maxHueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
 							}
 						}
 					}
@@ -433,18 +433,18 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxLightChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeSatLight(selectedColor, maxSatChange, maxLightChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeSatLight(selectedColor, maxSatChange, maxLightChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeSat(selectedColor, maxSatChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeSat(selectedColor, maxSatChange);
 							}
 						}
 						else
 						{
 							if (maxLightChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeLight(selectedColor, maxLightChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeLight(selectedColor, maxLightChange);
 							}
 							else
 							{
@@ -474,22 +474,22 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxLumaChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueChromaLuma(selectedColor, maxHueChange, maxChromaChange, maxLumaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueChromaLuma(selectedColor, maxHueChange, maxChromaChange, maxLumaChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueChroma(selectedColor, maxHueChange, maxChromaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueChroma(selectedColor, maxHueChange, maxChromaChange);
 							}
 						}
 						else
 						{
 							if (maxLumaChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHueLuma(selectedColor, maxHueChange, maxLumaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHueLuma(selectedColor, maxHueChange, maxLumaChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeHue(selectedColor, maxHueChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
 							}
 						}
 					}
@@ -499,18 +499,18 @@ namespace Experilous.Examples.Randomization
 						{
 							if (maxLumaChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeChromaLuma(selectedColor, maxChromaChange, maxLumaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeChromaLuma(selectedColor, maxChromaChange, maxLumaChange);
 							}
 							else
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeChroma(selectedColor, maxChromaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeChroma(selectedColor, maxChromaChange);
 							}
 						}
 						else
 						{
 							if (maxLumaChange > 0f)
 							{
-								colorButton.colorImage.color = (Color)RandomColor.ChangeLuma(selectedColor, maxLumaChange, _random);
+								colorButton.colorImage.color = (Color)_random.ChangeLuma(selectedColor, maxLumaChange);
 							}
 							else
 							{

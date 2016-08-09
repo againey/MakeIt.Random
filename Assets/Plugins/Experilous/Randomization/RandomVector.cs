@@ -10,11 +10,11 @@ namespace Experilous.Randomization
 	{
 		#region Unit Vector
 
-		public static Vector2 UnitVector2(IRandomEngine engine)
+		public static Vector2 UnitVector2(this IRandomEngine random)
 		{
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -23,11 +23,11 @@ namespace Experilous.Randomization
 			return new Vector2((uSqr - vSqr) / uvSqr, 2f * u * v / uvSqr);
 		}
 
-		public static Vector3 UnitVector3(IRandomEngine engine)
+		public static Vector3 UnitVector3(this IRandomEngine random)
 		{
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -37,19 +37,19 @@ namespace Experilous.Randomization
 			return new Vector3(u * t, v * t, 1f - 2f * uvSqr);
 		}
 
-		public static Vector4 UnitVector4(IRandomEngine engine)
+		public static Vector4 UnitVector4(this IRandomEngine random)
 		{
 			Start1:
-			float u1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u1 = random.OpenFloatUnit() * 2f - 1f;
+			float v1 = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr1 = u1 * u1;
 			float vSqr1 = v1 * v1;
 			float uvSqr1 = uSqr1 + vSqr1;
 			if (uvSqr1 >= 1f) goto Start1;
 
 			Start2:
-			float u2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u2 = random.OpenFloatUnit() * 2f - 1f;
+			float v2 = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr2 = u2 * u2;
 			float vSqr2 = v2 * v2;
 			float uvSqr2 = uSqr2 + vSqr2;
@@ -63,30 +63,30 @@ namespace Experilous.Randomization
 
 		#region Scaled Vector
 
-		public static Vector2 ScaledVector2(float radius, IRandomEngine engine)
+		public static Vector2 ScaledVector2(this IRandomEngine random, float radius)
 		{
-			return UnitVector2(engine) * radius;
+			return UnitVector2(random) * radius;
 		}
 
-		public static Vector3 ScaledVector3(float radius, IRandomEngine engine)
+		public static Vector3 ScaledVector3(this IRandomEngine random, float radius)
 		{
-			return UnitVector3(engine) * radius;
+			return UnitVector3(random) * radius;
 		}
 
-		public static Vector4 ScaledVector4(float radius, IRandomEngine engine)
+		public static Vector4 ScaledVector4(this IRandomEngine random, float radius)
 		{
-			return UnitVector4(engine) * radius;
+			return UnitVector4(random) * radius;
 		}
 
 		#endregion
 
 		#region Radial
 
-		public static Vector2 PointWithinCircle(IRandomEngine engine)
+		public static Vector2 PointWithinCircle(this IRandomEngine random)
 		{
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -95,13 +95,13 @@ namespace Experilous.Randomization
 			return new Vector2(u, v);
 		}
 
-		public static Vector2 PointWithinCircle(float radius, IRandomEngine engine)
+		public static Vector2 PointWithinCircle(this IRandomEngine random, float radius)
 		{
 			float rSqr = radius * radius;
 
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -110,14 +110,14 @@ namespace Experilous.Randomization
 			return new Vector2(u, v);
 		}
 
-		public static Vector2 PointWithinCircularShell(float innerRadius, float outerRadius, IRandomEngine engine)
+		public static Vector2 PointWithinCircularShell(this IRandomEngine random, float innerRadius, float outerRadius)
 		{
 			float irSqr = innerRadius * innerRadius;
 			float orSqr = outerRadius * outerRadius;
 
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -126,12 +126,12 @@ namespace Experilous.Randomization
 			return new Vector2(u, v);
 		}
 
-		public static Vector3 PointWithinSphere(IRandomEngine engine)
+		public static Vector3 PointWithinSphere(this IRandomEngine random)
 		{
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float w = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
+			float w = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -141,14 +141,14 @@ namespace Experilous.Randomization
 			return new Vector3(u, v, w);
 		}
 
-		public static Vector3 PointWithinSphere(float radius, IRandomEngine engine)
+		public static Vector3 PointWithinSphere(this IRandomEngine random, float radius)
 		{
 			float rSqr = radius * radius;
 
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float w = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
+			float w = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -158,15 +158,15 @@ namespace Experilous.Randomization
 			return new Vector3(u, v, w);
 		}
 
-		public static Vector3 PointWithinSphericalShell(float innerRadius, float outerRadius, IRandomEngine engine)
+		public static Vector3 PointWithinSphericalShell(this IRandomEngine random, float innerRadius, float outerRadius)
 		{
 			float irSqr = innerRadius * innerRadius;
 			float orSqr = outerRadius * outerRadius;
 
 			Start:
-			float u = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float w = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u = random.OpenFloatUnit() * 2f - 1f;
+			float v = random.OpenFloatUnit() * 2f - 1f;
+			float w = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -180,51 +180,56 @@ namespace Experilous.Randomization
 
 		#region Axial
 
-		public static Vector2 PointWithinSquare(IRandomEngine engine)
+		public static Vector2 PointWithinSquare(this IRandomEngine random)
 		{
-			return new Vector2(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new Vector2(random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Vector2 PointWithinSquare(float sideLength, IRandomEngine engine)
+		public static Vector2 PointWithinSquare(this IRandomEngine random, float sideLength)
 		{
-			return new Vector2(RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine));
+			return new Vector2(random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
-		public static Vector2 PointWithinRectangle(Vector2 size, IRandomEngine engine)
+		public static Vector2 PointWithinRectangle(this IRandomEngine random, Vector2 size)
 		{
-			return new Vector2(RandomRange.Closed(size.x, engine), RandomRange.Closed(size.y, engine));
+			return new Vector2(random.ClosedRange(size.x), random.ClosedRange(size.y));
 		}
 
-		public static Vector2 PointWithinParallelogram(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		public static Vector2 PointWithinParallelogram(this IRandomEngine random, Vector2 axis0, Vector2 axis1)
 		{
-			return RandomUnit.ClosedFloat(engine) * axis0 + RandomUnit.ClosedFloat(engine) * axis1;
+			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1;
 		}
 
-		public static Vector2 PointWithinTriangle(Vector2 axis0, Vector2 axis1, IRandomEngine engine)
+		public static Vector2 PointWithinTriangle(this IRandomEngine random, Vector2 axis0, Vector2 axis1)
 		{
-			float u = Mathf.Sqrt(RandomUnit.ClosedFloat(engine));
-			float v = RandomRange.Closed(u, engine);
+			float u = Mathf.Sqrt(random.ClosedFloatUnit());
+			float v = random.ClosedRange(u);
 			return (1f - u) * axis0 + v * axis1;
 		}
 
-		public static Vector3 PointWithinCube(IRandomEngine engine)
+		public static Vector3 PointWithinCube(this IRandomEngine random)
 		{
-			return new Vector3(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new Vector3(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Vector3 PointWithinCube(float sideLength, IRandomEngine engine)
+		public static Vector3 PointWithinCube(this IRandomEngine random, float sideLength)
 		{
-			return new Vector3(RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine), RandomRange.Closed(sideLength, engine));
+			return new Vector3(random.ClosedRange(sideLength), random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
-		public static Vector3 PointWithinCuboid(Vector3 size, IRandomEngine engine)
+		public static Vector3 PointWithinBox(this IRandomEngine random, Vector3 size)
 		{
-			return new Vector3(RandomRange.Closed(size.x, engine), RandomRange.Closed(size.y, engine), RandomRange.Closed(size.z, engine));
+			return new Vector3(random.ClosedRange(size.x), random.ClosedRange(size.y), random.ClosedRange(size.z));
 		}
 
-		public static Vector3 PointWithinRhomboid(Vector3 axis0, Vector3 axis1, Vector3 axis2, IRandomEngine engine)
+		public static Vector3 PointWithinBox(this IRandomEngine random, Bounds box)
 		{
-			return RandomUnit.ClosedFloat(engine) * axis0 + RandomUnit.ClosedFloat(engine) * axis1 + RandomUnit.ClosedFloat(engine) * axis2;
+			return random.PointWithinBox(box.size) + box.min;
+		}
+
+		public static Vector3 PointWithinRhomboid(this IRandomEngine random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
+		{
+			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1 + random.ClosedFloatUnit() * axis2;
 		}
 
 		#endregion

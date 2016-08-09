@@ -101,7 +101,7 @@ namespace Experilous.Randomization.Tests
 			var enumNames = System.Enum.GetNames(typeof(TEnum));
 			foreach (var name in enumNames)
 			{
-				int weight = RandomRange.Closed(3, 10, random);
+				int weight = random.ClosedRange(3, 10);
 				weights.Add(name, weight);
 				weightSum += weight;
 			}
@@ -157,7 +157,7 @@ namespace Experilous.Randomization.Tests
 				TEnum enumValue = (TEnum)value;
 				if (!weights.ContainsKey(enumValue))
 				{
-					int weight = RandomRange.Closed(3, 10, random);
+					int weight = random.ClosedRange(3, 10);
 					weights.Add(enumValue, weight);
 					weightSum += weight;
 				}

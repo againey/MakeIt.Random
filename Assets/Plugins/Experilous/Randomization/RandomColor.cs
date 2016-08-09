@@ -10,48 +10,48 @@ namespace Experilous.Randomization
 	{
 		#region Specific Colors
 
-		public static Color Gray(IRandomEngine engine)
+		public static Color Gray(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			return new Color(value, value, value);
 		}
 
-		public static Color DarkRed(IRandomEngine engine)
+		public static Color DarkRed(this IRandomEngine random)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), 0f, 0f);
+			return new Color(random.ClosedFloatUnit(), 0f, 0f);
 		}
 
-		public static Color DarkGreen(IRandomEngine engine)
+		public static Color DarkGreen(this IRandomEngine random)
 		{
-			return new Color(0f, RandomUnit.ClosedFloat(engine), 0f);
+			return new Color(0f, random.ClosedFloatUnit(), 0f);
 		}
 
-		public static Color DarkBlue(IRandomEngine engine)
+		public static Color DarkBlue(this IRandomEngine random)
 		{
-			return new Color(0f, 0f, RandomUnit.ClosedFloat(engine));
+			return new Color(0f, 0f, random.ClosedFloatUnit());
 		}
 
-		public static Color LightRed(IRandomEngine engine)
+		public static Color LightRed(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			return new Color(1f, value, value);
 		}
 
-		public static Color LightGreen(IRandomEngine engine)
+		public static Color LightGreen(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			return new Color(value, 1f, value);
 		}
 
-		public static Color LightBlue(IRandomEngine engine)
+		public static Color LightBlue(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			return new Color(value, value, 1f);
 		}
 
-		public static Color AnyRed(IRandomEngine engine)
+		public static Color AnyRed(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			if (value <= 0.5f)
 			{
 				return new Color(value * 2f, 0f, 0f);
@@ -63,9 +63,9 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static Color AnyGreen(IRandomEngine engine)
+		public static Color AnyGreen(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			if (value <= 0.5f)
 			{
 				return new Color(0f, value * 2f, 0f);
@@ -77,9 +77,9 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static Color AnyBlue(IRandomEngine engine)
+		public static Color AnyBlue(this IRandomEngine random)
 		{
-			float value = RandomUnit.ClosedFloat(engine);
+			float value = random.ClosedFloatUnit();
 			if (value <= 0.5f)
 			{
 				return new Color(0f, 0f, value * 2f);
@@ -91,15 +91,15 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static Color Darken(Color rgb, IRandomEngine engine)
+		public static Color Darken(this IRandomEngine random, Color rgb)
 		{
-			float t = RandomUnit.ClosedFloat(engine);
+			float t = random.ClosedFloatUnit();
 			return new Color(rgb.r * t, rgb.g * t, rgb.b * t, rgb.a);
 		}
 
-		public static Color Lighten(Color rgb, IRandomEngine engine)
+		public static Color Lighten(this IRandomEngine random, Color rgb)
 		{
-			float t = RandomUnit.ClosedFloat(engine);
+			float t = random.ClosedFloatUnit();
 			return new Color((1f - rgb.r) * t + rgb.r, (1f - rgb.g) * t + rgb.g, (1f - rgb.b) * t + rgb.b, rgb.a);
 		}
 
@@ -107,154 +107,154 @@ namespace Experilous.Randomization
 
 		#region RGB
 
-		public static Color RGB(IRandomEngine engine)
+		public static Color RGB(this IRandomEngine random)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), 1f);
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
 		}
 
-		public static Color RGB(float a, IRandomEngine engine)
+		public static Color RGB(this IRandomEngine random, float a)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), a);
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
 		}
 
-		public static Color RGBA(IRandomEngine engine)
+		public static Color RGBA(this IRandomEngine random)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Color ChangeRed(Color rgb, IRandomEngine engine)
+		public static Color ChangeRed(this IRandomEngine random, Color rgb)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), rgb.g, rgb.b, rgb.a);
+			return new Color(random.ClosedFloatUnit(), rgb.g, rgb.b, rgb.a);
 		}
 
-		public static Color ChangeRed(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeRed(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), rgb.g, rgb.b, rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxChange), rgb.g, rgb.b, rgb.a);
 		}
 
-		public static Color ChangeGreen(Color rgb, IRandomEngine engine)
+		public static Color ChangeGreen(this IRandomEngine random, Color rgb)
 		{
-			return new Color(rgb.r, RandomUnit.ClosedFloat(engine), rgb.b, rgb.a);
+			return new Color(rgb.r, random.ClosedFloatUnit(), rgb.b, rgb.a);
 		}
 
-		public static Color ChangeGreen(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeGreen(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(rgb.r, ChangeClamped(rgb.g, maxChange, engine), rgb.b, rgb.a);
+			return new Color(rgb.r, random.ChangeClamped(rgb.g, maxChange), rgb.b, rgb.a);
 		}
 
-		public static Color ChangeBlue(Color rgb, IRandomEngine engine)
+		public static Color ChangeBlue(this IRandomEngine random, Color rgb)
 		{
-			return new Color(rgb.r, rgb.g, RandomUnit.ClosedFloat(engine), rgb.a);
+			return new Color(rgb.r, rgb.g, random.ClosedFloatUnit(), rgb.a);
 		}
 
-		public static Color ChangeBlue(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeBlue(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(rgb.r, rgb.g, ChangeClamped(rgb.b, maxChange, engine), rgb.a);
+			return new Color(rgb.r, rgb.g, random.ChangeClamped(rgb.b, maxChange), rgb.a);
 		}
 
-		public static Color ChangeAlpha(Color rgb, IRandomEngine engine)
+		public static Color ChangeAlpha(this IRandomEngine random, Color rgb)
 		{
-			return new Color(rgb.r, rgb.g, rgb.b, RandomUnit.ClosedFloat(engine));
+			return new Color(rgb.r, rgb.g, rgb.b, random.ClosedFloatUnit());
 		}
 
-		public static Color ChangeAlpha(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeAlpha(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(rgb.r, rgb.g, rgb.b, ChangeClamped(rgb.a, maxChange, engine));
+			return new Color(rgb.r, rgb.g, rgb.b, random.ChangeClamped(rgb.a, maxChange));
 		}
 
-		public static Color ChangeRedGreen(Color rgb, IRandomEngine engine)
+		public static Color ChangeRedGreen(this IRandomEngine random, Color rgb)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), rgb.b, rgb.a);
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.b, rgb.a);
 		}
 
-		public static Color ChangeRedGreen(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeRedGreen(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), ChangeClamped(rgb.g, maxChange, engine), rgb.b, rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxChange), random.ChangeClamped(rgb.g, maxChange), rgb.b, rgb.a);
 		}
 
-		public static Color ChangeRedGreen(Color rgb, float maxRedChange, float maxGreenChange, IRandomEngine engine)
+		public static Color ChangeRedGreen(this IRandomEngine random, Color rgb, float maxRedChange, float maxGreenChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxRedChange, engine), ChangeClamped(rgb.g, maxGreenChange, engine), rgb.b, rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxRedChange), random.ChangeClamped(rgb.g, maxGreenChange), rgb.b, rgb.a);
 		}
 
-		public static Color ChangeRedBlue(Color rgb, IRandomEngine engine)
+		public static Color ChangeRedBlue(this IRandomEngine random, Color rgb)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), rgb.g, RandomUnit.ClosedFloat(engine), rgb.a);
+			return new Color(random.ClosedFloatUnit(), rgb.g, random.ClosedFloatUnit(), rgb.a);
 		}
 
-		public static Color ChangeRedBlue(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeRedBlue(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), rgb.g, ChangeClamped(rgb.b, maxChange, engine), rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxChange), rgb.g, random.ChangeClamped(rgb.b, maxChange), rgb.a);
 		}
 
-		public static Color ChangeRedBlue(Color rgb, float maxRedChange, float maxBlueChange, IRandomEngine engine)
+		public static Color ChangeRedBlue(this IRandomEngine random, Color rgb, float maxRedChange, float maxBlueChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxRedChange, engine), rgb.g, ChangeClamped(rgb.b, maxBlueChange, engine), rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxRedChange), rgb.g, random.ChangeClamped(rgb.b, maxBlueChange), rgb.a);
 		}
 
-		public static Color ChangeGreenBlue(Color rgb, IRandomEngine engine)
+		public static Color ChangeGreenBlue(this IRandomEngine random, Color rgb)
 		{
-			return new Color(rgb.r, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), rgb.a);
+			return new Color(rgb.r, random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.a);
 		}
 
-		public static Color ChangeGreenBlue(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeGreenBlue(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(rgb.r, ChangeClamped(rgb.g, maxChange, engine), ChangeClamped(rgb.b, maxChange, engine), rgb.a);
+			return new Color(rgb.r, random.ChangeClamped(rgb.g, maxChange), random.ChangeClamped(rgb.b, maxChange), rgb.a);
 		}
 
-		public static Color ChangeGreenBlue(Color rgb, float maxGreenChange, float maxBlueChange, IRandomEngine engine)
+		public static Color ChangeGreenBlue(this IRandomEngine random, Color rgb, float maxGreenChange, float maxBlueChange)
 		{
-			return new Color(rgb.r, ChangeClamped(rgb.g, maxGreenChange, engine), ChangeClamped(rgb.b, maxBlueChange, engine), rgb.a);
+			return new Color(rgb.r, random.ChangeClamped(rgb.g, maxGreenChange), random.ChangeClamped(rgb.b, maxBlueChange), rgb.a);
 		}
 
-		public static Color ChangeRedGreenBlue(Color rgb, IRandomEngine engine)
+		public static Color ChangeRedGreenBlue(this IRandomEngine random, Color rgb)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), rgb.a);
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.a);
 		}
 
-		public static Color ChangeRedGreenBlue(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeRedGreenBlue(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), ChangeClamped(rgb.g, maxChange, engine), ChangeClamped(rgb.b, maxChange, engine), rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxChange), random.ChangeClamped(rgb.g, maxChange), random.ChangeClamped(rgb.b, maxChange), rgb.a);
 		}
 
-		public static Color ChangeRedGreenBlue(Color rgb, float maxRedChange, float maxGreenChange, float maxBlueChange, IRandomEngine engine)
+		public static Color ChangeRedGreenBlue(this IRandomEngine random, Color rgb, float maxRedChange, float maxGreenChange, float maxBlueChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxRedChange, engine), ChangeClamped(rgb.g, maxGreenChange, engine), ChangeClamped(rgb.b, maxBlueChange, engine), rgb.a);
+			return new Color(random.ChangeClamped(rgb.r, maxRedChange), random.ChangeClamped(rgb.g, maxGreenChange), random.ChangeClamped(rgb.b, maxBlueChange), rgb.a);
 		}
 
-		public static Color ChangeAll(Color rgb, IRandomEngine engine)
+		public static Color ChangeRedGreenBlueAlpha(this IRandomEngine random, Color rgb)
 		{
-			return new Color(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Color ChangeAll(Color rgb, float maxChange, IRandomEngine engine)
+		public static Color ChangeRedGreenBlueAlpha(this IRandomEngine random, Color rgb, float maxChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), ChangeClamped(rgb.g, maxChange, engine), ChangeClamped(rgb.b, maxChange, engine), ChangeClamped(rgb.a, maxChange, engine));
+			return new Color(random.ChangeClamped(rgb.r, maxChange), random.ChangeClamped(rgb.g, maxChange), random.ChangeClamped(rgb.b, maxChange), random.ChangeClamped(rgb.a, maxChange));
 		}
 
-		public static Color ChangeAll(Color rgb, float maxChange, float maxAlphaChange, IRandomEngine engine)
+		public static Color ChangeRedGreenBlueAlpha(this IRandomEngine random, Color rgb, float maxChange, float maxAlphaChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxChange, engine), ChangeClamped(rgb.g, maxChange, engine), ChangeClamped(rgb.b, maxChange, engine), ChangeClamped(rgb.a, maxAlphaChange, engine));
+			return new Color(random.ChangeClamped(rgb.r, maxChange), random.ChangeClamped(rgb.g, maxChange), random.ChangeClamped(rgb.b, maxChange), random.ChangeClamped(rgb.a, maxAlphaChange));
 		}
 
-		public static Color ChangeAll(Color rgb, float maxRedChange, float maxGreenChange, float maxBlueChange, float maxAlphaChange, IRandomEngine engine)
+		public static Color ChangeRedGreenBlueAlpha(this IRandomEngine random, Color rgb, float maxRedChange, float maxGreenChange, float maxBlueChange, float maxAlphaChange)
 		{
-			return new Color(ChangeClamped(rgb.r, maxRedChange, engine), ChangeClamped(rgb.g, maxGreenChange, engine), ChangeClamped(rgb.b, maxBlueChange, engine), ChangeClamped(rgb.a, maxAlphaChange, engine));
+			return new Color(random.ChangeClamped(rgb.r, maxRedChange), random.ChangeClamped(rgb.g, maxGreenChange), random.ChangeClamped(rgb.b, maxBlueChange), random.ChangeClamped(rgb.a, maxAlphaChange));
 		}
 
 		#endregion
 
 		#region HSV
 
-		public static ColorHSV HSV(IRandomEngine engine)
+		public static ColorHSV HSV(this IRandomEngine random)
 		{
-			return HSV(1f, engine);
+			return random.HSV(1f);
 		}
 
-		public static ColorHSV HSV(float a, IRandomEngine engine)
+		public static ColorHSV HSV(this IRandomEngine random, float a)
 		{
-			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaValue = RandomVector.PointWithinTriangle(new Vector2(1f, 1f), new Vector2(0f, 1f), engine);
+			float hue = random.HalfOpenFloatUnit();
+			Vector2 chromaValue = random.PointWithinTriangle(new Vector2(1f, 1f), new Vector2(0f, 1f));
 			if (chromaValue.y > 0f)
 			{
 				float saturation = chromaValue.x / chromaValue.y;
@@ -266,159 +266,159 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static ColorHSV HSVA(IRandomEngine engine)
+		public static ColorHSV HSVA(this IRandomEngine random)
 		{
-			return HSV(RandomUnit.ClosedFloat(engine), engine);
+			return random.HSV(random.ClosedFloatUnit());
 		}
 
-		public static ColorHSV UnbiasedHSV(IRandomEngine engine)
+		public static ColorHSV UnbiasedHSV(this IRandomEngine random)
 		{
-			return UnbiasedHSV(1f, engine);
+			return random.UnbiasedHSV(1f);
 		}
 
-		public static ColorHSV UnbiasedHSV(float a, IRandomEngine engine)
+		public static ColorHSV UnbiasedHSV(this IRandomEngine random, float a)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public static ColorHSV UnbiasedHSVA(IRandomEngine engine)
+		public static ColorHSV UnbiasedHSVA(this IRandomEngine random)
 		{
-			return UnbiasedHSV(RandomUnit.ClosedFloat(engine), engine);
+			return random.UnbiasedHSV(random.ClosedFloatUnit());
 		}
 
-		public static ColorHSV ChangeHue(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeHue(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(RandomUnit.ClosedFloat(engine), hsv.s, hsv.v, hsv.a);
+			return new ColorHSV(random.ClosedFloatUnit(), hsv.s, hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeHue(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeHue(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), hsv.s, hsv.v, hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), hsv.s, hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeSat(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeSat(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, RandomUnit.ClosedFloat(engine), hsv.v, hsv.a);
+			return new ColorHSV(hsv.h, random.ClosedFloatUnit(), hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeSat(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeSat(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(hsv.h, ChangeClamped(hsv.s, maxChange, engine), hsv.v, hsv.a);
+			return new ColorHSV(hsv.h, random.ChangeClamped(hsv.s, maxChange), hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeValue(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeValue(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, hsv.s, RandomUnit.ClosedFloat(engine), hsv.a);
+			return new ColorHSV(hsv.h, hsv.s, random.ClosedFloatUnit(), hsv.a);
 		}
 
-		public static ColorHSV ChangeValue(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeValue(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(hsv.h, hsv.s, ChangeClamped(hsv.v, maxChange, engine), hsv.a);
+			return new ColorHSV(hsv.h, hsv.s, random.ChangeClamped(hsv.v, maxChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeAlpha(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeAlpha(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, hsv.s, hsv.v, RandomUnit.ClosedFloat(engine));
+			return new ColorHSV(hsv.h, hsv.s, hsv.v, random.ClosedFloatUnit());
 		}
 
-		public static ColorHSV ChangeAlpha(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeAlpha(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(hsv.h, hsv.s, hsv.v, ChangeClamped(hsv.a, maxChange, engine));
+			return new ColorHSV(hsv.h, hsv.s, hsv.v, random.ChangeClamped(hsv.a, maxChange));
 		}
 
-		public static ColorHSV ChangeHueSat(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeHueSat(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsv.v, hsv.a);
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeHueSat(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSat(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), ChangeClamped(hsv.s, maxChange, engine), hsv.v, hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), random.ChangeClamped(hsv.s, maxChange), hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeHueSat(ColorHSV hsv, float maxHueChange, float maxSatChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSat(this IRandomEngine random, ColorHSV hsv, float maxHueChange, float maxSatChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxHueChange, engine), ChangeClamped(hsv.s, maxSatChange, engine), hsv.v, hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxHueChange), random.ChangeClamped(hsv.s, maxSatChange), hsv.v, hsv.a);
 		}
 
-		public static ColorHSV ChangeHueValue(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeHueValue(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(RandomUnit.ClosedFloat(engine), hsv.s, RandomUnit.ClosedFloat(engine), hsv.a);
+			return new ColorHSV(random.ClosedFloatUnit(), hsv.s, random.ClosedFloatUnit(), hsv.a);
 		}
 
-		public static ColorHSV ChangeHueValue(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueValue(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), hsv.s, ChangeClamped(hsv.v, maxChange, engine), hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), hsv.s, random.ChangeClamped(hsv.v, maxChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeHueValue(ColorHSV hsv, float maxHueChange, float maxValueChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueValue(this IRandomEngine random, ColorHSV hsv, float maxHueChange, float maxValueChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxHueChange, engine), hsv.s, ChangeClamped(hsv.v, maxValueChange, engine), hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxHueChange), hsv.s, random.ChangeClamped(hsv.v, maxValueChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeSatValue(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeSatValue(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsv.a);
+			return new ColorHSV(hsv.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.a);
 		}
 
-		public static ColorHSV ChangeSatValue(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeSatValue(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(hsv.h, ChangeClamped(hsv.s, maxChange, engine), ChangeClamped(hsv.v, maxChange, engine), hsv.a);
+			return new ColorHSV(hsv.h, random.ChangeClamped(hsv.s, maxChange), random.ChangeClamped(hsv.v, maxChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeSatValue(ColorHSV hsv, float maxSatChange, float maxValueChange, IRandomEngine engine)
+		public static ColorHSV ChangeSatValue(this IRandomEngine random, ColorHSV hsv, float maxSatChange, float maxValueChange)
 		{
-			return new ColorHSV(hsv.h, ChangeClamped(hsv.s, maxSatChange, engine), ChangeClamped(hsv.v, maxValueChange, engine), hsv.a);
+			return new ColorHSV(hsv.h, random.ChangeClamped(hsv.s, maxSatChange), random.ChangeClamped(hsv.v, maxValueChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeHueSatValue(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValue(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsv.a);
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.a);
 		}
 
-		public static ColorHSV ChangeHueSatValue(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValue(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), ChangeClamped(hsv.s, maxChange, engine), ChangeClamped(hsv.v, maxChange, engine), hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), random.ChangeClamped(hsv.s, maxChange), random.ChangeClamped(hsv.v, maxChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeHueSatValue(ColorHSV hsv, float maxHueChange, float maxSatChange, float maxValueChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValue(this IRandomEngine random, ColorHSV hsv, float maxHueChange, float maxSatChange, float maxValueChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxHueChange, engine), ChangeClamped(hsv.s, maxSatChange, engine), ChangeClamped(hsv.v, maxValueChange, engine), hsv.a);
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxHueChange), random.ChangeClamped(hsv.s, maxSatChange), random.ChangeClamped(hsv.v, maxValueChange), hsv.a);
 		}
 
-		public static ColorHSV ChangeAll(ColorHSV hsv, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValueAlpha(this IRandomEngine random, ColorHSV hsv)
 		{
-			return new ColorHSV(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static ColorHSV ChangeAll(ColorHSV hsv, float maxChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValueAlpha(this IRandomEngine random, ColorHSV hsv, float maxChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), ChangeClamped(hsv.s, maxChange, engine), ChangeClamped(hsv.v, maxChange, engine), ChangeClamped(hsv.a, maxChange, engine));
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), random.ChangeClamped(hsv.s, maxChange), random.ChangeClamped(hsv.v, maxChange), random.ChangeClamped(hsv.a, maxChange));
 		}
 
-		public static ColorHSV ChangeAll(ColorHSV hsv, float maxChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValueAlpha(this IRandomEngine random, ColorHSV hsv, float maxChange, float maxAlphaChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxChange, engine), ChangeClamped(hsv.s, maxChange, engine), ChangeClamped(hsv.v, maxChange, engine), ChangeClamped(hsv.a, maxAlphaChange, engine));
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxChange), random.ChangeClamped(hsv.s, maxChange), random.ChangeClamped(hsv.v, maxChange), random.ChangeClamped(hsv.a, maxAlphaChange));
 		}
 
-		public static ColorHSV ChangeAll(ColorHSV hsv, float maxHueChange, float maxSatChange, float maxValueChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHSV ChangeHueSatValueAlpha(this IRandomEngine random, ColorHSV hsv, float maxHueChange, float maxSatChange, float maxValueChange, float maxAlphaChange)
 		{
-			return new ColorHSV(ChangeRepeated(hsv.h, maxHueChange, engine), ChangeClamped(hsv.s, maxSatChange, engine), ChangeClamped(hsv.v, maxValueChange, engine), ChangeClamped(hsv.a, maxAlphaChange, engine));
+			return new ColorHSV(random.ChangeRepeated(hsv.h, maxHueChange), random.ChangeClamped(hsv.s, maxSatChange), random.ChangeClamped(hsv.v, maxValueChange), random.ChangeClamped(hsv.a, maxAlphaChange));
 		}
 
 		#endregion
 
 		#region HSL
 
-		public static ColorHSL HSL(IRandomEngine engine)
+		public static ColorHSL HSL(this IRandomEngine random)
 		{
-			return HSL(1f, engine);
+			return random.HSL(1f);
 		}
 
-		public static ColorHSL HSL(float a, IRandomEngine engine)
+		public static ColorHSL HSL(this IRandomEngine random, float a)
 		{
-			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaLightness = RandomVector.PointWithinTriangle(new Vector2(1f, 0.5f), new Vector2(0f, 1f), engine);
+			float hue = random.HalfOpenFloatUnit();
+			Vector2 chromaLightness = random.PointWithinTriangle(new Vector2(1f, 0.5f), new Vector2(0f, 1f));
 			if (chromaLightness.y > 0f && chromaLightness.y < 1f)
 			{
 				float saturation = chromaLightness.x / (1f - Mathf.Abs(2f * chromaLightness.y - 1f));
@@ -430,290 +430,290 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static ColorHSL HSLA(IRandomEngine engine)
+		public static ColorHSL HSLA(this IRandomEngine random)
 		{
-			return HSL(RandomUnit.ClosedFloat(engine), engine);
+			return random.HSL(random.ClosedFloatUnit());
 		}
 
-		public static ColorHSL UnbiasedHSL(IRandomEngine engine)
+		public static ColorHSL UnbiasedHSL(this IRandomEngine random)
 		{
-			return UnbiasedHSL(1f, engine);
+			return random.UnbiasedHSL(1f);
 		}
 
-		public static ColorHSL UnbiasedHSL(float a, IRandomEngine engine)
+		public static ColorHSL UnbiasedHSL(this IRandomEngine random, float a)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public static ColorHSL UnbiasedHSLA(IRandomEngine engine)
+		public static ColorHSL UnbiasedHSLA(this IRandomEngine random)
 		{
-			return UnbiasedHSL(RandomUnit.ClosedFloat(engine), engine);
+			return random.UnbiasedHSL(random.ClosedFloatUnit());
 		}
 
-		public static ColorHSL ChangeHue(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeHue(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(RandomUnit.ClosedFloat(engine), hsl.s, hsl.l, hsl.a);
+			return new ColorHSL(random.ClosedFloatUnit(), hsl.s, hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeHue(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeHue(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), hsl.s, hsl.l, hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), hsl.s, hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeSat(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeSat(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, RandomUnit.ClosedFloat(engine), hsl.l, hsl.a);
+			return new ColorHSL(hsl.h, random.ClosedFloatUnit(), hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeSat(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeSat(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(hsl.h, ChangeClamped(hsl.s, maxChange, engine), hsl.l, hsl.a);
+			return new ColorHSL(hsl.h, random.ChangeClamped(hsl.s, maxChange), hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeLight(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeLight(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, hsl.s, RandomUnit.ClosedFloat(engine), hsl.a);
+			return new ColorHSL(hsl.h, hsl.s, random.ClosedFloatUnit(), hsl.a);
 		}
 
-		public static ColorHSL ChangeLight(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeLight(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(hsl.h, hsl.s, ChangeClamped(hsl.l, maxChange, engine), hsl.a);
+			return new ColorHSL(hsl.h, hsl.s, random.ChangeClamped(hsl.l, maxChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeAlpha(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeAlpha(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, hsl.s, hsl.l, RandomUnit.ClosedFloat(engine));
+			return new ColorHSL(hsl.h, hsl.s, hsl.l, random.ClosedFloatUnit());
 		}
 
-		public static ColorHSL ChangeAlpha(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeAlpha(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(hsl.h, hsl.s, hsl.l, ChangeClamped(hsl.a, maxChange, engine));
+			return new ColorHSL(hsl.h, hsl.s, hsl.l, random.ChangeClamped(hsl.a, maxChange));
 		}
 
-		public static ColorHSL ChangeHueSat(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeHueSat(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsl.l, hsl.a);
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeHueSat(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSat(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), ChangeClamped(hsl.s, maxChange, engine), hsl.l, hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), random.ChangeClamped(hsl.s, maxChange), hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeHueSat(ColorHSL hsl, float maxHueChange, float maxSatChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSat(this IRandomEngine random, ColorHSL hsl, float maxHueChange, float maxSatChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxHueChange, engine), ChangeClamped(hsl.s, maxSatChange, engine), hsl.l, hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxHueChange), random.ChangeClamped(hsl.s, maxSatChange), hsl.l, hsl.a);
 		}
 
-		public static ColorHSL ChangeHueLight(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeHueLight(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(RandomUnit.ClosedFloat(engine), hsl.s, RandomUnit.ClosedFloat(engine), hsl.a);
+			return new ColorHSL(random.ClosedFloatUnit(), hsl.s, random.ClosedFloatUnit(), hsl.a);
 		}
 
-		public static ColorHSL ChangeHueLight(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueLight(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), hsl.s, ChangeClamped(hsl.l, maxChange, engine), hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), hsl.s, random.ChangeClamped(hsl.l, maxChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeHueLight(ColorHSL hsl, float maxHueChange, float maxLightChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueLight(this IRandomEngine random, ColorHSL hsl, float maxHueChange, float maxLightChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxHueChange, engine), hsl.s, ChangeClamped(hsl.l, maxLightChange, engine), hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxHueChange), hsl.s, random.ChangeClamped(hsl.l, maxLightChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeSatLight(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeSatLight(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsl.a);
+			return new ColorHSL(hsl.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.a);
 		}
 
-		public static ColorHSL ChangeSatLight(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeSatLight(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(hsl.h, ChangeClamped(hsl.s, maxChange, engine), ChangeClamped(hsl.l, maxChange, engine), hsl.a);
+			return new ColorHSL(hsl.h, random.ChangeClamped(hsl.s, maxChange), random.ChangeClamped(hsl.l, maxChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeSatLight(ColorHSL hsl, float maxSatChange, float maxLightChange, IRandomEngine engine)
+		public static ColorHSL ChangeSatLight(this IRandomEngine random, ColorHSL hsl, float maxSatChange, float maxLightChange)
 		{
-			return new ColorHSL(hsl.h, ChangeClamped(hsl.s, maxSatChange, engine), ChangeClamped(hsl.l, maxLightChange, engine), hsl.a);
+			return new ColorHSL(hsl.h, random.ChangeClamped(hsl.s, maxSatChange), random.ChangeClamped(hsl.l, maxLightChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeHueSatLight(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLight(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hsl.a);
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.a);
 		}
 
-		public static ColorHSL ChangeHueSatLight(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLight(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), ChangeClamped(hsl.s, maxChange, engine), ChangeClamped(hsl.l, maxChange, engine), hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), random.ChangeClamped(hsl.s, maxChange), random.ChangeClamped(hsl.l, maxChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeHueSatLight(ColorHSL hsl, float maxHueChange, float maxSatChange, float maxLightChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLight(this IRandomEngine random, ColorHSL hsl, float maxHueChange, float maxSatChange, float maxLightChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxHueChange, engine), ChangeClamped(hsl.s, maxSatChange, engine), ChangeClamped(hsl.l, maxLightChange, engine), hsl.a);
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxHueChange), random.ChangeClamped(hsl.s, maxSatChange), random.ChangeClamped(hsl.l, maxLightChange), hsl.a);
 		}
 
-		public static ColorHSL ChangeAll(ColorHSL hsl, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLightAlpha(this IRandomEngine random, ColorHSL hsl)
 		{
-			return new ColorHSL(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine));
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static ColorHSL ChangeAll(ColorHSL hsl, float maxChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLightAlpha(this IRandomEngine random, ColorHSL hsl, float maxChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), ChangeClamped(hsl.s, maxChange, engine), ChangeClamped(hsl.l, maxChange, engine), ChangeClamped(hsl.a, maxChange, engine));
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), random.ChangeClamped(hsl.s, maxChange), random.ChangeClamped(hsl.l, maxChange), random.ChangeClamped(hsl.a, maxChange));
 		}
 
-		public static ColorHSL ChangeAll(ColorHSL hsl, float maxChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLightAlpha(this IRandomEngine random, ColorHSL hsl, float maxChange, float maxAlphaChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxChange, engine), ChangeClamped(hsl.s, maxChange, engine), ChangeClamped(hsl.l, maxChange, engine), ChangeClamped(hsl.a, maxAlphaChange, engine));
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxChange), random.ChangeClamped(hsl.s, maxChange), random.ChangeClamped(hsl.l, maxChange), random.ChangeClamped(hsl.a, maxAlphaChange));
 		}
 
-		public static ColorHSL ChangeAll(ColorHSL hsl, float maxHueChange, float maxSatChange, float maxLightChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHSL ChangeHueSatLightAlpha(this IRandomEngine random, ColorHSL hsl, float maxHueChange, float maxSatChange, float maxLightChange, float maxAlphaChange)
 		{
-			return new ColorHSL(ChangeRepeated(hsl.h, maxHueChange, engine), ChangeClamped(hsl.s, maxSatChange, engine), ChangeClamped(hsl.l, maxLightChange, engine), ChangeClamped(hsl.a, maxAlphaChange, engine));
+			return new ColorHSL(random.ChangeRepeated(hsl.h, maxHueChange), random.ChangeClamped(hsl.s, maxSatChange), random.ChangeClamped(hsl.l, maxLightChange), random.ChangeClamped(hsl.a, maxAlphaChange));
 		}
 
 		#endregion
 
 		#region HCY
 
-		public static ColorHCY HCY(IRandomEngine engine)
+		public static ColorHCY HCY(this IRandomEngine random)
 		{
-			return HCY(1f, engine);
+			return random.HCY(1f);
 		}
 
-		public static ColorHCY HCY(float a, IRandomEngine engine)
+		public static ColorHCY HCY(this IRandomEngine random, float a)
 		{
-			float hue = RandomUnit.HalfOpenFloat(engine);
-			Vector2 chromaLuma = RandomVector.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f), engine);
+			float hue = random.HalfOpenFloatUnit();
+			Vector2 chromaLuma = random.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f));
 			return new ColorHCY(hue, chromaLuma.x, chromaLuma.y, a);
 		}
 
-		public static ColorHCY HCYA(IRandomEngine engine)
+		public static ColorHCY HCYA(this IRandomEngine random)
 		{
-			return HCY(RandomUnit.ClosedFloat(engine), engine);
+			return random.HCY(random.ClosedFloatUnit());
 		}
 
-		public static ColorHCY ChangeHue(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeHue(this IRandomEngine random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), hcy.c, hcy.y, hcy.a));
 		}
 
-		public static ColorHCY ChangeHue(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeHue(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), hcy.c, hcy.y, hcy.a));
 		}
 
-		public static ColorHCY ChangeChroma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeChroma(this IRandomEngine random, ColorHCY hcy)
 		{
-			return new ColorHCY(hcy.h, RandomRange.Closed(ColorHCY.GetMaxChroma(hcy.h, hcy.y), engine), hcy.y, hcy.a);
+			return new ColorHCY(hcy.h, random.ClosedRange(ColorHCY.GetMaxChroma(hcy.h, hcy.y)), hcy.y, hcy.a);
 		}
 
-		public static ColorHCY ChangeChroma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeChroma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, 0f, ColorHCY.GetMaxChroma(hcy.h, hcy.y), engine), hcy.y, hcy.a);
+			return new ColorHCY(hcy.h, random.ChangeClamped(hcy.c, maxChange, 0f, ColorHCY.GetMaxChroma(hcy.h, hcy.y)), hcy.y, hcy.a);
 		}
 
-		public static ColorHCY ChangeLuma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeLuma(this IRandomEngine random, ColorHCY hcy)
 		{
 			float yMin, yMax;
 			ColorHCY.GetMinMaxLuma(hcy.h, hcy.c, out yMin, out yMax);
-			return new ColorHCY(hcy.h, hcy.c, RandomRange.Closed(yMin, yMax, engine), hcy.a);
+			return new ColorHCY(hcy.h, hcy.c, random.ClosedRange(yMin, yMax), hcy.a);
 		}
 
-		public static ColorHCY ChangeLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeLuma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
 			float yMin, yMax;
 			ColorHCY.GetMinMaxLuma(hcy.h, hcy.c, out yMin, out yMax);
-			return new ColorHCY(hcy.h, hcy.c, ChangeClamped(hcy.y, maxChange, yMin, yMax, engine), hcy.a);
+			return new ColorHCY(hcy.h, hcy.c, random.ChangeClamped(hcy.y, maxChange, yMin, yMax), hcy.a);
 		}
 
-		public static ColorHCY ChangeAlpha(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeAlpha(this IRandomEngine random, ColorHCY hcy)
 		{
-			return new ColorHCY(hcy.h, hcy.c, hcy.y, RandomUnit.ClosedFloat(engine));
+			return new ColorHCY(hcy.h, hcy.c, hcy.y, random.ClosedFloatUnit());
 		}
 
-		public static ColorHCY ChangeAlpha(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeAlpha(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return new ColorHCY(hcy.h, hcy.c, hcy.y, ChangeClamped(hcy.a, maxChange, engine));
+			return new ColorHCY(hcy.h, hcy.c, hcy.y, random.ChangeClamped(hcy.a, maxChange));
 		}
 
-		public static ColorHCY ChangeHueChroma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeHueChroma(this IRandomEngine random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), RandomUnit.ClosedFloat(engine), hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcy.y, hcy.a));
 		}
 
-		public static ColorHCY ChangeHueChroma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChroma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), random.ChangeClamped(hcy.c, maxChange), hcy.y, hcy.a));
 		}
 
-		public static ColorHCY ChangeHueChroma(ColorHCY hcy, float maxHueChange, float maxChromaChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChroma(this IRandomEngine random, ColorHCY hcy, float maxHueChange, float maxChromaChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxHueChange), random.ChangeClamped(hcy.c, maxChromaChange), hcy.y, hcy.a));
 		}
 
-		public static ColorHCY ChangeHueLuma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeHueLuma(this IRandomEngine random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(RandomUnit.ClosedFloat(engine), hcy.c, RandomUnit.ClosedFloat(engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), hcy.c, random.ClosedFloatUnit(), hcy.a));
 		}
 
-		public static ColorHCY ChangeHueLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueLuma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), hcy.c, ChangeClamped(hcy.y, maxChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), hcy.c, random.ChangeClamped(hcy.y, maxChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeHueLuma(ColorHCY hcy, float maxHueChange, float maxLumaChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueLuma(this IRandomEngine random, ColorHCY hcy, float maxHueChange, float maxLumaChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), hcy.c, ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxHueChange), hcy.c, random.ChangeClamped(hcy.y, maxLumaChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeChromaLuma(this IRandomEngine random, ColorHCY hcy)
 		{
-			Vector2 chromaLuma = RandomVector.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hcy.h)), new Vector2(0f, 1f), engine);
+			Vector2 chromaLuma = random.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hcy.h)), new Vector2(0f, 1f));
 			return new ColorHCY(hcy.h, chromaLuma.x, chromaLuma.y, hcy.a);
 		}
 
-		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeChromaLuma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(hcy.h, random.ChangeClamped(hcy.c, maxChange), random.ChangeClamped(hcy.y, maxChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeChromaLuma(ColorHCY hcy, float maxChromaChange, float maxLumaChange, IRandomEngine engine)
+		public static ColorHCY ChangeChromaLuma(this IRandomEngine random, ColorHCY hcy, float maxChromaChange, float maxLumaChange)
 		{
-			return Change(hcy, () => new ColorHCY(hcy.h, ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(hcy.h, random.ChangeClamped(hcy.c, maxChromaChange), random.ChangeClamped(hcy.y, maxLumaChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLuma(this IRandomEngine random, ColorHCY hcy)
 		{
-			return HCY(hcy.a, engine);
+			return random.HCY(hcy.a);
 		}
 
-		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLuma(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), random.ChangeClamped(hcy.c, maxChange), random.ChangeClamped(hcy.y, maxChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeHueChromaLuma(ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLuma(this IRandomEngine random, ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxHueChange), random.ChangeClamped(hcy.c, maxChromaChange), random.ChangeClamped(hcy.y, maxLumaChange), hcy.a));
 		}
 
-		public static ColorHCY ChangeAll(ColorHCY hcy, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLumaAlpha(this IRandomEngine random, ColorHCY hcy)
 		{
-			return HCYA(engine);
+			return HCYA(random);
 		}
 
-		public static ColorHCY ChangeAll(ColorHCY hcy, float maxChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLumaAlpha(this IRandomEngine random, ColorHCY hcy, float maxChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxChange, engine)));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), random.ChangeClamped(hcy.c, maxChange), random.ChangeClamped(hcy.y, maxChange), random.ChangeClamped(hcy.a, maxChange)));
 		}
 
-		public static ColorHCY ChangeAll(ColorHCY hcy, float maxChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLumaAlpha(this IRandomEngine random, ColorHCY hcy, float maxChange, float maxAlphaChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxChange, engine), ChangeClamped(hcy.c, maxChange, engine), ChangeClamped(hcy.y, maxChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine)));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxChange), random.ChangeClamped(hcy.c, maxChange), random.ChangeClamped(hcy.y, maxChange), random.ChangeClamped(hcy.a, maxAlphaChange)));
 		}
 
-		public static ColorHCY ChangeAll(ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange, float maxAlphaChange, IRandomEngine engine)
+		public static ColorHCY ChangeHueChromaLumaAlpha(this IRandomEngine random, ColorHCY hcy, float maxHueChange, float maxChromaChange, float maxLumaChange, float maxAlphaChange)
 		{
-			return Change(hcy, () => new ColorHCY(ChangeRepeated(hcy.h, maxHueChange, engine), ChangeClamped(hcy.c, maxChromaChange, engine), ChangeClamped(hcy.y, maxLumaChange, engine), ChangeClamped(hcy.a, maxAlphaChange, engine)));
+			return Change(hcy, () => new ColorHCY(random.ChangeRepeated(hcy.h, maxHueChange), random.ChangeClamped(hcy.c, maxChromaChange), random.ChangeClamped(hcy.y, maxLumaChange), random.ChangeClamped(hcy.a, maxAlphaChange)));
 		}
 
 		private static ColorHCY Change(ColorHCY hcy, System.Func<ColorHCY> generator)
@@ -736,19 +736,19 @@ namespace Experilous.Randomization
 
 		#region Private Helper Functions
 
-		private static float ChangeClamped(float original, float maxChange, IRandomEngine engine)
+		private static float ChangeClamped(this IRandomEngine random, float original, float maxChange)
 		{
-			return RandomRange.Closed(Mathf.Max(0f, original - maxChange), Mathf.Min(original + maxChange, 1f), engine);
+			return random.ClosedRange(Mathf.Max(0f, original - maxChange), Mathf.Min(original + maxChange, 1f));
 		}
 
-		private static float ChangeClamped(float original, float maxChange, float min, float max, IRandomEngine engine)
+		private static float ChangeClamped(this IRandomEngine random, float original, float maxChange, float min, float max)
 		{
-			return RandomRange.Closed(Mathf.Max(min, original - maxChange), Mathf.Min(original + maxChange, max), engine);
+			return random.ClosedRange(Mathf.Max(min, original - maxChange), Mathf.Min(original + maxChange, max));
 		}
 
-		private static float ChangeRepeated(float original, float maxChange, IRandomEngine engine)
+		private static float ChangeRepeated(this IRandomEngine random, float original, float maxChange)
 		{
-			return Mathf.Repeat(original + RandomRange.Closed(-maxChange, +maxChange, engine), 1f);
+			return Mathf.Repeat(original + random.ClosedRange(-maxChange, +maxChange), 1f);
 		}
 
 		#endregion

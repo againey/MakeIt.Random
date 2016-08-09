@@ -15,9 +15,9 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U);
-			Assert.AreEqual(1, Dice.Roll(2, random));
+			Assert.AreEqual(1, random.RollDice(2));
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.Roll(2, random));
+			Assert.AreEqual(2, random.RollDice(2));
 			random.Received().Next32();
 		}
 
@@ -26,11 +26,11 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 2U);
-			Assert.AreEqual(1, Dice.Roll(3, random));
+			Assert.AreEqual(1, random.RollDice(3));
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.Roll(3, random));
+			Assert.AreEqual(2, random.RollDice(3));
 			random.Received().Next32();
-			Assert.AreEqual(3, Dice.Roll(3, random));
+			Assert.AreEqual(3, random.RollDice(3));
 			random.Received().Next32();
 		}
 
@@ -39,17 +39,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
-			Assert.AreEqual(1, Dice.Roll(6, random));
+			Assert.AreEqual(1, random.RollDice(6));
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.Roll(6, random));
+			Assert.AreEqual(2, random.RollDice(6));
 			random.Received().Next32();
-			Assert.AreEqual(3, Dice.Roll(6, random));
+			Assert.AreEqual(3, random.RollDice(6));
 			random.Received().Next32();
-			Assert.AreEqual(4, Dice.Roll(6, random));
+			Assert.AreEqual(4, random.RollDice(6));
 			random.Received().Next32();
-			Assert.AreEqual(5, Dice.Roll(6, random));
+			Assert.AreEqual(5, random.RollDice(6));
 			random.Received().Next32();
-			Assert.AreEqual(6, Dice.Roll(6, random));
+			Assert.AreEqual(6, random.RollDice(6));
 			random.Received().Next32();
 		}
 
@@ -58,17 +58,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 9U, 10U, 18U, 19U);
-			Assert.AreEqual(1, Dice.Roll(20, random));
+			Assert.AreEqual(1, random.RollDice(20));
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.Roll(20, random));
+			Assert.AreEqual(2, random.RollDice(20));
 			random.Received().Next32();
-			Assert.AreEqual(10, Dice.Roll(20, random));
+			Assert.AreEqual(10, random.RollDice(20));
 			random.Received().Next32();
-			Assert.AreEqual(11, Dice.Roll(20, random));
+			Assert.AreEqual(11, random.RollDice(20));
 			random.Received().Next32();
-			Assert.AreEqual(19, Dice.Roll(20, random));
+			Assert.AreEqual(19, random.RollDice(20));
 			random.Received().Next32();
-			Assert.AreEqual(20, Dice.Roll(20, random));
+			Assert.AreEqual(20, random.RollDice(20));
 			random.Received().Next32();
 		}
 
@@ -77,13 +77,13 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 2U, 3U);
-			Assert.AreEqual(1, Dice.D4(random));
+			Assert.AreEqual(1, random.RollD4());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D4(random));
+			Assert.AreEqual(2, random.RollD4());
 			random.Received().Next32();
-			Assert.AreEqual(3, Dice.D4(random));
+			Assert.AreEqual(3, random.RollD4());
 			random.Received().Next32();
-			Assert.AreEqual(4, Dice.D4(random));
+			Assert.AreEqual(4, random.RollD4());
 			random.Received().Next32();
 		}
 
@@ -92,17 +92,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
-			Assert.AreEqual(1, Dice.D6(random));
+			Assert.AreEqual(1, random.RollD6());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D6(random));
+			Assert.AreEqual(2, random.RollD6());
 			random.Received().Next32();
-			Assert.AreEqual(3, Dice.D6(random));
+			Assert.AreEqual(3, random.RollD6());
 			random.Received().Next32();
-			Assert.AreEqual(4, Dice.D6(random));
+			Assert.AreEqual(4, random.RollD6());
 			random.Received().Next32();
-			Assert.AreEqual(5, Dice.D6(random));
+			Assert.AreEqual(5, random.RollD6());
 			random.Received().Next32();
-			Assert.AreEqual(6, Dice.D6(random));
+			Assert.AreEqual(6, random.RollD6());
 			random.Received().Next32();
 		}
 
@@ -111,17 +111,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 3U, 4U, 6U, 7U);
-			Assert.AreEqual(1, Dice.D8(random));
+			Assert.AreEqual(1, random.RollD8());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D8(random));
+			Assert.AreEqual(2, random.RollD8());
 			random.Received().Next32();
-			Assert.AreEqual(4, Dice.D8(random));
+			Assert.AreEqual(4, random.RollD8());
 			random.Received().Next32();
-			Assert.AreEqual(5, Dice.D8(random));
+			Assert.AreEqual(5, random.RollD8());
 			random.Received().Next32();
-			Assert.AreEqual(7, Dice.D8(random));
+			Assert.AreEqual(7, random.RollD8());
 			random.Received().Next32();
-			Assert.AreEqual(8, Dice.D8(random));
+			Assert.AreEqual(8, random.RollD8());
 			random.Received().Next32();
 		}
 
@@ -130,17 +130,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 4U, 5U, 8U, 9U);
-			Assert.AreEqual(1, Dice.D10(random));
+			Assert.AreEqual(1, random.RollD10());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D10(random));
+			Assert.AreEqual(2, random.RollD10());
 			random.Received().Next32();
-			Assert.AreEqual(5, Dice.D10(random));
+			Assert.AreEqual(5, random.RollD10());
 			random.Received().Next32();
-			Assert.AreEqual(6, Dice.D10(random));
+			Assert.AreEqual(6, random.RollD10());
 			random.Received().Next32();
-			Assert.AreEqual(9, Dice.D10(random));
+			Assert.AreEqual(9, random.RollD10());
 			random.Received().Next32();
-			Assert.AreEqual(10, Dice.D10(random));
+			Assert.AreEqual(10, random.RollD10());
 			random.Received().Next32();
 		}
 
@@ -149,17 +149,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 5U, 6U, 10U, 11U);
-			Assert.AreEqual(1, Dice.D12(random));
+			Assert.AreEqual(1, random.RollD12());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D12(random));
+			Assert.AreEqual(2, random.RollD12());
 			random.Received().Next32();
-			Assert.AreEqual(6, Dice.D12(random));
+			Assert.AreEqual(6, random.RollD12());
 			random.Received().Next32();
-			Assert.AreEqual(7, Dice.D12(random));
+			Assert.AreEqual(7, random.RollD12());
 			random.Received().Next32();
-			Assert.AreEqual(11, Dice.D12(random));
+			Assert.AreEqual(11, random.RollD12());
 			random.Received().Next32();
-			Assert.AreEqual(12, Dice.D12(random));
+			Assert.AreEqual(12, random.RollD12());
 			random.Received().Next32();
 		}
 
@@ -168,17 +168,17 @@ namespace Experilous.Randomization.Tests
 		{
 			var random = Substitute.For<IRandomEngine>();
 			random.Next32().Returns(0U, 1U, 9U, 10U, 18U, 19U);
-			Assert.AreEqual(1, Dice.D20(random));
+			Assert.AreEqual(1, random.RollD20());
 			random.Received().Next32();
-			Assert.AreEqual(2, Dice.D20(random));
+			Assert.AreEqual(2, random.RollD20());
 			random.Received().Next32();
-			Assert.AreEqual(10, Dice.D20(random));
+			Assert.AreEqual(10, random.RollD20());
 			random.Received().Next32();
-			Assert.AreEqual(11, Dice.D20(random));
+			Assert.AreEqual(11, random.RollD20());
 			random.Received().Next32();
-			Assert.AreEqual(19, Dice.D20(random));
+			Assert.AreEqual(19, random.RollD20());
 			random.Received().Next32();
-			Assert.AreEqual(20, Dice.D20(random));
+			Assert.AreEqual(20, random.RollD20());
 			random.Received().Next32();
 		}
 
@@ -188,22 +188,22 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U);
-			Assert.AreEqual(2, Dice.Roll(2, 2, random));
+			Assert.AreEqual(2, random.RollDice(2, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 1U);
-			Assert.AreEqual(3, Dice.Roll(2, 2, random));
+			Assert.AreEqual(3, random.RollDice(2, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 0U);
-			Assert.AreEqual(3, Dice.Roll(2, 2, random));
+			Assert.AreEqual(3, random.RollDice(2, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 1U);
-			Assert.AreEqual(4, Dice.Roll(2, 2, random));
+			Assert.AreEqual(4, random.RollDice(2, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 		}
@@ -214,47 +214,47 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U);
-			Assert.AreEqual(2, Dice.Roll(2, 3, random));
+			Assert.AreEqual(2, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 1U);
-			Assert.AreEqual(3, Dice.Roll(2, 3, random));
+			Assert.AreEqual(3, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 2U);
-			Assert.AreEqual(4, Dice.Roll(2, 3, random));
+			Assert.AreEqual(4, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 0U);
-			Assert.AreEqual(3, Dice.Roll(2, 3, random));
+			Assert.AreEqual(3, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 1U);
-			Assert.AreEqual(4, Dice.Roll(2, 3, random));
+			Assert.AreEqual(4, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 2U);
-			Assert.AreEqual(5, Dice.Roll(2, 3, random));
+			Assert.AreEqual(5, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 0U);
-			Assert.AreEqual(4, Dice.Roll(2, 3, random));
+			Assert.AreEqual(4, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 1U);
-			Assert.AreEqual(5, Dice.Roll(2, 3, random));
+			Assert.AreEqual(5, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 2U);
-			Assert.AreEqual(6, Dice.Roll(2, 3, random));
+			Assert.AreEqual(6, random.RollDice(2, 3));
 			random.Received().Next32();
 			random.Received().Next32();
 		}
@@ -265,47 +265,47 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U);
-			Assert.AreEqual(2, Dice.Roll(2, 6, random));
+			Assert.AreEqual(2, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 2U);
-			Assert.AreEqual(4, Dice.Roll(2, 6, random));
+			Assert.AreEqual(4, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 5U);
-			Assert.AreEqual(7, Dice.Roll(2, 6, random));
+			Assert.AreEqual(7, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 0U);
-			Assert.AreEqual(4, Dice.Roll(2, 6, random));
+			Assert.AreEqual(4, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 3U);
-			Assert.AreEqual(7, Dice.Roll(2, 6, random));
+			Assert.AreEqual(7, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(2U, 5U);
-			Assert.AreEqual(9, Dice.Roll(2, 6, random));
+			Assert.AreEqual(9, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 0U);
-			Assert.AreEqual(7, Dice.Roll(2, 6, random));
+			Assert.AreEqual(7, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 2U);
-			Assert.AreEqual(9, Dice.Roll(2, 6, random));
+			Assert.AreEqual(9, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U);
-			Assert.AreEqual(12, Dice.Roll(2, 6, random));
+			Assert.AreEqual(12, random.RollDice(2, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 		}
@@ -316,47 +316,47 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U);
-			Assert.AreEqual(2, Dice.Roll(2, 20, random));
+			Assert.AreEqual(2, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 4U);
-			Assert.AreEqual(6, Dice.Roll(2, 20, random));
+			Assert.AreEqual(6, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(0U, 19U);
-			Assert.AreEqual(21, Dice.Roll(2, 20, random));
+			Assert.AreEqual(21, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(11U, 0U);
-			Assert.AreEqual(13, Dice.Roll(2, 20, random));
+			Assert.AreEqual(13, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(11U, 7U);
-			Assert.AreEqual(20, Dice.Roll(2, 20, random));
+			Assert.AreEqual(20, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(11U, 19U);
-			Assert.AreEqual(32, Dice.Roll(2, 20, random));
+			Assert.AreEqual(32, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(19U, 0U);
-			Assert.AreEqual(21, Dice.Roll(2, 20, random));
+			Assert.AreEqual(21, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(19U, 12U);
-			Assert.AreEqual(33, Dice.Roll(2, 20, random));
+			Assert.AreEqual(33, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 
 			random.Next32().Returns(19U, 19U);
-			Assert.AreEqual(40, Dice.Roll(2, 20, random));
+			Assert.AreEqual(40, random.RollDice(2, 20));
 			random.Received().Next32();
 			random.Received().Next32();
 		}
@@ -367,7 +367,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(5, Dice.Roll(5, 2, random));
+			Assert.AreEqual(5, random.RollDice(5, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -375,7 +375,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 0U, 1U, 1U, 0U);
-			Assert.AreEqual(8, Dice.Roll(5, 2, random));
+			Assert.AreEqual(8, random.RollDice(5, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -383,7 +383,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 1U, 1U, 1U, 1U);
-			Assert.AreEqual(10, Dice.Roll(5, 2, random));
+			Assert.AreEqual(10, random.RollDice(5, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -397,7 +397,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(5, Dice.Roll(5, 6, random));
+			Assert.AreEqual(5, random.RollDice(5, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -405,7 +405,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(21, Dice.Roll(5, 6, random));
+			Assert.AreEqual(21, random.RollDice(5, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -413,7 +413,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(30, Dice.Roll(5, 6, random));
+			Assert.AreEqual(30, random.RollDice(5, 6));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -427,7 +427,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(1, Dice.RollKeepHighest(5, 6, 1, random));
+			Assert.AreEqual(1, random.RollDiceKeepHighest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -435,7 +435,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(6, Dice.RollKeepHighest(5, 6, 1, random));
+			Assert.AreEqual(6, random.RollDiceKeepHighest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -443,7 +443,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 3U, 4U, 4U, 2U);
-			Assert.AreEqual(5, Dice.RollKeepHighest(5, 6, 1, random));
+			Assert.AreEqual(5, random.RollDiceKeepHighest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -451,7 +451,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(6, Dice.RollKeepHighest(5, 6, 1, random));
+			Assert.AreEqual(6, random.RollDiceKeepHighest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -465,7 +465,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(1, Dice.RollKeepLowest(5, 6, 1, random));
+			Assert.AreEqual(1, random.RollDiceKeepLowest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -473,7 +473,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(2, Dice.RollKeepLowest(5, 6, 1, random));
+			Assert.AreEqual(2, random.RollDiceKeepLowest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -481,7 +481,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(4U, 3U, 5U, 4U, 3U);
-			Assert.AreEqual(4, Dice.RollKeepLowest(5, 6, 1, random));
+			Assert.AreEqual(4, random.RollDiceKeepLowest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -489,7 +489,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(6, Dice.RollKeepLowest(5, 6, 1, random));
+			Assert.AreEqual(6, random.RollDiceKeepLowest(5, 6, 1));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -503,7 +503,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(2, Dice.RollKeepHighest(5, 6, 2, random));
+			Assert.AreEqual(2, random.RollDiceKeepHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -511,7 +511,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(11, Dice.RollKeepHighest(5, 6, 2, random));
+			Assert.AreEqual(11, random.RollDiceKeepHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -519,7 +519,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 3U, 4U, 4U, 2U);
-			Assert.AreEqual(10, Dice.RollKeepHighest(5, 6, 2, random));
+			Assert.AreEqual(10, random.RollDiceKeepHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -527,7 +527,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(12, Dice.RollKeepHighest(5, 6, 2, random));
+			Assert.AreEqual(12, random.RollDiceKeepHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -541,7 +541,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(2, Dice.RollKeepLowest(5, 6, 2, random));
+			Assert.AreEqual(2, random.RollDiceKeepLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -549,7 +549,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(5, Dice.RollKeepLowest(5, 6, 2, random));
+			Assert.AreEqual(5, random.RollDiceKeepLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -557,7 +557,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(4U, 3U, 5U, 4U, 3U);
-			Assert.AreEqual(8, Dice.RollKeepLowest(5, 6, 2, random));
+			Assert.AreEqual(8, random.RollDiceKeepLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -565,7 +565,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(12, Dice.RollKeepLowest(5, 6, 2, random));
+			Assert.AreEqual(12, random.RollDiceKeepLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -579,7 +579,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(4, Dice.RollKeepHighest(5, 6, 4, random));
+			Assert.AreEqual(4, random.RollDiceKeepHighest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -587,7 +587,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(19, Dice.RollKeepHighest(5, 6, 4, random));
+			Assert.AreEqual(19, random.RollDiceKeepHighest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -595,7 +595,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 1U, 4U, 4U, 1U);
-			Assert.AreEqual(14, Dice.RollKeepHighest(5, 6, 4, random));
+			Assert.AreEqual(14, random.RollDiceKeepHighest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -603,7 +603,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(24, Dice.RollKeepHighest(5, 6, 4, random));
+			Assert.AreEqual(24, random.RollDiceKeepHighest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -617,7 +617,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(4, Dice.RollKeepLowest(5, 6, 4, random));
+			Assert.AreEqual(4, random.RollDiceKeepLowest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -625,7 +625,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(15, Dice.RollKeepLowest(5, 6, 4, random));
+			Assert.AreEqual(15, random.RollDiceKeepLowest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -633,7 +633,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(4U, 3U, 4U, 4U, 0U);
-			Assert.AreEqual(15, Dice.RollKeepLowest(5, 6, 4, random));
+			Assert.AreEqual(15, random.RollDiceKeepLowest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -641,7 +641,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(24, Dice.RollKeepLowest(5, 6, 4, random));
+			Assert.AreEqual(24, random.RollDiceKeepLowest(5, 6, 4));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -655,7 +655,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(3, Dice.RollDropHighest(5, 6, 2, random));
+			Assert.AreEqual(3, random.RollDiceDropHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -663,7 +663,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(10, Dice.RollDropHighest(5, 6, 2, random));
+			Assert.AreEqual(10, random.RollDiceDropHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -671,7 +671,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 1U, 4U, 4U, 1U);
-			Assert.AreEqual(6, Dice.RollDropHighest(5, 6, 2, random));
+			Assert.AreEqual(6, random.RollDiceDropHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -679,7 +679,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(18, Dice.RollDropHighest(5, 6, 2, random));
+			Assert.AreEqual(18, random.RollDiceDropHighest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -693,7 +693,7 @@ namespace Experilous.Randomization.Tests
 			var random = Substitute.For<IRandomEngine>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
-			Assert.AreEqual(3, Dice.RollDropLowest(5, 6, 2, random));
+			Assert.AreEqual(3, random.RollDiceDropLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -701,7 +701,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 5U, 4U, 4U, 2U);
-			Assert.AreEqual(16, Dice.RollDropLowest(5, 6, 2, random));
+			Assert.AreEqual(16, random.RollDiceDropLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -709,7 +709,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(1U, 3U, 4U, 1U, 0U);
-			Assert.AreEqual(11, Dice.RollDropLowest(5, 6, 2, random));
+			Assert.AreEqual(11, random.RollDiceDropLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();
@@ -717,7 +717,7 @@ namespace Experilous.Randomization.Tests
 			random.Received().Next32();
 
 			random.Next32().Returns(5U, 5U, 5U, 5U, 5U);
-			Assert.AreEqual(18, Dice.RollDropLowest(5, 6, 2, random));
+			Assert.AreEqual(18, random.RollDiceDropLowest(5, 6, 2));
 			random.Received().Next32();
 			random.Received().Next32();
 			random.Received().Next32();

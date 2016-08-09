@@ -25,7 +25,7 @@ namespace Experilous.Randomization.Tests
 			return Mathf.Sqrt(devianceSum / buckets.Length);
 		}
 
-		public static void ValidateNext32BitsDistribution(IRandomEngine engine, int bitCount, int hitsPerBucket, float tolerance)
+		public static void ValidateNext32BitsDistribution(IRandomEngine random, int bitCount, int hitsPerBucket, float tolerance)
 		{
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
@@ -33,14 +33,14 @@ namespace Experilous.Randomization.Tests
 			uint mask = ~(0xFFFFFFFFU << bitCount);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = engine.Next32() & mask;
-				buckets[random] += 1;
+				var n = random.Next32() & mask;
+				buckets[n] += 1;
 			}
 
 			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateNext64BitsDistribution(IRandomEngine engine, int bitCount, int hitsPerBucket, float tolerance)
+		public static void ValidateNext64BitsDistribution(IRandomEngine random, int bitCount, int hitsPerBucket, float tolerance)
 		{
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
@@ -48,20 +48,20 @@ namespace Experilous.Randomization.Tests
 			ulong mask = ~(0xFFFFFFFFFFFFFFFFUL << bitCount);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var random = engine.Next64() & mask;
-				buckets[random] += 1;
+				var n = random.Next64() & mask;
+				buckets[n] += 1;
 			}
 
 			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateChanceDistribution(IRandomEngine engine, int numerator, int denominator, int trialCount, float tolerance)
+		public static void ValidateChanceDistribution(IRandomEngine random, int numerator, int denominator, int trialCount, float tolerance)
 		{
 			int falseCount = 0;
 			int trueCount = 0;
 			for (int i = 0; i < trialCount; ++i)
 			{
-				if (Chance.Probability(numerator, denominator, engine))
+				if (random.Probability(numerator, denominator))
 				{
 					++trueCount;
 				}

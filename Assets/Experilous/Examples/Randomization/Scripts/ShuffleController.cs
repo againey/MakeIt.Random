@@ -140,7 +140,7 @@ namespace Experilous.Examples.Randomization
 				_selectedItemPanel.selected = false;
 			}
 
-			Shuffle.InPlace(_items, _random);
+			_random.Shuffle(_items);
 
 			for (int i = 0; i < _itemPanels.Count; ++i)
 			{
@@ -166,7 +166,7 @@ namespace Experilous.Examples.Randomization
 
 		public void OnSelectWeightedRandomItem()
 		{
-			int index = RandomIndex.Weighted(_items.Count, (int i) => _items[i].weight, _random);
+			int index = _random.WeightedIndex(_items.Count, (int i) => _items[i].weight);
 			WeightedShuffleItemPanel itemPanel = _itemPanels[index];
 			if (itemPanel != _selectedItemPanel)
 			{

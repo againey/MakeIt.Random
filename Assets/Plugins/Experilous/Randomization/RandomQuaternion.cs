@@ -8,19 +8,19 @@ namespace Experilous.Randomization
 {
 	public static class RandomQuaternion
 	{
-		public static Quaternion Rotation(IRandomEngine engine)
+		public static Quaternion Rotation(this IRandomEngine random)
 		{
 			Start1:
-			float u1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v1 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u1 = random.OpenFloatUnit() * 2f - 1f;
+			float v1 = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr1 = u1 * u1;
 			float vSqr1 = v1 * v1;
 			float uvSqr1 = uSqr1 + vSqr1;
 			if (uvSqr1 >= 1f) goto Start1;
 
 			Start2:
-			float u2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
-			float v2 = RandomUnit.OpenFloat(engine) * 2f - 1f;
+			float u2 = random.OpenFloatUnit() * 2f - 1f;
+			float v2 = random.OpenFloatUnit() * 2f - 1f;
 			float uSqr2 = u2 * u2;
 			float vSqr2 = v2 * v2;
 			float uvSqr2 = uSqr2 + vSqr2;

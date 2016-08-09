@@ -28,31 +28,31 @@ namespace Experilous.Randomization
 
 		#region Open
 
-		public static float OpenFloat(IRandomEngine engine)
+		public static float OpenFloatUnit(this IRandomEngine random)
 		{
-			uint random;
+			uint n;
 			do
 			{
-				random = engine.Next32() & 0x007FFFFFU;
-			} while (random == 0U);
+				n = random.Next32() & 0x007FFFFFU;
+			} while (n == 0U);
 
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | random;
+			value.bits = 0x3F800000U | n;
 			return value.number - 1f;
 		}
 
-		public static double OpenDouble(IRandomEngine engine)
+		public static double OpenDoubleUnit(this IRandomEngine random)
 		{
-			ulong random;
+			ulong n;
 			do
 			{
-				random = engine.Next64() & 0x000FFFFFFFFFFFFFUL;
-			} while (random == 0UL);
+				n = random.Next64() & 0x000FFFFFFFFFFFFFUL;
+			} while (n == 0UL);
 
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | random;
+			value.bits = 0x3FF0000000000000UL | n;
 			return value.number - 1.0;
 		}
 
@@ -60,19 +60,19 @@ namespace Experilous.Randomization
 
 		#region HalfOpen
 
-		public static float HalfOpenFloat(IRandomEngine engine)
+		public static float HalfOpenFloatUnit(this IRandomEngine random)
 		{
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & engine.Next32();
+			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
 			return value.number - 1f;
 		}
 
-		public static double HalfOpenDouble(IRandomEngine engine)
+		public static double HalfOpenDoubleUnit(this IRandomEngine random)
 		{
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & engine.Next64();
+			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
 			return value.number - 1.0;
 		}
 
@@ -80,19 +80,19 @@ namespace Experilous.Randomization
 
 		#region HalfClosed
 
-		public static float HalfClosedFloat(IRandomEngine engine)
+		public static float HalfClosedFloatUnit(this IRandomEngine random)
 		{
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & engine.Next32();
+			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
 			return 2f - value.number;
 		}
 
-		public static double HalfClosedDouble(IRandomEngine engine)
+		public static double HalfClosedDoubleUnit(this IRandomEngine random)
 		{
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & engine.Next64();
+			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
 			return 2.0 - value.number;
 		}
 
@@ -100,7 +100,7 @@ namespace Experilous.Randomization
 
 		#region Closed
 
-		public static float ClosedFloat(IRandomEngine engine)
+		public static float ClosedFloatUnit(this IRandomEngine random)
 		{
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
 			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
@@ -117,16 +117,16 @@ namespace Experilous.Randomization
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
 			// on how RandomRange.HalfOpen() is implemented.
 
-			uint random = engine.Next32();
+			uint n = random.Next32();
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & random;
+			value.bits = 0x3F800000U | 0x007FFFFFU & n;
 
-			if ((random & 0xFFE00000U) != 0xFFE00000U)
+			if ((n & 0xFFE00000U) != 0xFFE00000U)
 			{
 				return value.number - 1f;
 			}
-			else if (RandomRange.HalfOpen(0x00800001U, engine) < 0x007FF801U)
+			else if (random.HalfOpenRange(0x00800001U) < 0x007FF801U)
 			{
 				return value.number - 1f;
 			}
@@ -136,7 +136,7 @@ namespace Experilous.Randomization
 			}
 		}
 
-		public static double ClosedDouble(IRandomEngine engine)
+		public static double ClosedDoubleUnit(this IRandomEngine random)
 		{
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
 			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
@@ -153,16 +153,16 @@ namespace Experilous.Randomization
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
 			// on how RandomRange.HalfOpen() is implemented.
 
-			ulong random = engine.Next64();
+			ulong n = random.Next64();
 			BitwiseDouble value;
 			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random;
+			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & n;
 
-			if ((random & 0xFFF0000000000000UL) != 0xFFF0000000000000UL)
+			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL)
 			{
 				return value.number - 1.0;
 			}
-			else if (RandomRange.HalfOpen(0x0010000000000001UL, engine) < 0x000FFFFFFFFFF001UL)
+			else if (random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
 			{
 				return value.number - 1.0;
 			}
