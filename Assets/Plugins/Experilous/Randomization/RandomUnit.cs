@@ -62,18 +62,26 @@ namespace Experilous.Randomization
 
 		public static float HalfOpenFloatUnit(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1.0f;
+#else
 			BitwiseFloat value;
 			value.number = 0f;
 			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
 			return value.number - 1f;
+#endif
 		}
 
 		public static double HalfOpenDoubleUnit(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1.0;
+#else
 			BitwiseDouble value;
 			value.number = 0.0;
 			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
 			return value.number - 1.0;
+#endif
 		}
 
 		#endregion
@@ -102,6 +110,10 @@ namespace Experilous.Randomization
 
 		public static float ClosedFloatUnit(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var n = random.ClosedRange(0x00800000U);
+			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1.0f : 1.0f;
+#else
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
 			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
 			// that had a 2^23 in 2^23 + 1 chance of passing, and on failure resulted in a value of 1.0 being returned
@@ -134,10 +146,15 @@ namespace Experilous.Randomization
 			{
 				return 1f;
 			}
+#endif
 		}
 
 		public static double ClosedDoubleUnit(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var n = random.ClosedRange(0x0010000000000000UL);
+			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1.0 : 1.0;
+#else
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
 			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
 			// that had a 2^52 in 2^52 + 1 chance of passing, and on failure resulted in a value of 1.0 being returned
@@ -170,6 +187,7 @@ namespace Experilous.Randomization
 			{
 				return 1.0;
 			}
+#endif
 		}
 
 		#endregion

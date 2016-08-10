@@ -12,6 +12,10 @@ namespace Experilous.Randomization
 
 		public static Vector2 UnitVector2(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var angle = random.HalfOpenRange(0f, Mathf.PI * 2f);
+			return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+#else
 			Start:
 			float u = random.OpenFloatUnit() * 2f - 1f;
 			float v = random.OpenFloatUnit() * 2f - 1f;
@@ -21,10 +25,17 @@ namespace Experilous.Randomization
 			if (uvSqr >= 1f) goto Start;
 
 			return new Vector2((uSqr - vSqr) / uvSqr, 2f * u * v / uvSqr);
+#endif
 		}
 
 		public static Vector3 UnitVector3(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
+			var latitude = Mathf.Acos(random.HalfOpenRange(-1f, +1f));
+			var cosineLatitude = Mathf.Cos(latitude);
+			return new Vector3(Mathf.Cos(longitude) * cosineLatitude, Mathf.Sin(latitude), Mathf.Sin(longitude) * cosineLatitude);
+#else
 			Start:
 			float u = random.OpenFloatUnit() * 2f - 1f;
 			float v = random.OpenFloatUnit() * 2f - 1f;
@@ -35,6 +46,7 @@ namespace Experilous.Randomization
 
 			float t = 2f * Mathf.Sqrt(1f - uvSqr);
 			return new Vector3(u * t, v * t, 1f - 2f * uvSqr);
+#endif
 		}
 
 		public static Vector4 UnitVector4(this IRandomEngine random)
@@ -84,6 +96,10 @@ namespace Experilous.Randomization
 
 		public static Vector2 PointWithinCircle(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
+			return random.UnitVector2() * distance;
+#else
 			Start:
 			float u = random.OpenFloatUnit() * 2f - 1f;
 			float v = random.OpenFloatUnit() * 2f - 1f;
@@ -93,10 +109,15 @@ namespace Experilous.Randomization
 			if (uvSqr > 1f) goto Start;
 
 			return new Vector2(u, v);
+#endif
 		}
 
 		public static Vector2 PointWithinCircle(this IRandomEngine random, float radius)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var distance = Mathf.Sqrt(random.ClosedFloatUnit()) * radius;
+			return random.UnitVector2() * distance;
+#else
 			float rSqr = radius * radius;
 
 			Start:
@@ -108,10 +129,17 @@ namespace Experilous.Randomization
 			if (uvSqr > rSqr) goto Start;
 
 			return new Vector2(u, v);
+#endif
 		}
 
 		public static Vector2 PointWithinCircularShell(this IRandomEngine random, float innerRadius, float outerRadius)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var unitMin = innerRadius / outerRadius;
+			var unitRange = 1f - unitMin;
+			var distance = Mathf.Sqrt(random.ClosedFloatUnit() * unitRange + unitMin) * outerRadius;
+			return random.UnitVector2() * distance;
+#else
 			float irSqr = innerRadius * innerRadius;
 			float orSqr = outerRadius * outerRadius;
 
@@ -124,10 +152,15 @@ namespace Experilous.Randomization
 			if (uvSqr < irSqr || uvSqr > orSqr) goto Start;
 
 			return new Vector2(u, v);
+#endif
 		}
 
 		public static Vector3 PointWithinSphere(this IRandomEngine random)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
+			return random.UnitVector3() * distance;
+#else
 			Start:
 			float u = random.OpenFloatUnit() * 2f - 1f;
 			float v = random.OpenFloatUnit() * 2f - 1f;
@@ -139,10 +172,15 @@ namespace Experilous.Randomization
 			if (uvwSqr > 1f) goto Start;
 
 			return new Vector3(u, v, w);
+#endif
 		}
 
 		public static Vector3 PointWithinSphere(this IRandomEngine random, float radius)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f) * radius;
+			return random.UnitVector3() * distance;
+#else
 			float rSqr = radius * radius;
 
 			Start:
@@ -156,10 +194,17 @@ namespace Experilous.Randomization
 			if (uvwSqr > rSqr) goto Start;
 
 			return new Vector3(u, v, w);
+#endif
 		}
 
 		public static Vector3 PointWithinSphericalShell(this IRandomEngine random, float innerRadius, float outerRadius)
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var unitMin = innerRadius / outerRadius;
+			var unitRange = 1f - unitMin;
+			var distance = Mathf.Pow(random.ClosedFloatUnit() * unitRange + unitMin, 1f / 3f) * outerRadius;
+			return random.UnitVector3() * distance;
+#else
 			float irSqr = innerRadius * innerRadius;
 			float orSqr = outerRadius * outerRadius;
 
@@ -174,6 +219,7 @@ namespace Experilous.Randomization
 			if (uvwSqr < irSqr || uvwSqr > orSqr) goto Start;
 
 			return new Vector3(u, v, w);
+#endif
 		}
 
 		#endregion

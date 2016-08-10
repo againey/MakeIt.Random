@@ -138,6 +138,28 @@ namespace Experilous.Randomization
 			_state1 = state1;
 		}
 
+#if RANDOMIZATION_COMPAT_V1_0
+		public override void Seed()
+		{
+			Seed(SplitMix64.Create());
+		}
+
+		public override void Seed(int seed)
+		{
+			Seed(SplitMix64.Create(seed));
+		}
+
+		public override void Seed(params int[] seed)
+		{
+			Seed(SplitMix64.Create(seed));
+		}
+
+		public override void Seed(string seed)
+		{
+			Seed(SplitMix64.Create(seed));
+		}
+#endif
+
 		public override void Seed(RandomStateGenerator stateGenerator)
 		{
 			int tryCount = 0;
@@ -176,6 +198,28 @@ namespace Experilous.Randomization
 
 			throw new System.ArgumentException("The provided random engine was unable to generate a non-zero state, which is required by this random engine.");
 		}
+
+#if RANDOMIZATION_COMPAT_V1_0
+		public override void MergeSeed()
+		{
+			MergeSeed(SplitMix64.Create());
+		}
+
+		public override void MergeSeed(int seed)
+		{
+			MergeSeed(SplitMix64.Create(seed));
+		}
+
+		public override void MergeSeed(params int[] seed)
+		{
+			MergeSeed(SplitMix64.Create(seed));
+		}
+
+		public override void MergeSeed(string seed)
+		{
+			MergeSeed(SplitMix64.Create(seed));
+		}
+#endif
 
 		public override void MergeSeed(RandomStateGenerator stateGenerator)
 		{
@@ -218,39 +262,68 @@ namespace Experilous.Randomization
 
 		public override void Step()
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var x = _state0;
+			var y = _state1;
+			_state0 = y;
+			x ^= x << 23;
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+#else
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
 			x ^= x << 23;
 			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5); //earlier versions used values 17 and 26; changed to 18 and 5 as justified at http://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html?showComment=1450389868643#c2004131565745698275
+#endif
 		}
 
 		public override uint Next32()
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var x = _state0;
+			var y = _state1;
+			_state0 = y;
+			x ^= x << 23;
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+			return (uint)(_state1 + y);
+#else
 			var x = _state0;
 			var y = _state1;
 			var next = (uint)(x + y);
 			_state0 = y;
 			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
+			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5); //earlier versions used values 17 and 26; changed to 18 and 5 as justified at http://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html?showComment=1450389868643#c2004131565745698275
 			return next;
+#endif
 		}
 
 		public override ulong Next64()
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			var x = _state0;
+			var y = _state1;
+			_state0 = y;
+			x ^= x << 23;
+			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
+			return _state1 + y;
+#else
 			var x = _state0;
 			var y = _state1;
 			var next = x + y;
 			_state0 = y;
 			x ^= x << 23;
-			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5);
+			_state1 = x ^ y ^ (x >> 18) ^ (y >> 5); //earlier versions used values 17 and 26; changed to 18 and 5 as justified at http://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html?showComment=1450389868643#c2004131565745698275
 			return next;
+#endif
 		}
 
 		public override int skipAheadMagnitude { get { return 64; } }
 
 		public override void SkipAhead()
 		{
+#if RANDOMIZATION_COMPAT_V1_0
+			throw new System.NotImplementedException();
+#else
 			ulong x = 0;
 			ulong y = 0;
 
@@ -280,6 +353,7 @@ namespace Experilous.Randomization
 
 			_state0 = x;
 			_state1 = y;
+#endif
 		}
 
 		public override System.Random AsSystemRandom()

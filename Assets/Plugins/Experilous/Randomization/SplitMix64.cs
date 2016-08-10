@@ -126,6 +126,81 @@ namespace Experilous.Randomization
 			_state = state;
 		}
 
+#if RANDOMIZATION_COMPAT_V1_0
+		private static ulong Hash(byte[] seed)
+		{
+			ulong h = 14695981039346656037UL;
+			for (int i = 0; i < seed.Length; ++i)
+			{
+				h = (h ^ seed[i]) * 1099511628211UL;
+			}
+			return h;
+		}
+
+		public override void Seed()
+		{
+			_state = Hash(System.BitConverter.GetBytes(System.Environment.TickCount));
+		}
+
+		public override void Seed(int seed)
+		{
+			_state = Hash(System.BitConverter.GetBytes(seed));
+		}
+
+		public override void Seed(params int[] seed)
+		{
+			var byteData = new byte[seed.Length * 4];
+			System.Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+			_state = Hash(byteData);
+		}
+
+		public override void Seed(string seed)
+		{
+			_state = Hash(new System.Text.UTF8Encoding().GetBytes(seed));
+		}
+
+		public override void Seed(RandomStateGenerator stateGenerator)
+		{
+			_state = stateGenerator.Next64();
+		}
+
+		public override void Seed(IRandomEngine seeder)
+		{
+			_state = seeder.Next64();
+		}
+
+		public override void MergeSeed()
+		{
+			_state ^= Hash(System.BitConverter.GetBytes(System.Environment.TickCount));
+		}
+
+		public override void MergeSeed(int seed)
+		{
+			_state ^= Hash(System.BitConverter.GetBytes(seed));
+		}
+
+		public override void MergeSeed(params int[] seed)
+		{
+			var byteData = new byte[seed.Length * 4];
+			System.Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+			_state ^= Hash(byteData);
+		}
+
+		public override void MergeSeed(string seed)
+		{
+			_state ^= Hash(new System.Text.UTF8Encoding().GetBytes(seed));
+		}
+
+		public override void MergeSeed(RandomStateGenerator stateGenerator)
+		{
+			_state ^= stateGenerator.Next64();
+		}
+
+		public override void MergeSeed(IRandomEngine seeder)
+		{
+			_state ^= seeder.Next64();
+		}
+#else
 		public override void Seed(RandomStateGenerator stateGenerator)
 		{
 			_state = stateGenerator.Next64();
@@ -145,6 +220,7 @@ namespace Experilous.Randomization
 		{
 			_state ^= seeder.Next64();
 		}
+#endif
 
 		public override void Step()
 		{
