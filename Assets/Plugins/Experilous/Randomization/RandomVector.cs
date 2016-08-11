@@ -32,9 +32,9 @@ namespace Experilous.Randomization
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
-			var latitude = Mathf.Acos(random.HalfOpenRange(-1f, +1f));
-			var cosineLatitude = Mathf.Cos(latitude);
-			return new Vector3(Mathf.Cos(longitude) * cosineLatitude, Mathf.Sin(latitude), Mathf.Sin(longitude) * cosineLatitude);
+			var z = random.ClosedRange(-1f, +1f);
+			var invertedZ = Mathf.Sqrt(1f - z * z);
+			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 #else
 			Start:
 			float u = random.OpenFloatUnit() * 2f - 1f;
@@ -136,8 +136,9 @@ namespace Experilous.Randomization
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Sqrt(random.ClosedFloatUnit() * unitRange + unitMin) * outerRadius;
+			var unitMinSquared = unitMin * unitMin;
+			var unitRange = 1f - unitMinSquared;
+			var distance = Mathf.Sqrt(random.ClosedFloatUnit() * unitRange + unitMinSquared) * outerRadius;
 			return random.UnitVector2() * distance;
 #else
 			float irSqr = innerRadius * innerRadius;
@@ -201,8 +202,9 @@ namespace Experilous.Randomization
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var unitMin = innerRadius / outerRadius;
-			var unitRange = 1f - unitMin;
-			var distance = Mathf.Pow(random.ClosedFloatUnit() * unitRange + unitMin, 1f / 3f) * outerRadius;
+			var unitMinPow3 = unitMin * unitMin * unitMin;
+			var unitRange = 1f - unitMinPow3;
+			var distance = Mathf.Pow(random.ClosedFloatUnit() * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 			return random.UnitVector3() * distance;
 #else
 			float irSqr = innerRadius * innerRadius;
