@@ -729,7 +729,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_d6()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("d6");
+			var dice = RandomDice.Prepare("d6");
 
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
 			Assert.AreEqual(1, dice(random));
@@ -750,7 +750,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_D6()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("D6");
+			var dice = RandomDice.Prepare("D6");
 
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
 			Assert.AreEqual(1, dice(random));
@@ -771,7 +771,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_3d4()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("3d4");
+			var dice = RandomDice.Prepare("3d4");
 
 			random.Next32().Returns(0U, 0U, 0U);
 			Assert.AreEqual(3, dice(random));
@@ -785,7 +785,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_2d72()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("2d72");
+			var dice = RandomDice.Prepare("2d72");
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(2, dice(random));
@@ -799,7 +799,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_1d8_Add1()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("1d8+1");
+			var dice = RandomDice.Prepare("1d8+1");
 
 			random.Next32().Returns(0U);
 			Assert.AreEqual(2, dice(random));
@@ -813,7 +813,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_2d4_Sub3()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("2d4-3");
+			var dice = RandomDice.Prepare("2d4-3");
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(-1, dice(random));
@@ -827,7 +827,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_d2_Mul10()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("d2 x10");
+			var dice = RandomDice.Prepare("d2 x10");
 
 			random.Next32().Returns(0U);
 			Assert.AreEqual(10, dice(random));
@@ -839,7 +839,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d4_Div5()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d4 / 5");
+			var dice = RandomDice.Prepare("5d4 / 5");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, dice(random));
@@ -855,7 +855,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_2d3_Mul3Add1()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("2d3*3+1");
+			var dice = RandomDice.Prepare("2d3*3+1");
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(7, dice(random));
@@ -869,7 +869,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_10d8_Div5Sub1()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("10d8 / 5 - 1");
+			var dice = RandomDice.Prepare("10d8 / 5 - 1");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, dice(random));
@@ -885,7 +885,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d4_KeepHighest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d4kH");
+			var dice = RandomDice.Prepare("5d4kH");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, dice(random));
@@ -901,7 +901,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d6_Keep3Highest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d6k3h");
+			var dice = RandomDice.Prepare("5d6k3h");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(3, dice(random));
@@ -917,7 +917,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d4_KeepLowest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d4kL");
+			var dice = RandomDice.Prepare("5d4kL");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, dice(random));
@@ -933,7 +933,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d6_Keep3Lowest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d6k3l");
+			var dice = RandomDice.Prepare("5d6k3l");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(3, dice(random));
@@ -949,7 +949,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d4_DropHighest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d4-H");
+			var dice = RandomDice.Prepare("5d4-H");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(4, dice(random));
@@ -965,7 +965,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d6_Drop3Highest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d6d3h");
+			var dice = RandomDice.Prepare("5d6d3h");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(2, dice(random));
@@ -981,7 +981,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d4_DropLowest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d4dL");
+			var dice = RandomDice.Prepare("5d4dL");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(4, dice(random));
@@ -997,7 +997,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_5d6_Drop3Lowest()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("5d6-3l");
+			var dice = RandomDice.Prepare("5d6-3l");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(2, dice(random));
@@ -1013,7 +1013,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_4d6_Drop1Lowest_Sub1()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("4d6-1l-1");
+			var dice = RandomDice.Prepare("4d6-1l-1");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U);
 			Assert.AreEqual(2, dice(random));
@@ -1027,7 +1027,7 @@ namespace Experilous.Randomization.Tests
 		public void Notation_8d20_Keep5Highest_Div2_Plus8()
 		{
 			var random = Substitute.For<IRandomEngine>();
-			var dice = Dice.Prepare("8d20 k5h /2 +8");
+			var dice = RandomDice.Prepare("8d20 k5h /2 +8");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(10, dice(random));

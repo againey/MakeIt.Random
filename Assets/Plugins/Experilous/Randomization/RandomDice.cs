@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Experilous.Randomization
 {
-	public static class Dice
+	public static class RandomDice
 	{
 		#region Roll
 

@@ -4,26 +4,35 @@
 
 namespace Experilous.Randomization
 {
-	public static class Chance
+	public static class RandomChance
 	{
-		#region Ratio
+		#region Evenly Weighted
 
-		public static bool WeightedChance(this IRandomEngine random, int ratioTrue, int ratioFalse)
+		public static bool Chance(this IRandomEngine random)
+		{
+			return random.Next32() >= 0x80000000U;
+		}
+
+		#endregion
+
+		#region Unevenly Weighted
+
+		public static bool Chance(this IRandomEngine random, int ratioTrue, int ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool WeightedChance(this IRandomEngine random, uint ratioTrue, uint ratioFalse)
+		public static bool Chance(this IRandomEngine random, uint ratioTrue, uint ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool WeightedChance(this IRandomEngine random, float ratioTrue, float ratioFalse)
+		public static bool Chance(this IRandomEngine random, float ratioTrue, float ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
-		public static bool WeightedChance(this IRandomEngine random, double ratioTrue, double ratioFalse)
+		public static bool Chance(this IRandomEngine random, double ratioTrue, double ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
@@ -38,6 +47,16 @@ namespace Experilous.Randomization
 		}
 
 		public static bool Probability(this IRandomEngine random, uint numerator, uint denominator)
+		{
+			return random.HalfOpenRange(denominator) < numerator;
+		}
+
+		public static bool Probability(this IRandomEngine random, float numerator, float denominator)
+		{
+			return random.HalfOpenRange(denominator) < numerator;
+		}
+
+		public static bool Probability(this IRandomEngine random, double numerator, double denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator;
 		}
