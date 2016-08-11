@@ -43,10 +43,10 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public static UnityRandomEngine Create(IRandomEngine seeder)
+		public static UnityRandomEngine Create(IBitGenerator bitGenerator)
 		{
 			var instance = CreateInstance<UnityRandomEngine>();
-			instance.Seed(seeder);
+			instance.Seed(bitGenerator);
 			return instance;
 		}
 
@@ -79,24 +79,14 @@ namespace Experilous.Randomization
 			throw new NotSupportedException("The Unity Random class does not expose any method to restore its state.");
 		}
 
-		public override void Seed(RandomStateGenerator stateGenerator)
+		public override void Seed(IBitGenerator bitGenerator)
 		{
-			UnityEngine.Random.seed = (int)stateGenerator.Next32();
+			UnityEngine.Random.seed = (int)bitGenerator.Next32();
 		}
 
-		public override void Seed(IRandomEngine seeder)
+		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
-			UnityEngine.Random.seed = (int)seeder.Next32();
-		}
-
-		public override void MergeSeed(RandomStateGenerator stateGenerator)
-		{
-			UnityEngine.Random.seed ^= (int)stateGenerator.Next32();
-		}
-
-		public override void MergeSeed(IRandomEngine seeder)
-		{
-			UnityEngine.Random.seed ^= (int)seeder.Next32();
+			UnityEngine.Random.seed ^= (int)bitGenerator.Next32();
 		}
 
 		public override void Step()

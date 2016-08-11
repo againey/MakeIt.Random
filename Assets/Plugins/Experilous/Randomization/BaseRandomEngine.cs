@@ -50,8 +50,7 @@ namespace Experilous.Randomization
 			Seed(new RandomStateGenerator(seed));
 		}
 
-		public abstract void Seed(RandomStateGenerator stateGenerator);
-		public abstract void Seed(IRandomEngine seeder);
+		public abstract void Seed(IBitGenerator bitGenerator);
 
 		public virtual void MergeSeed()
 		{
@@ -73,8 +72,7 @@ namespace Experilous.Randomization
 			MergeSeed(new RandomStateGenerator(seed));
 		}
 
-		public abstract void MergeSeed(RandomStateGenerator stateGenerator);
-		public abstract void MergeSeed(IRandomEngine seeder);
+		public abstract void MergeSeed(IBitGenerator bitGenerator);
 
 		public abstract void Step();
 		public abstract uint Next32();

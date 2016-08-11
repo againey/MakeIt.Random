@@ -51,17 +51,10 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public static XorShift1024Star Create(RandomStateGenerator stateGenerator)
+		public static XorShift1024Star Create(IBitGenerator bitGenerator)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
-			instance.Seed(stateGenerator);
-			return instance;
-		}
-
-		public static XorShift1024Star Create(IRandomEngine seeder)
-		{
-			var instance = CreateInstance<XorShift1024Star>();
-			instance.Seed(seeder);
+			instance.Seed(bitGenerator);
 			return instance;
 		}
 
@@ -156,10 +149,9 @@ namespace Experilous.Randomization
 			throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift1024* random number generator.");
 		}
 
-		public override void Seed(RandomStateGenerator stateGenerator)
+		public override void Seed(IBitGenerator bitGenerator)
 		{
 			int tryCount = 0;
-			int offsetIncrement = stateGenerator.ComputeIdealOffsetIncrement(16);
 
 			do
 			{
@@ -167,7 +159,7 @@ namespace Experilous.Randomization
 				bool allZeroes = true;
 				for (int i = 0; i < 16; ++i)
 				{
-					state[i] = stateGenerator.Next64(offsetIncrement);
+					state[i] = bitGenerator.Next64();
 					allZeroes = allZeroes && state[i] == 0;
 				}
 				if (!allZeroes)
@@ -178,10 +170,10 @@ namespace Experilous.Randomization
 				}
 			} while (++tryCount < 4);
 
-			throw new System.ArgumentException("The provided state generator was unable to generate a non-zero state, which is required by this random engine.");
+			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
-		public override void Seed(IRandomEngine seeder)
+		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
 			int tryCount = 0;
 
@@ -191,32 +183,7 @@ namespace Experilous.Randomization
 				bool allZeroes = true;
 				for (int i = 0; i < 16; ++i)
 				{
-					state[i] = seeder.Next64();
-					allZeroes = allZeroes && state[i] == 0;
-				}
-				if (!allZeroes)
-				{
-					_state = state;
-					_offset = 0;
-					return;
-				}
-			} while (++tryCount < 4);
-
-			throw new System.ArgumentException("The provided random engine was unable to generate a non-zero state, which is required by this random engine.");
-		}
-
-		public override void MergeSeed(RandomStateGenerator stateGenerator)
-		{
-			int tryCount = 0;
-			int offsetIncrement = stateGenerator.ComputeIdealOffsetIncrement(16);
-
-			do
-			{
-				ulong[] state = new ulong[16];
-				bool allZeroes = true;
-				for (int i = 0; i < 16; ++i)
-				{
-					state[i] = _state[i] ^ stateGenerator.Next64(offsetIncrement);
+					state[i] = _state[i] ^ bitGenerator.Next64();
 					allZeroes = allZeroes && state[i] == 0;
 				}
 				if (!allZeroes)
@@ -226,30 +193,7 @@ namespace Experilous.Randomization
 				}
 			} while (++tryCount < 4);
 
-			throw new System.ArgumentException("The provided state generator was unable to generate a non-zero state, which is required by this random engine.");
-		}
-
-		public override void MergeSeed(IRandomEngine seeder)
-		{
-			int tryCount = 0;
-
-			do
-			{
-				ulong[] state = new ulong[16];
-				bool allZeroes = true;
-				for (int i = 0; i < 16; ++i)
-				{
-					state[i] = _state[i] ^ seeder.Next64();
-					allZeroes = allZeroes && state[i] == 0;
-				}
-				if (!allZeroes)
-				{
-					_state = state;
-					return;
-				}
-			} while (++tryCount < 4);
-
-			throw new System.ArgumentException("The provided random engine was unable to generate a non-zero state, which is required by this random engine.");
+			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
 		public override void Step()

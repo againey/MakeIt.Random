@@ -50,17 +50,10 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public static SplitMix64 Create(RandomStateGenerator stateGenerator)
+		public static SplitMix64 Create(IBitGenerator bitGenerator)
 		{
 			var instance = CreateInstance<SplitMix64>();
-			instance.Seed(stateGenerator);
-			return instance;
-		}
-
-		public static SplitMix64 Create(IRandomEngine seeder)
-		{
-			var instance = CreateInstance<SplitMix64>();
-			instance.Seed(seeder);
+			instance.Seed(bitGenerator);
 			return instance;
 		}
 
@@ -159,14 +152,9 @@ namespace Experilous.Randomization
 			_state = Hash(new System.Text.UTF8Encoding().GetBytes(seed));
 		}
 
-		public override void Seed(RandomStateGenerator stateGenerator)
+		public override void Seed(IBitGenerator bitGenerator)
 		{
-			_state = stateGenerator.Next64();
-		}
-
-		public override void Seed(IRandomEngine seeder)
-		{
-			_state = seeder.Next64();
+			_state = bitGenerator.Next64();
 		}
 
 		public override void MergeSeed()
@@ -191,34 +179,19 @@ namespace Experilous.Randomization
 			_state ^= Hash(new System.Text.UTF8Encoding().GetBytes(seed));
 		}
 
-		public override void MergeSeed(RandomStateGenerator stateGenerator)
+		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
-			_state ^= stateGenerator.Next64();
-		}
-
-		public override void MergeSeed(IRandomEngine seeder)
-		{
-			_state ^= seeder.Next64();
+			_state ^= bitGenerator.Next64();
 		}
 #else
-		public override void Seed(RandomStateGenerator stateGenerator)
+		public override void Seed(IBitGenerator bitGenerator)
 		{
-			_state = stateGenerator.Next64();
+			_state = bitGenerator.Next64();
 		}
 
-		public override void Seed(IRandomEngine seeder)
+		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
-			_state = seeder.Next64();
-		}
-
-		public override void MergeSeed(RandomStateGenerator stateGenerator)
-		{
-			_state ^= stateGenerator.Next64();
-		}
-
-		public override void MergeSeed(IRandomEngine seeder)
-		{
-			_state ^= seeder.Next64();
+			_state ^= bitGenerator.Next64();
 		}
 #endif
 

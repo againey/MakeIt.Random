@@ -45,10 +45,10 @@ namespace Experilous.Randomization
 			return instance;
 		}
 
-		public static SystemRandomEngine Create(IRandomEngine seeder)
+		public static SystemRandomEngine Create(IBitGenerator bitGenerator)
 		{
 			var instance = CreateInstance<SystemRandomEngine>();
-			instance.Seed(seeder);
+			instance.Seed(bitGenerator);
 			return instance;
 		}
 
@@ -115,14 +115,9 @@ namespace Experilous.Randomization
 			Seed(new RandomStateGenerator(seed));
 		}
 
-		public override void Seed(RandomStateGenerator stateGenerator)
+		public override void Seed(IBitGenerator bitGenerator)
 		{
-			_random = new System.Random((int)stateGenerator.Next32());
-		}
-
-		public override void Seed(IRandomEngine seeder)
-		{
-			_random = new System.Random((int)seeder.Next32());
+			_random = new System.Random((int)bitGenerator.Next32());
 		}
 
 		public override void MergeSeed()
@@ -145,14 +140,9 @@ namespace Experilous.Randomization
 			MergeSeed(new RandomStateGenerator(seed));
 		}
 
-		public override void MergeSeed(RandomStateGenerator stateGenerator)
+		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
-			_random = new System.Random((int)(Next32() ^ stateGenerator.Next32()));
-		}
-
-		public override void MergeSeed(IRandomEngine seeder)
-		{
-			_random = new System.Random((int)(Next32() ^ seeder.Next32()));
+			_random = new System.Random((int)(Next32() ^ bitGenerator.Next32()));
 		}
 
 		public override void Step()

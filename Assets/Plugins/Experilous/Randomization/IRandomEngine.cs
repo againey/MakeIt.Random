@@ -11,7 +11,7 @@ namespace Experilous.Randomization
 	/// This interface offers only basic access to a random sequence of bits, letting the implementations
 	/// focus entirely on the generation of pseudo-random data.
 	/// </remarks>
-	public interface IRandomEngine
+	public interface IRandomEngine : IBitGenerator
 	{
 		/// <summary>
 		/// Saves the pseudo-random sequence's internal state as a byte array, which can be restored later.
@@ -47,16 +47,10 @@ namespace Experilous.Randomization
 		void Seed(string seed);
 
 		/// <summary>
-		/// Reseed the psueod-random sequence with the supplied random state generator.
+		/// Reseed the psueod-random sequence with the supplied bit generator.
 		/// </summary>
-		/// <param name="stateGenerator"></param>
-		void Seed(RandomStateGenerator stateGenerator);
-
-		/// <summary>
-		/// Reseed the psueod-random sequence with random data pulled from the supplied random engine.
-		/// </summary>
-		/// <param name="seeder"></param>
-		void Seed(IRandomEngine seeder);
+		/// <param name="bitGenerator"></param>
+		void Seed(IBitGenerator bitGenerator);
 
 		/// <summary>
 		/// Reseed the pseudo-random sequence with a combination of its current state and a transient value (such as system time).
@@ -82,34 +76,15 @@ namespace Experilous.Randomization
 		void MergeSeed(string seed);
 
 		/// <summary>
-		/// Reseed the psueod-random sequence with a combination of its current state and the supplied random state generator.
+		/// Reseed the psueod-random sequence with a combination of its current state and the supplied bit generator.
 		/// </summary>
-		/// <param name="stateGenerator"></param>
-		void MergeSeed(RandomStateGenerator stateGenerator);
-
-		/// <summary>
-		/// Reseed the pseudo-random sequence with a combination of its current state and random data pulled from the supplied random engine.
-		/// </summary>
-		/// <param name="seeder"></param>
-		void MergeSeed(IRandomEngine seeder);
+		/// <param name="bitGenerator"></param>
+		void MergeSeed(IBitGenerator bitGenerator);
 
 		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
 		/// </summary>
 		void Step();
-
-		/// <summary>
-		/// Get the next 32 bits of random data.
-		/// </summary>
-		/// <returns>A 32-bit unsigned integer full of pseudo-random bits.</returns>
-		uint Next32();
-
-		/// <summary>
-		/// <summary>
-		/// Get the next 64 bits of random data.
-		/// </summary>
-		/// <returns>A 64-bit unsigned integer full of pseudo-random bits.</returns>
-		ulong Next64();
 
 		/// <summary>
 		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
