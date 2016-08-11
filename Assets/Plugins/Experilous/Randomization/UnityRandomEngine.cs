@@ -15,8 +15,6 @@ namespace Experilous.Randomization
 	/// <seealso cref="UnityEngine.Random"/>
 	public sealed class UnityRandomEngine : BaseRandomEngine
 	{
-		[SerializeField] private byte[] _buffer = new byte[4];
-
 		public static UnityRandomEngine Create()
 		{
 			var instance = CreateInstance<UnityRandomEngine>();
