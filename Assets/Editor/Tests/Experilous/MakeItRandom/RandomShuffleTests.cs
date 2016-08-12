@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Experilous.Randomization.Tests
 {
-	class ShuffleTests
+	class RandomShuffleTests
 	{
 		private const string seed = "random seed";
 

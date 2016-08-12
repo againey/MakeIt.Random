@@ -8,7 +8,7 @@ using NSubstitute;
 
 namespace Experilous.Randomization.Tests
 {
-	class DiceTests
+	class RandomDiceTests
 	{
 		[Test]
 		public void TwoSidedDie()
