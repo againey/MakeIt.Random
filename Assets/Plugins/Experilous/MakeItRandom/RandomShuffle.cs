@@ -99,7 +99,7 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				MiscTools.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				MIUtilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
 			}
 			return array;
 		}
@@ -213,7 +213,7 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				MiscTools.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				MIUtilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
 			}
 			return array;
 		}

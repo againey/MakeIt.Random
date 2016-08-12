@@ -91,7 +91,9 @@ namespace Experilous.MakeIt.Random
 
 		public override void Step()
 		{
+#pragma warning disable 0219
 			float throwaway = UnityEngine.Random.value;
+#pragma warning restore 0219
 		}
 
 		private uint Next16()

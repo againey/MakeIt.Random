@@ -69,11 +69,13 @@ namespace Experilous.Examples.Randomization
 		private string _currentOperationName;
 		private double _currentPerformanceMeasurement;
 
+#pragma warning disable 0414
 		private int _generatedInt;
 		private uint _generatedUInt;
 		private ulong _generatedULong;
 		private float _generatedFloat;
 		private double _generatedDouble;
+#pragma warning restore 0414
 
 		protected void Start()
 		{
@@ -195,7 +197,6 @@ namespace Experilous.Examples.Randomization
 
 			int totalRunCount = generatorToggles.Count * operationToggles.Count;
 			float targetRunDuration = warmupDuration + measurementDuration;
-			float expectedTotalDuration = targetRunDuration * totalRunCount;
 
 			int completedRunCount = 0;
 
@@ -221,6 +222,13 @@ namespace Experilous.Examples.Randomization
 							float currentRunDuration = Time.time - startTime;
 							measurementProgressSlider.value = (completedRunCount + currentRunDuration / targetRunDuration) / totalRunCount;
 							yield return null;
+						}
+
+						if (_measurementException != null)
+						{
+							Exception exception = _measurementException;
+							_measurementException = null;
+							throw exception;
 						}
 					}
 

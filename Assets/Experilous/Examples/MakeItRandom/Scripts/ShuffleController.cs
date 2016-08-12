@@ -37,8 +37,6 @@ namespace Experilous.Examples.Randomization
 
 		private readonly List<WeightedValue> _items = new List<WeightedValue>();
 
-		private static readonly int[] _sidesPerDieOptions = new int[] { 4, 6, 8, 10, 12, 20, };
-
 		protected void Start()
 		{
 			_random = XorShift128Plus.Create();
