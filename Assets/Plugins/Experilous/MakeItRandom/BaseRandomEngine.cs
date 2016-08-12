@@ -4,7 +4,7 @@
 
 using UnityEngine;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	/// <summary>
 	/// An abstract base class that eases the implementation of a random engine.

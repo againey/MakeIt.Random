@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	public static class RandomDice
 	{

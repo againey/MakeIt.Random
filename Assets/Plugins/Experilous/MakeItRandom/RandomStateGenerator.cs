@@ -5,7 +5,7 @@
 using System;
 using System.Text;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	/// <summary>
 	/// A static utility class to make it easier to seed PRNGs from a variety of common seed formats.

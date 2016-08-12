@@ -3,7 +3,7 @@
 \******************************************************************************/
 
 using UnityEngine;
-using Experilous.Randomization;
+using Experilous.MakeIt.Random;
 
 namespace Experilous.Examples.Randomization
 {

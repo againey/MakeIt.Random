@@ -4,7 +4,7 @@
 
 using UnityEngine;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	/// <summary>
 	/// An implementation of the <see cref="IRandomEngine"/> interface using the 64-bit SplitMix generator.

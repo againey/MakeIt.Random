@@ -6,7 +6,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-namespace Experilous.Containers
+namespace Experilous.MakeIt.Utilities
 {
 	/// <summary>
 	/// A last-in first-out queue-interface container.

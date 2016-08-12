@@ -2,7 +2,7 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	/// <summary>
 	/// Wraps an implementation of <see cref="IRandomEngine"/> in a derivation of <see cref="System.Random"/>.

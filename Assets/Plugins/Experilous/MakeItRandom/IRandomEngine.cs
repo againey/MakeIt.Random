@@ -2,7 +2,7 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	/// <summary>
 	/// Interface for a basic engine for generating sequences of raw pseudo-random bits.

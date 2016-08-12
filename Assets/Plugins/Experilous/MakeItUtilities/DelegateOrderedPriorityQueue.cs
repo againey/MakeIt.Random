@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Experilous.Containers
+namespace Experilous.MakeIt.Utilities
 {
 	public class DelegateOrderedPriorityQueue<T> : PriorityQueue<T> where T : IEquatable<T>
 	{

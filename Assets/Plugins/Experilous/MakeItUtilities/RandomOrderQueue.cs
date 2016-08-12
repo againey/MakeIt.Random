@@ -4,9 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using Experilous.Randomization;
+using Experilous.MakeIt.Random;
 
-namespace Experilous.Containers
+namespace Experilous.MakeIt.Utilities
 {
 	/// <summary>
 	/// A last-in first-out container.

@@ -3,10 +3,9 @@
 \******************************************************************************/
 
 #if UNITY_5_3
-using UnityEngine;
 using NUnit.Framework;
 
-namespace Experilous.Randomization.Tests
+namespace Experilous.MakeIt.Random.Tests
 {
 	class RandomRangeTests
 	{

@@ -3,8 +3,9 @@
 \******************************************************************************/
 
 using System.Collections.Generic;
+using Experilous.MakeIt.Utilities;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	public static class RandomShuffle
 	{

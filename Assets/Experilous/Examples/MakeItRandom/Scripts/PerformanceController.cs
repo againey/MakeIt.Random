@@ -8,7 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Experilous.Randomization;
+using Experilous.MakeIt.Random;
 using System.Runtime;
 
 namespace Experilous.Examples.Randomization

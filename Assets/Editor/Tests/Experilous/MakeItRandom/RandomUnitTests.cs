@@ -7,7 +7,7 @@ using UnityEngine;
 using NUnit.Framework;
 using NSubstitute;
 
-namespace Experilous.Randomization.Tests
+namespace Experilous.MakeIt.Random.Tests
 {
 	class RandomUnitTests
 	{

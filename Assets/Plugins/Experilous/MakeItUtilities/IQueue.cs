@@ -2,7 +2,7 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.Containers
+namespace Experilous.MakeIt.Utilities
 {
 	/// <summary>
 	/// A container supporting abstract push and pop actions for inserting

@@ -4,7 +4,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Experilous.Randomization
+namespace Experilous.MakeIt.Random
 {
 	public static class RandomUnit
 	{

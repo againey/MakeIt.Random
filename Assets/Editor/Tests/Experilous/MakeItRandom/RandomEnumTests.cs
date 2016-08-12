@@ -6,7 +6,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace Experilous.Randomization.Tests
+namespace Experilous.MakeIt.Random.Tests
 {
 	class RandomEnumTests
 	{
