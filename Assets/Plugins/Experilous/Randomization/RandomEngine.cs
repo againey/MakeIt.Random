@@ -12,10 +12,6 @@ namespace Experilous.Randomization
 		{
 			get
 			{
-				if (_shared == null)
-				{
-					_shared = CreateStandard();
-				}
 				return _shared;
 			}
 			set
@@ -26,6 +22,12 @@ namespace Experilous.Randomization
 				}
 				_shared = value;
 			}
+		}
+
+		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void CreateShared()
+		{
+			_shared = CreateStandard();
 		}
 
 		public static XorShift128Plus CreateStandard()
