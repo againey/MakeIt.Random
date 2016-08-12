@@ -10,12 +10,12 @@ namespace Experilous.MakeIt.Random
 	{
 		#region Roll
 
-		public static int RollDice(this IRandomEngine random, int sides)
+		public static int RollDice(this IRandom random, int sides)
 		{
 			return random.HalfOpenRange(sides) + 1;
 		}
 
-		public static int[] RollDice(this IRandomEngine random, int quantity, int sides)
+		public static int[] RollDice(this IRandom random, int quantity, int sides)
 		{
 			var dice = new int[quantity];
 			for (int i = 0; i < quantity; ++i)
@@ -25,7 +25,7 @@ namespace Experilous.MakeIt.Random
 			return dice;
 		}
 
-		public static void RollDice(this IRandomEngine random, int quantity, int sides, int[] dice)
+		public static void RollDice(this IRandom random, int quantity, int sides, int[] dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
@@ -35,7 +35,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		public static void RollDice(this IRandomEngine random, int quantity, int sides, List<int> dice)
+		public static void RollDice(this IRandom random, int quantity, int sides, List<int> dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			dice.Clear();
@@ -49,7 +49,7 @@ namespace Experilous.MakeIt.Random
 
 		#region SumRoll
 
-		public static int SumRollDice(this IRandomEngine random, int quantity, int sides)
+		public static int SumRollDice(this IRandom random, int quantity, int sides)
 		{
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
@@ -59,7 +59,7 @@ namespace Experilous.MakeIt.Random
 			return sum + quantity;
 		}
 
-		public static int SumRollDice(this IRandomEngine random, int quantity, int sides, out int[] dice)
+		public static int SumRollDice(this IRandom random, int quantity, int sides, out int[] dice)
 		{
 			dice = new int[quantity];
 			int sum = 0;
@@ -72,7 +72,7 @@ namespace Experilous.MakeIt.Random
 			return sum;
 		}
 
-		public static int SumRollDice(this IRandomEngine random, int quantity, int sides, int[] dice)
+		public static int SumRollDice(this IRandom random, int quantity, int sides, int[] dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
@@ -86,7 +86,7 @@ namespace Experilous.MakeIt.Random
 			return sum;
 		}
 
-		public static int SumRollDice(this IRandomEngine random, int quantity, int sides, List<int> dice)
+		public static int SumRollDice(this IRandom random, int quantity, int sides, List<int> dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			dice.Clear();
@@ -154,7 +154,7 @@ namespace Experilous.MakeIt.Random
 			return maxIndex;
 		}
 
-		private static void RollAdditionalKeepHighest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice)
+		private static void RollAdditionalKeepHighest(this IRandom random, int additionalQuantity, int sides, IList<int> dice)
 		{
 			int i = 0;
 			while (i < additionalQuantity)
@@ -173,7 +173,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		private static void RollAdditionalKeepHighest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice, int[] discardedDice)
+		private static void RollAdditionalKeepHighest(this IRandom random, int additionalQuantity, int sides, IList<int> dice, int[] discardedDice)
 		{
 			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
 			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
@@ -203,7 +203,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		private static void RollAdditionalKeepHighest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice)
+		private static void RollAdditionalKeepHighest(this IRandom random, int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice)
 		{
 			discardedDice.Clear();
 
@@ -232,7 +232,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice)
+		private static void RollAdditionalKeepLowest(this IRandom random, int additionalQuantity, int sides, IList<int> dice)
 		{
 			int i = 0;
 			while (i < additionalQuantity)
@@ -251,7 +251,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice, int[] discardedDice)
+		private static void RollAdditionalKeepLowest(this IRandom random, int additionalQuantity, int sides, IList<int> dice, int[] discardedDice)
 		{
 			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
 			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
@@ -281,7 +281,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IRandomEngine random, int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice)
+		private static void RollAdditionalKeepLowest(this IRandom random, int additionalQuantity, int sides, IList<int> dice, List<int> discardedDice)
 		{
 			discardedDice.Clear();
 
@@ -314,114 +314,114 @@ namespace Experilous.MakeIt.Random
 
 		#region RollKeep/Drop
 
-		public static int[] RollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity)
+		public static int[] RollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity)
 		{
 			int[] dice = random.RollDice(keepQuantity, sides);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice);
 			return dice;
 		}
 
-		public static void RollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice)
+		public static void RollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice);
 		}
 
-		public static void RollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, discardedDice);
 		}
 
-		public static void RollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice)
+		public static void RollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice);
 		}
 
-		public static void RollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, discardedDice);
 		}
 
-		public static int[] RollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity)
+		public static int[] RollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity)
 		{
 			int[] dice = random.RollDice(keepQuantity, sides);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice);
 			return dice;
 		}
 
-		public static void RollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice)
+		public static void RollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice);
 		}
 
-		public static void RollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, discardedDice);
 		}
 
-		public static void RollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice)
+		public static void RollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice);
 		}
 
-		public static void RollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, discardedDice);
 		}
 
-		public static int[] RollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity)
+		public static int[] RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity);
 		}
 
-		public static void RollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice)
+		public static void RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static void RollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static void RollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice)
+		public static void RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static void RollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static int[] RollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity)
+		public static int[] RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity);
 		}
 
-		public static void RollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice)
+		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static void RollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static void RollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice)
+		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static void RollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -430,19 +430,19 @@ namespace Experilous.MakeIt.Random
 
 		#region SumRollKeep/Drop
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity)
 		{
 			int[] dice = random.RollDiceKeepHighest(quantity, sides, keepQuantity);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, out int[] dice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice)
 		{
 			dice = random.RollDiceKeepHighest(quantity, sides, keepQuantity);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice)
 		{
 			dice = new int[keepQuantity];
 			discardedDice = new int[quantity - keepQuantity];
@@ -450,43 +450,43 @@ namespace Experilous.MakeIt.Random
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepHighest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity)
 		{
 			int[] dice = random.RollDiceKeepLowest(quantity, sides, keepQuantity);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, out int[] dice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice)
 		{
 			dice = random.RollDiceKeepLowest(quantity, sides, keepQuantity);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice, out int[] discardedDice)
 		{
 			dice = new int[keepQuantity];
 			discardedDice = new int[quantity - keepQuantity];
@@ -494,96 +494,96 @@ namespace Experilous.MakeIt.Random
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceKeepLowest(this IRandomEngine random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, out int[] dice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, out dice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, out dice, out discardedDice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static int SumRollDiceDropHighest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, out int[] dice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, out dice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice, out int[] discardedDice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, out dice, out discardedDice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice);
 		}
 
-		public static int SumRollDiceDropLowest(this IRandomEngine random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -611,12 +611,12 @@ namespace Experilous.MakeIt.Random
 		private static System.Text.RegularExpressions.Regex _diceNotationRegex = new System.Text.RegularExpressions.Regex(
 			@"\A(?<quantity>[1-9][0-9]*)?(?:d|D)(?<sides>[1-9][0-9]*)(?:\s*(?<keepDrop>k|K|d|D|\-)(?<keepDropQuantity>[1-9][0-9]*)?(?<keepDropWhat>h|H|l|L))?(?:\s*(?<mulDiv>\*|x|/)\s*(?<mulDivAmount>[1-9][0-9]*))?(?:\s*(?<addSub>\+|\-)\s*(?<addSubAmount>[1-9][0-9]*))?\z");
 
-		public static int SumRoll(this IRandomEngine random, string dNotation)
+		public static int SumRoll(this IRandom random, string dNotation)
 		{
 			return Prepare(dNotation)(random);
 		}
 
-		public delegate int DiceDelegate(IRandomEngine random);
+		public delegate int DiceDelegate(IRandom random);
 
 		public static DiceDelegate Prepare(string dNotation)
 		{
@@ -732,22 +732,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides);
+								return (IRandom random) => random.RollDice(sides);
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides);
+								return (IRandom random) => random.SumRollDice(quantity, sides);
 							}
 						}
 						else
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides) + add;
+								return (IRandom random) => random.RollDice(sides) + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides) + add;
+								return (IRandom random) => random.SumRollDice(quantity, sides) + add;
 							}
 						}
 					}
@@ -757,22 +757,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides) * mul;
+								return (IRandom random) => random.RollDice(sides) * mul;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides) * mul;
+								return (IRandom random) => random.SumRollDice(quantity, sides) * mul;
 							}
 						}
 						else
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides) * mul + add;
+								return (IRandom random) => random.RollDice(sides) * mul + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides) * mul + add;
+								return (IRandom random) => random.SumRollDice(quantity, sides) * mul + add;
 							}
 						}
 					}
@@ -782,22 +782,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides) / div;
+								return (IRandom random) => random.RollDice(sides) / div;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides) / div;
+								return (IRandom random) => random.SumRollDice(quantity, sides) / div;
 							}
 						}
 						else
 						{
 							if (quantity == 1)
 							{
-								return (IRandomEngine random) => random.RollDice(sides) / div + add;
+								return (IRandom random) => random.RollDice(sides) / div + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDice(quantity, sides) / div + add;
+								return (IRandom random) => random.SumRollDice(quantity, sides) / div + add;
 							}
 						}
 					}
@@ -817,22 +817,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity);
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity);
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity);
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity);
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) + add;
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) + add;
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) + add;
 							}
 						}
 					}
@@ -842,22 +842,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) * mul;
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) * mul;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) * mul;
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) * mul;
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) * mul + add;
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) * mul + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) * mul + add;
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) * mul + add;
 							}
 						}
 					}
@@ -867,22 +867,22 @@ namespace Experilous.MakeIt.Random
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) / div;
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) / div;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) / div;
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) / div;
 							}
 						}
 						else
 						{
 							if (keepHigh)
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) / div + add;
+								return (IRandom random) => random.SumRollDiceKeepHighest(quantity, sides, keepQuantity) / div + add;
 							}
 							else
 							{
-								return (IRandomEngine random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) / div + add;
+								return (IRandom random) => random.SumRollDiceKeepLowest(quantity, sides, keepQuantity) / div + add;
 							}
 						}
 					}
@@ -893,32 +893,32 @@ namespace Experilous.MakeIt.Random
 			throw new System.ArgumentException();
 		}
 
-		public static int RollD4(this IRandomEngine random)
+		public static int RollD4(this IRandom random)
 		{
 			return random.ClosedRange(1, 4);
 		}
 
-		public static int RollD6(this IRandomEngine random)
+		public static int RollD6(this IRandom random)
 		{
 			return random.ClosedRange(1, 6);
 		}
 
-		public static int RollD8(this IRandomEngine random)
+		public static int RollD8(this IRandom random)
 		{
 			return random.ClosedRange(1, 8);
 		}
 
-		public static int RollD10(this IRandomEngine random)
+		public static int RollD10(this IRandom random)
 		{
 			return random.ClosedRange(1, 10);
 		}
 
-		public static int RollD12(this IRandomEngine random)
+		public static int RollD12(this IRandom random)
 		{
 			return random.ClosedRange(1, 12);
 		}
 
-		public static int RollD20(this IRandomEngine random)
+		public static int RollD20(this IRandom random)
 		{
 			return random.ClosedRange(1, 20);
 		}

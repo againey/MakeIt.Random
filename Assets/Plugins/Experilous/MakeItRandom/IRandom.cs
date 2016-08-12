@@ -11,7 +11,7 @@ namespace Experilous.MakeIt.Random
 	/// This interface offers only basic access to a random sequence of bits, letting the implementations
 	/// focus entirely on the generation of pseudo-random data.
 	/// </remarks>
-	public interface IRandomEngine : IBitGenerator
+	public interface IRandom : IBitGenerator
 	{
 		/// <summary>
 		/// Saves the pseudo-random sequence's internal state as a byte array, which can be restored later.

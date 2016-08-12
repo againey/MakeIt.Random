@@ -341,7 +341,7 @@ namespace Experilous.Examples.Randomization
 
 			if (operation == null)
 			{
-				IRandomEngine random = null;
+				IRandom random = null;
 
 				if (generatorToggle == xorShift128PlusToggle)
 				{
@@ -366,12 +366,12 @@ namespace Experilous.Examples.Randomization
 				else if (generatorToggle == unityRandomToggle)
 				{
 					_currentGeneratorName = "UnityEngine.Random";
-					random = UnityRandomEngine.Create();
+					random = UnityRandom.Create();
 				}
 				else if (generatorToggle == systemRandomToggle)
 				{
 					_currentGeneratorName = "System.Random";
-					random = SystemRandomEngine.Create();
+					random = SystemRandom.Create();
 				}
 				else
 				{
@@ -860,7 +860,7 @@ namespace Experilous.Examples.Randomization
 
 		#region Generic Operations
 
-		private void MeasurePerformance_UInt31bit(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UInt31bit(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -887,7 +887,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UInt32bit(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UInt32bit(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -914,7 +914,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UInt64bit(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UInt64bit(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -941,7 +941,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UIntLessThan6(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UIntLessThan6(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -968,7 +968,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatOpen(IRandomEngine random, long iterations)
+		private void MeasurePerformance_FloatOpen(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -995,7 +995,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatHalfOpen(IRandomEngine random, long iterations)
+		private void MeasurePerformance_FloatHalfOpen(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1022,7 +1022,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatHalfClosed(IRandomEngine random, long iterations)
+		private void MeasurePerformance_FloatHalfClosed(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1049,7 +1049,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_FloatClosed(IRandomEngine random, long iterations)
+		private void MeasurePerformance_FloatClosed(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1076,7 +1076,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleOpen(IRandomEngine random, long iterations)
+		private void MeasurePerformance_DoubleOpen(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1103,7 +1103,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleHalfOpen(IRandomEngine random, long iterations)
+		private void MeasurePerformance_DoubleHalfOpen(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1130,7 +1130,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleHalfClosed(IRandomEngine random, long iterations)
+		private void MeasurePerformance_DoubleHalfClosed(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1157,7 +1157,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_DoubleClosed(IRandomEngine random, long iterations)
+		private void MeasurePerformance_DoubleClosed(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1184,7 +1184,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector2(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UnitVector2(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1211,7 +1211,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector3(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UnitVector3(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1238,7 +1238,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_UnitVector4(IRandomEngine random, long iterations)
+		private void MeasurePerformance_UnitVector4(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1265,7 +1265,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_Vector2WithinCircle(IRandomEngine random, long iterations)
+		private void MeasurePerformance_Vector2WithinCircle(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1292,7 +1292,7 @@ namespace Experilous.Examples.Randomization
 			}
 		}
 
-		private void MeasurePerformance_Vector3WithinSphere(IRandomEngine random, long iterations)
+		private void MeasurePerformance_Vector3WithinSphere(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)

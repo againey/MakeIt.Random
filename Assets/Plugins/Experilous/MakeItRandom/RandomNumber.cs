@@ -8,27 +8,27 @@ namespace Experilous.MakeIt.Random
 	{
 		#region Bits
 
-		public static uint Bit(this IRandomEngine random)
+		public static uint Bit(this IRandom random)
 		{
 			return random.Next32() >> 31;
 		}
 
-		public static uint Bits32(this IRandomEngine random)
+		public static uint Bits32(this IRandom random)
 		{
 			return random.Next32();
 		}
 
-		public static uint Bits32(this IRandomEngine random, int bitCount)
+		public static uint Bits32(this IRandom random, int bitCount)
 		{
 			return random.Next32() >> (32 - bitCount);
 		}
 
-		public static ulong Bits64(this IRandomEngine random)
+		public static ulong Bits64(this IRandom random)
 		{
 			return random.Next64();
 		}
 
-		public static ulong Bits64(this IRandomEngine random, int bitCount)
+		public static ulong Bits64(this IRandom random, int bitCount)
 		{
 			return random.Next64() >> (64 - bitCount);
 		}
@@ -37,17 +37,17 @@ namespace Experilous.MakeIt.Random
 
 		#region {-1, 0, +1}, Evenly Weighted
 
-		public static int OneOrZero(this IRandomEngine random)
+		public static int OneOrZero(this IRandom random)
 		{
 			return (int)(random.Next32() >> 31);
 		}
 
-		public static int Sign(this IRandomEngine random)
+		public static int Sign(this IRandom random)
 		{
 			return (int)((random.Next32() >> 30) & 2U) - 1;
 		}
 
-		public static int SignOrZero(this IRandomEngine random)
+		public static int SignOrZero(this IRandom random)
 		{
 			uint n;
 			do
@@ -62,68 +62,68 @@ namespace Experilous.MakeIt.Random
 
 		#region {-1, 0, +1}, Unevenly Weighted
 
-		public static int OneOrZero(this IRandomEngine random, int ratioOne, int ratioZero)
+		public static int OneOrZero(this IRandom random, int ratioOne, int ratioZero)
 		{
 			return random.Chance(ratioOne, ratioZero) ? 1 : 0;
 		}
 
-		public static int OneOrZero(this IRandomEngine random, uint ratioOne, uint ratioZero)
+		public static int OneOrZero(this IRandom random, uint ratioOne, uint ratioZero)
 		{
 			return random.Chance(ratioOne, ratioZero) ? 1 : 0;
 		}
 
-		public static int OneOrZero(this IRandomEngine random, float ratioOne, float ratioZero)
+		public static int OneOrZero(this IRandom random, float ratioOne, float ratioZero)
 		{
 			return random.Chance(ratioOne, ratioZero) ? 1 : 0;
 		}
 
-		public static int OneOrZero(this IRandomEngine random, double ratioOne, double ratioZero)
+		public static int OneOrZero(this IRandom random, double ratioOne, double ratioZero)
 		{
 			return random.Chance(ratioOne, ratioZero) ? 1 : 0;
 		}
 
-		public static int Sign(this IRandomEngine random, int ratioPositive, int ratioNegative)
+		public static int Sign(this IRandom random, int ratioPositive, int ratioNegative)
 		{
 			return random.Chance(ratioPositive, ratioNegative) ? 1 : 0;
 		}
 
-		public static int Sign(this IRandomEngine random, uint ratioPositive, uint ratioNegative)
+		public static int Sign(this IRandom random, uint ratioPositive, uint ratioNegative)
 		{
 			return random.Chance(ratioPositive, ratioNegative) ? 1 : 0;
 		}
 
-		public static int Sign(this IRandomEngine random, float ratioPositive, float ratioNegative)
+		public static int Sign(this IRandom random, float ratioPositive, float ratioNegative)
 		{
 			return random.Chance(ratioPositive, ratioNegative) ? 1 : 0;
 		}
 
-		public static int Sign(this IRandomEngine random, double ratioPositive, double ratioNegative)
+		public static int Sign(this IRandom random, double ratioPositive, double ratioNegative)
 		{
 			return random.Chance(ratioPositive, ratioNegative) ? 1 : 0;
 		}
 
-		public static int SignOrZero(this IRandomEngine random, int ratioPositive, int ratioZero, int ratioNegative)
+		public static int SignOrZero(this IRandom random, int ratioPositive, int ratioZero, int ratioNegative)
 		{
 			int ratioNonNegative = ratioPositive + ratioZero;
 			int n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
-		public static int SignOrZero(this IRandomEngine random, uint ratioPositive, uint ratioZero, uint ratioNegative)
+		public static int SignOrZero(this IRandom random, uint ratioPositive, uint ratioZero, uint ratioNegative)
 		{
 			uint ratioNonNegative = ratioPositive + ratioZero;
 			uint n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
-		public static int SignOrZero(this IRandomEngine random, float ratioPositive, float ratioZero, float ratioNegative)
+		public static int SignOrZero(this IRandom random, float ratioPositive, float ratioZero, float ratioNegative)
 		{
 			float ratioNonNegative = ratioPositive + ratioZero;
 			float n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
-		public static int SignOrZero(this IRandomEngine random, double ratioPositive, double ratioZero, double ratioNegative)
+		public static int SignOrZero(this IRandom random, double ratioPositive, double ratioZero, double ratioNegative)
 		{
 			double ratioNonNegative = ratioPositive + ratioZero;
 			double n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
@@ -134,102 +134,102 @@ namespace Experilous.MakeIt.Random
 
 		#region {-1, 0, +1}, Probability
 
-		public static int OneProbability(this IRandomEngine random, int numerator, int denominator)
+		public static int OneProbability(this IRandom random, int numerator, int denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
 		}
 
-		public static int OneProbability(this IRandomEngine random, uint numerator, uint denominator)
+		public static int OneProbability(this IRandom random, uint numerator, uint denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
 		}
 
-		public static int OneProbability(this IRandomEngine random, float numerator, float denominator)
+		public static int OneProbability(this IRandom random, float numerator, float denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
 		}
 
-		public static int OneProbability(this IRandomEngine random, double numerator, double denominator)
+		public static int OneProbability(this IRandom random, double numerator, double denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
 		}
 
-		public static int OneProbability(this IRandomEngine random, float probability)
+		public static int OneProbability(this IRandom random, float probability)
 		{
 			return random.HalfOpenFloatUnit() < probability ? 1 : 0;
 		}
 
-		public static int OneProbability(this IRandomEngine random, double probability)
+		public static int OneProbability(this IRandom random, double probability)
 		{
 			return random.HalfOpenDoubleUnit() < probability ? 1 : 0;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, int numerator, int denominator)
+		public static int PositiveProbability(this IRandom random, int numerator, int denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, uint numerator, uint denominator)
+		public static int PositiveProbability(this IRandom random, uint numerator, uint denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, float numerator, float denominator)
+		public static int PositiveProbability(this IRandom random, float numerator, float denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, double numerator, double denominator)
+		public static int PositiveProbability(this IRandom random, double numerator, double denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, float probability)
+		public static int PositiveProbability(this IRandom random, float probability)
 		{
 			return random.HalfOpenFloatUnit() < probability ? +1 : -1;
 		}
 
-		public static int PositiveProbability(this IRandomEngine random, double probability)
+		public static int PositiveProbability(this IRandom random, double probability)
 		{
 			return random.HalfOpenDoubleUnit() < probability ? +1 : -1;
 		}
 
-		public static int SignProbability(this IRandomEngine random, int numeratorPositive, int numeratorNegative, int denominator)
+		public static int SignProbability(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
 		{
 			int numeratorNonZero = numeratorPositive + numeratorNegative;
 			int n = random.HalfOpenRange(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
-		public static int SignProbability(this IRandomEngine random, uint numeratorPositive, uint numeratorNegative, uint denominator)
+		public static int SignProbability(this IRandom random, uint numeratorPositive, uint numeratorNegative, uint denominator)
 		{
 			uint numeratorNonZero = numeratorPositive + numeratorNegative;
 			uint n = random.HalfOpenRange(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
-		public static int SignProbability(this IRandomEngine random, float numeratorPositive, float numeratorNegative, float denominator)
+		public static int SignProbability(this IRandom random, float numeratorPositive, float numeratorNegative, float denominator)
 		{
 			float numeratorNonZero = numeratorPositive + numeratorNegative;
 			float n = random.HalfOpenRange(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
-		public static int SignProbability(this IRandomEngine random, double numeratorPositive, double numeratorNegative, double denominator)
+		public static int SignProbability(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)
 		{
 			double numeratorNonZero = numeratorPositive + numeratorNegative;
 			double n = random.HalfOpenRange(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
-		public static int SignProbability(this IRandomEngine random, float probabilityPositive, float probabilityNegative)
+		public static int SignProbability(this IRandom random, float probabilityPositive, float probabilityNegative)
 		{
 			float probabilityNonZero = probabilityPositive + probabilityNegative;
 			float n = random.HalfOpenFloatUnit();
 			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
 		}
 
-		public static int SignProbability(this IRandomEngine random, double probabilityPositive, double probabilityNegative)
+		public static int SignProbability(this IRandom random, double probabilityPositive, double probabilityNegative)
 		{
 			double probabilityNonZero = probabilityPositive + probabilityNegative;
 			double n = random.HalfOpenDoubleUnit();
@@ -252,42 +252,42 @@ namespace Experilous.MakeIt.Random
 		private const float _floatRadiansPerHalfTurn = 3.1415926535897932384626433832795f;
 		private const double _doubleRadiansPerHalfTurn = 3.1415926535897932384626433832795;
 
-		public static float FloatDegrees(this IRandomEngine random)
+		public static float FloatDegrees(this IRandom random)
 		{
 			return random.HalfOpenFloatUnit() * _floatDegreesPerTurn;
 		}
 
-		public static float SignedFloatDegrees(this IRandomEngine random)
+		public static float SignedFloatDegrees(this IRandom random)
 		{
 			return random.HalfOpenFloatUnit() * _floatDegreesPerTurn - _floatDegreesPerHalfTurn;
 		}
 
-		public static float FloatRadians(this IRandomEngine random)
+		public static float FloatRadians(this IRandom random)
 		{
 			return random.HalfOpenFloatUnit() * _floatRadiansPerTurn;
 		}
 
-		public static float SignedFloatRadians(this IRandomEngine random)
+		public static float SignedFloatRadians(this IRandom random)
 		{
 			return random.HalfOpenFloatUnit() * _floatRadiansPerTurn - _floatRadiansPerHalfTurn;
 		}
 
-		public static double DoubleDegrees(this IRandomEngine random)
+		public static double DoubleDegrees(this IRandom random)
 		{
 			return random.HalfOpenDoubleUnit() * _doubleDegreesPerTurn;
 		}
 
-		public static double SignedDoubleDegrees(this IRandomEngine random)
+		public static double SignedDoubleDegrees(this IRandom random)
 		{
 			return random.HalfOpenDoubleUnit() * _doubleDegreesPerTurn - _doubleDegreesPerHalfTurn;
 		}
 
-		public static double DoubleRadians(this IRandomEngine random)
+		public static double DoubleRadians(this IRandom random)
 		{
 			return random.HalfOpenDoubleUnit() * _doubleRadiansPerTurn;
 		}
 
-		public static double SignedDoubleRadians(this IRandomEngine random)
+		public static double SignedDoubleRadians(this IRandom random)
 		{
 			return random.HalfOpenDoubleUnit() * _doubleRadiansPerTurn - _doubleRadiansPerHalfTurn;
 		}

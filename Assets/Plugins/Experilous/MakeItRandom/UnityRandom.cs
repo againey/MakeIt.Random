@@ -8,62 +8,62 @@ using UnityEngine;
 namespace Experilous.MakeIt.Random
 {
 	/// <summary>
-	/// Adapts the standard Unity random class to the <see cref="IRandomEngine"/> interface.
+	/// Adapts the standard Unity random class to the <see cref="IRandom"/> interface.
 	/// </summary>
-	/// <seealso cref="IRandomEngine"/>
-	/// <seealso cref="BaseRandomEngine"/>
+	/// <seealso cref="IRandom"/>
+	/// <seealso cref="RandomBase"/>
 	/// <seealso cref="UnityEngine.Random"/>
-	public sealed class UnityRandomEngine : BaseRandomEngine
+	public sealed class UnityRandom : RandomBase
 	{
-		public static UnityRandomEngine Create()
+		public static UnityRandom Create()
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.Seed();
 			return instance;
 		}
 
-		public static UnityRandomEngine Create(int seed)
+		public static UnityRandom Create(int seed)
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static UnityRandomEngine Create(params int[] seed)
+		public static UnityRandom Create(params int[] seed)
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static UnityRandomEngine Create(string seed)
+		public static UnityRandom Create(string seed)
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.Seed(seed);
 			return instance;
 		}
 
-		public static UnityRandomEngine Create(IBitGenerator bitGenerator)
+		public static UnityRandom Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
 
-		public static UnityRandomEngine CreateWithState(byte[] stateArray)
+		public static UnityRandom CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
 
-		public UnityRandomEngine Clone()
+		public UnityRandom Clone()
 		{
-			var instance = CreateInstance<UnityRandomEngine>();
+			var instance = CreateInstance<UnityRandom>();
 			return instance;
 		}
 
-		public void CopyStateFrom(UnityRandomEngine source)
+		public void CopyStateFrom(UnityRandom source)
 		{
 			// Since Unity uses a shared global instance, this function is a no-op.
 			// Maintained for consistency with other random engine classes.

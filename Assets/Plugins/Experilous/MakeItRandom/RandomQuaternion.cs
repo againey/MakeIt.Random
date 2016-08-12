@@ -8,7 +8,7 @@ namespace Experilous.MakeIt.Random
 {
 	public static class RandomQuaternion
 	{
-		public static Quaternion Rotation(this IRandomEngine random)
+		public static Quaternion Rotation(this IRandom random)
 		{
 			Start1:
 			float u1 = random.OpenFloatUnit() * 2f - 1f;

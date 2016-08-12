@@ -8,7 +8,7 @@ namespace Experilous.MakeIt.Random
 	{
 		#region UsingCharacters
 
-		public static string String(this IRandomEngine random, int length, char[] characters)
+		public static string String(this IRandom random, int length, char[] characters)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
@@ -18,7 +18,7 @@ namespace Experilous.MakeIt.Random
 			return new string(buffer);
 		}
 
-		public static string String(this IRandomEngine random, int length, char[] characters, char otherCharacter, float otherFrequency)
+		public static string String(this IRandom random, int length, char[] characters, char otherCharacter, float otherFrequency)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
@@ -28,7 +28,7 @@ namespace Experilous.MakeIt.Random
 			return new string(buffer);
 		}
 
-		public static string String(this IRandomEngine random, int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength)
+		public static string String(this IRandom random, int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength)
 		{
 			char[] buffer = new char[length];
 			for (int i = 0; i < length; ++i)
@@ -53,7 +53,7 @@ namespace Experilous.MakeIt.Random
 			'0', '1',
 		};
 
-		public static string BinaryString(this IRandomEngine random, int length)
+		public static string BinaryString(this IRandom random, int length)
 		{
 			return random.String(length, _binaryCharacters);
 		}
@@ -67,7 +67,7 @@ namespace Experilous.MakeIt.Random
 			'0', '1', '2', '3', '4', '5', '6', '7',
 		};
 
-		public static string OctalString(this IRandomEngine random, int length)
+		public static string OctalString(this IRandom random, int length)
 		{
 			return random.String(length, _octalCharacters);
 		}
@@ -81,7 +81,7 @@ namespace Experilous.MakeIt.Random
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 		};
 
-		public static string DecimalString(this IRandomEngine random, int length)
+		public static string DecimalString(this IRandom random, int length)
 		{
 			return random.String(length, _decimalCharacters);
 		}
@@ -110,7 +110,7 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		public static string HexadecimalString(this IRandomEngine random, int length, Casing casing)
+		public static string HexadecimalString(this IRandom random, int length, Casing casing)
 		{
 			return random.String(length, GetHexadecimalCharacters(casing));
 		}
@@ -187,12 +187,12 @@ namespace Experilous.MakeIt.Random
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '~', '-',
 		};
 
-		public static string Base64String(this IRandomEngine random, int length)
+		public static string Base64String(this IRandom random, int length)
 		{
 			return random.String(length, _base64PlusSlashCharacters);
 		}
 
-		public static string Base64String(this IRandomEngine random, int length, Base64CharacterPairs characterPairs)
+		public static string Base64String(this IRandom random, int length, Base64CharacterPairs characterPairs)
 		{
 			switch (characterPairs)
 			{
@@ -241,42 +241,42 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		public static string AlphaNumericString(this IRandomEngine random, int length)
+		public static string AlphaNumericString(this IRandom random, int length)
 		{
 			return random.String(length, _alphaNumericCharacters);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length)
 		{
 			return random.String(length, _alphaNumericCharacters, ' ', 1, 62);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length, float spaceFrequency)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length, float spaceFrequency)
 		{
 			return random.String(length, _alphaNumericCharacters, ' ', spaceFrequency);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length, int spaceCountPerChunk, int averageChunkLength)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength)
 		{
 			return random.String(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
-		public static string AlphaNumericString(this IRandomEngine random, int length, Casing casing)
+		public static string AlphaNumericString(this IRandom random, int length, Casing casing)
 		{
 			return random.String(length, GetAlphaNumericCharacters(casing));
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length, Casing casing)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length, Casing casing)
 		{
 			return random.String(length, GetAlphaNumericCharacters(casing), ' ', 1, 62);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length, float spaceFrequency, Casing casing)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length, float spaceFrequency, Casing casing)
 		{
 			return random.String(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandomEngine random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
+		public static string AlphaNumericWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
 		{
 			return random.String(length, GetAlphaNumericCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
 		}
@@ -311,42 +311,42 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		public static string AlphabeticString(this IRandomEngine random, int length)
+		public static string AlphabeticString(this IRandom random, int length)
 		{
 			return random.String(length, _alphabeticCharacters);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length)
 		{
 			return random.String(length, _alphabeticCharacters, ' ', 1, 52);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length, float spaceFrequency)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length, float spaceFrequency)
 		{
 			return random.String(length, _alphabeticCharacters, ' ', spaceFrequency);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length, int spaceCountPerChunk, int averageChunkLength)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength)
 		{
 			return random.String(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength);
 		}
 
-		public static string AlphabeticString(this IRandomEngine random, int length, Casing casing)
+		public static string AlphabeticString(this IRandom random, int length, Casing casing)
 		{
 			return random.String(length, GetAlphabeticCharacters(casing));
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length, Casing casing)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length, Casing casing)
 		{
 			return random.String(length, GetAlphabeticCharacters(casing), ' ', 1, 52);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length, float spaceFrequency, Casing casing)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length, float spaceFrequency, Casing casing)
 		{
 			return random.String(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandomEngine random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
+		public static string AlphabeticWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
 		{
 			return random.String(length, GetAlphabeticCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
 		}
@@ -375,49 +375,49 @@ namespace Experilous.MakeIt.Random
 			}
 		}
 
-		public static string Identifier(this IRandomEngine random, int length)
+		public static string Identifier(this IRandom random, int length)
 		{
 			if (length <= 0) return "";
 			return _alphabeticCharacters.RandomElement(random) + random.String(length - 1, _alphaNumericCharacters);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length)
+		public static string IdentifierWithUnderscores(this IRandom random, int length)
 		{
 			if (length <= 0) return "";
 			return random.String(1, _alphabeticCharacters, '_', 1, 52) + random.String(length, _alphaNumericCharacters, '_', 1, 62);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length, float underscoreFrequency)
+		public static string IdentifierWithUnderscores(this IRandom random, int length, float underscoreFrequency)
 		{
 			if (length <= 0) return "";
 			return random.String(1, _alphabeticCharacters, '_', underscoreFrequency) + random.String(length, _alphaNumericCharacters, '_', underscoreFrequency);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length, int underscoreCountPerChunk, int averageChunkLength)
+		public static string IdentifierWithUnderscores(this IRandom random, int length, int underscoreCountPerChunk, int averageChunkLength)
 		{
 			if (length <= 0) return "";
 			return random.String(1, _alphabeticCharacters, '_', underscoreCountPerChunk, averageChunkLength) + random.String(length, _alphaNumericCharacters, '_', underscoreCountPerChunk, averageChunkLength);
 		}
 
-		public static string Identifier(this IRandomEngine random, int length, Casing casing)
+		public static string Identifier(this IRandom random, int length, Casing casing)
 		{
 			if (length <= 0) return "";
 			return GetIdentifierFirstCharacters(casing).RandomElement(random) + random.String(length - 1, GetIdentifierCharacters(casing));
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length, Casing casing)
+		public static string IdentifierWithUnderscores(this IRandom random, int length, Casing casing)
 		{
 			if (length <= 0) return "";
 			return random.String(1, GetAlphabeticCharacters(casing), '_', 1, 52) + random.String(length, GetAlphaNumericCharacters(casing), '_', 1, 62);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length, float underscoreFrequency, Casing casing)
+		public static string IdentifierWithUnderscores(this IRandom random, int length, float underscoreFrequency, Casing casing)
 		{
 			if (length <= 0) return "";
 			return random.String(1, GetAlphabeticCharacters(casing), '_', underscoreFrequency) + random.String(length, GetAlphaNumericCharacters(casing), '_', underscoreFrequency);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandomEngine random, int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing)
+		public static string IdentifierWithUnderscores(this IRandom random, int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing)
 		{
 			if (length <= 0) return "";
 			return random.String(1, GetAlphabeticCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength) + random.String(length, GetAlphaNumericCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength);

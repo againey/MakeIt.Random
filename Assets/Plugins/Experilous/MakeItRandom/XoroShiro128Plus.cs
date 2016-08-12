@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Experilous.MakeIt.Random
 {
 	/// <summary>
-	/// An implementation of the <see cref="IRandomEngine"/> interface using the 128-bit XoroShiro+ generator.
+	/// An implementation of the <see cref="IRandom"/> interface using the 128-bit XoroShiro+ generator.
 	/// </summary>
 	/// <remarks>
 	/// <para>This PRNG is based on David Blackman's and Sebastiano Vigna's xoroshiro128+ generator, adapted from
@@ -16,9 +16,9 @@ namespace Experilous.MakeIt.Random
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
-	/// <seealso cref="IRandomEngine"/>
-	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XoroShiro128Plus : BaseRandomEngine
+	/// <seealso cref="IRandom"/>
+	/// <seealso cref="RandomBase"/>
+	public sealed class XoroShiro128Plus : RandomBase
 	{
 		[SerializeField] private ulong _state0 = 0UL;
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state

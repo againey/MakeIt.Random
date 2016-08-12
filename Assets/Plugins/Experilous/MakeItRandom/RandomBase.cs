@@ -11,14 +11,14 @@ namespace Experilous.MakeIt.Random
 	/// </summary>
 	/// <remarks>
 	/// <para>By implementing most random-producing functions in terms of a smaller core set of random-producing
-	/// functions, the final implementation becomes easier to right.  As a consequence, however, this is likely to be
+	/// functions, the final implementation becomes easier to write.  As a consequence, however, this is likely to be
 	/// less efficient due to potentially throwing away some random bits.  For random engines that generate random bits
 	/// very quickly but in specific chunk sizes, this is okay and probably even preferable for performance.  But for
-	/// random engines that are slow about generating random bits (such as a cryptographically strong PRNG), this base
+	/// random engines that are slow about generating random bits (such as a cryptographically secure PRNG), this base
 	/// class is not ideal.</para>
 	/// </remarks>
-	/// <seealso cref="IRandomEngine"/>
-	public abstract class BaseRandomEngine : ScriptableObject, IRandomEngine
+	/// <seealso cref="IRandom"/>
+	public abstract class RandomBase : ScriptableObject, IRandom
 	{
 		public virtual byte[] SaveState()
 		{

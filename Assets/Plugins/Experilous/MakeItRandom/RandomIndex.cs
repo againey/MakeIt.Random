@@ -8,37 +8,37 @@ namespace Experilous.MakeIt.Random
 	{
 		#region Uniform
 
-		public static int UniformIndex(this IRandomEngine random, int length)
+		public static int UniformIndex(this IRandom random, int length)
 		{
 			return random.HalfOpenRange(length);
 		}
 
-		public static uint UniformIndex(this IRandomEngine random, uint length)
+		public static uint UniformIndex(this IRandom random, uint length)
 		{
 			return random.HalfOpenRange(length);
 		}
 
-		public static int UniformIndex<T>(this IRandomEngine random, T[] array)
+		public static int UniformIndex<T>(this IRandom random, T[] array)
 		{
 			return random.HalfOpenRange(array.Length);
 		}
 
-		public static int UniformIndex(this IRandomEngine random, System.Collections.IList list)
+		public static int UniformIndex(this IRandom random, System.Collections.IList list)
 		{
 			return random.HalfOpenRange(list.Count);
 		}
 
-		public static int UniformIndex(this IRandomEngine random, System.Collections.ArrayList list)
+		public static int UniformIndex(this IRandom random, System.Collections.ArrayList list)
 		{
 			return random.HalfOpenRange(list.Count);
 		}
 
-		public static int UniformIndex<T>(this IRandomEngine random, System.Collections.Generic.IList<T> list)
+		public static int UniformIndex<T>(this IRandom random, System.Collections.Generic.IList<T> list)
 		{
 			return random.HalfOpenRange(list.Count);
 		}
 
-		public static int UniformIndex<T>(this IRandomEngine random, System.Collections.Generic.List<T> list)
+		public static int UniformIndex<T>(this IRandom random, System.Collections.Generic.List<T> list)
 		{
 			return random.HalfOpenRange(list.Count);
 		}
@@ -47,7 +47,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Weighted
 
-		public static int WeightedIndex(this IRandomEngine random, int[] weights)
+		public static int WeightedIndex(this IRandom random, int[] weights)
 		{
 			int weightSum = 0;
 			foreach (var weight in weights)
@@ -57,7 +57,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(weights, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int[] weights, int weightSum)
+		public static int WeightedIndex(this IRandom random, int[] weights, int weightSum)
 		{
 			int index = 0;
 			while (index < weights.Length)
@@ -72,7 +72,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, uint[] weights)
+		public static int WeightedIndex(this IRandom random, uint[] weights)
 		{
 			uint weightSum = 0;
 			foreach (var weight in weights)
@@ -82,7 +82,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(weights, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, uint[] weights, uint weightSum)
+		public static int WeightedIndex(this IRandom random, uint[] weights, uint weightSum)
 		{
 			int index = 0;
 			while (index < weights.Length)
@@ -97,7 +97,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, float[] weights)
+		public static int WeightedIndex(this IRandom random, float[] weights)
 		{
 			float weightSum = 0;
 			foreach (var weight in weights)
@@ -107,7 +107,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(weights, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, float[] weights, float weightSum)
+		public static int WeightedIndex(this IRandom random, float[] weights, float weightSum)
 		{
 			int index = 0;
 			while (index < weights.Length)
@@ -122,7 +122,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, double[] weights)
+		public static int WeightedIndex(this IRandom random, double[] weights)
 		{
 			double weightSum = 0;
 			foreach (var weight in weights)
@@ -132,7 +132,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(weights, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, double[] weights, double weightSum)
+		public static int WeightedIndex(this IRandom random, double[] weights, double weightSum)
 		{
 			int index = 0;
 			while (index < weights.Length)
@@ -147,7 +147,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, int> weightsAccessor)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, int> weightsAccessor)
 		{
 			int weightSum = 0;
 			for (int i = 0; i < elementCount; ++i)
@@ -157,7 +157,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(elementCount, weightsAccessor, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, int> weightsAccessor, int weightSum)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, int> weightsAccessor, int weightSum)
 		{
 			int index = 0;
 			while (index < elementCount)
@@ -172,7 +172,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, uint> weightsAccessor)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, uint> weightsAccessor)
 		{
 			uint weightSum = 0;
 			for (int i = 0; i < elementCount; ++i)
@@ -182,7 +182,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(elementCount, weightsAccessor, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, uint> weightsAccessor, uint weightSum)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, uint> weightsAccessor, uint weightSum)
 		{
 			int index = 0;
 			while (index < elementCount)
@@ -197,7 +197,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, float> weightsAccessor)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, float> weightsAccessor)
 		{
 			float weightSum = 0;
 			for (int i = 0; i < elementCount; ++i)
@@ -207,7 +207,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(elementCount, weightsAccessor, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, float> weightsAccessor, float weightSum)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, float> weightsAccessor, float weightSum)
 		{
 			int index = 0;
 			while (index < elementCount)
@@ -222,7 +222,7 @@ namespace Experilous.MakeIt.Random
 			return index;
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, double> weightsAccessor)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, double> weightsAccessor)
 		{
 			double weightSum = 0;
 			for (int i = 0; i < elementCount; ++i)
@@ -232,7 +232,7 @@ namespace Experilous.MakeIt.Random
 			return random.WeightedIndex(elementCount, weightsAccessor, weightSum);
 		}
 
-		public static int WeightedIndex(this IRandomEngine random, int elementCount, System.Func<int, double> weightsAccessor, double weightSum)
+		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, double> weightsAccessor, double weightSum)
 		{
 			int index = 0;
 			while (index < elementCount)
@@ -251,27 +251,27 @@ namespace Experilous.MakeIt.Random
 
 		#region RandomElement (container extensions)
 
-		public static T RandomElement<T>(this T[] array, IRandomEngine random)
+		public static T RandomElement<T>(this T[] array, IRandom random)
 		{
 			return array[random.UniformIndex(array)];
 		}
 
-		public static object RandomElement(this System.Collections.IList list, IRandomEngine random)
+		public static object RandomElement(this System.Collections.IList list, IRandom random)
 		{
 			return list[random.UniformIndex(list)];
 		}
 
-		public static object RandomElement(this System.Collections.ArrayList list, IRandomEngine random)
+		public static object RandomElement(this System.Collections.ArrayList list, IRandom random)
 		{
 			return list[random.UniformIndex(list)];
 		}
 
-		public static T RandomElement<T>(this System.Collections.Generic.IList<T> list, IRandomEngine random)
+		public static T RandomElement<T>(this System.Collections.Generic.IList<T> list, IRandom random)
 		{
 			return list[random.UniformIndex(list)];
 		}
 
-		public static T RandomElement<T>(this System.Collections.Generic.List<T> list, IRandomEngine random)
+		public static T RandomElement<T>(this System.Collections.Generic.List<T> list, IRandom random)
 		{
 			return list[random.UniformIndex(list)];
 		}

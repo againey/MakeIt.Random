@@ -13,7 +13,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwoSidedDie()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U);
 			Assert.AreEqual(1, random.RollDice(2));
 			random.Received().Next32();
@@ -24,7 +24,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void ThreeSidedDie()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U);
 			Assert.AreEqual(1, random.RollDice(3));
 			random.Received().Next32();
@@ -37,7 +37,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void SixSidedDie()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
 			Assert.AreEqual(1, random.RollDice(6));
 			random.Received().Next32();
@@ -56,7 +56,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwentySidedDie()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 9U, 10U, 18U, 19U);
 			Assert.AreEqual(1, random.RollDice(20));
 			random.Received().Next32();
@@ -75,7 +75,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D4()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U, 3U);
 			Assert.AreEqual(1, random.RollD4());
 			random.Received().Next32();
@@ -90,7 +90,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D6()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
 			Assert.AreEqual(1, random.RollD6());
 			random.Received().Next32();
@@ -109,7 +109,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D8()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 3U, 4U, 6U, 7U);
 			Assert.AreEqual(1, random.RollD8());
 			random.Received().Next32();
@@ -128,7 +128,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D10()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 4U, 5U, 8U, 9U);
 			Assert.AreEqual(1, random.RollD10());
 			random.Received().Next32();
@@ -147,7 +147,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D12()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 5U, 6U, 10U, 11U);
 			Assert.AreEqual(1, random.RollD12());
 			random.Received().Next32();
@@ -166,7 +166,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void D20()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 9U, 10U, 18U, 19U);
 			Assert.AreEqual(1, random.RollD20());
 			random.Received().Next32();
@@ -185,7 +185,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwoTwoSidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(2, random.RollDice(2, 2));
@@ -211,7 +211,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwoThreeSidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(2, random.RollDice(2, 3));
@@ -262,7 +262,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwoSixSidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(2, random.RollDice(2, 6));
@@ -313,7 +313,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void TwoTwentySidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U);
 			Assert.AreEqual(2, random.RollDice(2, 20));
@@ -364,7 +364,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveTwoSidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(5, random.RollDice(5, 2));
@@ -394,7 +394,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDice()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(5, random.RollDice(5, 6));
@@ -424,7 +424,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepOneHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, random.RollDiceKeepHighest(5, 6, 1));
@@ -462,7 +462,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepOneLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(1, random.RollDiceKeepLowest(5, 6, 1));
@@ -500,7 +500,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepTwoHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(2, random.RollDiceKeepHighest(5, 6, 2));
@@ -538,7 +538,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepTwoLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(2, random.RollDiceKeepLowest(5, 6, 2));
@@ -576,7 +576,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepFourHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(4, random.RollDiceKeepHighest(5, 6, 4));
@@ -614,7 +614,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceKeepFourLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(4, random.RollDiceKeepLowest(5, 6, 4));
@@ -652,7 +652,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceDropTwoHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(3, random.RollDiceDropHighest(5, 6, 2));
@@ -690,7 +690,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void FiveSixSidedDiceDropTwoLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
 			Assert.AreEqual(3, random.RollDiceDropLowest(5, 6, 2));
@@ -728,7 +728,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_d6()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("d6");
 
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
@@ -749,7 +749,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_D6()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("D6");
 
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
@@ -770,7 +770,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_3d4()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("3d4");
 
 			random.Next32().Returns(0U, 0U, 0U);
@@ -784,7 +784,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_2d72()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("2d72");
 
 			random.Next32().Returns(0U, 0U);
@@ -798,7 +798,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_1d8_Add1()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("1d8+1");
 
 			random.Next32().Returns(0U);
@@ -812,7 +812,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_2d4_Sub3()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("2d4-3");
 
 			random.Next32().Returns(0U, 0U);
@@ -826,7 +826,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_d2_Mul10()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("d2 x10");
 
 			random.Next32().Returns(0U);
@@ -838,7 +838,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d4_Div5()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d4 / 5");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -854,7 +854,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_2d3_Mul3Add1()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("2d3*3+1");
 
 			random.Next32().Returns(0U, 0U);
@@ -868,7 +868,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_10d8_Div5Sub1()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("10d8 / 5 - 1");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
@@ -884,7 +884,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d4_KeepHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d4kH");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -900,7 +900,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d6_Keep3Highest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d6k3h");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -916,7 +916,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d4_KeepLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d4kL");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -932,7 +932,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d6_Keep3Lowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d6k3l");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -948,7 +948,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d4_DropHighest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d4-H");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -964,7 +964,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d6_Drop3Highest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d6d3h");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -980,7 +980,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d4_DropLowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d4dL");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -996,7 +996,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_5d6_Drop3Lowest()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("5d6-3l");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U);
@@ -1012,7 +1012,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_4d6_Drop1Lowest_Sub1()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("4d6-1l-1");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U);
@@ -1026,7 +1026,7 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void Notation_8d20_Keep5Highest_Div2_Plus8()
 		{
-			var random = Substitute.For<IRandomEngine>();
+			var random = Substitute.For<IRandom>();
 			var dice = RandomDice.Prepare("8d20 k5h /2 +8");
 
 			random.Next32().Returns(0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);

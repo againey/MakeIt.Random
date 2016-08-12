@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Experilous.MakeIt.Random
 {
 	/// <summary>
-	/// An implementation of the <see cref="IRandomEngine"/> interface using the 1024-bit XorShift* generator.
+	/// An implementation of the <see cref="IRandom"/> interface using the 1024-bit XorShift* generator.
 	/// </summary>
 	/// <remarks>
 	/// <para>This PRNG is based on Sebastiano Vigna's xorshift1024* generator, adapted from a
@@ -16,9 +16,9 @@ namespace Experilous.MakeIt.Random
 	/// <para>As its name implies, it maintains 1024 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
-	/// <seealso cref="IRandomEngine"/>
-	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class XorShift1024Star : BaseRandomEngine
+	/// <seealso cref="IRandom"/>
+	/// <seealso cref="RandomBase"/>
+	public sealed class XorShift1024Star : RandomBase
 	{
 		[SerializeField] private ulong[] _state = new ulong[] { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 1UL, };
 		[SerializeField] private int _offset;

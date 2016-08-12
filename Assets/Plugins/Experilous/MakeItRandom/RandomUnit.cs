@@ -28,7 +28,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Open
 
-		public static float OpenFloatUnit(this IRandomEngine random)
+		public static float OpenFloatUnit(this IRandom random)
 		{
 			uint n;
 			do
@@ -42,7 +42,7 @@ namespace Experilous.MakeIt.Random
 			return value.number - 1f;
 		}
 
-		public static double OpenDoubleUnit(this IRandomEngine random)
+		public static double OpenDoubleUnit(this IRandom random)
 		{
 			ulong n;
 			do
@@ -60,7 +60,7 @@ namespace Experilous.MakeIt.Random
 
 		#region HalfOpen
 
-		public static float HalfOpenFloatUnit(this IRandomEngine random)
+		public static float HalfOpenFloatUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1.0f;
@@ -72,7 +72,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static double HalfOpenDoubleUnit(this IRandomEngine random)
+		public static double HalfOpenDoubleUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1.0;
@@ -88,7 +88,7 @@ namespace Experilous.MakeIt.Random
 
 		#region HalfClosed
 
-		public static float HalfClosedFloatUnit(this IRandomEngine random)
+		public static float HalfClosedFloatUnit(this IRandom random)
 		{
 			BitwiseFloat value;
 			value.number = 0f;
@@ -96,7 +96,7 @@ namespace Experilous.MakeIt.Random
 			return 2f - value.number;
 		}
 
-		public static double HalfClosedDoubleUnit(this IRandomEngine random)
+		public static double HalfClosedDoubleUnit(this IRandom random)
 		{
 			BitwiseDouble value;
 			value.number = 0.0;
@@ -108,7 +108,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Closed
 
-		public static float ClosedFloatUnit(this IRandomEngine random)
+		public static float ClosedFloatUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var n = random.ClosedRange(0x00800000U);
@@ -149,7 +149,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static double ClosedDoubleUnit(this IRandomEngine random)
+		public static double ClosedDoubleUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var n = random.ClosedRange(0x0010000000000000UL);

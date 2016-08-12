@@ -10,7 +10,7 @@ namespace Experilous.MakeIt.Random
 	{
 		#region Unit Vector
 
-		public static Vector2 UnitVector2(this IRandomEngine random)
+		public static Vector2 UnitVector2(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var angle = random.HalfOpenRange(0f, Mathf.PI * 2f);
@@ -28,7 +28,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector3 UnitVector3(this IRandomEngine random)
+		public static Vector3 UnitVector3(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
@@ -49,7 +49,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector4 UnitVector4(this IRandomEngine random)
+		public static Vector4 UnitVector4(this IRandom random)
 		{
 			Start1:
 			float u1 = random.OpenFloatUnit() * 2f - 1f;
@@ -75,17 +75,17 @@ namespace Experilous.MakeIt.Random
 
 		#region Scaled Vector
 
-		public static Vector2 ScaledVector2(this IRandomEngine random, float radius)
+		public static Vector2 ScaledVector2(this IRandom random, float radius)
 		{
 			return UnitVector2(random) * radius;
 		}
 
-		public static Vector3 ScaledVector3(this IRandomEngine random, float radius)
+		public static Vector3 ScaledVector3(this IRandom random, float radius)
 		{
 			return UnitVector3(random) * radius;
 		}
 
-		public static Vector4 ScaledVector4(this IRandomEngine random, float radius)
+		public static Vector4 ScaledVector4(this IRandom random, float radius)
 		{
 			return UnitVector4(random) * radius;
 		}
@@ -94,7 +94,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Radial
 
-		public static Vector2 PointWithinCircle(this IRandomEngine random)
+		public static Vector2 PointWithinCircle(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
@@ -112,7 +112,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector2 PointWithinCircle(this IRandomEngine random, float radius)
+		public static Vector2 PointWithinCircle(this IRandom random, float radius)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var distance = Mathf.Sqrt(random.ClosedFloatUnit()) * radius;
@@ -132,7 +132,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector2 PointWithinCircularShell(this IRandomEngine random, float innerRadius, float outerRadius)
+		public static Vector2 PointWithinCircularShell(this IRandom random, float innerRadius, float outerRadius)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var unitMin = innerRadius / outerRadius;
@@ -156,7 +156,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector3 PointWithinSphere(this IRandomEngine random)
+		public static Vector3 PointWithinSphere(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
@@ -176,7 +176,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector3 PointWithinSphere(this IRandomEngine random, float radius)
+		public static Vector3 PointWithinSphere(this IRandom random, float radius)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f) * radius;
@@ -198,7 +198,7 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
-		public static Vector3 PointWithinSphericalShell(this IRandomEngine random, float innerRadius, float outerRadius)
+		public static Vector3 PointWithinSphericalShell(this IRandom random, float innerRadius, float outerRadius)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
 			var unitMin = innerRadius / outerRadius;
@@ -228,54 +228,54 @@ namespace Experilous.MakeIt.Random
 
 		#region Axial
 
-		public static Vector2 PointWithinSquare(this IRandomEngine random)
+		public static Vector2 PointWithinSquare(this IRandom random)
 		{
 			return new Vector2(random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Vector2 PointWithinSquare(this IRandomEngine random, float sideLength)
+		public static Vector2 PointWithinSquare(this IRandom random, float sideLength)
 		{
 			return new Vector2(random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
-		public static Vector2 PointWithinRectangle(this IRandomEngine random, Vector2 size)
+		public static Vector2 PointWithinRectangle(this IRandom random, Vector2 size)
 		{
 			return new Vector2(random.ClosedRange(size.x), random.ClosedRange(size.y));
 		}
 
-		public static Vector2 PointWithinParallelogram(this IRandomEngine random, Vector2 axis0, Vector2 axis1)
+		public static Vector2 PointWithinParallelogram(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
 			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1;
 		}
 
-		public static Vector2 PointWithinTriangle(this IRandomEngine random, Vector2 axis0, Vector2 axis1)
+		public static Vector2 PointWithinTriangle(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
 			float u = Mathf.Sqrt(random.ClosedFloatUnit());
 			float v = random.ClosedRange(u);
 			return (1f - u) * axis0 + v * axis1;
 		}
 
-		public static Vector3 PointWithinCube(this IRandomEngine random)
+		public static Vector3 PointWithinCube(this IRandom random)
 		{
 			return new Vector3(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
-		public static Vector3 PointWithinCube(this IRandomEngine random, float sideLength)
+		public static Vector3 PointWithinCube(this IRandom random, float sideLength)
 		{
 			return new Vector3(random.ClosedRange(sideLength), random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
-		public static Vector3 PointWithinBox(this IRandomEngine random, Vector3 size)
+		public static Vector3 PointWithinBox(this IRandom random, Vector3 size)
 		{
 			return new Vector3(random.ClosedRange(size.x), random.ClosedRange(size.y), random.ClosedRange(size.z));
 		}
 
-		public static Vector3 PointWithinBox(this IRandomEngine random, Bounds box)
+		public static Vector3 PointWithinBox(this IRandom random, Bounds box)
 		{
 			return random.PointWithinBox(box.size) + box.min;
 		}
 
-		public static Vector3 PointWithinRhomboid(this IRandomEngine random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
+		public static Vector3 PointWithinRhomboid(this IRandom random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
 		{
 			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1 + random.ClosedFloatUnit() * axis2;
 		}

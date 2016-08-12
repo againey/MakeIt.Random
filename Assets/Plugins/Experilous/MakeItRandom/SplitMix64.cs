@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Experilous.MakeIt.Random
 {
 	/// <summary>
-	/// An implementation of the <see cref="IRandomEngine"/> interface using the 64-bit SplitMix generator.
+	/// An implementation of the <see cref="IRandom"/> interface using the 64-bit SplitMix generator.
 	/// </summary>
 	/// <remarks>
 	/// <para>This PRNG implements the SplitMix64 algorithm provided by Sebastiano Vigna, based on the
@@ -16,9 +16,9 @@ namespace Experilous.MakeIt.Random
 	/// <para>As its name implies, it maintains 64 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
-	/// <seealso cref="IRandomEngine"/>
-	/// <seealso cref="BaseRandomEngine"/>
-	public sealed class SplitMix64 : BaseRandomEngine
+	/// <seealso cref="IRandom"/>
+	/// <seealso cref="RandomBase"/>
+	public sealed class SplitMix64 : RandomBase
 	{
 		[SerializeField] private ulong _state;
 

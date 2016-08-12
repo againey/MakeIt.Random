@@ -4,11 +4,11 @@
 
 namespace Experilous.MakeIt.Random
 {
-	public static class RandomEngine
+	public static class MIRandom
 	{
-		private static IRandomEngine _shared = null;
+		private static IRandom _shared = null;
 
-		public static IRandomEngine shared
+		public static IRandom shared
 		{
 			get
 			{
@@ -55,7 +55,7 @@ namespace Experilous.MakeIt.Random
 			return XorShift128Plus.Create(stateGenerator);
 		}
 
-		public static XorShift128Plus CreateStandard(IRandomEngine seeder)
+		public static XorShift128Plus CreateStandard(IRandom seeder)
 		{
 			return XorShift128Plus.Create(seeder);
 		}

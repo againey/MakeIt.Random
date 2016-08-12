@@ -11,7 +11,7 @@ namespace Experilous.MakeIt.Random
 	{
 		#region Public Interface
 
-		public static IList<T> Shuffle<T>(this IRandomEngine random, IList<T> list)
+		public static IList<T> Shuffle<T>(this IRandom random, IList<T> list)
 		{
 			T[] array = list as T[];
 			if (array != null)
@@ -25,7 +25,7 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
-		public static IList<T> ShuffleInto<T>(this IRandomEngine random, IEnumerable<T> source, IList<T> target)
+		public static IList<T> ShuffleInto<T>(this IRandom random, IEnumerable<T> source, IList<T> target)
 		{
 			IList<T> list = source as IList<T>;
 			if (list != null)
@@ -39,7 +39,7 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		public static IList<T> ShuffleCyclic<T>(this IRandomEngine random, IList<T> list)
+		public static IList<T> ShuffleCyclic<T>(this IRandom random, IList<T> list)
 		{
 			T[] array = list as T[];
 			if (array != null)
@@ -53,7 +53,7 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
-		public static IList<T> ShuffleCyclicInto<T>(this IRandomEngine random, IEnumerable<T> source, IList<T> target)
+		public static IList<T> ShuffleCyclicInto<T>(this IRandom random, IEnumerable<T> source, IList<T> target)
 		{
 			IList<T> list = source as IList<T>;
 			if (list != null)
@@ -71,22 +71,22 @@ namespace Experilous.MakeIt.Random
 
 		#region Container Extensions
 
-		public static IList<T> Shuffle<T>(this IList<T> list, IRandomEngine random)
+		public static IList<T> Shuffle<T>(this IList<T> list, IRandom random)
 		{
 			return random.Shuffle(list);
 		}
 
-		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			return random.ShuffleInto(source, target);
 		}
 
-		public static IList<T> ShuffleCyclic<T>(this IList<T> list, IRandomEngine random)
+		public static IList<T> ShuffleCyclic<T>(this IList<T> list, IRandom random)
 		{
 			return random.ShuffleCyclic(list);
 		}
 
-		public static IList<T> ShuffleCyclicInto<T>(this IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		public static IList<T> ShuffleCyclicInto<T>(this IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			return random.ShuffleCyclicInto(source, target);
 		}
@@ -95,7 +95,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Standard Shuffle (Knuth, Fisher-Yates Shuffle)
 
-		private static T[] Knuth_ShuffleArray<T>(T[] array, IRandomEngine random)
+		private static T[] Knuth_ShuffleArray<T>(T[] array, IRandom random)
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
@@ -104,7 +104,7 @@ namespace Experilous.MakeIt.Random
 			return array;
 		}
 
-		private static IList<T> Knuth_ShuffleList<T>(IList<T> list, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleList<T>(IList<T> list, IRandom random)
 		{
 			for (int i = list.Count - 1; i > 0; --i)
 			{
@@ -116,7 +116,7 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
-		private static IList<T> Knuth_ShuffleListInto<T>(IList<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleListInto<T>(IList<T> source, IList<T> target, IRandom random)
 		{
 			if (source.Count == 0) return target;
 			if (target.Count == 0) return Knuth_ShuffleListAppendedInto(source, target, random);
@@ -133,7 +133,7 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Knuth_ShuffleListAppendedInto<T>(IList<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleListAppendedInto<T>(IList<T> source, IList<T> target, IRandom random)
 		{
 			for (int i = 0; i < source.Count; ++i)
 			{
@@ -151,7 +151,7 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Knuth_ShuffleEnumerableInto<T>(IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleEnumerableInto<T>(IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			IEnumerator<T> enumerator = source.GetEnumerator();
 			if (enumerator.MoveNext() == false) return target;
@@ -175,14 +175,14 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Knuth_ShuffleEnumerableAppendedInto<T>(IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleEnumerableAppendedInto<T>(IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			IEnumerator<T> enumerator = source.GetEnumerator();
 			if (enumerator.MoveNext() == false) return target;
 			return Knuth_ShuffleEnumerableAppendedInto(enumerator, target, random);
 		}
 
-		private static IList<T> Knuth_ShuffleEnumerableAppendedInto<T>(IEnumerator<T> enumerator, IList<T> target, IRandomEngine random)
+		private static IList<T> Knuth_ShuffleEnumerableAppendedInto<T>(IEnumerator<T> enumerator, IList<T> target, IRandom random)
 		{
 			int i = 0;
 			target.Add(enumerator.Current);
@@ -209,7 +209,7 @@ namespace Experilous.MakeIt.Random
 
 		#region Cyclic Shuffle (Sattolo's Algorithm)
 
-		private static T[] Sattolo_ShuffleArray<T>(T[] array, IRandomEngine random)
+		private static T[] Sattolo_ShuffleArray<T>(T[] array, IRandom random)
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
@@ -218,7 +218,7 @@ namespace Experilous.MakeIt.Random
 			return array;
 		}
 
-		private static IList<T> Sattolo_ShuffleList<T>(IList<T> list, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleList<T>(IList<T> list, IRandom random)
 		{
 			for (int i = list.Count - 1; i > 0; --i)
 			{
@@ -230,7 +230,7 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
-		private static IList<T> Sattolo_ShuffleListInto<T>(IList<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleListInto<T>(IList<T> source, IList<T> target, IRandom random)
 		{
 			if (source.Count == 0) return target;
 			if (target.Count == 0) return Sattolo_ShuffleListAppendedInto(source, target, random);
@@ -245,7 +245,7 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Sattolo_ShuffleListAppendedInto<T>(IList<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleListAppendedInto<T>(IList<T> source, IList<T> target, IRandom random)
 		{
 			target.Add(source[0]);
 			for (int i = 1; i < source.Count; ++i)
@@ -257,7 +257,7 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Sattolo_ShuffleEnumerableInto<T>(IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleEnumerableInto<T>(IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			IEnumerator<T> enumerator = source.GetEnumerator();
 			if (enumerator.MoveNext() == false) return target;
@@ -278,14 +278,14 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		private static IList<T> Sattolo_ShuffleEnumerableAppendedInto<T>(IEnumerable<T> source, IList<T> target, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleEnumerableAppendedInto<T>(IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			IEnumerator<T> enumerator = source.GetEnumerator();
 			if (enumerator.MoveNext() == false) return target;
 			return Sattolo_ShuffleEnumerableAppendedInto(enumerator, target, random);
 		}
 
-		private static IList<T> Sattolo_ShuffleEnumerableAppendedInto<T>(IEnumerator<T> enumerator, IList<T> target, IRandomEngine random)
+		private static IList<T> Sattolo_ShuffleEnumerableAppendedInto<T>(IEnumerator<T> enumerator, IList<T> target, IRandom random)
 		{
 			target.Add(enumerator.Current);
 

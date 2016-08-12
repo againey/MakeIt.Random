@@ -8,27 +8,27 @@ namespace Experilous.MakeIt.Random
 {
 	public static class RandomEnum
 	{
-		public static T Enum<T>(this IRandomEngine engine) where T : struct
+		public static T Enum<T>(this IRandom random) where T : struct
 		{
-			return (T)System.Enum.GetValues(typeof(T)).RandomElement(engine);
+			return (T)System.Enum.GetValues(typeof(T)).RandomElement(random);
 		}
 
-		public static T Enum<T>(this IRandomEngine engine, EnumGeneratorDelegate<T> generator) where T : struct
+		public static T Enum<T>(this IRandom random, EnumGeneratorDelegate<T> generator) where T : struct
 		{
-			return generator(engine);
+			return generator(random);
 		}
 
-		public static T DistinctEnum<T>(this IRandomEngine engine) where T : struct
+		public static T DistinctEnum<T>(this IRandom random) where T : struct
 		{
-			return BuildDistinctValuesArray<T>().RandomElement(engine);
+			return BuildDistinctValuesArray<T>().RandomElement(random);
 		}
 
-		public static string EnumName<T>(this IRandomEngine engine) where T : struct
+		public static string EnumName<T>(this IRandom random) where T : struct
 		{
-			return System.Enum.GetNames(typeof(T)).RandomElement(engine);
+			return System.Enum.GetNames(typeof(T)).RandomElement(random);
 		}
 
-		public delegate T EnumGeneratorDelegate<T>(IRandomEngine engine) where T : struct;
+		public delegate T EnumGeneratorDelegate<T>(IRandom random) where T : struct;
 
 		private static T[] BuildValuesArray<T>() where T : struct
 		{
@@ -114,69 +114,69 @@ namespace Experilous.MakeIt.Random
 		public static EnumGeneratorDelegate<T> Prepare<T>() where T : struct
 		{
 			T[] valuesArray = BuildValuesArray<T>();
-			return (IRandomEngine engine) => valuesArray.RandomElement(engine);
+			return (IRandom random) => valuesArray.RandomElement(random);
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareDistinct<T>() where T : struct
 		{
 			T[] valuesArray = BuildDistinctValuesArray<T>();
-			return (IRandomEngine engine) => valuesArray.RandomElement(engine);
+			return (IRandom random) => valuesArray.RandomElement(random);
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareWeighted<T>(Dictionary<string, int> weights) where T : struct
 		{
 			T[] valuesArray = BuildValuesArray<T>();
 			int[] weightsArray = BuildWeightsArray<T, int>(weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareWeighted<T>(Dictionary<string, uint> weights) where T : struct
 		{
 			T[] valuesArray = BuildValuesArray<T>();
 			uint[] weightsArray = BuildWeightsArray<T, uint>(weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareWeighted<T>(Dictionary<string, float> weights) where T : struct
 		{
 			T[] valuesArray = BuildValuesArray<T>();
 			float[] weightsArray = BuildWeightsArray<T, float>(weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareWeighted<T>(Dictionary<string, double> weights) where T : struct
 		{
 			T[] valuesArray = BuildValuesArray<T>();
 			double[] weightsArray = BuildWeightsArray<T, double>(weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareDistinctWeighted<T>(Dictionary<T, int> weights) where T : struct
 		{
 			T[] valuesArray = BuildDistinctValuesArray<T>();
 			int[] weightsArray = BuildDistinctWeightsArray(valuesArray, weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareDistinctWeighted<T>(Dictionary<T, uint> weights) where T : struct
 		{
 			T[] valuesArray = BuildDistinctValuesArray<T>();
 			uint[] weightsArray = BuildDistinctWeightsArray(valuesArray, weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareDistinctWeighted<T>(Dictionary<T, float> weights) where T : struct
 		{
 			T[] valuesArray = BuildDistinctValuesArray<T>();
 			float[] weightsArray = BuildDistinctWeightsArray(valuesArray, weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 
 		public static EnumGeneratorDelegate<T> PrepareDistinctWeighted<T>(Dictionary<T, double> weights) where T : struct
 		{
 			T[] valuesArray = BuildDistinctValuesArray<T>();
 			double[] weightsArray = BuildDistinctWeightsArray(valuesArray, weights);
-			return (IRandomEngine engine) => valuesArray[engine.WeightedIndex(weightsArray)];
+			return (IRandom random) => valuesArray[random.WeightedIndex(weightsArray)];
 		}
 	}
 }

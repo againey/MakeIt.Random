@@ -29,7 +29,7 @@ namespace Experilous.Examples.Randomization
 
 		public InputField stringsInputField;
 
-		private IRandomEngine _random;
+		private IRandom _random;
 		private readonly System.Text.StringBuilder _sb = new System.Text.StringBuilder();
 
 		protected void Start()

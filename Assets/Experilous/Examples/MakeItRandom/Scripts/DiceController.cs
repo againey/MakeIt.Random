@@ -39,7 +39,7 @@ namespace Experilous.Examples.Randomization
 		public Color normalDieColor = new Color(1f, 1f, 1f);
 		public Color discardedDieColor = new Color(1f, 0.5f, 0.4f);
 
-		private IRandomEngine _random;
+		private IRandom _random;
 
 		private readonly List<int> _dice = new List<int>();
 		private readonly List<int> _discardedDice = new List<int>();

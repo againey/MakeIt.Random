@@ -39,7 +39,7 @@ namespace Experilous.Examples.Randomization
 		private ColorToggleButton _selectedColorButton;
 		private ColorToggleButton[] _colorButtons;
 
-		private IRandomEngine _random;
+		private IRandom _random;
 
 		protected void Start()
 		{

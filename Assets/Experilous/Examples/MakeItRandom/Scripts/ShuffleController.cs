@@ -18,7 +18,7 @@ namespace Experilous.Examples.Randomization
 
 		public RectTransform itemsPanel;
 
-		private IRandomEngine _random;
+		private IRandom _random;
 
 		private readonly List<WeightedShuffleItemPanel> _itemPanels = new List<WeightedShuffleItemPanel>();
 		private WeightedShuffleItemPanel _selectedItemPanel;

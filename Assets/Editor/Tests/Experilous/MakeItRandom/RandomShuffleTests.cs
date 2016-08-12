@@ -58,7 +58,7 @@ namespace Experilous.MakeIt.Random.Tests
 			}
 		}
 
-		private static void ValidateShuffleDistributesUniformly(int bucketCount, int iterations, float tolerance, System.Func<IRandomEngine, IList<int>> shuffle)
+		private static void ValidateShuffleDistributesUniformly(int bucketCount, int iterations, float tolerance, System.Func<IRandom, IList<int>> shuffle)
 		{
 			var hitsPerBucket = (bucketCount / 2) * iterations;
 
@@ -156,49 +156,49 @@ namespace Experilous.MakeIt.Random.Tests
 		[Test]
 		public void ShuffleArrayInPlaceDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearArray(101).Shuffle(random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).Shuffle(random));
 		}
 
 		[Test]
 		public void ShuffleListInPlaceDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearList(101).Shuffle(random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).Shuffle(random));
 		}
 
 		[Test]
 		public void ShuffleArrayCopyDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearArray(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new int[101], random));
 		}
 
 		[Test]
 		public void ShuffleListCopyDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearList(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new int[101], random));
 		}
 
 		[Test]
 		public void ShuffleLinkedListCopyDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearLinkedList(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new int[101], random));
 		}
 
 		[Test]
 		public void ShuffleArrayCopyAppendDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearArray(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new List<int>(101), random));
 		}
 
 		[Test]
 		public void ShuffleListCopyAppendDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearList(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new List<int>(101), random));
 		}
 
 		[Test]
 		public void ShuffleLinkedListCopyAppendDistributesUniformly()
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandomEngine random) => CreateLinearLinkedList(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new List<int>(101), random));
 		}
 
 		[Test]

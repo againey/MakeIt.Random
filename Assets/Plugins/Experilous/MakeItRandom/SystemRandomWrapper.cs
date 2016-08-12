@@ -5,20 +5,20 @@
 namespace Experilous.MakeIt.Random
 {
 	/// <summary>
-	/// Wraps an implementation of <see cref="IRandomEngine"/> in a derivation of <see cref="System.Random"/>.
+	/// Wraps an implementation of <see cref="IRandom"/> in a derivation of <see cref="System.Random"/>.
 	/// </summary>
 	/// <remarks>
 	/// This wrapper is preferable for random engines that optimally produce random numbers 32 bits at a time.
 	/// </remarks>
 	/// <seealso cref="System.Random"/>
-	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="IRandom"/>
 	/// <seealso cref="SystemRandomWrapper64"/>
 	public class SystemRandomWrapper32 : System.Random
 	{
-		private IRandomEngine _random;
+		private IRandom _random;
 		private uint[] _sourceBuffer;
 
-		public SystemRandomWrapper32(IRandomEngine random)
+		public SystemRandomWrapper32(IRandom random)
 		{
 			_random = random;
 			_sourceBuffer = new uint[1];
@@ -64,20 +64,20 @@ namespace Experilous.MakeIt.Random
 	}
 
 	/// <summary>
-	/// Wraps an implementation of <see cref="IRandomEngine"/> in a derivation of <see cref="System.Random"/>.
+	/// Wraps an implementation of <see cref="IRandom"/> in a derivation of <see cref="System.Random"/>.
 	/// </summary>
 	/// <remarks>
 	/// This wrapper is preferable for random engines that optimally produce random numbers 64 bits at a time.
 	/// </remarks>
 	/// <seealso cref="System.Random"/>
-	/// <seealso cref="IRandomEngine"/>
+	/// <seealso cref="IRandom"/>
 	/// <seealso cref="SystemRandomWrapper32"/>
 	public class SystemRandomWrapper64 : System.Random
 	{
-		private IRandomEngine _random;
+		private IRandom _random;
 		private ulong[] _sourceBuffer;
 
-		public SystemRandomWrapper64(IRandomEngine random)
+		public SystemRandomWrapper64(IRandom random)
 		{
 			_random = random;
 			_sourceBuffer = new ulong[1];
