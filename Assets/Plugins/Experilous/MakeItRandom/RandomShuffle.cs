@@ -3,7 +3,6 @@
 \******************************************************************************/
 
 using System.Collections.Generic;
-using Utilities = Experilous.Core.Utilities;
 
 namespace Experilous.MakeIt.Random
 {
@@ -99,7 +98,10 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				Utilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				int j = random.ClosedRange(i);
+				T swap = array[i];
+				array[i] = array[j];
+				array[j] = swap;
 			}
 			return array;
 		}
@@ -109,9 +111,9 @@ namespace Experilous.MakeIt.Random
 			for (int i = list.Count - 1; i > 0; --i)
 			{
 				int j = random.ClosedRange(i);
-				T temp = list[i];
+				T swap = list[i];
 				list[i] = list[j];
-				list[j] = temp;
+				list[j] = swap;
 			}
 			return list;
 		}
@@ -213,7 +215,10 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				Utilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				int j = random.HalfOpenRange(i);
+				T swap = array[i];
+				array[i] = array[j];
+				array[j] = swap;
 			}
 			return array;
 		}
@@ -222,10 +227,10 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = list.Count - 1; i > 0; --i)
 			{
-				int j = random.ClosedRange(i);
-				T temp = list[i];
+				int j = random.HalfOpenRange(i);
+				T swap = list[i];
 				list[i] = list[j];
-				list[j] = temp;
+				list[j] = swap;
 			}
 			return list;
 		}
@@ -238,7 +243,7 @@ namespace Experilous.MakeIt.Random
 			target[0] = source[0];
 			for (int i = 1; i < source.Count; ++i)
 			{
-				int j = random.ClosedRange(i);
+				int j = random.HalfOpenRange(i);
 				target[i] = target[j];
 				target[j] = source[i];
 			}
@@ -250,7 +255,7 @@ namespace Experilous.MakeIt.Random
 			target.Add(source[0]);
 			for (int i = 1; i < source.Count; ++i)
 			{
-				int j = random.ClosedRange(i);
+				int j = random.HalfOpenRange(i);
 				target.Add(target[j]);
 				target[j] = source[i];
 			}
@@ -270,7 +275,7 @@ namespace Experilous.MakeIt.Random
 			{
 				++i;
 				if (i >= target.Count) throw new System.ArgumentException("The target list must either be empty or be at least as large as the source enumerable.", "target");
-				int j = random.ClosedRange(i);
+				int j = random.HalfOpenRange(i);
 				target[i] = target[j];
 				target[j] = enumerator.Current;
 			}
@@ -291,7 +296,7 @@ namespace Experilous.MakeIt.Random
 
 			while (enumerator.MoveNext())
 			{
-				int j = random.ClosedRange(target.Count);
+				int j = random.HalfOpenRange(target.Count);
 				target.Add(target[j]);
 				target[j] = enumerator.Current;
 			}
