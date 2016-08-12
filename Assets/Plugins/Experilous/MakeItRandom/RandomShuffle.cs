@@ -3,7 +3,7 @@
 \******************************************************************************/
 
 using System.Collections.Generic;
-using Experilous.MakeIt.Utilities;
+using Utilities = Experilous.Core.Utilities;
 
 namespace Experilous.MakeIt.Random
 {
@@ -99,7 +99,7 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				MIUtilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				Utilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
 			}
 			return array;
 		}
@@ -213,7 +213,7 @@ namespace Experilous.MakeIt.Random
 		{
 			for (int i = array.Length - 1; i > 0; --i)
 			{
-				MIUtilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
+				Utilities.Swap(ref array[i], ref array[random.ClosedRange(i)]);
 			}
 			return array;
 		}
