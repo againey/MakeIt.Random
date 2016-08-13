@@ -4,10 +4,18 @@
 
 namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// A static class of extension methods for generating random boolean values based on various probabilities.
+	/// </summary>
 	public static class RandomChance
 	{
 		#region Evenly Weighted
 
+		/// <summary>
+		/// Returns a random bool with exacty a half and half chance of being true or false.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random uniformly distributed bool.</returns>
 		public static bool Chance(this IRandom random)
 		{
 			return random.Next32() >= 0x80000000U;
@@ -17,21 +25,53 @@ namespace Experilous.MakeItRandom
 
 		#region Unevenly Weighted
 
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, int ratioTrue, int ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, uint ratioTrue, uint ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, float ratioTrue, float ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, double ratioTrue, double ratioFalse)
 		{
 			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
@@ -41,31 +81,71 @@ namespace Experilous.MakeItRandom
 
 		#region Probability
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, int numerator, int denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator;
 		}
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, uint numerator, uint denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator;
 		}
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, float numerator, float denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator;
 		}
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, double numerator, double denominator)
 		{
 			return random.HalfOpenRange(denominator) < numerator;
 		}
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, float probability)
 		{
 			return random.HalfOpenFloatUnit() < probability;
 		}
 
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, double probability)
 		{
 			return random.HalfOpenDoubleUnit() < probability;
