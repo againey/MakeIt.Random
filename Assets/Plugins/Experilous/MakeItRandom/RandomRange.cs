@@ -429,7 +429,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 16;
 			mask |= mask >> 32;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable32[mask * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[mask * 0x03F6EAF2CD271461UL >> 58];
 #endif
 			ulong n;
 			do
@@ -894,7 +894,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 16;
 			mask |= mask >> 32;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable32[mask * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[mask * 0x03F6EAF2CD271461UL >> 58];
 #endif
 			ulong n;
 			do
