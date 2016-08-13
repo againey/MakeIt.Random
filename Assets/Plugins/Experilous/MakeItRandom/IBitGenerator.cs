@@ -2,7 +2,7 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// Interface for a generator of bits.
@@ -15,14 +15,13 @@ namespace Experilous.MakeIt.Random
 		/// <summary>
 		/// Get the next 32 bits of generated data.
 		/// </summary>
-		/// <returns>A 32-bit unsigned integer full of generated bits.</returns>
+		/// <returns>A 32-bit unsigned integer representing the next 32 bits of generated data.</returns>
 		uint Next32();
 
 		/// <summary>
-		/// <summary>
 		/// Get the next 64 bits of generated data.
 		/// </summary>
-		/// <returns>A 64-bit unsigned integer full of generated bits.</returns>
+		/// <returns>A 64-bit unsigned integer representing the next 64 bits of generated data.</returns>
 		ulong Next64();
 	}
 }

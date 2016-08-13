@@ -4,7 +4,7 @@
 
 using UnityEngine;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// An abstract base class that eases the implementation of a random engine.
@@ -20,94 +20,223 @@ namespace Experilous.MakeIt.Random
 	/// <seealso cref="IRandom"/>
 	public abstract class RandomBase : ScriptableObject, IRandom
 	{
+		/// <summary>
+		/// Saves the pseudo-random engine's internal state as a byte array, which can be restored later.
+		/// </summary>
 		public virtual byte[] SaveState()
 		{
 			throw new System.NotSupportedException("This random engine is unable to save its state to a byte array.");
 		}
 
+		/// <summary>
+		/// Restores the pseudo-random engine's internal state from a byte array which had been previously saved.
+		/// </summary>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState">SaveState</see>() on a binary-compatible type of random engine.</param>
 		public virtual void RestoreState(byte[] stateArray)
 		{
 			throw new System.NotSupportedException("This random engine is unable to restore its state from a byte array.");
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a transient value (such as system time).
+		/// </summary>
 		public virtual void Seed()
 		{
 			Seed(new RandomStateGenerator());
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with the supplied integer value.
+		/// </summary>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		public virtual void Seed(int seed)
 		{
 			Seed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with the supplied array of integer values.
+		/// </summary>
+		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		public virtual void Seed(params int[] seed)
 		{
 			Seed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with the supplied string.
+		/// </summary>
+		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		public virtual void Seed(string seed)
 		{
 			Seed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with the supplied bit generator.
+		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		public abstract void Seed(IBitGenerator bitGenerator);
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a combination of its current state and a transient value (such as system time).
+		/// </summary>
 		public virtual void MergeSeed()
 		{
 			MergeSeed(new RandomStateGenerator());
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied integer value.
+		/// </summary>
+		/// <param name="seed">An integer value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		public virtual void MergeSeed(int seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied array of integer values.
+		/// </summary>
+		/// <param name="seed">An array of integer values used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		public virtual void MergeSeed(params int[] seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied string.
+		/// </summary>
+		/// <param name="seed">An string value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		public virtual void MergeSeed(string seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));
 		}
 
+		/// <summary>
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied bit generator.
+		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used, in conjuction with the current state, to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		public abstract void MergeSeed(IBitGenerator bitGenerator);
 
+		/// <summary>
+		/// Step the state ahead by a single iteration, and throw away the output.
+		/// </summary>
 		public abstract void Step();
+
+		/// <summary>
+		/// Get the next 32 bits of pseudo-random generated data.
+		/// </summary>
+		/// <returns>A 32-bit unsigned integer representing the next 32 bits of pseudo-random generated data.</returns>
 		public abstract uint Next32();
+
+		/// <summary>
+		/// <summary>
+		/// Get the next 64 bits of pseudo-random generated data.
+		/// </summary>
+		/// <returns>A 64-bit unsigned integer representing the next 64 bits of pseudo-random generated data.</returns>
 		public abstract ulong Next64();
 
+		/// <summary>
+		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
+		/// </summary>
+		/// <remarks>
+		/// <para><see cref="SkipAhead()"/> is guaranteed to skip forward at least <code>2^skipAheadMagnitude</code> steps each time it is called.</para>
+		/// <para>This property is guaranteed to be non-negative.  A value of 0 indicates that <see cref="SkipAhead()"/> is not guaranteed to do anything
+		/// other than advance the state one single iteration.</para>
+		/// </remarks>
 		public virtual int skipAheadMagnitude { get { return 0; } }
+
+		/// <summary>
+		/// The binary order of magnitude size of the interveral that <see cref="SkipBack"/>() skips over.
+		/// </summary>
+		/// <remarks>
+		/// <para><see cref="SkipBack()"/> is guaranteed to skip backward at least <code>2^skipBackMagnitude</code> steps each time it is called.</para>
+		/// <para>This property may be negative.  A value of 0 indicates that <see cref="SkipBack()"/> is not guaranteed to do anything other than reverse
+		/// the state one single iteration.  A negative value indicates that <see cref="SkipBack()"/> is not supported and will throw an exception.</para>
+		/// </remarks>
 		public virtual int skipBackMagnitude { get { return -1; } }
 
+		/// <summary>
+		/// Advances the state forward by a fixed number of iterations, generally in logarithmic time.
+		/// </summary>
+		/// <remarks>
+		/// <para>For some pseudo-random number generators, their state can be advanced by a large number of steps relatively quickly, generally in
+		/// logarithmic time based on the size of the skip interval.  This can be useful for independently accessing multiple subsequences within a
+		/// long sequence initialized by a single seed, often but not exclusively for the purpose of parallel computation.</para>
+		/// </remarks>
 		public virtual void SkipAhead() { Step(); }
+
+		/// <summary>
+		/// Reverses the state backward by a fixed number of iterations, generally in logarithmic time.
+		/// </summary>
+		/// <remarks>
+		/// <para>For some pseudo-random number generators, their state can be reversed by a large number of steps relatively quickly, generally in
+		/// logarithmic time based on the size of the skip interval.  This can be useful for independently accessing multiple subsequences within a
+		/// long sequence initialized by a single seed, often but not exclusively for the purpose of parallel computation.</para>
+		/// </remarks>
 		public virtual void SkipBack() { throw new System.NotSupportedException("Skipping backward in the sequence is not supported by this random engine."); }
 
+		/// <summary>
+		/// Adapts the random engine to the interface provided by <see cref="System.Random"/>, for use in interfaces that require this common .NET type.
+		/// </summary>
+		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
+		/// <seealso cref="System.Random"/>
+		/// <seealso cref="SystemRandomWrapper32"/>
+		/// <seealso cref="SystemRandomWrapper64"/>
 		public abstract System.Random AsSystemRandom();
 
-		protected static void SaveState(System.IO.BinaryWriter stream, byte stateElement)
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.SaveState()"/>, to write a byte of saved state data to a binary stream.
+		/// </summary>
+		/// <param name="writer">The binary stream to which the random engine's state is being saved.</param>
+		/// <param name="stateElement">The byte of data to be saved, which is part of the random engine's state.</param>
+		protected static void SaveState(System.IO.BinaryWriter writer, byte stateElement)
 		{
-			stream.Write(stateElement);
+			writer.Write(stateElement);
 		}
 
-		protected static void SaveState(System.IO.BinaryWriter stream, uint stateElement)
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.SaveState()"/>, to write an unsigned integer of saved state data to a binary stream.
+		/// </summary>
+		/// <param name="writer">The binary stream to which the random engine's state is being saved.</param>
+		/// <param name="stateElement">The unsigned integer of data to be saved, which is part of the random engine's state.</param>
+		protected static void SaveState(System.IO.BinaryWriter writer, uint stateElement)
 		{
 			for (int i = sizeof(uint) * 8 - 8; i >= 0; i -= 8)
-				stream.Write((byte)(stateElement >> i));
+				writer.Write((byte)(stateElement >> i));
 		}
 
-		protected static void SaveState(System.IO.BinaryWriter stream, ulong stateElement)
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.SaveState()"/>, to write an unsigned long of saved state data to a binary stream.
+		/// </summary>
+		/// <param name="writer">The binary stream to which the random engine's state is being saved.</param>
+		/// <param name="stateElement">The unsigned long of data to be saved, which is part of the random engine's state.</param>
+		protected static void SaveState(System.IO.BinaryWriter writer, ulong stateElement)
 		{
 			for (int i = sizeof(ulong) * 8 - 8; i >= 0; i -= 8)
-				stream.Write((byte)(stateElement >> i));
+				writer.Write((byte)(stateElement >> i));
 		}
 
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.RestoreState(byte[])"/>, to read a byte of saved state data from a binary stream.
+		/// </summary>
+		/// <param name="reader">The binary stream from which the random engine's state is being restored.</param>
+		/// <param name="stateElement">The byte of data to be restored, which is part of the random engine's state.</param>
 		protected static void RestoreState(System.IO.BinaryReader reader, out byte stateElement)
 		{
 			stateElement = reader.ReadByte();
 		}
 
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.RestoreState(byte[])"/>, to read an unsigned integer of saved state data from a binary stream.
+		/// </summary>
+		/// <param name="reader">The binary stream from which the random engine's state is being restored.</param>
+		/// <param name="stateElement">The unsigned integer of data to be restored, which is part of the random engine's state.</param>
 		protected static void RestoreState(System.IO.BinaryReader reader, out uint stateElement)
 		{
 			stateElement = 0;
@@ -115,6 +244,11 @@ namespace Experilous.MakeIt.Random
 				stateElement |= ((uint)reader.ReadByte()) << i;
 		}
 
+		/// <summary>
+		/// A helper function for derived classes implementing <see cref="IRandom.RestoreState(byte[])"/>, to read an unsigned long of saved state data from a binary stream.
+		/// </summary>
+		/// <param name="reader">The binary stream from which the random engine's state is being restored.</param>
+		/// <param name="stateElement">The unsigned long of data to be restored, which is part of the random engine's state.</param>
 		protected static void RestoreState(System.IO.BinaryReader reader, out ulong stateElement)
 		{
 			stateElement = 0;

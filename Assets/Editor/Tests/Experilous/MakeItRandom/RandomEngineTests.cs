@@ -6,7 +6,7 @@
 using UnityEngine;
 using NUnit.Framework;
 
-namespace Experilous.MakeIt.Random.Tests
+namespace Experilous.MakeItRandom.Tests
 {
 	class RandomeEngineTests
 	{

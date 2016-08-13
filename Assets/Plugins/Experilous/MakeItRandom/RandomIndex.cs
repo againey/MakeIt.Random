@@ -2,7 +2,7 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	public static class RandomIndex
 	{

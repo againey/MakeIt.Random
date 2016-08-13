@@ -2,83 +2,84 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// Interface for a basic engine for generating sequences of raw pseudo-random bits.
 	/// </summary>
-	/// <remarks>
-	/// This interface offers only basic access to a random sequence of bits, letting the implementations
-	/// focus entirely on the generation of pseudo-random data.
-	/// </remarks>
 	public interface IRandom : IBitGenerator
 	{
 		/// <summary>
-		/// Saves the pseudo-random sequence's internal state as a byte array, which can be restored later.
+		/// Saves the pseudo-random engine's internal state as a byte array, which can be restored later.
 		/// </summary>
 		byte[] SaveState();
 
 		/// <summary>
-		/// Restores the pseudo-random sequence's internal state from a byte array which had been previously saved.
+		/// Restores the pseudo-random engine's internal state from a byte array which had been previously saved.
 		/// </summary>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState()"/> on a binary-compatible type of random engine.</param>
 		void RestoreState(byte[] stateArray);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with a transient value (such as system time).
+		/// Reseed the pseudo-random engine with a transient value (such as system time).
 		/// </summary>
 		void Seed();
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with the supplied integer value.
+		/// Reseed the pseudo-random engine with the supplied integer value.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		void Seed(int seed);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with the supplied array of integer values.
+		/// Reseed the pseudo-random engine with the supplied array of integer values.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		void Seed(params int[] seed);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with the supplied string.
+		/// Reseed the pseudo-random engine with the supplied string.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		void Seed(string seed);
 
 		/// <summary>
-		/// Reseed the psueod-random sequence with the supplied bit generator.
+		/// Reseed the psuedo-random engine with the supplied bit generator.
 		/// </summary>
-		/// <param name="bitGenerator"></param>
+		/// <param name="bitGenerator">A supplier of bits used to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		void Seed(IBitGenerator bitGenerator);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with a combination of its current state and a transient value (such as system time).
+		/// Reseed the pseudo-random engine with a combination of its current state and a transient value (such as system time).
 		/// </summary>
 		void MergeSeed();
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied integer value.
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied integer value.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">An integer value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		void MergeSeed(int seed);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied array of integer values.
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied array of integer values.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">An array of integer values used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		void MergeSeed(params int[] seed);
 
 		/// <summary>
-		/// Reseed the pseudo-random sequence with a combination of its current state and the supplied string.
+		/// Reseed the pseudo-random engine with a combination of its current state and the supplied string.
 		/// </summary>
-		/// <param name="seed"></param>
+		/// <param name="seed">An string value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
 		void MergeSeed(string seed);
 
 		/// <summary>
-		/// Reseed the psueod-random sequence with a combination of its current state and the supplied bit generator.
+		/// Reseed the psuedo-random engine with a combination of its current state and the supplied bit generator.
 		/// </summary>
-		/// <param name="bitGenerator"></param>
+		/// <param name="bitGenerator">A supplier of bits used, in conjuction with the current state, to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		void MergeSeed(IBitGenerator bitGenerator);
 
 		/// <summary>

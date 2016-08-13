@@ -5,7 +5,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Experilous.Examples.Randomization
+namespace Experilous.Examples.MakeItRandom
 {
 	public class DiePanel : MonoBehaviour
 	{

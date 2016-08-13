@@ -6,7 +6,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace Experilous.MakeIt.Random.Tests
+namespace Experilous.MakeItRandom.Tests
 {
 	class RandomShuffleTests
 	{
@@ -202,66 +202,66 @@ namespace Experilous.MakeIt.Random.Tests
 		}
 
 		[Test]
-		public void CycleShuffleArrayInPlaceMaintainsCycle()
+		public void AggressiveShuffleArrayInPlaceMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			array.ShuffleCyclic(XorShift128Plus.Create(seed));
+			array.ShuffleAggressive(XorShift128Plus.Create(seed));
 			ValidateIsCycle(array);
 		}
 
 		[Test]
-		public void CycleShuffleListInPlaceMaintainsCycle()
+		public void AggressiveShuffleListInPlaceMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			list.ShuffleCyclic(XorShift128Plus.Create(seed));
+			list.ShuffleAggressive(XorShift128Plus.Create(seed));
 			ValidateIsCycle(list);
 		}
 
 		[Test]
-		public void CycleShuffleArrayCopyMaintainsCycle()
+		public void AggressiveShuffleArrayCopyMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			int[] shuffledArray = (int[])array.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
+			int[] shuffledArray = (int[])array.ShuffleAggressiveInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
 		[Test]
-		public void CycleShuffleListCopyMaintainsCycle()
+		public void AggressiveShuffleListCopyMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			int[] shuffledArray = (int[])list.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
+			int[] shuffledArray = (int[])list.ShuffleAggressiveInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
 		[Test]
-		public void CycleShuffleLinkedListCopyMaintainsCycle()
+		public void AggressiveShuffleLinkedListCopyMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			int[] shuffledArray = (int[])list.ShuffleCyclicInto(new int[100], XorShift128Plus.Create(seed));
+			int[] shuffledArray = (int[])list.ShuffleAggressiveInto(new int[100], XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledArray);
 		}
 
 		[Test]
-		public void CycleShuffleArrayCopyAppendMaintainsCycle()
+		public void AggressiveShuffleArrayCopyAppendMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
-			List<int> shuffledList = (List<int>)array.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
+			List<int> shuffledList = (List<int>)array.ShuffleAggressiveInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
 		[Test]
-		public void CycleShuffleListCopyAppendMaintainsCycle()
+		public void AggressiveShuffleListCopyAppendMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
-			List<int> shuffledList = (List<int>)list.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
+			List<int> shuffledList = (List<int>)list.ShuffleAggressiveInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
 		[Test]
-		public void CycleShuffleLinkedListCopyAppendMaintainsCycle()
+		public void AggressiveShuffleLinkedListCopyAppendMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			List<int> shuffledList = (List<int>)list.ShuffleCyclicInto(new List<int>(100), XorShift128Plus.Create(seed));
+			List<int> shuffledList = (List<int>)list.ShuffleAggressiveInto(new List<int>(100), XorShift128Plus.Create(seed));
 			ValidateIsCycle(shuffledList);
 		}
 
@@ -287,24 +287,24 @@ namespace Experilous.MakeIt.Random.Tests
 		}
 
 		[Test]
-		public void CycleShuffleArrayCopyThrowsForTooSmallTarget()
+		public void AggressiveShuffleArrayCopyThrowsForTooSmallTarget()
 		{
 			int[] array = CreateLinearArray(100);
-			Assert.Throws<System.ArgumentException>(() => array.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
+			Assert.Throws<System.ArgumentException>(() => array.ShuffleAggressiveInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]
-		public void CycleShuffleListCopyThrowsForTooSmallTarget()
+		public void AggressiveShuffleListCopyThrowsForTooSmallTarget()
 		{
 			List<int> list = CreateLinearList(100);
-			Assert.Throws<System.ArgumentException>(() => list.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
+			Assert.Throws<System.ArgumentException>(() => list.ShuffleAggressiveInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]
-		public void CycleShuffleLinkedListCopyThrowsForTooSmallTarget()
+		public void AggressiveShuffleLinkedListCopyThrowsForTooSmallTarget()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
-			Assert.Throws<System.ArgumentException>(() => list.ShuffleCyclicInto(new int[50], XorShift128Plus.Create(seed)));
+			Assert.Throws<System.ArgumentException>(() => list.ShuffleAggressiveInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
 		[Test]

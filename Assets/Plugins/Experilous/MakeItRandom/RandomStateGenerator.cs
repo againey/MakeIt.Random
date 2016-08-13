@@ -5,7 +5,7 @@
 using System;
 using System.Text;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// A static utility class to make it easier to seed PRNGs from a variety of common seed formats.
@@ -15,50 +15,92 @@ namespace Experilous.MakeIt.Random
 		private byte[] _seedData;
 		private int _seedOffset;
 		private int _seedOffsetIncrement;
-		private int _callCount;
+		private int _callSeed;
+		private static int _unstableSeed = 0;
 
+		private const int _internalSeedIncrement = -1511514573; //the signed representation of 2783452723, a semi-arbitrary prime number acquired with the help of http://compoasso.free.fr/primelistweb/page/prime/liste_online_en.php
+
+		/// <summary>
+		/// Constructs a random state generator which is initialized with unstable data, appropriate for seeding a random engine with unpredictable data.
+		/// </summary>
+		/// <remarks>
+		/// This constructor uses a combination of the number of ticks that have passed since the system last started, the process id, and an unstable seed which is incremented each time this particular constructor is called.
+		/// </remarks>
 		public RandomStateGenerator()
 		{
-			_seedData = BitConverter.GetBytes(Environment.TickCount);
+			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3);
+			System.IO.BinaryWriter writer = new System.IO.BinaryWriter(stream);
+			writer.Write(Environment.TickCount);
+			writer.Write(System.Diagnostics.Process.GetCurrentProcess().Id);
+			writer.Write(System.Threading.Interlocked.Add(ref _unstableSeed, _internalSeedIncrement));
+			_seedData = stream.GetBuffer();
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The integer value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(int seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The unsigned integer value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(uint seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The long value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(long seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The unsigned long value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(ulong seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The float value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(float seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The double value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(double seed)
 		{
 			_seedData = BitConverter.GetBytes(seed);
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of integer values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params int[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -67,6 +109,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of unsigned integer values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params uint[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -75,6 +121,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of long values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params long[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -83,6 +133,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of unsigned long values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params ulong[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -91,6 +145,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of float values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params float[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -99,6 +157,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seeds"/>.
+		/// </summary>
+		/// <param name="seeds">The array of double values which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(params double[] seeds)
 		{
 			if (seeds == null || seeds.Length == 0) throw new ArgumentException();
@@ -107,6 +169,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seedData"/>.
+		/// </summary>
+		/// <param name="seedData">The array of bytes which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(byte[] seedData)
 		{
 			if (seedData == null || seedData.Length == 0) throw new ArgumentException();
@@ -114,6 +180,10 @@ namespace Experilous.MakeIt.Random
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
 		}
 
+		/// <summary>
+		/// Constructs a random state generator which is initialized with the binary data of the supplied <paramref name="seed"/>.
+		/// </summary>
+		/// <param name="seed">The string value which will be used to indirectly determine the sequence of values returned by <see cref="Next32()"/> or <see cref="Next64()"/>.</param>
 		public RandomStateGenerator(string seed)
 		{
 			if (seed == null || seed.Length == 0) throw new ArgumentException();
@@ -143,7 +213,7 @@ namespace Experilous.MakeIt.Random
 		/// <summary>
 		/// Generate the next 32-bit unsigned integer for use as part of a PRNG's initial state.
 		/// </summary>
-		/// <returns>A 32-bit unsigned integer based on a hash of the seed bytes.</returns>
+		/// <returns>A 32-bit unsigned integer based on a hash of the seed bytes, as well as the current call count.</returns>
 		/// <remarks>
 		/// <para>Uses the <a href="http://www.isthe.com/chongo/tech/comp/fnv/">FNV-1a</a> hash function,
 		/// developed by Glenn Fowler, Phong Vo, and Landon Curt Noll.</para>
@@ -154,7 +224,8 @@ namespace Experilous.MakeIt.Random
 		public uint Next32()
 		{
 			uint h = _hashInitializer32;
-			h = (h ^ (uint)(_callCount++)) * _hashMultiplier32;
+			h = (h ^ (uint)_callSeed) * _hashMultiplier32;
+			_callSeed += _internalSeedIncrement;
 			for (int i = _seedOffset; i < _seedData.Length; ++i)
 			{
 				h = (h ^ _seedData[i]) * _hashMultiplier32;
@@ -173,7 +244,7 @@ namespace Experilous.MakeIt.Random
 		/// <summary>
 		/// Generate the next 64-bit unsigned integer for use as part of a PRNG's initial state.
 		/// </summary>
-		/// <returns>A 64-bit unsigned integer based on a hash of the seed bytes.</returns>
+		/// <returns>A 64-bit unsigned integer based on a hash of the seed bytes, as well as the current call count.</returns>
 		/// <remarks>
 		/// <para>Uses the <a href="http://www.isthe.com/chongo/tech/comp/fnv/">FNV-1a</a> hash function,
 		/// developed by Glenn Fowler, Phong Vo, and Landon Curt Noll.</para>
@@ -184,7 +255,8 @@ namespace Experilous.MakeIt.Random
 		public ulong Next64()
 		{
 			ulong h = _hashInitializer64;
-			h = (h ^ (ulong)(_callCount++)) * _hashMultiplier64;
+			h = (h ^ (ulong)_callSeed) * _hashMultiplier64;
+			_callSeed += _internalSeedIncrement;
 			for (int i = _seedOffset; i < _seedData.Length; ++i)
 			{
 				h = (h ^ _seedData[i]) * _hashMultiplier64;

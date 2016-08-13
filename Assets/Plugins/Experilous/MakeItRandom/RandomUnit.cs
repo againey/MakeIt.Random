@@ -4,8 +4,11 @@
 
 using System.Runtime.InteropServices;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// A static class of extension methods for generating random numbers between zero and one.
+	/// </summary>
 	public static class RandomUnit
 	{
 		[StructLayout(LayoutKind.Explicit)]
@@ -28,6 +31,18 @@ namespace Experilous.MakeIt.Random
 
 		#region Open
 
+		/// <summary>
+		/// Returns a random floating point number strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range (0, 1).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range (0, 1) with
+		/// perfect distribution across 2^23 - 1 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
+		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next32()"/> once on the supplied
+		/// random engine.  Only one in 2^23 calls will require an additional call to <see cref="IBitGenerator.Next32()"/>, with the same
+		/// chance for requiring indefinitely more calls.</para>
+		/// </remarks>
 		public static float OpenFloatUnit(this IRandom random)
 		{
 			uint n;
@@ -42,6 +57,18 @@ namespace Experilous.MakeIt.Random
 			return value.number - 1f;
 		}
 
+		/// <summary>
+		/// Returns a random floating point number strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range (0, 1).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range (0, 1) with
+		/// perfect distribution across 2^52 - 1 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
+		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next64()"/> once on the supplied
+		/// random engine.  Only one in 2^52 calls will require an additional call to <see cref="IBitGenerator.Next64()"/>, with the same
+		/// chance for requiring indefinitely more calls.</para>
+		/// </remarks>
 		public static double OpenDoubleUnit(this IRandom random)
 		{
 			ulong n;
@@ -60,6 +87,16 @@ namespace Experilous.MakeIt.Random
 
 		#region HalfOpen
 
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [0, 1).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1) with
+		/// perfect distribution across 2^23 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next32()"/> once on the supplied random engine.</para>
+		/// </remarks>
 		public static float HalfOpenFloatUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
@@ -72,6 +109,16 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [0, 1).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1) with
+		/// perfect distribution across 2^52 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next64()"/> once on the supplied random engine.</para>
+		/// </remarks>
 		public static double HalfOpenDoubleUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
@@ -88,6 +135,16 @@ namespace Experilous.MakeIt.Random
 
 		#region HalfClosed
 
+		/// <summary>
+		/// Returns a random floating point number strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range (0, 1].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range (0, 1] with
+		/// perfect distribution across 2^23 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next32()"/> once on the supplied random engine.</para>
+		/// </remarks>
 		public static float HalfClosedFloatUnit(this IRandom random)
 		{
 			BitwiseFloat value;
@@ -96,6 +153,16 @@ namespace Experilous.MakeIt.Random
 			return 2f - value.number;
 		}
 
+		/// <summary>
+		/// Returns a random floating point number strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range (0, 1].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range (0, 1] with
+		/// perfect distribution across 2^52 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next64()"/> once on the supplied random engine.</para>
+		/// </remarks>
 		public static double HalfClosedDoubleUnit(this IRandom random)
 		{
 			BitwiseDouble value;
@@ -108,6 +175,18 @@ namespace Experilous.MakeIt.Random
 
 		#region Closed
 
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [0, 1].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1] with
+		/// perfect distribution across 2^23 + 1 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
+		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next32()"/> once on the supplied
+		/// random engine.  Only one in 2048 calls will also require a call to <see cref="RandomRange.HalfOpenRange(IRandom, uint)"/>,
+		/// which will involve one or more addtional calls to <see cref="IBitGenerator.Next32()"/> (on average rougly two calls will be made).</para>
+		/// </remarks>
 		public static float ClosedFloatUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0
@@ -134,7 +213,7 @@ namespace Experilous.MakeIt.Random
 			value.number = 0f;
 			value.bits = 0x3F800000U | 0x007FFFFFU & n;
 
-			if ((n & 0xFFE00000U) != 0xFFE00000U)
+			if ((n & 0xFF800000U) != 0xFF800000U)
 			{
 				return value.number - 1f;
 			}
@@ -149,6 +228,18 @@ namespace Experilous.MakeIt.Random
 #endif
 		}
 
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [0, 1].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1] with
+		/// perfect distribution across 2^52 + 1 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
+		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next64()"/> once on the supplied
+		/// random engine.  Only one in 4096 calls will also require a call to <see cref="RandomRange.HalfOpenRange(IRandom, ulong)"/>,
+		/// which will involve one or more addtional calls to <see cref="IBitGenerator.Next64()"/> (on average rougly two calls will be made).</para>
+		/// </remarks>
 		public static double ClosedDoubleUnit(this IRandom random)
 		{
 #if RANDOMIZATION_COMPAT_V1_0

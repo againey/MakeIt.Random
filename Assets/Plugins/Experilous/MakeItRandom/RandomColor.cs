@@ -5,7 +5,7 @@
 using UnityEngine;
 using Experilous.Colors;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	public static class RandomColor
 	{

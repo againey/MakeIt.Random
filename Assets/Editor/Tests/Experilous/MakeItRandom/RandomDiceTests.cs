@@ -6,7 +6,7 @@
 using NUnit.Framework;
 using NSubstitute;
 
-namespace Experilous.MakeIt.Random.Tests
+namespace Experilous.MakeItRandom.Tests
 {
 	class RandomDiceTests
 	{

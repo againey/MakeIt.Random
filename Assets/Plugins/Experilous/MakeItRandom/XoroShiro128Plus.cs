@@ -4,7 +4,7 @@
 
 using UnityEngine;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// An implementation of the <see cref="IRandom"/> interface using the 128-bit XoroShiro+ generator.

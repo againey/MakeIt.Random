@@ -5,7 +5,7 @@
 #if UNITY_5_3
 using NUnit.Framework;
 
-namespace Experilous.MakeIt.Random.Tests
+namespace Experilous.MakeItRandom.Tests
 {
 	class RandomRangeTests
 	{

@@ -3,9 +3,9 @@
 \******************************************************************************/
 
 using UnityEngine;
-using Experilous.MakeIt.Random;
+using Experilous.MakeItRandom;
 
-namespace Experilous.Examples.Randomization
+namespace Experilous.Examples.MakeItRandom
 {
 	public class SpatialController : MonoBehaviour
 	{

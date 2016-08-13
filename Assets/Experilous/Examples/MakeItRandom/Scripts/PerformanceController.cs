@@ -8,10 +8,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Experilous.MakeIt.Random;
+using Experilous.MakeItRandom;
 using System.Runtime;
 
-namespace Experilous.Examples.Randomization
+namespace Experilous.Examples.MakeItRandom
 {
 	public class PerformanceController : MonoBehaviour
 	{

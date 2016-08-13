@@ -4,12 +4,23 @@
 
 using System.Collections.Generic;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// A static class of extension methods for shuffling sequences of elements.
+	/// </summary>
 	public static class RandomShuffle
 	{
 		#region Public Interface
 
+		/// <summary>
+		/// Randomly shuffles in place all the elements in the <paramref name="list"/> provided.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled in place.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The list of elements to be shuffled.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses the <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm"/>Knuth shuffle algorithm.</remarks>
 		public static IList<T> Shuffle<T>(this IRandom random, IList<T> list)
 		{
 			T[] array = list as T[];
@@ -24,6 +35,16 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
+		/// <summary>
+		/// Randomly shuffles all the elements in <paramref name="source"/>, placing them in shuffled order into <paramref name="target"/>.
+		/// The elements in <paramref name="source"/> keep their original order.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
+		/// <param name="target">The list into which the shuffled elements will be place.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses the <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm"/>Knuth shuffle algorithm.</remarks>
 		public static IList<T> ShuffleInto<T>(this IRandom random, IEnumerable<T> source, IList<T> target)
 		{
 			IList<T> list = source as IList<T>;
@@ -38,7 +59,15 @@ namespace Experilous.MakeIt.Random
 			return target;
 		}
 
-		public static IList<T> ShuffleCyclic<T>(this IRandom random, IList<T> list)
+		/// <summary>
+		/// Randomly shuffles in place all the elements in the <paramref name="list"/> provided, and guarantees that no element remains in its original position.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled in place.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The list of elements to be shuffled.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo.27s_algorithm"/>Sattolo's shuffle algorithm.</remarks>
+		public static IList<T> ShuffleAggressive<T>(this IRandom random, IList<T> list)
 		{
 			T[] array = list as T[];
 			if (array != null)
@@ -52,7 +81,17 @@ namespace Experilous.MakeIt.Random
 			return list;
 		}
 
-		public static IList<T> ShuffleCyclicInto<T>(this IRandom random, IEnumerable<T> source, IList<T> target)
+		/// <summary>
+		/// Randomly shuffles all the elements in <paramref name="source"/>, placing them in shuffled order into <paramref name="target"/>,
+		/// and guarantees that no element remains in its original position. The elements in <paramref name="source"/> keep their original order.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
+		/// <param name="target">The list into which the shuffled elements will be place.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo.27s_algorithm"/>Sattolo's shuffle algorithm.</remarks>
+		public static IList<T> ShuffleAggressiveInto<T>(this IRandom random, IEnumerable<T> source, IList<T> target)
 		{
 			IList<T> list = source as IList<T>;
 			if (list != null)
@@ -70,24 +109,60 @@ namespace Experilous.MakeIt.Random
 
 		#region Container Extensions
 
+		/// <summary>
+		/// Randomly shuffles in place all the elements in the <paramref name="list"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
+		/// <param name="list">The list of elements to be shuffled in place.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses the <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm"/>Knuth shuffle algorithm.</remarks>
 		public static IList<T> Shuffle<T>(this IList<T> list, IRandom random)
 		{
 			return random.Shuffle(list);
 		}
 
+		/// <summary>
+		/// Randomly shuffles all the elements in <paramref name="source"/>, placing them in shuffled order into <paramref name="target"/>.
+		/// The elements in <paramref name="source"/> keep their original order.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
+		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
+		/// <param name="target">The list into which the shuffled elements will be place.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses the <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_.22inside-out.22_algorithm"/>Knuth shuffle algorithm.</remarks>
 		public static IList<T> ShuffleInto<T>(this IEnumerable<T> source, IList<T> target, IRandom random)
 		{
 			return random.ShuffleInto(source, target);
 		}
 
-		public static IList<T> ShuffleCyclic<T>(this IList<T> list, IRandom random)
+		/// <summary>
+		/// Randomly shuffles in place all the elements in the <paramref name="list"/>, and guarantees that no element remains in its original position.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled in place.</typeparam>
+		/// <param name="list">The list of elements to be shuffled.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo.27s_algorithm"/>Sattolo's shuffle algorithm.</remarks>
+		public static IList<T> ShuffleAggressive<T>(this IList<T> list, IRandom random)
 		{
-			return random.ShuffleCyclic(list);
+			return random.ShuffleAggressive(list);
 		}
 
-		public static IList<T> ShuffleCyclicInto<T>(this IEnumerable<T> source, IList<T> target, IRandom random)
+		/// <summary>
+		/// Randomly shuffles all the elements in <paramref name="source"/>, placing them in shuffled order into <paramref name="target"/>,
+		/// and guarantees that no element remains in its original position. The elements in <paramref name="source"/> keep their original order.
+		/// </summary>
+		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
+		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
+		/// <param name="target">The list into which the shuffled elements will be place.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A reference to the shuffled list.</returns>
+		/// <remarks>Uses <see href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#Sattolo.27s_algorithm"/>Sattolo's shuffle algorithm.</remarks>
+		public static IList<T> ShuffleAggressiveInto<T>(this IEnumerable<T> source, IList<T> target, IRandom random)
 		{
-			return random.ShuffleCyclicInto(source, target);
+			return random.ShuffleAggressiveInto(source, target);
 		}
 
 		#endregion
@@ -209,7 +284,7 @@ namespace Experilous.MakeIt.Random
 
 		#endregion
 
-		#region Cyclic Shuffle (Sattolo's Algorithm)
+		#region Aggressive Shuffle (Sattolo's Algorithm)
 
 		private static T[] Sattolo_ShuffleArray<T>(T[] array, IRandom random)
 		{

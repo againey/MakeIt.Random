@@ -5,7 +5,7 @@
 using System;
 using UnityEngine;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	/// <summary>
 	/// Adapts the standard Unity random class to the <see cref="IRandom"/> interface.

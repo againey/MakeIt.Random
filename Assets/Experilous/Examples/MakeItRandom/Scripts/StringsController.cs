@@ -4,9 +4,9 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using Experilous.MakeIt.Random;
+using Experilous.MakeItRandom;
 
-namespace Experilous.Examples.Randomization
+namespace Experilous.Examples.MakeItRandom
 {
 	public class StringsController : MonoBehaviour
 	{

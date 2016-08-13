@@ -5,9 +5,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using Experilous.MakeIt.Random;
+using Experilous.MakeItRandom;
 
-namespace Experilous.Examples.Randomization
+namespace Experilous.Examples.MakeItRandom
 {
 	public class ShuffleController : MonoBehaviour
 	{

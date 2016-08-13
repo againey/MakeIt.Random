@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	public static class RandomEnum
 	{

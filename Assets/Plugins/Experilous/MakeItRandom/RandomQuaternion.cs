@@ -4,7 +4,7 @@
 
 using UnityEngine;
 
-namespace Experilous.MakeIt.Random
+namespace Experilous.MakeItRandom
 {
 	public static class RandomQuaternion
 	{
