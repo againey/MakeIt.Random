@@ -12,7 +12,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector2 UnitVector2(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var angle = random.HalfOpenRange(0f, Mathf.PI * 2f);
 			return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 #else
@@ -30,7 +30,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector3 UnitVector3(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
 			var z = random.ClosedRange(-1f, +1f);
 			var invertedZ = Mathf.Sqrt(1f - z * z);
@@ -96,7 +96,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector2 PointWithinCircle(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
 			return random.UnitVector2() * distance;
 #else
@@ -114,7 +114,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector2 PointWithinCircle(this IRandom random, float radius)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var distance = Mathf.Sqrt(random.ClosedFloatUnit()) * radius;
 			return random.UnitVector2() * distance;
 #else
@@ -134,7 +134,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector2 PointWithinCircularShell(this IRandom random, float innerRadius, float outerRadius)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitMin = innerRadius / outerRadius;
 			var unitMinSquared = unitMin * unitMin;
 			var unitRange = 1f - unitMinSquared;
@@ -158,7 +158,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector3 PointWithinSphere(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
 			return random.UnitVector3() * distance;
 #else
@@ -178,7 +178,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector3 PointWithinSphere(this IRandom random, float radius)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f) * radius;
 			return random.UnitVector3() * distance;
 #else
@@ -200,7 +200,7 @@ namespace Experilous.MakeItRandom
 
 		public static Vector3 PointWithinSphericalShell(this IRandom random, float innerRadius, float outerRadius)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitMin = innerRadius / outerRadius;
 			var unitMinPow3 = unitMin * unitMin * unitMin;
 			var unitRange = 1f - unitMinPow3;

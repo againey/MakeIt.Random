@@ -17,6 +17,7 @@ namespace Experilous.MakeItRandom
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
+	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	public sealed class XorShift128Plus : RandomBase
@@ -61,8 +62,6 @@ namespace Experilous.MakeItRandom
 			instance.Seed(seed);
 			return instance;
 		}
-		/// <summary>
-		/// </summary>
 
 		/// <summary>
 		/// Creates an instance of the XorShift128+ engine using the provided <paramref name="seed"/> to initialize the engine's state.
@@ -158,6 +157,8 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the XorShift128+ engine's internal state as a pair of unsigned 64-bit integers, which can be restored later.
 		/// </summary>
+		/// <param name="state0">The first element of state data to be saved.</param>
+		/// <param name="state1">The second element of state data to be saved.</param>
 		public void SaveState(out ulong state0, out ulong state1)
 		{
 			state0 = _state0;
@@ -198,7 +199,7 @@ namespace Experilous.MakeItRandom
 			_state1 = state1;
 		}
 
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 		public override void Seed()
 		{
 			Seed(SplitMix64.Create());
@@ -245,7 +246,7 @@ namespace Experilous.MakeItRandom
 			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 		public override void MergeSeed()
 		{
 			MergeSeed(SplitMix64.Create());
@@ -298,7 +299,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>64 bits of data are generated and thrown away by this call.</remarks>
 		public override void Step()
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -321,7 +322,7 @@ namespace Experilous.MakeItRandom
 		/// Thus, a single call to this method leaves the random engine in the same state as a single call to <see cref="Next64()"/>.</remarks>
 		public override uint Next32()
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -345,7 +346,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A 64-bit unsigned integer representing the next 64 bits of pseudo-random generated data.</returns>
 		public override ulong Next64()
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -363,6 +364,7 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+#if !MAKEITRANDOM_BACK_COMPAT_V0_1
 		/// <summary>
 		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
 		/// </summary>
@@ -377,9 +379,6 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="skipAheadMagnitude"/>
 		public override void SkipAhead()
 		{
-#if RANDOMIZATION_COMPAT_V1_0
-			throw new System.NotImplementedException();
-#else
 			ulong x = 0;
 			ulong y = 0;
 
@@ -409,8 +408,8 @@ namespace Experilous.MakeItRandom
 
 			_state0 = x;
 			_state1 = y;
-#endif
 		}
+#endif
 
 		/// <summary>
 		/// Adapts the random engine to the interface provided by <see cref="System.Random"/>, for use in interfaces that require this common .NET type.

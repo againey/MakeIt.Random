@@ -99,7 +99,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float HalfOpenFloatUnit(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1.0f;
 #else
 			BitwiseFloat value;
@@ -121,7 +121,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double HalfOpenDoubleUnit(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1.0;
 #else
 			BitwiseDouble value;
@@ -189,7 +189,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float ClosedFloatUnit(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x00800000U);
 			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1.0f : 1.0f;
 #else
@@ -242,7 +242,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double ClosedDoubleUnit(this IRandom random)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x0010000000000000UL);
 			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1.0 : 1.0;
 #else

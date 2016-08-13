@@ -9,7 +9,7 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class RandomRange
 	{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 		#region Private Helper Tables
 
 		private static readonly byte[] _shiftTable32 = new byte[]
@@ -317,7 +317,7 @@ namespace Experilous.MakeItRandom
 		public static uint HalfOpenRange(this IRandom random, uint upperExclusive)
 		{
 			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperExclusive == 1U) return 0U;
 #endif
 			uint mask = upperExclusive - 1U;
@@ -326,13 +326,13 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 4;
 			mask |= mask >> 8;
 			mask |= mask >> 16;
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			int rightShift = _shiftTable32[mask * 0x07C4ACDDU >> 27];
 #endif
 			uint n;
 			do
 			{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 				n = random.Next32() >> rightShift;
 #else
 				n = random.Next32() & mask;
@@ -418,7 +418,7 @@ namespace Experilous.MakeItRandom
 		public static ulong HalfOpenRange(this IRandom random, ulong upperExclusive)
 		{
 			if (upperExclusive == 0UL) throw new System.ArgumentOutOfRangeException("upperBound");
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperExclusive == 1UL) return 0UL;
 #endif
 			ulong mask = upperExclusive - 1UL;
@@ -428,13 +428,13 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 8;
 			mask |= mask >> 16;
 			mask |= mask >> 32;
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			int rightShift = _shiftTable32[mask * 0x03F6EAF2CD271461UL >> 58];
 #endif
 			ulong n;
 			do
 			{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 				n = random.Next64() >> rightShift;
 #else
 				n = random.Next64() & mask;
@@ -783,7 +783,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static uint ClosedRange(this IRandom random, uint upperInclusive)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperInclusive == 0U) return 0U;
 #endif
 			uint mask = upperInclusive;
@@ -792,13 +792,13 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 4;
 			mask |= mask >> 8;
 			mask |= mask >> 16;
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			int rightShift = _shiftTable32[mask * 0x07C4ACDDU >> 27];
 #endif
 			uint n;
 			do
 			{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 				n = random.Next32() >> rightShift;
 #else
 				n = random.Next32() & mask;
@@ -883,7 +883,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static ulong ClosedRange(this IRandom random, ulong upperInclusive)
 		{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperInclusive == 0UL) return 0UL;
 #endif
 			ulong mask = upperInclusive;
@@ -893,13 +893,13 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 8;
 			mask |= mask >> 16;
 			mask |= mask >> 32;
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			int rightShift = _shiftTable32[mask * 0x03F6EAF2CD271461UL >> 58];
 #endif
 			ulong n;
 			do
 			{
-#if RANDOMIZATION_COMPAT_V1_0
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 				n = random.Next64() >> rightShift;
 #else
 				n = random.Next64() & mask;

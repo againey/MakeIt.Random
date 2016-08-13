@@ -16,6 +16,7 @@ namespace Experilous.MakeItRandom
 	/// <para>As its name implies, it maintains 1024 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
+	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	public sealed class XorShift1024Star : RandomBase
@@ -23,6 +24,11 @@ namespace Experilous.MakeItRandom
 		[SerializeField] private ulong[] _state = new ulong[] { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 1UL, };
 		[SerializeField] private int _offset;
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using mildly unpredictable data to initialize the engine's state.
+		/// </summary>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
+		/// <seealso cref="IRandom.Seed()"/>
 		public static XorShift1024Star Create()
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -30,6 +36,12 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="seed"/> to initialize the engine's state.
+		/// </summary>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
+		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XorShift1024Star Create(int seed)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -37,6 +49,12 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="seed"/> to initialize the engine's state.
+		/// </summary>
+		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
+		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XorShift1024Star Create(params int[] seed)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -44,6 +62,12 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="seed"/> to initialize the engine's state.
+		/// </summary>
+		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
+		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XorShift1024Star Create(string seed)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -51,6 +75,13 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="bitGenerator"/> to initialize the engine's state.
+		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used to directly determine the new state of the random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
+		/// <seealso cref="IRandom.Seed(IBitGenerator)"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		public static XorShift1024Star Create(IBitGenerator bitGenerator)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -58,6 +89,11 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="stateArray"/> data to directly initialize the engine's state.
+		/// </summary>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="IRandom.SaveState()"/> on a binary-compatible type of random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		public static XorShift1024Star CreateWithState(byte[] stateArray)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -65,6 +101,12 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an instance of the XorShift1024* engine using the provided <paramref name="state"/> and <paramref name="offset"/> data to directly initialize the engine's state.
+		/// </summary>
+		/// <param name="state">The primary elements of state data generated from an earlier call to <see cref="SaveState(out ulong[], out int)"/> on a binary-compatible type of random engine.</param>
+		/// <param name="offset">The offset index state generated from an earlier call to <see cref="SaveState(out ulong[], out int)"/> on a binary-compatible type of random engine.</param>
+		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		public static XorShift1024Star CreateWithState(ulong[] state, int offset)
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -72,6 +114,10 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Creates an exact duplicate of the random engine, which will independently generate the same sequence of random values as this instance.
+		/// </summary>
+		/// <returns>The cloned instance of this XorShift1024* engine.</returns>
 		public XorShift1024Star Clone()
 		{
 			var instance = CreateInstance<XorShift1024Star>();
@@ -79,6 +125,11 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+		/// <summary>
+		/// Copies the state of the <paramref name="source"/> XorShift1024* engine into this engine, so that this engine will independently generate the same sequence of random values as the source.
+		/// </summary>
+		/// <param name="source"></param>
+		/// <remarks>The source engine is not altered.</remarks>
 		public void CopyStateFrom(XorShift1024Star source)
 		{
 			for (int i = 0; i < 16; ++i)
@@ -88,6 +139,9 @@ namespace Experilous.MakeItRandom
 			_offset = source._offset;
 		}
 
+		/// <summary>
+		/// Saves the XorShift1024* engine's internal state as a byte array, which can be restored later.
+		/// </summary>
 		public override byte[] SaveState()
 		{
 			var stateArray = new byte[sizeof(ulong) * 16 + sizeof(byte)];
@@ -105,12 +159,21 @@ namespace Experilous.MakeItRandom
 			return stateArray;
 		}
 
+		/// <summary>
+		/// Saves the XorShift1024* engine's internal state as a pair of unsigned 64-bit integers, which can be restored later.
+		/// </summary>
+		/// <param name="state">The primary elements of state data to be saved.</param>
+		/// <param name="offset">The offset index state to be saved.</param>
 		public void SaveState(out ulong[] state, out int offset)
 		{
 			state = _state.Clone() as ulong[];
 			offset = _offset;
 		}
 
+		/// <summary>
+		/// Restores the XorShift1024* engine's internal state from a byte array which had been previously saved.
+		/// </summary>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState()"/> on a binary-compatible type of random engine.</param>
 		public override void RestoreState(byte[] stateArray)
 		{
 			ulong[] state = new ulong[16];
@@ -129,6 +192,11 @@ namespace Experilous.MakeItRandom
 			RestoreState(state, offset);
 		}
 
+		/// <summary>
+		/// Restores the XorShift1024* engine's internal state from a pair of unsigned 64-bit integers which had been previously saved.
+		/// </summary>
+		/// <param name="state">The primary elements of state data generated from an earlier call to <see cref="SaveState(out ulong[], out int)"/> on a binary-compatible type of random engine.</param>
+		/// <param name="offset">The offset index state generated from an earlier call to <see cref="SaveState(out ulong[], out int)"/> on a binary-compatible type of random engine.</param>
 		public void RestoreState(ulong[] state, int offset)
 		{
 			if (state == null) throw new System.ArgumentNullException("state");
@@ -149,6 +217,12 @@ namespace Experilous.MakeItRandom
 			throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift1024* random number generator.");
 		}
 
+		/// <summary>
+		/// Reseed the XorShift1024* engine with the supplied bit generator.
+		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		public override void Seed(IBitGenerator bitGenerator)
 		{
 			int tryCount = 0;
@@ -173,6 +247,12 @@ namespace Experilous.MakeItRandom
 			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
+		/// <summary>
+		/// Reseed the XorShift1024* engine with a combination of its current state and the supplied bit generator.
+		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used, in conjuction with the current state, to directly determine the new state of the random engine.</param>
+		/// <seealso cref="IRandom"/>
+		/// <seealso cref="RandomStateGenerator"/>
 		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
 			int tryCount = 0;
@@ -196,6 +276,10 @@ namespace Experilous.MakeItRandom
 			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
+		/// <summary>
+		/// Step the state ahead by a single iteration, and throw away the output.
+		/// </summary>
+		/// <remarks>64 bits of data are generated and thrown away by this call.</remarks>
 		public override void Step()
 		{
 			var x = _state[_offset];
@@ -205,6 +289,12 @@ namespace Experilous.MakeItRandom
 			_state[_offset] = y ^ x ^ (y >> 11) ^ (x >> 30);
 		}
 
+		/// <summary>
+		/// Get the next 32 bits of pseudo-random generated data.
+		/// </summary>
+		/// <returns>A 32-bit unsigned integer representing the next 32 bits of pseudo-random generated data.</returns>
+		/// <remarks>64 bits of data are generated by this call; 32 bits are returned, while the other 32 bits are thrown away.
+		/// Thus, a single call to this method leaves the random engine in the same state as a single call to <see cref="Next64()"/>.</remarks>
 		public override uint Next32()
 		{
 			var x = _state[_offset];
@@ -215,6 +305,10 @@ namespace Experilous.MakeItRandom
 			return (uint)(_state[_offset] * 1181783497276652981UL);
 		}
 
+		/// <summary>
+		/// Get the next 64 bits of pseudo-random generated data.
+		/// </summary>
+		/// <returns>A 64-bit unsigned integer representing the next 64 bits of pseudo-random generated data.</returns>
 		public override ulong Next64()
 		{
 			var x = _state[_offset];
@@ -225,6 +319,12 @@ namespace Experilous.MakeItRandom
 			return _state[_offset] * 1181783497276652981UL;
 		}
 
+		/// <summary>
+		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
+		/// </summary>
+		/// <remarks>
+		/// <para><see cref="SkipAhead()"/> will skip forward by exactly <code>2^512</code> steps each time it is called.</para>
+		/// </remarks>
 		public override int skipAheadMagnitude { get { return 512; } }
 
 		private static readonly ulong[] _jumpTable = new ulong[]
@@ -235,6 +335,10 @@ namespace Experilous.MakeItRandom
 			0x0B5FC64563B3E2A8UL, 0x047F7684E9FC949DUL, 0xB99181F2D8F685CAUL, 0x284600E3F30E38C3UL,
 		};
 
+		/// <summary>
+		/// Quickly advances the state forward by 2^512 steps.
+		/// </summary>
+		/// <seealso cref="skipAheadMagnitude"/>
 		public override void SkipAhead()
 		{
 			ulong[] t = new ulong[16];
@@ -259,6 +363,12 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Adapts the random engine to the interface provided by <see cref="System.Random"/>, for use in interfaces that require this common .NET type.
+		/// </summary>
+		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
+		/// <seealso cref="System.Random"/>
+		/// <seealso cref="SystemRandomWrapper64"/>
 		public override System.Random AsSystemRandom()
 		{
 			return new SystemRandomWrapper64(this);
