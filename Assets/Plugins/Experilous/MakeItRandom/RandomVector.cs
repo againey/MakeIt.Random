@@ -6,10 +6,18 @@ using UnityEngine;
 
 namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// A static class of extension methods for generating random vectors of 2, 3, and 4 dimensions within various spatial distributions.
+	/// </summary>
 	public static class RandomVector
 	{
 		#region Unit Vector
 
+		/// <summary>
+		/// Generates a random 2-dimensional unit vector, selected from a uniform distribution of all points on the perimeter of a unit circle.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 2-dimensional unit vector.</returns>
 		public static Vector2 UnitVector2(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -28,6 +36,11 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit sphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 3-dimensional unit vector.</returns>
 		public static Vector3 UnitVector3(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -49,6 +62,11 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 4-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit hypersphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 4-dimensional unit vector.</returns>
 		public static Vector4 UnitVector4(this IRandom random)
 		{
 			Start1:
@@ -75,16 +93,34 @@ namespace Experilous.MakeItRandom
 
 		#region Scaled Vector
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points on the perimeter of a circle with the specified <paramref name="radius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="radius">The radius of the circle from whose perimeter the random vector will be selected.  The vector's magnitude will be equal to this value.</param>
+		/// <returns>A random 2-dimensional vector with a magnitude specified by <paramref name="radius"/>.</returns>
 		public static Vector2 ScaledVector2(this IRandom random, float radius)
 		{
 			return UnitVector2(random) * radius;
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points on the surface of a sphere with the specified <paramref name="radius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="radius">The radius of the sphere from whose surface the random vector will be selected.  The vector's magnitude will be equal to this value.</param>
+		/// <returns>A random 3-dimensional vector with a magnitude specified by <paramref name="radius"/>.</returns>
 		public static Vector3 ScaledVector3(this IRandom random, float radius)
 		{
 			return UnitVector3(random) * radius;
 		}
 
+		/// <summary>
+		/// Generates a random 4-dimensional vector selected from a uniform distribution of all points on the surface of a hypersphere with the specified <paramref name="radius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="radius">The radius of the hypersphere from whose surface the random vector will be selected.  The vector's magnitude will be equal to this value.</param>
+		/// <returns>A random 4-dimensional vector with a magnitude specified by <paramref name="radius"/>.</returns>
 		public static Vector4 ScaledVector4(this IRandom random, float radius)
 		{
 			return UnitVector4(random) * radius;
@@ -94,6 +130,11 @@ namespace Experilous.MakeItRandom
 
 		#region Radial
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a unit circle.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 2-dimensional vector with a magnitude less than or equal to 1.</returns>
 		public static Vector2 PointWithinCircle(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -112,6 +153,12 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a circle with the specified <paramref name="radius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="radius">The radius of the circle from whose area the random vector will be selected.  The vector's magnitude will be less than or equal to this value.</param>
+		/// <returns>A random 2-dimensional vector with a magnitude less than or equal to <paramref name="radius"/>.</returns>
 		public static Vector2 PointWithinCircle(this IRandom random, float radius)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -132,6 +179,13 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within the area of a larger circle with the specified <paramref name="outerRadius"/> minus a smaller circle with the specified <paramref name="innerRadius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="innerRadius">The radius of the smaller circle from whose area the random vector will not be selected.  The vector's magnitude will be greater than or equal to this value.</param>
+		/// <param name="outerRadius">The radius of the larger circle from whose area the random vector will be selected.  The vector's magnitude will be less than or equal to this value.</param>
+		/// <returns>A random 2-dimensional vector with a magnitude greater than or equal to <paramref name="innerRadius"/> and less than or equal to <paramref name="outerRadius"/>.</returns>
 		public static Vector2 PointWithinCircularShell(this IRandom random, float innerRadius, float outerRadius)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -156,6 +210,11 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a unit sphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 3-dimensional vector with a magnitude less than or equal to 1.</returns>
 		public static Vector3 PointWithinSphere(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -176,6 +235,12 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a sphere with the specified <paramref name="radius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="radius">The radius of the sphere from whose area the random vector will be selected.  The vector's magnitude will be less than or equal to this value.</param>
+		/// <returns>A random 3-dimensional vector with a magnitude less than or equal to <paramref name="radius"/>.</returns>
 		public static Vector3 PointWithinSphere(this IRandom random, float radius)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -198,6 +263,13 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within the area of a larger sphere with the specified <paramref name="outerRadius"/> minus a smaller sphere with the specified <paramref name="innerRadius"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="innerRadius">The radius of the smaller sphere from whose area the random vector will not be selected.  The vector's magnitude will be greater than or equal to this value.</param>
+		/// <param name="outerRadius">The radius of the larger sphere from whose area the random vector will be selected.  The vector's magnitude will be less than or equal to this value.</param>
+		/// <returns>A random 3-dimensional vector with a magnitude greater than or equal to <paramref name="innerRadius"/> and less than or equal to <paramref name="outerRadius"/>.</returns>
 		public static Vector3 PointWithinSphericalShell(this IRandom random, float innerRadius, float outerRadius)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -228,26 +300,57 @@ namespace Experilous.MakeItRandom
 
 		#region Axial
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a unit square from (0, 0) to (1, 1).
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 2-dimensional vector from within a unit square.</returns>
 		public static Vector2 PointWithinSquare(this IRandom random)
 		{
 			return new Vector2(random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a square from (0, 0) to (<paramref name="sideLength"/>, <paramref name="sideLength"/>).
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="sideLength">The length of the square from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a square.</returns>
 		public static Vector2 PointWithinSquare(this IRandom random, float sideLength)
 		{
 			return new Vector2(random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a rectangle from (0, 0) to <paramref name="size"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="size">The size of the rectangle from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a rectangle.</returns>
 		public static Vector2 PointWithinRectangle(this IRandom random, Vector2 size)
 		{
 			return new Vector2(random.ClosedRange(size.x), random.ClosedRange(size.y));
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a parallelogram with corners at (0, 0), <paramref name="axis0"/>, <paramref name="axis1"/>, and <paramref name="axis0"/> + <paramref name="axis1"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="axis0">The first axis defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="axis1">The second axis defining the parallelogram from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a parallelogram.</returns>
 		public static Vector2 PointWithinParallelogram(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
 			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1;
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a triangle with corners at (0, 0), <paramref name="axis0"/>, and <paramref name="axis1"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="axis0">The first axis defining the triangle from within which the vector will be selected.</param>
+		/// <param name="axis1">The second axis defining the triangle from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a triangle.</returns>
 		public static Vector2 PointWithinTriangle(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
 			float u = Mathf.Sqrt(random.ClosedFloatUnit());
@@ -255,26 +358,57 @@ namespace Experilous.MakeItRandom
 			return (1f - u) * axis0 + v * axis1;
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a unit cube from (0, 0, 0) to (1, 1, 1).
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 3-dimensional vector from within a unit cube.</returns>
 		public static Vector3 PointWithinCube(this IRandom random)
 		{
 			return new Vector3(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a cube from (0, 0, 0) to (<paramref name="sideLength"/>, <paramref name="sideLength"/>, <paramref name="sideLength"/>).
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="sideLength">The length of the cube from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a cube.</returns>
 		public static Vector3 PointWithinCube(this IRandom random, float sideLength)
 		{
 			return new Vector3(random.ClosedRange(sideLength), random.ClosedRange(sideLength), random.ClosedRange(sideLength));
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within an axis aligned box from (0, 0, 0) to <paramref name="size"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="size">The size of the box from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a box.</returns>
 		public static Vector3 PointWithinBox(this IRandom random, Vector3 size)
 		{
 			return new Vector3(random.ClosedRange(size.x), random.ClosedRange(size.y), random.ClosedRange(size.z));
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within an axis aligned box described by the <see cref="Bounds"/> specified.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="box">The bounds of the box from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a box.</returns>
 		public static Vector3 PointWithinBox(this IRandom random, Bounds box)
 		{
 			return random.PointWithinBox(box.size) + box.min;
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a rhomboid, also know as a parallelepiped, with corners at (0, 0), the sum of any two of the axis parameters, and a far corner at the sum of all three axis parameters.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="axis0">The first axis defining the rhomboid from within which the vector will be selected.</param>
+		/// <param name="axis1">The second axis defining the rhomboid from within which the vector will be selected.</param>
+		/// <param name="axis2">The third axis defining the rhomboid from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a rhomboid.</returns>
 		public static Vector3 PointWithinRhomboid(this IRandom random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
 		{
 			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1 + random.ClosedFloatUnit() * axis2;
