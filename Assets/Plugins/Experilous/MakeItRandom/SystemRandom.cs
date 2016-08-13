@@ -20,6 +20,10 @@ namespace Experilous.MakeItRandom
 	{
 		[SerializeField] private System.Random _random;
 
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
+		[SerializeField] private byte[] _buffer = new byte[4];
+#endif
+
 		/// <summary>
 		/// Creates an instance of a wrapper around the .NET System.Random engine using mildly unpredictable data to initialize the engine's state.
 		/// </summary>
@@ -151,6 +155,71 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
+		private static uint Hash(byte[] seed)
+		{
+			uint h = 2166136261U;
+			for (int i = 0; i < seed.Length; ++i)
+			{
+				h = (h ^ seed[i]) * 16777619U;
+			}
+			return h;
+		}
+
+		public override void Seed()
+		{
+			_random = new System.Random();
+		}
+
+		public override void Seed(int seed)
+		{
+			_random = new System.Random(seed);
+		}
+
+		public override void Seed(params int[] seed)
+		{
+			var byteData = new byte[seed.Length * 4];
+			Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+			_random = new System.Random((int)Hash(byteData));
+		}
+
+		public override void Seed(string seed)
+		{
+			_random = new System.Random((int)Hash(new System.Text.UTF8Encoding().GetBytes(seed)));
+		}
+
+		public override void Seed(IBitGenerator bitGenerator)
+		{
+			_random = new System.Random((int)bitGenerator.Next32());
+		}
+
+		public override void MergeSeed()
+		{
+			_random = new System.Random((int)(Next32() ^ Hash(BitConverter.GetBytes(Environment.TickCount))));
+		}
+
+		public override void MergeSeed(int seed)
+		{
+			_random = new System.Random((int)(Next32() ^ Hash(BitConverter.GetBytes(seed))));
+		}
+
+		public override void MergeSeed(params int[] seed)
+		{
+			var byteData = new byte[seed.Length * 4];
+			Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+			_random = new System.Random((int)(Next32() ^ Hash(byteData)));
+		}
+
+		public override void MergeSeed(string seed)
+		{
+			_random = new System.Random((int)(Next32() ^ Hash(new System.Text.UTF8Encoding().GetBytes(seed))));
+		}
+
+		public override void MergeSeed(IBitGenerator bitGenerator)
+		{
+			_random = new System.Random((int)(Next32() ^ bitGenerator.Next32()));
+		}
+#else
 		/// <summary>
 		/// Reseed the .NET System.Random engine with a transient value (such as system time).
 		/// </summary>
@@ -210,6 +279,7 @@ namespace Experilous.MakeItRandom
 		{
 			_random = new System.Random((int)(Next32() ^ bitGenerator.Next32()));
 		}
+#endif
 
 		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
@@ -228,10 +298,15 @@ namespace Experilous.MakeItRandom
 		/// so instead, two calls to <see cref="System.Random.Next(int)"/> are required to get a total of 32 bits.</remarks>
 		public override uint Next32()
 		{
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
+			_random.NextBytes(_buffer);
+			return BitConverter.ToUInt32(_buffer, 0);
+#else
 			// System.Random.Next() cannot quite provide 31 uniform bits, so we use Next(0x40000000) to get 30 bits at a time.
 			return
 				(uint)_random.Next(0x40000000) << 2 & 0xFFFF0000U | // Use the upper 16 bits of the first 30 bits generated.
 				(uint)_random.Next(0x40000000)      & 0x0000FFFFU;  // Use the lower 16 bits of the final 30 bits generated.
+#endif
 		}
 
 		/// <summary>
@@ -242,11 +317,15 @@ namespace Experilous.MakeItRandom
 		/// so instead, three calls to <see cref="System.Random.Next(int)"/> are required to get a total of 64 bits.</remarks>
 		public override ulong Next64()
 		{
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
+			return ((ulong)Next32() << 32) | Next32();
+#else
 			// System.Random.Next() cannot quite provide 31 uniform bits, so we use Next(0x40000000) to get 30 bits at a time.
 			return
 				(ulong)_random.Next(0x40000000) << 34 & 0xFFFFF80000000000UL | // Use the upper 21 bits of the first 30 bits generated.
 				(ulong)_random.Next(0x40000000) << 17 & 0x000007FFFFE00000UL | // Use the middle 22 bits of the next 30 bits generated.
 				(ulong)_random.Next(0x40000000)       & 0x00000000001FFFFFUL;  // Use the lower 21 bits of the final 30 bits generated.
+#endif
 		}
 
 		/// <summary>
