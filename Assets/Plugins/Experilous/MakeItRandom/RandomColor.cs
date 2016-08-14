@@ -490,7 +490,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static ColorHSV HSV(this IRandom random)
 		{
-			return random.HSV(1f);
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
 		}
 
 		/// <summary>
@@ -501,17 +501,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHSV HSV(this IRandom random, float a)
 		{
-			float hue = random.HalfOpenFloatUnit();
-			Vector2 chromaValue = random.PointWithinTriangle(new Vector2(1f, 1f), new Vector2(0f, 1f));
-			if (chromaValue.y > 0f)
-			{
-				float saturation = chromaValue.x / chromaValue.y;
-				return new ColorHSV(hue, saturation, chromaValue.y, a);
-			}
-			else
-			{
-				return new ColorHSV(hue, 0f, 0f, a);
-			}
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
 		}
 
 		/// <summary>
@@ -521,42 +511,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHSV HSVA(this IRandom random)
 		{
-			return random.HSV(random.ClosedFloatUnit());
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the conic variant of the hue/saturation/value color space.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random fully opaque color.</returns>
-		/// <remarks>By sampling the conic variant of the hue/saturation/value color space, the bias toward darker colors is reduced.</remarks>
-		public static ColorHSV UnbiasedHSV(this IRandom random)
-		{
-			return random.UnbiasedHSV(1f);
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the conic variant of the hue/saturation/value color space, with a specified opacity.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="a">The opacity value to give to the randomly generated color.</param>
-		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
-		/// <remarks>By sampling the conic variant of the hue/saturation/value color space, the bias toward darker colors is reduced.</remarks>
-		public static ColorHSV UnbiasedHSV(this IRandom random, float a)
-		{
-			//TODO
-			throw new System.NotImplementedException();
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the conic variant of the hue/saturation/value color space, with a random opacity.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random color with a random opacity.</returns>
-		/// <remarks>By sampling the conic variant of the hue/saturation/value color space, the bias toward darker colors is reduced.</remarks>
-		public static ColorHSV UnbiasedHSVA(this IRandom random)
-		{
-			return random.UnbiasedHSV(random.ClosedFloatUnit());
+			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
 		/// <summary>
@@ -838,6 +793,341 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
+		#region HCV
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the conic hue/saturation/value color space.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque color.</returns>
+		public static ColorHCV HCV(this IRandom random)
+		{
+			return random.HCV(1f);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the conic hue/saturation/value color space, with a specified opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="a">The opacity value to give to the randomly generated color.</param>
+		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
+		public static ColorHCV HCV(this IRandom random, float a)
+		{
+			float hue = random.HalfOpenFloatUnit();
+			Vector2 chromaValue = random.PointWithinTriangle(new Vector2(1f, ColorHCV.GetValueAtMaxChroma()), new Vector2(0f, 1f));
+			return new ColorHCV(hue, chromaValue.x, chromaValue.y, a);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the conic hue/saturation/value color space, with a random opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random color with a random opacity.</returns>
+		public static ColorHCV HCVA(this IRandom random)
+		{
+			return random.HCV(random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHCV ChangeHue(this IRandom random, ColorHCV hcv)
+		{
+			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), hcv.c, hcv.v, hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHCV ChangeHue(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), hcv.c, hcv.v, hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHCV ChangeChroma(this IRandom random, ColorHCV hcv)
+		{
+			return new ColorHCV(hcv.h, random.ClosedRange(ColorHCV.GetMaxChroma(hcv.v)), hcv.v, hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHCV ChangeChroma(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return new ColorHCV(hcv.h, random.ChangeClamped(hcv.c, maxChange, 0f, ColorHCV.GetMaxChroma(hcv.v)), hcv.v, hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose value channel will be altered.</param>
+		/// <returns>The original color with the value channel randomized.</returns>
+		public static ColorHCV ChangeValue(this IRandom random, ColorHCV hcv)
+		{
+			float yMin, yMax;
+			ColorHCV.GetMinMaxValue(hcv.c, out yMin, out yMax);
+			return new ColorHCV(hcv.h, hcv.c, random.ClosedRange(yMin, yMax), hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose value channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the value channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the value channel randomized.</returns>
+		public static ColorHCV ChangeValue(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			float yMin, yMax;
+			ColorHCV.GetMinMaxValue(hcv.c, out yMin, out yMax);
+			return new ColorHCV(hcv.h, hcv.c, random.ChangeClamped(hcv.v, maxChange, yMin, yMax), hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHCV ChangeAlpha(this IRandom random, ColorHCV hcv)
+		{
+			return new ColorHCV(hcv.h, hcv.c, hcv.v, random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHCV ChangeAlpha(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return new ColorHCV(hcv.h, hcv.c, hcv.v, random.ChangeClamped(hcv.a, maxChange));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCV ChangeHueChroma(this IRandom random, ColorHCV hcv)
+		{
+			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcv.v, hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and saturation channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCV ChangeHueChroma(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), random.ChangeClamped(hcv.c, maxChange), hcv.v, hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCV ChangeHueChroma(this IRandom random, ColorHCV hcv, float maxHueChange, float maxChromaChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxHueChange), random.ChangeClamped(hcv.c, maxChromaChange), hcv.v, hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and value channels will be altered.</param>
+		/// <returns>The original color with the hue and value channels randomized.</returns>
+		public static ColorHCV ChangeHueValue(this IRandom random, ColorHCV hcv)
+		{
+			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), hcv.c, random.ClosedFloatUnit(), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and value channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and value channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and value channels randomized.</returns>
+		public static ColorHCV ChangeHueValue(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), hcv.c, random.ChangeClamped(hcv.v, maxChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and value channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxValueChange">The largest amount by which the value channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and value channels randomized.</returns>
+		public static ColorHCV ChangeHueValue(this IRandom random, ColorHCV hcv, float maxHueChange, float maxValueChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxHueChange), hcv.c, random.ChangeClamped(hcv.v, maxValueChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and value channels will be altered.</param>
+		/// <returns>The original color with the saturation and value channels randomized.</returns>
+		public static ColorHCV ChangeChromaValue(this IRandom random, ColorHCV hcv)
+		{
+			Vector2 chromaValue = random.PointWithinTriangle(new Vector2(1f, ColorHCV.GetValueAtMaxChroma()), new Vector2(0f, 1f));
+			return new ColorHCV(hcv.h, chromaValue.x, chromaValue.y, hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and value channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation and value channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and value channels randomized.</returns>
+		public static ColorHCV ChangeChromaValue(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(hcv.h, random.ChangeClamped(hcv.c, maxChange), random.ChangeClamped(hcv.v, maxChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and value channels will be altered.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxValueChange">The largest amount by which the value channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and value channels randomized.</returns>
+		public static ColorHCV ChangeChromaValue(this IRandom random, ColorHCV hcv, float maxChromaChange, float maxValueChange)
+		{
+			return Change(hcv, () => new ColorHCV(hcv.h, random.ChangeClamped(hcv.c, maxChromaChange), random.ChangeClamped(hcv.v, maxValueChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and value channels will be altered.</param>
+		/// <returns>The original color with the hue, saturation, and value channels randomized.</returns>
+		public static ColorHCV ChangeHueChromaValue(this IRandom random, ColorHCV hcv)
+		{
+			return random.HCV(hcv.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and value channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue, saturation, and value channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and value channels randomized.</returns>
+		public static ColorHCV ChangeHueChromaValue(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), random.ChangeClamped(hcv.c, maxChange), random.ChangeClamped(hcv.v, maxChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and value channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxValueChange">The largest amount by which the value channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and value channels randomized.</returns>
+		public static ColorHCV ChangeHueChromaValue(this IRandom random, ColorHCV hcv, float maxHueChange, float maxChromaChange, float maxValueChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxHueChange), random.ChangeClamped(hcv.c, maxChromaChange), random.ChangeClamped(hcv.v, maxValueChange), hcv.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels and opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCV ChangeHueChromaValueAlpha(this IRandom random, ColorHCV hcv, float maxChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), random.ChangeClamped(hcv.c, maxChange), random.ChangeClamped(hcv.v, maxChange), random.ChangeClamped(hcv.a, maxChange)));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCV ChangeHueChromaValueAlpha(this IRandom random, ColorHCV hcv, float maxChange, float maxAlphaChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxChange), random.ChangeClamped(hcv.c, maxChange), random.ChangeClamped(hcv.v, maxChange), random.ChangeClamped(hcv.a, maxAlphaChange)));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/value color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxValueChange">The largest amount by which the value channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCV ChangeHueChromaValueAlpha(this IRandom random, ColorHCV hcv, float maxHueChange, float maxChromaChange, float maxValueChange, float maxAlphaChange)
+		{
+			return Change(hcv, () => new ColorHCV(random.ChangeRepeated(hcv.h, maxHueChange), random.ChangeClamped(hcv.c, maxChromaChange), random.ChangeClamped(hcv.v, maxValueChange), random.ChangeClamped(hcv.a, maxAlphaChange)));
+		}
+
+		private static ColorHCV Change(ColorHCV hcv, System.Func<ColorHCV> generator)
+		{
+			int maxIterations = hcv.canConvertToRGB ? 100 : 5; // If the input color already can't convert to RGB, then there's no guarantee that the generator will produce a convertible color, so be much more eager to give up in that case.
+			int iterations = 0;
+
+			ColorHCV hcvRandom;
+			do
+			{
+				hcvRandom = generator();
+				++iterations;
+			}
+			while (!hcvRandom.canConvertToRGB && iterations < maxIterations);
+
+			return hcvRandom;
+		}
+
+		#endregion
+
 		#region HSL
 
 		/// <summary>
@@ -847,7 +1137,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static ColorHSL HSL(this IRandom random)
 		{
-			return random.HSL(1f);
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
 		}
 
 		/// <summary>
@@ -858,17 +1148,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHSL HSL(this IRandom random, float a)
 		{
-			float hue = random.HalfOpenFloatUnit();
-			Vector2 chromaLightness = random.PointWithinTriangle(new Vector2(1f, 0.5f), new Vector2(0f, 1f));
-			if (chromaLightness.y > 0f && chromaLightness.y < 1f)
-			{
-				float saturation = chromaLightness.x / (1f - Mathf.Abs(2f * chromaLightness.y - 1f));
-				return new ColorHSL(hue, saturation, chromaLightness.y, a);
-			}
-			else
-			{
-				return new ColorHSL(hue, 0f, chromaLightness.y, a);
-			}
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
 		}
 
 		/// <summary>
@@ -878,42 +1158,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHSL HSLA(this IRandom random)
 		{
-			return random.HSL(random.ClosedFloatUnit());
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the biconic variant of the hue/saturation/lightness color space.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random fully opaque color.</returns>
-		/// <remarks>By sampling the biconic variant of the hue/saturation/lightness color space, the bias toward ligher and darker colors is reduced.</remarks>
-		public static ColorHSL UnbiasedHSL(this IRandom random)
-		{
-			return random.UnbiasedHSL(1f);
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the biconic variant of the hue/saturation/lightness color space, with a specified opacity.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="a">The opacity value to give to the randomly generated color.</param>
-		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
-		/// <remarks>By sampling the biconic variant of the hue/saturation/lightness color space, the bias toward ligher and darker colors is reduced.</remarks>
-		public static ColorHSL UnbiasedHSL(this IRandom random, float a)
-		{
-			//TODO
-			throw new System.NotImplementedException();
-		}
-
-		/// <summary>
-		/// Generates a random color selected from a uniform distribution of the biconic variant of the hue/saturation/lightness color space, with a random opacity.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random color with a random opacity.</returns>
-		/// <remarks>By sampling the biconic variant of the hue/saturation/lightness color space, the bias toward ligher and darker colors is reduced.</remarks>
-		public static ColorHSL UnbiasedHSLA(this IRandom random)
-		{
-			return random.UnbiasedHSL(random.ClosedFloatUnit());
+			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
 		}
 
 		/// <summary>
@@ -1191,6 +1436,653 @@ namespace Experilous.MakeItRandom
 		public static ColorHSL ChangeHueSatLightAlpha(this IRandom random, ColorHSL hsl, float maxHueChange, float maxSatChange, float maxLightChange, float maxAlphaChange)
 		{
 			return new ColorHSL(random.ChangeRepeated(hsl.h, maxHueChange), random.ChangeClamped(hsl.s, maxSatChange), random.ChangeClamped(hsl.l, maxLightChange), random.ChangeClamped(hsl.a, maxAlphaChange));
+		}
+
+		#endregion
+
+		#region HCL
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the biconic hue/saturation/lightness color space.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque color.</returns>
+		public static ColorHCL HCL(this IRandom random)
+		{
+			return random.HCL(1f);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the biconic hue/saturation/lightness color space, with a specified opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="a">The opacity value to give to the randomly generated color.</param>
+		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
+		public static ColorHCL HCL(this IRandom random, float a)
+		{
+			float hue = random.HalfOpenFloatUnit();
+			Vector2 chromaLight = random.PointWithinTriangle(new Vector2(1f, ColorHCL.GetLightnessAtMaxChroma()), new Vector2(0f, 1f));
+			return new ColorHCL(hue, chromaLight.x, chromaLight.y, a);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the biconic hue/saturation/lightness color space, with a random opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random color with a random opacity.</returns>
+		public static ColorHCL HCLA(this IRandom random)
+		{
+			return random.HCL(random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHCL ChangeHue(this IRandom random, ColorHCL hcl)
+		{
+			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), hcl.c, hcl.l, hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHCL ChangeHue(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), hcl.c, hcl.l, hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHCL ChangeChroma(this IRandom random, ColorHCL hcl)
+		{
+			return new ColorHCL(hcl.h, random.ClosedRange(ColorHCL.GetMaxChroma(hcl.l)), hcl.l, hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHCL ChangeChroma(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return new ColorHCL(hcl.h, random.ChangeClamped(hcl.c, maxChange, 0f, ColorHCL.GetMaxChroma(hcl.l)), hcl.l, hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose lightness channel will be altered.</param>
+		/// <returns>The original color with the lightness channel randomized.</returns>
+		public static ColorHCL ChangeLight(this IRandom random, ColorHCL hcl)
+		{
+			float yMin, yMax;
+			ColorHCL.GetMinMaxLightness(hcl.c, out yMin, out yMax);
+			return new ColorHCL(hcl.h, hcl.c, random.ClosedRange(yMin, yMax), hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose lightness channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the lightness channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the lightness channel randomized.</returns>
+		public static ColorHCL ChangeLight(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			float yMin, yMax;
+			ColorHCL.GetMinMaxLightness(hcl.c, out yMin, out yMax);
+			return new ColorHCL(hcl.h, hcl.c, random.ChangeClamped(hcl.l, maxChange, yMin, yMax), hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHCL ChangeAlpha(this IRandom random, ColorHCL hcl)
+		{
+			return new ColorHCL(hcl.h, hcl.c, hcl.l, random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHCL ChangeAlpha(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return new ColorHCL(hcl.h, hcl.c, hcl.l, random.ChangeClamped(hcl.a, maxChange));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCL ChangeHueChroma(this IRandom random, ColorHCL hcl)
+		{
+			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcl.l, hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and saturation channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCL ChangeHueChroma(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), random.ChangeClamped(hcl.c, maxChange), hcl.l, hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHCL ChangeHueChroma(this IRandom random, ColorHCL hcl, float maxHueChange, float maxChromaChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxHueChange), random.ChangeClamped(hcl.c, maxChromaChange), hcl.l, hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and lightness channels will be altered.</param>
+		/// <returns>The original color with the hue and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueLight(this IRandom random, ColorHCL hcl)
+		{
+			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), hcl.c, random.ClosedFloatUnit(), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and lightness channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and lightness channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueLight(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), hcl.c, random.ChangeClamped(hcl.l, maxChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and lightness channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLightChange">The largest amount by which the lightness channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueLight(this IRandom random, ColorHCL hcl, float maxHueChange, float maxLightChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxHueChange), hcl.c, random.ChangeClamped(hcl.l, maxLightChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and lightness channels will be altered.</param>
+		/// <returns>The original color with the saturation and lightness channels randomized.</returns>
+		public static ColorHCL ChangeChromaLight(this IRandom random, ColorHCL hcl)
+		{
+			Vector2 chromaLight = random.PointWithinTriangle(new Vector2(1f, ColorHCL.GetLightnessAtMaxChroma()), new Vector2(0f, 1f));
+			return new ColorHCL(hcl.h, chromaLight.x, chromaLight.y, hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and lightness channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation and lightness channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and lightness channels randomized.</returns>
+		public static ColorHCL ChangeChromaLight(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(hcl.h, random.ChangeClamped(hcl.c, maxChange), random.ChangeClamped(hcl.l, maxChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and lightness channels will be altered.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLightChange">The largest amount by which the lightness channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and lightness channels randomized.</returns>
+		public static ColorHCL ChangeChromaLight(this IRandom random, ColorHCL hcl, float maxChromaChange, float maxLightChange)
+		{
+			return Change(hcl, () => new ColorHCL(hcl.h, random.ChangeClamped(hcl.c, maxChromaChange), random.ChangeClamped(hcl.l, maxLightChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and lightness channels will be altered.</param>
+		/// <returns>The original color with the hue, saturation, and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueChromaLight(this IRandom random, ColorHCL hcl)
+		{
+			return random.HCL(hcl.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and lightness channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue, saturation, and lightness channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueChromaLight(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), random.ChangeClamped(hcl.c, maxChange), random.ChangeClamped(hcl.l, maxChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and lightness channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLightChange">The largest amount by which the lightness channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and lightness channels randomized.</returns>
+		public static ColorHCL ChangeHueChromaLight(this IRandom random, ColorHCL hcl, float maxHueChange, float maxChromaChange, float maxLightChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxHueChange), random.ChangeClamped(hcl.c, maxChromaChange), random.ChangeClamped(hcl.l, maxLightChange), hcl.a));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels and opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCL ChangeHueChromaLightAlpha(this IRandom random, ColorHCL hcl, float maxChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), random.ChangeClamped(hcl.c, maxChange), random.ChangeClamped(hcl.l, maxChange), random.ChangeClamped(hcl.a, maxChange)));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCL ChangeHueChromaLightAlpha(this IRandom random, ColorHCL hcl, float maxChange, float maxAlphaChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxChange), random.ChangeClamped(hcl.c, maxChange), random.ChangeClamped(hcl.l, maxChange), random.ChangeClamped(hcl.a, maxAlphaChange)));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/lightness color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLightChange">The largest amount by which the lightness channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHCL ChangeHueChromaLightAlpha(this IRandom random, ColorHCL hcl, float maxHueChange, float maxChromaChange, float maxLightChange, float maxAlphaChange)
+		{
+			return Change(hcl, () => new ColorHCL(random.ChangeRepeated(hcl.h, maxHueChange), random.ChangeClamped(hcl.c, maxChromaChange), random.ChangeClamped(hcl.l, maxLightChange), random.ChangeClamped(hcl.a, maxAlphaChange)));
+		}
+
+		private static ColorHCL Change(ColorHCL hcl, System.Func<ColorHCL> generator)
+		{
+			int maxIterations = hcl.canConvertToRGB ? 100 : 5; // If the input color already can't convert to RGB, then there's no guarantee that the generator will produce a convertible color, so be much more eager to give up in that case.
+			int iterations = 0;
+
+			ColorHCL hclRandom;
+			do
+			{
+				hclRandom = generator();
+				++iterations;
+			}
+			while (!hclRandom.canConvertToRGB && iterations < maxIterations);
+
+			return hclRandom;
+		}
+
+		#endregion
+
+		#region HSY
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the cylindrical hue/saturation/luma color space.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque color.</returns>
+		public static ColorHSY HSY(this IRandom random)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the cylindrical hue/saturation/luma color space, with a specified opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="a">The opacity value to give to the randomly generated color.</param>
+		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
+		public static ColorHSY HSY(this IRandom random, float a)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
+		}
+
+		/// <summary>
+		/// Generates a random color selected from a uniform distribution of the cylindrical hue/saturation/luma color space, with a random opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random color with a random opacity.</returns>
+		public static ColorHSY HSYA(this IRandom random)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHSY ChangeHue(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), hsy.s, hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for hue while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue channel randomized.</returns>
+		public static ColorHSY ChangeHue(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), hsy.s, hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHSY ChangeSat(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(hsy.h, random.ClosedFloatUnit(), hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation channel randomized.</returns>
+		public static ColorHSY ChangeSat(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(hsy.h, random.ChangeClamped(hsy.s, maxChange), hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose luma channel will be altered.</param>
+		/// <returns>The original color with the luma channel randomized.</returns>
+		public static ColorHSY ChangeLuma(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(hsy.h, hsy.s, random.ClosedFloatUnit(), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose luma channel will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the luma channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the luma channel randomized.</returns>
+		public static ColorHSY ChangeLuma(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(hsy.h, hsy.s, random.ChangeClamped(hsy.y, maxChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHSY ChangeAlpha(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(hsy.h, hsy.s, hsy.y, random.ClosedFloatUnit());
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting a new value for opacity while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the opacity randomized.</returns>
+		public static ColorHSY ChangeAlpha(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(hsy.h, hsy.s, hsy.y, random.ChangeClamped(hsy.a, maxChange));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHSY ChangeHueSat(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and saturation channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHSY ChangeHueSat(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), random.ChangeClamped(hsy.s, maxChange), hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and saturation while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and saturation channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and saturation channels randomized.</returns>
+		public static ColorHSY ChangeHueSat(this IRandom random, ColorHSY hsy, float maxHueChange, float maxSatChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxHueChange), random.ChangeClamped(hsy.s, maxSatChange), hsy.y, hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and luma channels will be altered.</param>
+		/// <returns>The original color with the hue and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueLuma(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), hsy.s, random.ClosedFloatUnit(), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and luma channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue and luma channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueLuma(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), hsy.s, random.ChangeClamped(hsy.y, maxChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue and luma channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLumaChange">The largest amount by which the luma channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueLuma(this IRandom random, ColorHSY hsy, float maxHueChange, float maxLumaChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxHueChange), hsy.s, random.ChangeClamped(hsy.y, maxLumaChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and luma channels will be altered.</param>
+		/// <returns>The original color with the saturation and luma channels randomized.</returns>
+		public static ColorHSY ChangeSatLuma(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(hsy.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and luma channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the saturation and luma channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and luma channels randomized.</returns>
+		public static ColorHSY ChangeSatLuma(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(hsy.h, random.ChangeClamped(hsy.s, maxChange), random.ChangeClamped(hsy.y, maxChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for saturation and value while keeping all other values the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose saturation and luma channels will be altered.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLumaChange">The largest amount by which the luma channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the saturation and luma channels randomized.</returns>
+		public static ColorHSY ChangeSatLuma(this IRandom random, ColorHSY hsy, float maxSatChange, float maxLumaChange)
+		{
+			return new ColorHSY(hsy.h, random.ChangeClamped(hsy.s, maxSatChange), random.ChangeClamped(hsy.y, maxLumaChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and luma channels will be altered.</param>
+		/// <returns>The original color with the hue, saturation, and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueSatLuma(this IRandom random, ColorHSY hsy)
+		{
+			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and luma channels will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the hue, saturation, and luma channels can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueSatLuma(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), random.ChangeClamped(hsy.s, maxChange), random.ChangeClamped(hsy.y, maxChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for hue, saturation, and value while keeping the opacity the same.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose hue, saturation, and luma channels will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLumaChange">The largest amount by which the luma channel can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the hue, saturation, and luma channels randomized.</returns>
+		public static ColorHSY ChangeHueSatLuma(this IRandom random, ColorHSY hsy, float maxHueChange, float maxSatChange, float maxLumaChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxHueChange), random.ChangeClamped(hsy.s, maxSatChange), random.ChangeClamped(hsy.y, maxLumaChange), hsy.a);
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels and opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHSY ChangeHueSatLumaAlpha(this IRandom random, ColorHSY hsy, float maxChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), random.ChangeClamped(hsy.s, maxChange), random.ChangeClamped(hsy.y, maxChange), random.ChangeClamped(hsy.a, maxChange));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxChange">The largest amount by which the color channels can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHSY ChangeHueSatLumaAlpha(this IRandom random, ColorHSY hsy, float maxChange, float maxAlphaChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxChange), random.ChangeClamped(hsy.s, maxChange), random.ChangeClamped(hsy.y, maxChange), random.ChangeClamped(hsy.a, maxAlphaChange));
+		}
+
+		/// <summary>
+		/// Generates a random color in the hue/saturation/luma color space by randomly selecting new values for all channels, including opacity.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="hsv">The original color whose color channels and opacity will be altered.</param>
+		/// <param name="maxHueChange">The largest amount by which the hue channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxSatChange">The largest amount by which the saturation channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxLumaChange">The largest amount by which the luma channel can change, up or down.  Must be non-negative.</param>
+		/// <param name="maxAlphaChange">The largest amount by which the opacity can change, up or down.  Must be non-negative.</param>
+		/// <returns>The original color with the color channels and opacity randomized.</returns>
+		public static ColorHSY ChangeHueSatLumaAlpha(this IRandom random, ColorHSY hsy, float maxHueChange, float maxSatChange, float maxLumaChange, float maxAlphaChange)
+		{
+			return new ColorHSY(random.ChangeRepeated(hsy.h, maxHueChange), random.ChangeClamped(hsy.s, maxSatChange), random.ChangeClamped(hsy.y, maxLumaChange), random.ChangeClamped(hsy.a, maxAlphaChange));
 		}
 
 		#endregion
