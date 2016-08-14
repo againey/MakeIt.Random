@@ -26,6 +26,12 @@ namespace Experilous.MakeItRandom
 		{
 			get
 			{
+#if UNITY_5_0 || UNITY_5_1
+				if (_shared == null)
+				{
+					_shared = CreateStandard();
+				}
+#endif
 				return _shared;
 			}
 			set
@@ -38,7 +44,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+#if !UNITY_5_0 && !UNITY_5_1
 		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
+#endif
 		private static void CreateShared()
 		{
 			_shared = CreateStandard();
