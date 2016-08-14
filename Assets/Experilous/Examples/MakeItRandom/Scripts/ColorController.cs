@@ -5,7 +5,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Experilous.MakeItRandom;
-using Experilous.Colors;
+using Experilous.MakeItColorful;
 
 namespace Experilous.Examples.MakeItRandom
 {

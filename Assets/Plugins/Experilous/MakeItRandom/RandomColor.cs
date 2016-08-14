@@ -3,7 +3,7 @@
 \******************************************************************************/
 
 using UnityEngine;
-using Experilous.Colors;
+using Experilous.MakeItColorful;
 
 namespace Experilous.MakeItRandom
 {
