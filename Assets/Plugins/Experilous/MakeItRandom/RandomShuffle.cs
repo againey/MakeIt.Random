@@ -17,7 +17,7 @@ namespace Experilous.MakeItRandom
 		/// Randomly shuffles in place all the elements in the <paramref name="list"/> provided.
 		/// </summary>
 		/// <typeparam name="T">The type of the elements to be shuffled in place.</typeparam>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits to determine the shuffle sequence.</param>
 		/// <param name="list">The list of elements to be shuffled.</param>
 		/// <param name="forceMoveAll">If true, no element is allowed to remain in its original location, unless there is only one element.</param>
 		/// <returns>A reference to the shuffled list.</returns>
@@ -59,7 +59,7 @@ namespace Experilous.MakeItRandom
 		/// The elements in <paramref name="source"/> keep their original order.
 		/// </summary>
 		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits to determine the shuffle sequence.</param>
 		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
 		/// <param name="target">The list into which the shuffled elements will be place.</param>
 		/// <param name="forceMoveAll">If true, no element is allowed to remain in its original location, unless there is only one element.</param>
@@ -106,7 +106,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
 		/// <param name="list">The list of elements to be shuffled in place.</param>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits to determine the shuffle sequence.</param>
 		/// <param name="forceMoveAll">If true, no element is allowed to remain in its original location, unless there is only one element.</param>
 		/// <returns>A reference to the shuffled list.</returns>
 		/// <remarks>
@@ -126,7 +126,7 @@ namespace Experilous.MakeItRandom
 		/// <typeparam name="T">The type of the elements to be shuffled.</typeparam>
 		/// <param name="source">The enumerable sequence of elements to be shuffled.</param>
 		/// <param name="target">The list into which the shuffled elements will be place.</param>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits to determine the shuffle sequence.</param>
 		/// <param name="forceMoveAll">If true, no element is allowed to remain in its original location, unless there is only one element.</param>
 		/// <returns>A reference to the shuffled list.</returns>
 		/// <remarks>
@@ -258,7 +258,7 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
-		#region Aggressive Shuffle (Sattolo's Algorithm)
+		#region Force Move All Shuffle (Sattolo's Algorithm)
 
 		private static T[] Sattolo_ShuffleArray<T>(T[] array, IRandom random)
 		{
