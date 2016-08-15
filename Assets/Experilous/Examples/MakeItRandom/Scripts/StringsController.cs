@@ -143,11 +143,11 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => _random.AlphaNumericWithSpacesString(stringLength, spaceFrequency, casing));
+					GenerateStrings(() => _random.AlphaNumericString(stringLength, casing, ' ', spaceFrequency));
 				}
 				else
 				{
-					GenerateStrings(() => _random.AlphaNumericWithSpacesString(stringLength, spaceFrequency));
+					GenerateStrings(() => _random.AlphaNumericString(stringLength, ' ', spaceFrequency));
 				}
 			}
 			else
@@ -169,11 +169,11 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => _random.AlphabeticWithSpacesString(stringLength, spaceFrequency, casing));
+					GenerateStrings(() => _random.AlphabeticString(stringLength, casing, ' ', spaceFrequency));
 				}
 				else
 				{
-					GenerateStrings(() => _random.AlphabeticWithSpacesString(stringLength, spaceFrequency));
+					GenerateStrings(() => _random.AlphabeticString(stringLength, ' ', spaceFrequency));
 				}
 			}
 			else
@@ -195,11 +195,11 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				if (hasCasing)
 				{
-					GenerateStrings(() => _random.IdentifierWithUnderscores(stringLength, spaceFrequency, casing));
+					GenerateStrings(() => _random.Identifier(stringLength, casing, spaceFrequency));
 				}
 				else
 				{
-					GenerateStrings(() => _random.IdentifierWithUnderscores(stringLength, spaceFrequency));
+					GenerateStrings(() => _random.Identifier(stringLength, spaceFrequency));
 				}
 			}
 			else

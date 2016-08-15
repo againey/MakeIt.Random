@@ -11,31 +11,49 @@ namespace Experilous.MakeItRandom
 		public static string String(this IRandom random, int length, char[] characters)
 		{
 			char[] buffer = new char[length];
-			for (int i = 0; i < length; ++i)
+			random.String(buffer, 0, length, characters);
+			return new string(buffer);
+		}
+
+		public static string String(this IRandom random, int length, char[] characters, char separator, float separatorFrequency)
+		{
+			char[] buffer = new char[length];
+			random.String(buffer, 0, length, characters, separator, separatorFrequency);
+			return new string(buffer);
+		}
+
+		private static void String(this IRandom random, char[] buffer, int start, int length, char[] characters)
+		{
+			for (int i = start; i < start + length; ++i)
 			{
 				buffer[i] = characters.RandomElement(random);
 			}
-			return new string(buffer);
 		}
 
-		public static string String(this IRandom random, int length, char[] characters, char otherCharacter, float otherFrequency)
+		private static void String(this IRandom random, char[] buffer, int start, int length, char[] characters, char separator, float separatorFrequency, bool allowSeparatorState = false, bool forceSeparatorState = false)
 		{
-			char[] buffer = new char[length];
-			for (int i = 0; i < length; ++i)
+			for (int i = start; i < start + length; ++i)
 			{
-				buffer[i] = random.Probability(otherFrequency) ? otherCharacter : characters.RandomElement(random);
+				if (allowSeparatorState)
+				{
+					if (forceSeparatorState || random.Probability(separatorFrequency))
+					{
+						buffer[i] = separator;
+						allowSeparatorState = false;
+						forceSeparatorState = false;
+					}
+					else
+					{
+						buffer[i] = characters.RandomElement(random);
+					}
+				}
+				else
+				{
+					buffer[i] = characters.RandomElement(random);
+					allowSeparatorState = true;
+					forceSeparatorState = random.Probability(separatorFrequency);
+				}
 			}
-			return new string(buffer);
-		}
-
-		public static string String(this IRandom random, int length, char[] characters, char otherCharacter, int otherCountPerChunk, int averageChunkLength)
-		{
-			char[] buffer = new char[length];
-			for (int i = 0; i < length; ++i)
-			{
-				buffer[i] = random.Probability(otherCountPerChunk, averageChunkLength) ? otherCharacter : characters.RandomElement(random);
-			}
-			return new string(buffer);
 		}
 
 		#endregion
@@ -246,19 +264,9 @@ namespace Experilous.MakeItRandom
 			return random.String(length, _alphaNumericCharacters);
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length)
+		public static string AlphaNumericString(this IRandom random, int length, char separator, float separatorFrequency)
 		{
-			return random.String(length, _alphaNumericCharacters, ' ', 1, 62);
-		}
-
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length, float spaceFrequency)
-		{
-			return random.String(length, _alphaNumericCharacters, ' ', spaceFrequency);
-		}
-
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength)
-		{
-			return random.String(length, _alphaNumericCharacters, ' ', spaceCountPerChunk, averageChunkLength);
+			return random.String(length, _alphaNumericCharacters, separator, separatorFrequency);
 		}
 
 		public static string AlphaNumericString(this IRandom random, int length, Casing casing)
@@ -266,19 +274,9 @@ namespace Experilous.MakeItRandom
 			return random.String(length, GetAlphaNumericCharacters(casing));
 		}
 
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length, Casing casing)
+		public static string AlphaNumericString(this IRandom random, int length, Casing casing, char separator, float separatorFrequency)
 		{
-			return random.String(length, GetAlphaNumericCharacters(casing), ' ', 1, 62);
-		}
-
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length, float spaceFrequency, Casing casing)
-		{
-			return random.String(length, GetAlphaNumericCharacters(casing), ' ', spaceFrequency);
-		}
-
-		public static string AlphaNumericWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
-		{
-			return random.String(length, GetAlphaNumericCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
+			return random.String(length, GetAlphaNumericCharacters(casing), separator, separatorFrequency);
 		}
 
 		#endregion
@@ -316,19 +314,9 @@ namespace Experilous.MakeItRandom
 			return random.String(length, _alphabeticCharacters);
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandom random, int length)
+		public static string AlphabeticString(this IRandom random, int length, char separator, float separatorFrequency)
 		{
-			return random.String(length, _alphabeticCharacters, ' ', 1, 52);
-		}
-
-		public static string AlphabeticWithSpacesString(this IRandom random, int length, float spaceFrequency)
-		{
-			return random.String(length, _alphabeticCharacters, ' ', spaceFrequency);
-		}
-
-		public static string AlphabeticWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength)
-		{
-			return random.String(length, _alphabeticCharacters, ' ', spaceCountPerChunk, averageChunkLength);
+			return random.String(length, _alphabeticCharacters, separator, separatorFrequency);
 		}
 
 		public static string AlphabeticString(this IRandom random, int length, Casing casing)
@@ -336,19 +324,9 @@ namespace Experilous.MakeItRandom
 			return random.String(length, GetAlphabeticCharacters(casing));
 		}
 
-		public static string AlphabeticWithSpacesString(this IRandom random, int length, Casing casing)
+		public static string AlphabeticString(this IRandom random, int length, Casing casing, char separator, float separatorFrequency)
 		{
-			return random.String(length, GetAlphabeticCharacters(casing), ' ', 1, 52);
-		}
-
-		public static string AlphabeticWithSpacesString(this IRandom random, int length, float spaceFrequency, Casing casing)
-		{
-			return random.String(length, GetAlphabeticCharacters(casing), ' ', spaceFrequency);
-		}
-
-		public static string AlphabeticWithSpacesString(this IRandom random, int length, int spaceCountPerChunk, int averageChunkLength, Casing casing)
-		{
-			return random.String(length, GetAlphabeticCharacters(casing), ' ', spaceCountPerChunk, averageChunkLength);
+			return random.String(length, GetAlphabeticCharacters(casing), separator, separatorFrequency);
 		}
 
 		#endregion
@@ -378,49 +356,51 @@ namespace Experilous.MakeItRandom
 		public static string Identifier(this IRandom random, int length)
 		{
 			if (length <= 0) return "";
-			return _alphabeticCharacters.RandomElement(random) + random.String(length - 1, _alphaNumericCharacters);
+			char[] buffer = new char[length];
+			buffer[0] = _alphabeticCharacters.RandomElement(random);
+			random.String(buffer, 1, length - 1, _alphaNumericCharacters);
+			return new string(buffer);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandom random, int length)
+		public static string Identifier(this IRandom random, int length, float underscoreFrequency)
 		{
 			if (length <= 0) return "";
-			return random.String(1, _alphabeticCharacters, '_', 1, 52) + random.String(length, _alphaNumericCharacters, '_', 1, 62);
-		}
-
-		public static string IdentifierWithUnderscores(this IRandom random, int length, float underscoreFrequency)
-		{
-			if (length <= 0) return "";
-			return random.String(1, _alphabeticCharacters, '_', underscoreFrequency) + random.String(length, _alphaNumericCharacters, '_', underscoreFrequency);
-		}
-
-		public static string IdentifierWithUnderscores(this IRandom random, int length, int underscoreCountPerChunk, int averageChunkLength)
-		{
-			if (length <= 0) return "";
-			return random.String(1, _alphabeticCharacters, '_', underscoreCountPerChunk, averageChunkLength) + random.String(length, _alphaNumericCharacters, '_', underscoreCountPerChunk, averageChunkLength);
+			char[] buffer = new char[length];
+			if (random.Probability(underscoreFrequency))
+			{
+				buffer[0] = '_';
+			}
+			else
+			{
+				buffer[0] = _alphabeticCharacters.RandomElement(random);
+			}
+			random.String(buffer, 1, length - 1, _alphaNumericCharacters, '_', underscoreFrequency, true, false);
+			return new string(buffer);
 		}
 
 		public static string Identifier(this IRandom random, int length, Casing casing)
 		{
 			if (length <= 0) return "";
-			return GetIdentifierFirstCharacters(casing).RandomElement(random) + random.String(length - 1, GetIdentifierCharacters(casing));
+			char[] buffer = new char[length];
+			buffer[0] = GetAlphabeticCharacters(casing).RandomElement(random);
+			random.String(buffer, 1, length - 1, GetAlphaNumericCharacters(casing));
+			return new string(buffer);
 		}
 
-		public static string IdentifierWithUnderscores(this IRandom random, int length, Casing casing)
+		public static string Identifier(this IRandom random, int length, Casing casing, float underscoreFrequency)
 		{
 			if (length <= 0) return "";
-			return random.String(1, GetAlphabeticCharacters(casing), '_', 1, 52) + random.String(length, GetAlphaNumericCharacters(casing), '_', 1, 62);
-		}
-
-		public static string IdentifierWithUnderscores(this IRandom random, int length, float underscoreFrequency, Casing casing)
-		{
-			if (length <= 0) return "";
-			return random.String(1, GetAlphabeticCharacters(casing), '_', underscoreFrequency) + random.String(length, GetAlphaNumericCharacters(casing), '_', underscoreFrequency);
-		}
-
-		public static string IdentifierWithUnderscores(this IRandom random, int length, int underscoreCountPerChunk, int averageChunkLength, Casing casing)
-		{
-			if (length <= 0) return "";
-			return random.String(1, GetAlphabeticCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength) + random.String(length, GetAlphaNumericCharacters(casing), '_', underscoreCountPerChunk, averageChunkLength);
+			char[] buffer = new char[length];
+			if (random.Probability(underscoreFrequency))
+			{
+				buffer[0] = '_';
+			}
+			else
+			{
+				buffer[0] = GetAlphabeticCharacters(casing).RandomElement(random);
+			}
+			random.String(buffer, 1, length - 1, GetAlphaNumericCharacters(casing), '_', underscoreFrequency, true, false);
+			return new string(buffer);
 		}
 
 		#endregion
