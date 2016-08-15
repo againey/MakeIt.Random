@@ -26,10 +26,172 @@ namespace Experilous.MakeItRandom
 			18, 38, 32, 28, 47, 54, 51, 19, 39, 48, 55, 40, 56, 57, 58,  0, 
 		};
 
+		private const uint _deBruijnMultiplier32 = 0x07C4ACDDU;
+		private const int _deBruijnShift32 = 27;
+
+		private const ulong _deBruijnMultiplier64 = 0x03F6EAF2CD271461UL;
+		private const int _deBruijnShift64 = 58;
+
 		#endregion
 #endif
 
 		#region Open
+
+		/// <summary>
+		/// Returns a random signed byte strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random signed byte in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte OpenRange(this IRandom random, sbyte lowerExclusive, sbyte upperExclusive)
+		{
+			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
+		}
+
+		/// <summary>
+		/// Returns a random signed byte strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random signed byte in the range (0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte OpenRange(this IRandom random, sbyte upperExclusive)
+		{
+			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - 1)) + 1);
+		}
+
+		/// <summary>
+		/// Returns a random byte strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random byte in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte OpenRange(this IRandom random, byte lowerExclusive, byte upperExclusive)
+		{
+			return (byte)(HalfOpenRange(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random byte strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random byte in the range (0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte OpenRange(this IRandom random, byte upperExclusive)
+		{
+			return (byte)(HalfOpenRange(random, upperExclusive - 1U) + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random short integer strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random short integer in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short OpenRange(this IRandom random, short lowerExclusive, short upperExclusive)
+		{
+			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
+		}
+
+		/// <summary>
+		/// Returns a random short integer strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random short integer in the range (0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short OpenRange(this IRandom random, short upperExclusive)
+		{
+			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - 1)) + 1);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random unsigned short integer in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort OpenRange(this IRandom random, ushort lowerExclusive, ushort upperExclusive)
+		{
+			return (ushort)(HalfOpenRange(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random unsigned short integer in the range (0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort OpenRange(this IRandom random, ushort upperExclusive)
+		{
+			return (ushort)(HalfOpenRange(random, upperExclusive - 1U) + 1U);
+		}
 
 		/// <summary>
 		/// Returns a random integer strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
@@ -242,6 +404,185 @@ namespace Experilous.MakeItRandom
 		#region HalfOpen
 
 		/// <summary>
+		/// Returns a random signed byte greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random signed byte in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte HalfOpenRange(this IRandom random, sbyte lowerInclusive, sbyte upperExclusive)
+		{
+			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random signed byte greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random signed byte in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte HalfOpenRange(this IRandom random, sbyte upperExclusive)
+		{
+			return (sbyte)HalfOpenRange(random, (byte)upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a random byte greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random byte in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte HalfOpenRange(this IRandom random, byte lowerInclusive, byte upperExclusive)
+		{
+			return (byte)(HalfOpenRange(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random byte greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random byte in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte HalfOpenRange(this IRandom random, byte upperExclusive)
+		{
+			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
+			uint mask = upperExclusive - 1U;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			uint n;
+			do
+			{
+				n = random.Next32() & mask;
+			}
+			while (n >= upperExclusive);
+			return (byte)n;
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random short integer in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short HalfOpenRange(this IRandom random, short lowerInclusive, short upperExclusive)
+		{
+			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random short integer in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short HalfOpenRange(this IRandom random, short upperExclusive)
+		{
+			return (short)HalfOpenRange(random, (ushort)upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random unsigned short integer in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort HalfOpenRange(this IRandom random, ushort lowerInclusive, ushort upperExclusive)
+		{
+			return (ushort)(HalfOpenRange(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <returns>A random unsigned short integer in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [0, <paramref name="upperExclusive"/>) with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort HalfOpenRange(this IRandom random, ushort upperExclusive)
+		{
+			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
+			uint mask = upperExclusive - 1U;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			uint n;
+			do
+			{
+				n = random.Next32() & mask;
+			}
+			while (n >= upperExclusive);
+			return (ushort)n;
+		}
+
+		/// <summary>
 		/// Returns a random integer greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -277,7 +618,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static int HalfOpenRange(this IRandom random, int upperExclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperExclusive));
+			return (int)HalfOpenRange(random, (uint)upperExclusive);
 		}
 
 		/// <summary>
@@ -327,7 +668,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 8;
 			mask |= mask >> 16;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable32[mask * 0x07C4ACDDU >> 27];
+			int rightShift = _shiftTable32[mask * _deBruijnMultiplier32 >> _deBruijnShift32];
 #endif
 			uint n;
 			do
@@ -378,7 +719,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static long HalfOpenRange(this IRandom random, long upperExclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperExclusive));
+			return (long)HalfOpenRange(random, (ulong)upperExclusive);
 		}
 
 		/// <summary>
@@ -429,7 +770,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 16;
 			mask |= mask >> 32;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable64[mask * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[mask * _deBruijnMultiplier64 >> _deBruijnShift64];
 #endif
 			ulong n;
 			do
@@ -497,6 +838,162 @@ namespace Experilous.MakeItRandom
 		#endregion
 
 		#region HalfClosed
+
+		/// <summary>
+		/// Returns a random signed byte strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random signed byte in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte HalfClosedRange(this IRandom random, sbyte lowerExclusive, sbyte upperInclusive)
+		{
+			return (sbyte)(HalfOpenRange(random, (byte)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
+		}
+
+		/// <summary>
+		/// Returns a random signed byte strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random signed byte in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte HalfClosedRange(this IRandom random, sbyte upperInclusive)
+		{
+			return (sbyte)(HalfOpenRange(random, (byte)(upperInclusive)) + 1);
+		}
+
+		/// <summary>
+		/// Returns a random byte strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random byte in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte HalfClosedRange(this IRandom random, byte lowerExclusive, byte upperInclusive)
+		{
+			return (byte)(HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random byte strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random byte in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// (0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte HalfClosedRange(this IRandom random, byte upperInclusive)
+		{
+			return (byte)(HalfOpenRange(random, upperInclusive) + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random short integer strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random short integer in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short HalfClosedRange(this IRandom random, short lowerExclusive, short upperInclusive)
+		{
+			return (short)(HalfOpenRange(random, (ushort)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
+		}
+
+		/// <summary>
+		/// Returns a random short integer strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random short integer in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short HalfClosedRange(this IRandom random, short upperInclusive)
+		{
+			return (short)(HalfOpenRange(random, (ushort)(upperInclusive)) + 1);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short short integer strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random unsigned short short integer in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort HalfClosedRange(this IRandom random, ushort lowerExclusive, ushort upperInclusive)
+		{
+			return (ushort)(HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short short integer strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random unsigned short short integer in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// (0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort HalfClosedRange(this IRandom random, ushort upperInclusive)
+		{
+			return (ushort)(HalfOpenRange(random, upperInclusive) + 1U);
+		}
 
 		/// <summary>
 		/// Returns a random integer strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
@@ -709,6 +1206,183 @@ namespace Experilous.MakeItRandom
 		#region Closed
 
 		/// <summary>
+		/// Returns a random signed byte greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random signed byte in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte ClosedRange(this IRandom random, sbyte lowerInclusive, sbyte upperInclusive)
+		{
+			return (sbyte)(ClosedRange(random, (byte)(upperInclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random signed byte greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random signed byte in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static sbyte ClosedRange(this IRandom random, sbyte upperInclusive)
+		{
+			return (sbyte)ClosedRange(random, (byte)(upperInclusive));
+		}
+
+		/// <summary>
+		/// Returns a random byte greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random byte in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte ClosedRange(this IRandom random, byte lowerInclusive, byte upperInclusive)
+		{
+			return (byte)(ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random byte greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random byte in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
+		/// [0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static byte ClosedRange(this IRandom random, byte upperInclusive)
+		{
+			uint mask = upperInclusive;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			uint n;
+			do
+			{
+				n = random.Next32() & mask;
+			}
+			while (n > upperInclusive);
+			return (byte)n;
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random short integer in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short ClosedRange(this IRandom random, short lowerInclusive, short upperInclusive)
+		{
+			return (short)(ClosedRange(random, (ushort)(upperInclusive - lowerInclusive)) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random short integer in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static short ClosedRange(this IRandom random, short upperInclusive)
+		{
+			return (short)ClosedRange(random, (ushort)(upperInclusive));
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random unsigned short integer in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort ClosedRange(this IRandom random, ushort lowerInclusive, ushort upperInclusive)
+		{
+			return (ushort)(ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
+		/// <returns>A random unsigned short integer in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
+		/// [0, <paramref name="upperInclusive"/>] with perfect distribution.</para>
+		/// <para>Depending on the size of the range requested, this function may need to call <see cref="IBitGenerator.Next32()"/> more than once
+		/// on the supplied random engine.  For the worst case range sizes, the average number of calls to <see cref="IBitGenerator.Next32()"/>
+		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
+		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
+		/// </remarks>
+		public static ushort ClosedRange(this IRandom random, ushort upperInclusive)
+		{
+			uint mask = upperInclusive;
+			mask |= mask >> 1;
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			uint n;
+			do
+			{
+				n = random.Next32() & mask;
+			}
+			while (n > upperInclusive);
+			return (ushort)n;
+		}
+
+		/// <summary>
 		/// Returns a random integer greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -793,7 +1467,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 8;
 			mask |= mask >> 16;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable32[mask * 0x07C4ACDDU >> 27];
+			int rightShift = _shiftTable32[mask * _deBruijnMultiplier32 >> _deBruijnShift32];
 #endif
 			uint n;
 			do
@@ -894,7 +1568,7 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 16;
 			mask |= mask >> 32;
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			int rightShift = _shiftTable64[mask * 0x03F6EAF2CD271461UL >> 58];
+			int rightShift = _shiftTable64[mask * _deBruijnMultiplier64 >> _deBruijnShift64];
 #endif
 			ulong n;
 			do
