@@ -228,6 +228,13 @@ namespace Experilous.Examples.MakeItRandom
 						{
 							Exception exception = _measurementException;
 							_measurementException = null;
+							_measurementCoroutine = null;
+							_cancelPending = false;
+
+							measurementProgressSlider.gameObject.SetActive(false);
+							measurementProgressSlider.value = 0;
+							measurePerformanceButtonText.text = originalMeasurePerformanceButtonText;
+							EnableDisableMeasurePerformanceButton();
 							throw exception;
 						}
 					}
