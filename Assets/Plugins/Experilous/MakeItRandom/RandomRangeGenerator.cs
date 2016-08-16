@@ -64,13 +64,9 @@ namespace Experilous.MakeItRandom
 			int _bitCountPerGroup;
 			int _bitGroupCountMinus1Per64Bits;
 			ulong _bitMask;
-			int _surplusBitCountPer64Bits;
-			ulong _surplusBitMask;
 
-			int _bitGroupCount;
-			ulong _bits;
-			ulong _surplusBits;
-			int _surplusBitCount;
+			int _bitGroupCount = 0;
+			ulong _bits = 0UL;
 
 			public BufferedAnyRangeGeneratorBase(IRandom random, ulong rangeMax, ulong bitMask)
 			{
@@ -78,13 +74,8 @@ namespace Experilous.MakeItRandom
 
 				_rangeMax = rangeMax;
 				_bitMask = bitMask;
-
 				_bitCountPerGroup = Detail.DeBruijnLookup.GetBitCountForBitMask(bitMask);
-				int bitGroupCountPer64Bits = 64 / _bitCountPerGroup;
-
-				_bitGroupCountMinus1Per64Bits = bitGroupCountPer64Bits - 1;
-				_surplusBitCountPer64Bits = 64 - bitGroupCountPer64Bits * _bitCountPerGroup;
-				_surplusBitMask = (1UL << _surplusBitCountPer64Bits) - 1UL;
+				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
 			}
 
 			protected ulong Next64()
@@ -92,24 +83,11 @@ namespace Experilous.MakeItRandom
 				ulong n;
 				do
 				{
-					if (_bitGroupCount > 1)
+					if (_bitGroupCount > 0)
 					{
 						n = _bits & _bitMask;
 						_bits = _bits >> _bitCountPerGroup;
 						--_bitGroupCount;
-					}
-					else if (_bitGroupCount == 1)
-					{
-						n = _bits & _bitMask;
-						_bitGroupCount = 0;
-						_surplusBits = (_surplusBits << _surplusBitCountPer64Bits) | ((_bits >> _bitCountPerGroup) & _surplusBitMask);
-						_surplusBitCount += _surplusBitCountPer64Bits;
-					}
-					else if (_surplusBitCount >= _bitCountPerGroup)
-					{
-						n = _surplusBits & _bitMask;
-						_surplusBits = _surplusBits >> _bitCountPerGroup;
-						_surplusBitCount -= _bitCountPerGroup;
 					}
 					else
 					{
@@ -130,50 +108,26 @@ namespace Experilous.MakeItRandom
 			int _bitCountPerGroup;
 			int _bitGroupCountMinus1Per64Bits;
 			ulong _bitMask;
-			int _surplusBitCountPer64Bits;
-			ulong _surplusBitMask;
 
 			int _bitGroupCount;
 			ulong _bits;
-			ulong _surplusBits;
-			int _surplusBitCount;
 
 			public BufferedPow2RangeGeneratorBase(IRandom random, int bitCount, ulong bitMask)
 			{
 				_random = random;
 
 				_bitMask = bitMask;
-
 				_bitCountPerGroup = bitCount;
-				int bitGroupCountPer64Bits = 64 / _bitCountPerGroup;
-
-				_bitGroupCountMinus1Per64Bits = bitGroupCountPer64Bits - 1;
-				_surplusBitCountPer64Bits = 64 - bitGroupCountPer64Bits * _bitCountPerGroup;
-				_surplusBitMask = (1UL << _surplusBitCountPer64Bits) - 1UL;
+				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
 			}
 
 			protected ulong Next64()
 			{
-				if (_bitGroupCount > 1)
+				if (_bitGroupCount > 0)
 				{
 					ulong n = _bits & _bitMask;
 					_bits = _bits >> _bitCountPerGroup;
 					--_bitGroupCount;
-					return n;
-				}
-				else if (_bitGroupCount == 1)
-				{
-					ulong n = _bits & _bitMask;
-					_bitGroupCount = 0;
-					_surplusBits = (_surplusBits << _surplusBitCountPer64Bits) | ((_bits >> _bitCountPerGroup) & _surplusBitMask);
-					_surplusBitCount += _surplusBitCountPer64Bits;
-					return n;
-				}
-				else if (_surplusBitCount >= _bitCountPerGroup)
-				{
-					ulong n = _surplusBits & _bitMask;
-					_surplusBits = _surplusBits >> _bitCountPerGroup;
-					_surplusBitCount -= _bitCountPerGroup;
 					return n;
 				}
 				else
@@ -203,11 +157,8 @@ namespace Experilous.MakeItRandom
 				_random = random;
 
 				_bitMask = bitMask;
-
 				_bitCountPerGroup = bitCount;
-				int bitGroupCountPer64Bits = 64 / _bitCountPerGroup;
-
-				_bitGroupCountMinus1Per64Bits = bitGroupCountPer64Bits - 1;
+				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
 			}
 
 			protected ulong Next64()
@@ -440,7 +391,7 @@ namespace Experilous.MakeItRandom
 				uint rangeMax = rangeSize - 1U;
 				if (rangeMax > int.MaxValue) throw new System.ArgumentOutOfRangeException("rangeSize");
 
-				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((uint)rangeMax);
+				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeMax);
 
 				if (rangeMax != bitMask) // The range size is not a power of 2.
 				{
@@ -467,7 +418,7 @@ namespace Experilous.MakeItRandom
 				uint rangeSizeMinusOne = rangeSize - 1U;
 				if (rangeMin + rangeSizeMinusOne > int.MaxValue) throw new System.ArgumentOutOfRangeException("rangeSize");
 
-				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((uint)rangeSizeMinusOne);
+				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeSizeMinusOne);
 
 				if (rangeSizeMinusOne != bitMask) // The range size is not a power of 2.
 				{
@@ -537,7 +488,7 @@ namespace Experilous.MakeItRandom
 			public static IUIntGenerator Create(IRandom random, uint rangeSize)
 			{
 				uint rangeMax = rangeSize - 1U;
-				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((uint)rangeMax);
+				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeMax);
 
 				if (rangeMax != bitMask) // The range size is not a power of 2.
 				{
@@ -562,7 +513,7 @@ namespace Experilous.MakeItRandom
 				if (rangeMin == 0U) return Create(random, rangeSize);
 
 				uint rangeSizeMinusOne = rangeSize - 1U;
-				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((uint)rangeSizeMinusOne);
+				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeSizeMinusOne);
 
 				if (rangeSizeMinusOne != bitMask) // The range size is not a power of 2.
 				{
