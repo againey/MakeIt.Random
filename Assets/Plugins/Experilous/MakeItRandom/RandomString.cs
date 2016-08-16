@@ -65,11 +65,10 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return;
 
 			int end = start + length;
-			IEnumerator<int> enumerator = random.InfiniteIntSequence(characters.Length);
+			IIntGenerator generator = random.IntGenerator(characters.Length);
 			for (int i = start; i < end; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = characters[enumerator.Current];
+				buffer[i] = characters[generator.Next()];
 			}
 		}
 
@@ -98,7 +97,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return;
 
 			int end = start + length;
-			IEnumerator<int> enumerator = random.InfiniteIntSequence(characters.Length);
+			IIntGenerator generator = random.IntGenerator(characters.Length);
 			for (int i = start; i < end; ++i)
 			{
 				if (allowSeparatorState)
@@ -111,14 +110,12 @@ namespace Experilous.MakeItRandom
 					}
 					else
 					{
-						enumerator.MoveNext();
-						buffer[i] = characters[enumerator.Current];
+						buffer[i] = characters[generator.Next()];
 					}
 				}
 				else
 				{
-					enumerator.MoveNext();
-					buffer[i] = characters[enumerator.Current];
+					buffer[i] = characters[generator.Next()];
 					allowSeparatorState = true;
 					forceSeparatorState = random.Probability(separatorProbability);
 				}
@@ -159,12 +156,11 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(2);
+			IIntGenerator generator = random.IntGenerator(2);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = (char)('0' + enumerator.Current);
+				buffer[i] = (char)('0' + generator.Next());
 			}
 
 			return new string(buffer);
@@ -185,12 +181,11 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(8);
+			IIntGenerator generator = random.IntGenerator(8);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = (char)('0' + enumerator.Current);
+				buffer[i] = (char)('0' + generator.Next());
 			}
 
 			return new string(buffer);
@@ -211,12 +206,11 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(10);
+			IIntGenerator generator = random.IntGenerator(10);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = (char)('0' + enumerator.Current);
+				buffer[i] = (char)('0' + generator.Next());
 			}
 
 			return new string(buffer);
@@ -262,12 +256,11 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(16);
+			IIntGenerator generator = random.IntGenerator(16);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = _upperHexadecimalCharacters[enumerator.Current];
+				buffer[i] = _upperHexadecimalCharacters[generator.Next()];
 			}
 
 			return new string(buffer);
@@ -288,12 +281,11 @@ namespace Experilous.MakeItRandom
 
 			char[] characters = GetHexadecimalCharacters(casing);
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(16);
+			IIntGenerator generator = random.IntGenerator(characters.Length);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = characters[enumerator.Current];
+				buffer[i] = characters[generator.Next()];
 			}
 
 			return new string(buffer);
@@ -441,12 +433,11 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IEnumerator<byte> enumerator = random.InfiniteByteSequence(64);
+			IIntGenerator generator = random.IntGenerator(64);
 
 			for (int i = 0; i < length; ++i)
 			{
-				enumerator.MoveNext();
-				buffer[i] = characters[enumerator.Current];
+				buffer[i] = characters[generator.Next()];
 			}
 
 			return new string(buffer);

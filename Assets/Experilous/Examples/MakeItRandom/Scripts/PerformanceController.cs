@@ -944,27 +944,28 @@ namespace Experilous.Examples.MakeItRandom
 		private void MeasurePerformance_UIntLessThan6(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
+			IUIntGenerator sequence = random.UIntGenerator(6U);
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
 
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
 
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
 
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
-				_generatedUInt = random.HalfOpenRange(6U);
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
+				_generatedUInt = sequence.Next();
 			}
 		}
 
