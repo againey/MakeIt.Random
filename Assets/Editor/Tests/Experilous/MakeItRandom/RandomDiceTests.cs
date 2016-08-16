@@ -15,9 +15,9 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U);
-			Assert.AreEqual(1, random.RollDice(2));
+			Assert.AreEqual(1, random.RollDie(2));
 			random.Received().Next32();
-			Assert.AreEqual(2, random.RollDice(2));
+			Assert.AreEqual(2, random.RollDie(2));
 			random.Received().Next32();
 		}
 
@@ -26,11 +26,11 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U);
-			Assert.AreEqual(1, random.RollDice(3));
+			Assert.AreEqual(1, random.RollDie(3));
 			random.Received().Next32();
-			Assert.AreEqual(2, random.RollDice(3));
+			Assert.AreEqual(2, random.RollDie(3));
 			random.Received().Next32();
-			Assert.AreEqual(3, random.RollDice(3));
+			Assert.AreEqual(3, random.RollDie(3));
 			random.Received().Next32();
 		}
 
@@ -39,17 +39,17 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 2U, 3U, 4U, 5U);
-			Assert.AreEqual(1, random.RollDice(6));
+			Assert.AreEqual(1, random.RollDie(6));
 			random.Received().Next32();
-			Assert.AreEqual(2, random.RollDice(6));
+			Assert.AreEqual(2, random.RollDie(6));
 			random.Received().Next32();
-			Assert.AreEqual(3, random.RollDice(6));
+			Assert.AreEqual(3, random.RollDie(6));
 			random.Received().Next32();
-			Assert.AreEqual(4, random.RollDice(6));
+			Assert.AreEqual(4, random.RollDie(6));
 			random.Received().Next32();
-			Assert.AreEqual(5, random.RollDice(6));
+			Assert.AreEqual(5, random.RollDie(6));
 			random.Received().Next32();
-			Assert.AreEqual(6, random.RollDice(6));
+			Assert.AreEqual(6, random.RollDie(6));
 			random.Received().Next32();
 		}
 
@@ -58,17 +58,17 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var random = Substitute.For<IRandom>();
 			random.Next32().Returns(0U, 1U, 9U, 10U, 18U, 19U);
-			Assert.AreEqual(1, random.RollDice(20));
+			Assert.AreEqual(1, random.RollDie(20));
 			random.Received().Next32();
-			Assert.AreEqual(2, random.RollDice(20));
+			Assert.AreEqual(2, random.RollDie(20));
 			random.Received().Next32();
-			Assert.AreEqual(10, random.RollDice(20));
+			Assert.AreEqual(10, random.RollDie(20));
 			random.Received().Next32();
-			Assert.AreEqual(11, random.RollDice(20));
+			Assert.AreEqual(11, random.RollDie(20));
 			random.Received().Next32();
-			Assert.AreEqual(19, random.RollDice(20));
+			Assert.AreEqual(19, random.RollDie(20));
 			random.Received().Next32();
-			Assert.AreEqual(20, random.RollDice(20));
+			Assert.AreEqual(20, random.RollDie(20));
 			random.Received().Next32();
 		}
 
