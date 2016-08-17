@@ -342,10 +342,10 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
 		/// <seealso cref="System.Random"/>
-		/// <seealso cref="SystemRandomWrapper64"/>
+		/// <seealso cref="SystemRandomWrapper"/>
 		public override System.Random AsSystemRandom()
 		{
-			return new SystemRandomWrapper64(this);
+			return new SystemRandomWrapper(this);
 		}
 	}
 }
