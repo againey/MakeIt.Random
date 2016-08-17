@@ -35,7 +35,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, int ratioTrue, int ratioFalse)
 		{
-			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, uint ratioTrue, uint ratioFalse)
 		{
-			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, float ratioTrue, float ratioFalse)
 		{
-			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, double ratioTrue, double ratioFalse)
 		{
-			return random.HalfOpenRange(ratioTrue + ratioFalse) < ratioTrue;
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
 		}
 
 		#endregion
@@ -90,7 +90,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, int numerator, int denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator;
+			return random.RangeCO(denominator) < numerator;
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, uint numerator, uint denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator;
+			return random.RangeCO(denominator) < numerator;
 		}
 
 		/// <summary>
@@ -114,7 +114,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, float numerator, float denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator;
+			return random.RangeCO(denominator) < numerator;
 		}
 
 		/// <summary>
@@ -126,7 +126,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, double numerator, double denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator;
+			return random.RangeCO(denominator) < numerator;
 		}
 
 		/// <summary>
@@ -137,7 +137,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, float probability)
 		{
-			return random.HalfOpenFloatUnit() < probability;
+			return random.FloatCO() < probability;
 		}
 
 		/// <summary>
@@ -148,7 +148,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, double probability)
 		{
-			return random.HalfOpenDoubleUnit() < probability;
+			return random.DoubleCO() < probability;
 		}
 
 		#endregion

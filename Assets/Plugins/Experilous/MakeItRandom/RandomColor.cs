@@ -21,7 +21,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque grayscale color.</returns>
 		public static Color Gray(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			return new Color(value, value, value);
 		}
 
@@ -32,7 +32,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque dark red color.</returns>
 		public static Color DarkRed(this IRandom random)
 		{
-			return new Color(random.ClosedFloatUnit(), 0f, 0f);
+			return new Color(random.FloatCC(), 0f, 0f);
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque dark green color.</returns>
 		public static Color DarkGreen(this IRandom random)
 		{
-			return new Color(0f, random.ClosedFloatUnit(), 0f);
+			return new Color(0f, random.FloatCC(), 0f);
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque dark blue color.</returns>
 		public static Color DarkBlue(this IRandom random)
 		{
-			return new Color(0f, 0f, random.ClosedFloatUnit());
+			return new Color(0f, 0f, random.FloatCC());
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque light red color.</returns>
 		public static Color LightRed(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			return new Color(1f, value, value);
 		}
 
@@ -73,7 +73,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque light green color.</returns>
 		public static Color LightGreen(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			return new Color(value, 1f, value);
 		}
 
@@ -84,7 +84,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque light blue color.</returns>
 		public static Color LightBlue(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			return new Color(value, value, 1f);
 		}
 
@@ -95,7 +95,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque red color.</returns>
 		public static Color AnyRed(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			if (value <= 0.5f)
 			{
 				return new Color(value * 2f, 0f, 0f);
@@ -114,7 +114,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque green color.</returns>
 		public static Color AnyGreen(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			if (value <= 0.5f)
 			{
 				return new Color(0f, value * 2f, 0f);
@@ -133,7 +133,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque blue color.</returns>
 		public static Color AnyBlue(this IRandom random)
 		{
-			float value = random.ClosedFloatUnit();
+			float value = random.FloatCC();
 			if (value <= 0.5f)
 			{
 				return new Color(0f, 0f, value * 2f);
@@ -152,7 +152,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color that is darker than the color provided.</returns>
 		public static Color Darken(this IRandom random, Color rgb)
 		{
-			float t = random.HalfOpenFloatUnit();
+			float t = random.FloatCO();
 			return new Color(rgb.r * t, rgb.g * t, rgb.b * t, rgb.a);
 		}
 
@@ -163,7 +163,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color that is lighter than the color provided.</returns>
 		public static Color Lighten(this IRandom random, Color rgb)
 		{
-			float t = random.HalfClosedFloatUnit();
+			float t = random.FloatOC();
 			return new Color((1f - rgb.r) * t + rgb.r, (1f - rgb.g) * t + rgb.g, (1f - rgb.b) * t + rgb.b, rgb.a);
 		}
 
@@ -178,7 +178,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static Color RGB(this IRandom random)
 		{
-			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
+			return new Color(random.FloatCC(), random.FloatCC(), random.FloatCC(), 1f);
 		}
 
 		/// <summary>
@@ -189,7 +189,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static Color RGB(this IRandom random, float a)
 		{
-			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
+			return new Color(random.FloatCC(), random.FloatCC(), random.FloatCC(), a);
 		}
 
 		/// <summary>
@@ -199,7 +199,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static Color RGBA(this IRandom random)
 		{
-			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new Color(random.FloatCC(), random.FloatCC(), random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -210,7 +210,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the red channel randomized.</returns>
 		public static Color ChangeRed(this IRandom random, Color rgb)
 		{
-			return new Color(random.ClosedFloatUnit(), rgb.g, rgb.b, rgb.a);
+			return new Color(random.FloatCC(), rgb.g, rgb.b, rgb.a);
 		}
 
 		/// <summary>
@@ -233,7 +233,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the green channel randomized.</returns>
 		public static Color ChangeGreen(this IRandom random, Color rgb)
 		{
-			return new Color(rgb.r, random.ClosedFloatUnit(), rgb.b, rgb.a);
+			return new Color(rgb.r, random.FloatCC(), rgb.b, rgb.a);
 		}
 
 		/// <summary>
@@ -256,7 +256,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the blue channel randomized.</returns>
 		public static Color ChangeBlue(this IRandom random, Color rgb)
 		{
-			return new Color(rgb.r, rgb.g, random.ClosedFloatUnit(), rgb.a);
+			return new Color(rgb.r, rgb.g, random.FloatCC(), rgb.a);
 		}
 
 		/// <summary>
@@ -279,7 +279,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static Color ChangeAlpha(this IRandom random, Color rgb)
 		{
-			return new Color(rgb.r, rgb.g, rgb.b, random.ClosedFloatUnit());
+			return new Color(rgb.r, rgb.g, rgb.b, random.FloatCC());
 		}
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the red and green channels randomized.</returns>
 		public static Color ChangeRedGreen(this IRandom random, Color rgb)
 		{
-			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.b, rgb.a);
+			return new Color(random.FloatCC(), random.FloatCC(), rgb.b, rgb.a);
 		}
 
 		/// <summary>
@@ -338,7 +338,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the red and blue channels randomized.</returns>
 		public static Color ChangeRedBlue(this IRandom random, Color rgb)
 		{
-			return new Color(random.ClosedFloatUnit(), rgb.g, random.ClosedFloatUnit(), rgb.a);
+			return new Color(random.FloatCC(), rgb.g, random.FloatCC(), rgb.a);
 		}
 
 		/// <summary>
@@ -374,7 +374,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the green and blue channels randomized.</returns>
 		public static Color ChangeGreenBlue(this IRandom random, Color rgb)
 		{
-			return new Color(rgb.r, random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.a);
+			return new Color(rgb.r, random.FloatCC(), random.FloatCC(), rgb.a);
 		}
 
 		/// <summary>
@@ -410,7 +410,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the red, green, and blue channels randomized.</returns>
 		public static Color ChangeRedGreenBlue(this IRandom random, Color rgb)
 		{
-			return new Color(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), rgb.a);
+			return new Color(random.FloatCC(), random.FloatCC(), random.FloatCC(), rgb.a);
 		}
 
 		/// <summary>
@@ -490,7 +490,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static ColorHSV HSV(this IRandom random)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
+			return new ColorHSV(random.FloatCC(), random.FloatCC(), random.FloatCC(), 1f);
 		}
 
 		/// <summary>
@@ -501,7 +501,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHSV HSV(this IRandom random, float a)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
+			return new ColorHSV(random.FloatCC(), random.FloatCC(), random.FloatCC(), a);
 		}
 
 		/// <summary>
@@ -511,7 +511,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHSV HSVA(this IRandom random)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new ColorHSV(random.FloatCC(), random.FloatCC(), random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -522,7 +522,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHSV ChangeHue(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), hsv.s, hsv.v, hsv.a);
+			return new ColorHSV(random.FloatCC(), hsv.s, hsv.v, hsv.a);
 		}
 
 		/// <summary>
@@ -545,7 +545,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHSV ChangeSat(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, random.ClosedFloatUnit(), hsv.v, hsv.a);
+			return new ColorHSV(hsv.h, random.FloatCC(), hsv.v, hsv.a);
 		}
 
 		/// <summary>
@@ -568,7 +568,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the value channel randomized.</returns>
 		public static ColorHSV ChangeValue(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, hsv.s, random.ClosedFloatUnit(), hsv.a);
+			return new ColorHSV(hsv.h, hsv.s, random.FloatCC(), hsv.a);
 		}
 
 		/// <summary>
@@ -591,7 +591,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHSV ChangeAlpha(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, hsv.s, hsv.v, random.ClosedFloatUnit());
+			return new ColorHSV(hsv.h, hsv.s, hsv.v, random.FloatCC());
 		}
 
 		/// <summary>
@@ -614,7 +614,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHSV ChangeHueSat(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.v, hsv.a);
+			return new ColorHSV(random.FloatCC(), random.FloatCC(), hsv.v, hsv.a);
 		}
 
 		/// <summary>
@@ -650,7 +650,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and value channels randomized.</returns>
 		public static ColorHSV ChangeHueValue(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), hsv.s, random.ClosedFloatUnit(), hsv.a);
+			return new ColorHSV(random.FloatCC(), hsv.s, random.FloatCC(), hsv.a);
 		}
 
 		/// <summary>
@@ -686,7 +686,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation and value channels randomized.</returns>
 		public static ColorHSV ChangeSatValue(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(hsv.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.a);
+			return new ColorHSV(hsv.h, random.FloatCC(), random.FloatCC(), hsv.a);
 		}
 
 		/// <summary>
@@ -722,7 +722,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue, saturation, and value channels randomized.</returns>
 		public static ColorHSV ChangeHueSatValue(this IRandom random, ColorHSV hsv)
 		{
-			return new ColorHSV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsv.a);
+			return new ColorHSV(random.FloatCC(), random.FloatCC(), random.FloatCC(), hsv.a);
 		}
 
 		/// <summary>
@@ -813,7 +813,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHCV HCV(this IRandom random, float a)
 		{
-			float hue = random.HalfOpenFloatUnit();
+			float hue = random.FloatCO();
 			Vector2 chromaValue = random.PointWithinTriangle(new Vector2(1f, ColorHCV.GetValueAtMaxChroma()), new Vector2(0f, 1f));
 			return new ColorHCV(hue, chromaValue.x, chromaValue.y, a);
 		}
@@ -825,7 +825,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHCV HCVA(this IRandom random)
 		{
-			return random.HCV(random.ClosedFloatUnit());
+			return random.HCV(random.FloatCC());
 		}
 
 		/// <summary>
@@ -836,7 +836,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHCV ChangeHue(this IRandom random, ColorHCV hcv)
 		{
-			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), hcv.c, hcv.v, hcv.a));
+			return Change(hcv, () => new ColorHCV(random.FloatCC(), hcv.c, hcv.v, hcv.a));
 		}
 
 		/// <summary>
@@ -859,7 +859,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHCV ChangeChroma(this IRandom random, ColorHCV hcv)
 		{
-			return new ColorHCV(hcv.h, random.ClosedRange(ColorHCV.GetMaxChroma(hcv.v)), hcv.v, hcv.a);
+			return new ColorHCV(hcv.h, random.RangeCC(ColorHCV.GetMaxChroma(hcv.v)), hcv.v, hcv.a);
 		}
 
 		/// <summary>
@@ -884,7 +884,7 @@ namespace Experilous.MakeItRandom
 		{
 			float yMin, yMax;
 			ColorHCV.GetMinMaxValue(hcv.c, out yMin, out yMax);
-			return new ColorHCV(hcv.h, hcv.c, random.ClosedRange(yMin, yMax), hcv.a);
+			return new ColorHCV(hcv.h, hcv.c, random.RangeCC(yMin, yMax), hcv.a);
 		}
 
 		/// <summary>
@@ -909,7 +909,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHCV ChangeAlpha(this IRandom random, ColorHCV hcv)
 		{
-			return new ColorHCV(hcv.h, hcv.c, hcv.v, random.ClosedFloatUnit());
+			return new ColorHCV(hcv.h, hcv.c, hcv.v, random.FloatCC());
 		}
 
 		/// <summary>
@@ -932,7 +932,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHCV ChangeHueChroma(this IRandom random, ColorHCV hcv)
 		{
-			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcv.v, hcv.a));
+			return Change(hcv, () => new ColorHCV(random.FloatCC(), random.FloatCC(), hcv.v, hcv.a));
 		}
 
 		/// <summary>
@@ -968,7 +968,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and value channels randomized.</returns>
 		public static ColorHCV ChangeHueValue(this IRandom random, ColorHCV hcv)
 		{
-			return Change(hcv, () => new ColorHCV(random.ClosedFloatUnit(), hcv.c, random.ClosedFloatUnit(), hcv.a));
+			return Change(hcv, () => new ColorHCV(random.FloatCC(), hcv.c, random.FloatCC(), hcv.a));
 		}
 
 		/// <summary>
@@ -1137,7 +1137,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static ColorHSL HSL(this IRandom random)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
+			return new ColorHSL(random.FloatCC(), random.FloatCC(), random.FloatCC(), 1f);
 		}
 
 		/// <summary>
@@ -1148,7 +1148,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHSL HSL(this IRandom random, float a)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
+			return new ColorHSL(random.FloatCC(), random.FloatCC(), random.FloatCC(), a);
 		}
 
 		/// <summary>
@@ -1158,7 +1158,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHSL HSLA(this IRandom random)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new ColorHSL(random.FloatCC(), random.FloatCC(), random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -1169,7 +1169,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHSL ChangeHue(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), hsl.s, hsl.l, hsl.a);
+			return new ColorHSL(random.FloatCC(), hsl.s, hsl.l, hsl.a);
 		}
 
 		/// <summary>
@@ -1192,7 +1192,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHSL ChangeSat(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, random.ClosedFloatUnit(), hsl.l, hsl.a);
+			return new ColorHSL(hsl.h, random.FloatCC(), hsl.l, hsl.a);
 		}
 
 		/// <summary>
@@ -1215,7 +1215,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the lightness channel randomized.</returns>
 		public static ColorHSL ChangeLight(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, hsl.s, random.ClosedFloatUnit(), hsl.a);
+			return new ColorHSL(hsl.h, hsl.s, random.FloatCC(), hsl.a);
 		}
 
 		/// <summary>
@@ -1238,7 +1238,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHSL ChangeAlpha(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, hsl.s, hsl.l, random.ClosedFloatUnit());
+			return new ColorHSL(hsl.h, hsl.s, hsl.l, random.FloatCC());
 		}
 
 		/// <summary>
@@ -1261,7 +1261,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHSL ChangeHueSat(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.l, hsl.a);
+			return new ColorHSL(random.FloatCC(), random.FloatCC(), hsl.l, hsl.a);
 		}
 
 		/// <summary>
@@ -1297,7 +1297,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and lightness channels randomized.</returns>
 		public static ColorHSL ChangeHueLight(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), hsl.s, random.ClosedFloatUnit(), hsl.a);
+			return new ColorHSL(random.FloatCC(), hsl.s, random.FloatCC(), hsl.a);
 		}
 
 		/// <summary>
@@ -1333,7 +1333,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation and lightness channels randomized.</returns>
 		public static ColorHSL ChangeSatLight(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(hsl.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.a);
+			return new ColorHSL(hsl.h, random.FloatCC(), random.FloatCC(), hsl.a);
 		}
 
 		/// <summary>
@@ -1369,7 +1369,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue, saturation, and lightness channels randomized.</returns>
 		public static ColorHSL ChangeHueSatLight(this IRandom random, ColorHSL hsl)
 		{
-			return new ColorHSL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsl.a);
+			return new ColorHSL(random.FloatCC(), random.FloatCC(), random.FloatCC(), hsl.a);
 		}
 
 		/// <summary>
@@ -1460,7 +1460,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHCL HCL(this IRandom random, float a)
 		{
-			float hue = random.HalfOpenFloatUnit();
+			float hue = random.FloatCO();
 			Vector2 chromaLight = random.PointWithinTriangle(new Vector2(1f, ColorHCL.GetLightnessAtMaxChroma()), new Vector2(0f, 1f));
 			return new ColorHCL(hue, chromaLight.x, chromaLight.y, a);
 		}
@@ -1472,7 +1472,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHCL HCLA(this IRandom random)
 		{
-			return random.HCL(random.ClosedFloatUnit());
+			return random.HCL(random.FloatCC());
 		}
 
 		/// <summary>
@@ -1483,7 +1483,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHCL ChangeHue(this IRandom random, ColorHCL hcl)
 		{
-			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), hcl.c, hcl.l, hcl.a));
+			return Change(hcl, () => new ColorHCL(random.FloatCC(), hcl.c, hcl.l, hcl.a));
 		}
 
 		/// <summary>
@@ -1506,7 +1506,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHCL ChangeChroma(this IRandom random, ColorHCL hcl)
 		{
-			return new ColorHCL(hcl.h, random.ClosedRange(ColorHCL.GetMaxChroma(hcl.l)), hcl.l, hcl.a);
+			return new ColorHCL(hcl.h, random.RangeCC(ColorHCL.GetMaxChroma(hcl.l)), hcl.l, hcl.a);
 		}
 
 		/// <summary>
@@ -1531,7 +1531,7 @@ namespace Experilous.MakeItRandom
 		{
 			float yMin, yMax;
 			ColorHCL.GetMinMaxLightness(hcl.c, out yMin, out yMax);
-			return new ColorHCL(hcl.h, hcl.c, random.ClosedRange(yMin, yMax), hcl.a);
+			return new ColorHCL(hcl.h, hcl.c, random.RangeCC(yMin, yMax), hcl.a);
 		}
 
 		/// <summary>
@@ -1556,7 +1556,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHCL ChangeAlpha(this IRandom random, ColorHCL hcl)
 		{
-			return new ColorHCL(hcl.h, hcl.c, hcl.l, random.ClosedFloatUnit());
+			return new ColorHCL(hcl.h, hcl.c, hcl.l, random.FloatCC());
 		}
 
 		/// <summary>
@@ -1579,7 +1579,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHCL ChangeHueChroma(this IRandom random, ColorHCL hcl)
 		{
-			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcl.l, hcl.a));
+			return Change(hcl, () => new ColorHCL(random.FloatCC(), random.FloatCC(), hcl.l, hcl.a));
 		}
 
 		/// <summary>
@@ -1615,7 +1615,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and lightness channels randomized.</returns>
 		public static ColorHCL ChangeHueLight(this IRandom random, ColorHCL hcl)
 		{
-			return Change(hcl, () => new ColorHCL(random.ClosedFloatUnit(), hcl.c, random.ClosedFloatUnit(), hcl.a));
+			return Change(hcl, () => new ColorHCL(random.FloatCC(), hcl.c, random.FloatCC(), hcl.a));
 		}
 
 		/// <summary>
@@ -1784,7 +1784,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random fully opaque color.</returns>
 		public static ColorHSY HSY(this IRandom random)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), 1f);
+			return new ColorHSY(random.FloatCC(), random.FloatCC(), random.FloatCC(), 1f);
 		}
 
 		/// <summary>
@@ -1795,7 +1795,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHSY HSY(this IRandom random, float a)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), a);
+			return new ColorHSY(random.FloatCC(), random.FloatCC(), random.FloatCC(), a);
 		}
 
 		/// <summary>
@@ -1805,7 +1805,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHSY HSYA(this IRandom random)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new ColorHSY(random.FloatCC(), random.FloatCC(), random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -1816,7 +1816,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHSY ChangeHue(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), hsy.s, hsy.y, hsy.a);
+			return new ColorHSY(random.FloatCC(), hsy.s, hsy.y, hsy.a);
 		}
 
 		/// <summary>
@@ -1839,7 +1839,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHSY ChangeSat(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(hsy.h, random.ClosedFloatUnit(), hsy.y, hsy.a);
+			return new ColorHSY(hsy.h, random.FloatCC(), hsy.y, hsy.a);
 		}
 
 		/// <summary>
@@ -1862,7 +1862,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the luma channel randomized.</returns>
 		public static ColorHSY ChangeLuma(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(hsy.h, hsy.s, random.ClosedFloatUnit(), hsy.a);
+			return new ColorHSY(hsy.h, hsy.s, random.FloatCC(), hsy.a);
 		}
 
 		/// <summary>
@@ -1885,7 +1885,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHSY ChangeAlpha(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(hsy.h, hsy.s, hsy.y, random.ClosedFloatUnit());
+			return new ColorHSY(hsy.h, hsy.s, hsy.y, random.FloatCC());
 		}
 
 		/// <summary>
@@ -1908,7 +1908,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHSY ChangeHueSat(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.y, hsy.a);
+			return new ColorHSY(random.FloatCC(), random.FloatCC(), hsy.y, hsy.a);
 		}
 
 		/// <summary>
@@ -1944,7 +1944,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and luma channels randomized.</returns>
 		public static ColorHSY ChangeHueLuma(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), hsy.s, random.ClosedFloatUnit(), hsy.a);
+			return new ColorHSY(random.FloatCC(), hsy.s, random.FloatCC(), hsy.a);
 		}
 
 		/// <summary>
@@ -1980,7 +1980,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation and luma channels randomized.</returns>
 		public static ColorHSY ChangeSatLuma(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(hsy.h, random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.a);
+			return new ColorHSY(hsy.h, random.FloatCC(), random.FloatCC(), hsy.a);
 		}
 
 		/// <summary>
@@ -2016,7 +2016,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue, saturation, and luma channels randomized.</returns>
 		public static ColorHSY ChangeHueSatLuma(this IRandom random, ColorHSY hsy)
 		{
-			return new ColorHSY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit(), hsy.a);
+			return new ColorHSY(random.FloatCC(), random.FloatCC(), random.FloatCC(), hsy.a);
 		}
 
 		/// <summary>
@@ -2107,7 +2107,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with the opacity set to <paramref name="a"/>.</returns>
 		public static ColorHCY HCY(this IRandom random, float a)
 		{
-			float hue = random.HalfOpenFloatUnit();
+			float hue = random.FloatCO();
 			Vector2 chromaLuma = random.PointWithinTriangle(new Vector2(1f, ColorHCY.GetLumaAtMaxChroma(hue)), new Vector2(0f, 1f));
 			return new ColorHCY(hue, chromaLuma.x, chromaLuma.y, a);
 		}
@@ -2119,7 +2119,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random color with a random opacity.</returns>
 		public static ColorHCY HCYA(this IRandom random)
 		{
-			return random.HCY(random.ClosedFloatUnit());
+			return random.HCY(random.FloatCC());
 		}
 
 		/// <summary>
@@ -2130,7 +2130,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue channel randomized.</returns>
 		public static ColorHCY ChangeHue(this IRandom random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), hcy.c, hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.FloatCC(), hcy.c, hcy.y, hcy.a));
 		}
 
 		/// <summary>
@@ -2153,7 +2153,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the saturation channel randomized.</returns>
 		public static ColorHCY ChangeChroma(this IRandom random, ColorHCY hcy)
 		{
-			return new ColorHCY(hcy.h, random.ClosedRange(ColorHCY.GetMaxChroma(hcy.h, hcy.y)), hcy.y, hcy.a);
+			return new ColorHCY(hcy.h, random.RangeCC(ColorHCY.GetMaxChroma(hcy.h, hcy.y)), hcy.y, hcy.a);
 		}
 
 		/// <summary>
@@ -2178,7 +2178,7 @@ namespace Experilous.MakeItRandom
 		{
 			float yMin, yMax;
 			ColorHCY.GetMinMaxLuma(hcy.h, hcy.c, out yMin, out yMax);
-			return new ColorHCY(hcy.h, hcy.c, random.ClosedRange(yMin, yMax), hcy.a);
+			return new ColorHCY(hcy.h, hcy.c, random.RangeCC(yMin, yMax), hcy.a);
 		}
 
 		/// <summary>
@@ -2203,7 +2203,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the opacity randomized.</returns>
 		public static ColorHCY ChangeAlpha(this IRandom random, ColorHCY hcy)
 		{
-			return new ColorHCY(hcy.h, hcy.c, hcy.y, random.ClosedFloatUnit());
+			return new ColorHCY(hcy.h, hcy.c, hcy.y, random.FloatCC());
 		}
 
 		/// <summary>
@@ -2226,7 +2226,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and saturation channels randomized.</returns>
 		public static ColorHCY ChangeHueChroma(this IRandom random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), random.ClosedFloatUnit(), hcy.y, hcy.a));
+			return Change(hcy, () => new ColorHCY(random.FloatCC(), random.FloatCC(), hcy.y, hcy.a));
 		}
 
 		/// <summary>
@@ -2262,7 +2262,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The original color with the hue and luma channels randomized.</returns>
 		public static ColorHCY ChangeHueLuma(this IRandom random, ColorHCY hcy)
 		{
-			return Change(hcy, () => new ColorHCY(random.ClosedFloatUnit(), hcy.c, random.ClosedFloatUnit(), hcy.a));
+			return Change(hcy, () => new ColorHCY(random.FloatCC(), hcy.c, random.FloatCC(), hcy.a));
 		}
 
 		/// <summary>
@@ -2426,17 +2426,17 @@ namespace Experilous.MakeItRandom
 
 		private static float ChangeClamped(this IRandom random, float original, float maxChange)
 		{
-			return random.ClosedRange(Mathf.Max(0f, original - maxChange), Mathf.Min(original + maxChange, 1f));
+			return random.RangeCC(Mathf.Max(0f, original - maxChange), Mathf.Min(original + maxChange, 1f));
 		}
 
 		private static float ChangeClamped(this IRandom random, float original, float maxChange, float min, float max)
 		{
-			return random.ClosedRange(Mathf.Max(min, original - maxChange), Mathf.Min(original + maxChange, max));
+			return random.RangeCC(Mathf.Max(min, original - maxChange), Mathf.Min(original + maxChange, max));
 		}
 
 		private static float ChangeRepeated(this IRandom random, float original, float maxChange)
 		{
-			return Mathf.Repeat(original + random.ClosedRange(-maxChange, +maxChange), 1f);
+			return Mathf.Repeat(original + random.RangeCC(-maxChange, +maxChange), 1f);
 		}
 
 		#endregion

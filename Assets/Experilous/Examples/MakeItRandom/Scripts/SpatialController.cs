@@ -111,7 +111,7 @@ namespace Experilous.Examples.MakeItRandom
 
 		public void PositionWithinRectangle()
 		{
-			Vector2 size = new Vector2(_random.ClosedRange(1f, 2f), _random.ClosedRange(1f, 2f));
+			Vector2 size = new Vector2(_random.RangeCC(1f, 2f), _random.RangeCC(1f, 2f));
 			foreach (var pointObject in _pointObjects)
 			{
 				pointObject.position = _random.PointWithinRectangle(size) - size * 0.5f;
@@ -128,8 +128,8 @@ namespace Experilous.Examples.MakeItRandom
 				axis1 = _random.UnitVector2();
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
-			axis0 *= _random.ClosedRange(1f, 2f);
-			axis1 *= _random.ClosedRange(1f, 2f);
+			axis0 *= _random.RangeCC(1f, 2f);
+			axis1 *= _random.RangeCC(1f, 2f);
 			foreach (var pointObject in _pointObjects)
 			{
 				pointObject.position = _random.PointWithinParallelogram(axis0, axis1) - (axis0 + axis1) * 0.5f;
@@ -146,8 +146,8 @@ namespace Experilous.Examples.MakeItRandom
 				axis1 = _random.UnitVector2();
 				dot = Mathf.Abs(Vector2.Dot(axis0, axis1));
 			}
-			axis0 *= _random.ClosedRange(1f, 2f);
-			axis1 *= _random.ClosedRange(1f, 2f);
+			axis0 *= _random.RangeCC(1f, 2f);
+			axis1 *= _random.RangeCC(1f, 2f);
 			Vector2 offset = (axis0 + axis1) / 3f;
 			foreach (var pointObject in _pointObjects)
 			{

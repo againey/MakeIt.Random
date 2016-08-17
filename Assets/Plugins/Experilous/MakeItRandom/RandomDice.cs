@@ -19,9 +19,9 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generated values of the returned generator are derived.</param>
 		/// <param name="sides">The number of sides of the die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
 		/// <returns></returns>
-		public static IIntGenerator DiceGenerator(this IRandom random, int sides)
+		public static IIntGenerator MakeDiceGenerator(this IRandom random, int sides)
 		{
-			return random.IntGenerator(1, sides);
+			return random.MakeRangeOCGenerator(sides);
 		}
 
 		#endregion
@@ -36,7 +36,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, <paramref name="sides"/>].</returns>
 		public static int RollDie(this IRandom random, int sides)
 		{
-			return random.HalfOpenRange(sides) + 1;
+			return random.RangeCO(sides) + 1;
 		}
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace Experilous.MakeItRandom
 			var dice = new int[quantity];
 			for (int i = 0; i < quantity; ++i)
 			{
-				dice[i] = random.HalfOpenRange(sides) + 1;
+				dice[i] = random.RangeCO(sides) + 1;
 			}
 			return dice;
 		}
@@ -96,7 +96,7 @@ namespace Experilous.MakeItRandom
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
 			for (int i = 0; i < quantity; ++i)
 			{
-				dice[i] = random.HalfOpenRange(sides) + 1;
+				dice[i] = random.RangeCO(sides) + 1;
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace Experilous.MakeItRandom
 			dice.Clear();
 			while (dice.Count < quantity)
 			{
-				dice.Add(random.HalfOpenRange(sides) + 1);
+				dice.Add(random.RangeCO(sides) + 1);
 			}
 		}
 
@@ -168,7 +168,7 @@ namespace Experilous.MakeItRandom
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				sum += random.HalfOpenRange(sides);
+				sum += random.RangeCO(sides);
 			}
 			return sum + quantity;
 		}
@@ -205,7 +205,7 @@ namespace Experilous.MakeItRandom
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				int die = random.HalfOpenRange(sides) + 1;
+				int die = random.RangeCO(sides) + 1;
 				dice[i] = die;
 				sum += die;
 			}
@@ -250,7 +250,7 @@ namespace Experilous.MakeItRandom
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
 			{
-				int die = random.HalfOpenRange(sides) + 1;
+				int die = random.RangeCO(sides) + 1;
 				dice[i] = die;
 				sum += die;
 			}
@@ -295,7 +295,7 @@ namespace Experilous.MakeItRandom
 			int sum = 0;
 			while (dice.Count < quantity)
 			{
-				int die = random.HalfOpenRange(sides) + 1;
+				int die = random.RangeCO(sides) + 1;
 				dice.Add(die);
 				sum += die;
 			}
@@ -389,7 +389,7 @@ namespace Experilous.MakeItRandom
 				do
 				{
 					if (i >= additionalQuantity) return;
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					++i;
 				} while (die <= min);
 
@@ -431,7 +431,7 @@ namespace Experilous.MakeItRandom
 				{
 					if (i >= additionalQuantity) return;
 
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					if (die <= min)
 					{
 						discardedDice[i++] = die;
@@ -490,7 +490,7 @@ namespace Experilous.MakeItRandom
 					
 					if (discardedDice.Count >= additionalQuantity) return;
 
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					if (die <= min)
 					{
 						discardedDice.Add(die);
@@ -545,7 +545,7 @@ namespace Experilous.MakeItRandom
 				do
 				{
 					if (i >= additionalQuantity) return;
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					++i;
 				} while (die >= max);
 
@@ -587,7 +587,7 @@ namespace Experilous.MakeItRandom
 				{
 					if (i >= additionalQuantity) return;
 
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					if (die >= max)
 					{
 						discardedDice[i++] = die;
@@ -646,7 +646,7 @@ namespace Experilous.MakeItRandom
 					
 					if (discardedDice.Count >= additionalQuantity) return;
 
-					die = random.HalfOpenRange(sides) + 1;
+					die = random.RangeCO(sides) + 1;
 					if (die >= max)
 					{
 						discardedDice.Add(die);
@@ -2385,7 +2385,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 4].</returns>
 		public static int RollD4(this IRandom random)
 		{
-			return random.ClosedRange(1, 4);
+			return random.RangeCC(1, 4);
 		}
 
 		/// <summary>
@@ -2395,7 +2395,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 6].</returns>
 		public static int RollD6(this IRandom random)
 		{
-			return random.ClosedRange(1, 6);
+			return random.RangeCC(1, 6);
 		}
 
 		/// <summary>
@@ -2405,7 +2405,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 8].</returns>
 		public static int RollD8(this IRandom random)
 		{
-			return random.ClosedRange(1, 8);
+			return random.RangeCC(1, 8);
 		}
 
 		/// <summary>
@@ -2415,7 +2415,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 10].</returns>
 		public static int RollD10(this IRandom random)
 		{
-			return random.ClosedRange(1, 10);
+			return random.RangeCC(1, 10);
 		}
 
 		/// <summary>
@@ -2425,7 +2425,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 12].</returns>
 		public static int RollD12(this IRandom random)
 		{
-			return random.ClosedRange(1, 12);
+			return random.RangeCC(1, 12);
 		}
 
 		/// <summary>
@@ -2435,7 +2435,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The numeric value of the simulated die roll, in the range [1, 20].</returns>
 		public static int RollD20(this IRandom random)
 		{
-			return random.ClosedRange(1, 20);
+			return random.RangeCC(1, 20);
 		}
 
 		#endregion

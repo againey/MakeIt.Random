@@ -223,7 +223,7 @@ namespace Experilous.MakeItRandom
 		public static int SignOrZero(this IRandom random, int ratioPositive, int ratioZero, int ratioNegative)
 		{
 			int ratioNonNegative = ratioPositive + ratioZero;
-			int n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
+			int n = random.RangeCO(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
@@ -239,7 +239,7 @@ namespace Experilous.MakeItRandom
 		public static int SignOrZero(this IRandom random, uint ratioPositive, uint ratioZero, uint ratioNegative)
 		{
 			uint ratioNonNegative = ratioPositive + ratioZero;
-			uint n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
+			uint n = random.RangeCO(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
@@ -255,7 +255,7 @@ namespace Experilous.MakeItRandom
 		public static int SignOrZero(this IRandom random, float ratioPositive, float ratioZero, float ratioNegative)
 		{
 			float ratioNonNegative = ratioPositive + ratioZero;
-			float n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
+			float n = random.RangeCO(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
@@ -271,7 +271,7 @@ namespace Experilous.MakeItRandom
 		public static int SignOrZero(this IRandom random, double ratioPositive, double ratioZero, double ratioNegative)
 		{
 			double ratioNonNegative = ratioPositive + ratioZero;
-			double n = random.HalfOpenRange(ratioNonNegative + ratioNegative);
+			double n = random.RangeCO(ratioNonNegative + ratioNegative);
 			return n < ratioNonNegative ? (n < ratioPositive ? +1 : 0) : -1;
 		}
 
@@ -288,7 +288,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, int numerator, int denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
+			return random.RangeCO(denominator) < numerator ? 1 : 0;
 		}
 
 		/// <summary>
@@ -300,7 +300,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, uint numerator, uint denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
+			return random.RangeCO(denominator) < numerator ? 1 : 0;
 		}
 
 		/// <summary>
@@ -312,7 +312,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, float numerator, float denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
+			return random.RangeCO(denominator) < numerator ? 1 : 0;
 		}
 
 		/// <summary>
@@ -324,7 +324,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, double numerator, double denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? 1 : 0;
+			return random.RangeCO(denominator) < numerator ? 1 : 0;
 		}
 
 		/// <summary>
@@ -335,7 +335,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, float probability)
 		{
-			return random.HalfOpenFloatUnit() < probability ? 1 : 0;
+			return random.FloatCO() < probability ? 1 : 0;
 		}
 
 		/// <summary>
@@ -346,7 +346,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, double probability)
 		{
-			return random.HalfOpenDoubleUnit() < probability ? 1 : 0;
+			return random.DoubleCO() < probability ? 1 : 0;
 		}
 
 		/// <summary>
@@ -358,7 +358,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, int numerator, int denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -370,7 +370,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, uint numerator, uint denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -382,7 +382,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, float numerator, float denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -394,7 +394,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, double numerator, double denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -405,7 +405,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, float probability)
 		{
-			return random.HalfOpenFloatUnit() < probability ? +1 : -1;
+			return random.FloatCO() < probability ? +1 : -1;
 		}
 
 		/// <summary>
@@ -416,7 +416,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, double probability)
 		{
-			return random.HalfOpenDoubleUnit() < probability ? +1 : -1;
+			return random.DoubleCO() < probability ? +1 : -1;
 		}
 
 		/// <summary>
@@ -428,7 +428,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, int numerator, int denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -440,7 +440,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, uint numerator, uint denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -452,7 +452,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, float numerator, float denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -464,7 +464,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, double numerator, double denominator)
 		{
-			return random.HalfOpenRange(denominator) < numerator ? +1 : -1;
+			return random.RangeCO(denominator) < numerator ? +1 : -1;
 		}
 
 		/// <summary>
@@ -475,7 +475,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, float probability)
 		{
-			return random.HalfOpenFloatUnit() < probability ? +1 : -1;
+			return random.FloatCO() < probability ? +1 : -1;
 		}
 
 		/// <summary>
@@ -486,7 +486,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int NegativeProbability(this IRandom random, double probability)
 		{
-			return random.HalfOpenDoubleUnit() < probability ? +1 : -1;
+			return random.DoubleCO() < probability ? +1 : -1;
 		}
 
 		/// <summary>
@@ -501,7 +501,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
 		{
 			int numeratorNonZero = numeratorPositive + numeratorNegative;
-			int n = random.HalfOpenRange(denominator);
+			int n = random.RangeCO(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
@@ -517,7 +517,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, uint numeratorPositive, uint numeratorNegative, uint denominator)
 		{
 			uint numeratorNonZero = numeratorPositive + numeratorNegative;
-			uint n = random.HalfOpenRange(denominator);
+			uint n = random.RangeCO(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
@@ -533,7 +533,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, float numeratorPositive, float numeratorNegative, float denominator)
 		{
 			float numeratorNonZero = numeratorPositive + numeratorNegative;
-			float n = random.HalfOpenRange(denominator);
+			float n = random.RangeCO(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
@@ -549,7 +549,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)
 		{
 			double numeratorNonZero = numeratorPositive + numeratorNegative;
-			double n = random.HalfOpenRange(denominator);
+			double n = random.RangeCO(denominator);
 			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
 		}
 
@@ -564,7 +564,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, float probabilityPositive, float probabilityNegative)
 		{
 			float probabilityNonZero = probabilityPositive + probabilityNegative;
-			float n = random.HalfOpenFloatUnit();
+			float n = random.FloatCO();
 			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
 		}
 
@@ -579,7 +579,7 @@ namespace Experilous.MakeItRandom
 		public static int SignProbability(this IRandom random, double probabilityPositive, double probabilityNegative)
 		{
 			double probabilityNonZero = probabilityPositive + probabilityNegative;
-			double n = random.HalfOpenDoubleUnit();
+			double n = random.DoubleCO();
 			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
 		}
 
@@ -606,7 +606,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in degrees in the range [0, 360).</returns>
 		public static float FloatDegrees(this IRandom random)
 		{
-			return random.HalfOpenFloatUnit() * _floatDegreesPerTurn;
+			return random.FloatCO() * _floatDegreesPerTurn;
 		}
 
 		/// <summary>
@@ -616,7 +616,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in degrees in the range [-180, +180).</returns>
 		public static float SignedFloatDegrees(this IRandom random)
 		{
-			return random.HalfOpenFloatUnit() * _floatDegreesPerTurn - _floatDegreesPerHalfTurn;
+			return random.FloatCO() * _floatDegreesPerTurn - _floatDegreesPerHalfTurn;
 		}
 
 		/// <summary>
@@ -626,7 +626,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in radians in the range [0, 2π).</returns>
 		public static float FloatRadians(this IRandom random)
 		{
-			return random.HalfOpenFloatUnit() * _floatRadiansPerTurn;
+			return random.FloatCO() * _floatRadiansPerTurn;
 		}
 
 		/// <summary>
@@ -636,7 +636,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in radians in the range [-π, +π).</returns>
 		public static float SignedFloatRadians(this IRandom random)
 		{
-			return random.HalfOpenFloatUnit() * _floatRadiansPerTurn - _floatRadiansPerHalfTurn;
+			return random.FloatCO() * _floatRadiansPerTurn - _floatRadiansPerHalfTurn;
 		}
 
 		/// <summary>
@@ -646,7 +646,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in degrees in the range [0, 360).</returns>
 		public static double DoubleDegrees(this IRandom random)
 		{
-			return random.HalfOpenDoubleUnit() * _doubleDegreesPerTurn;
+			return random.DoubleCO() * _doubleDegreesPerTurn;
 		}
 
 		/// <summary>
@@ -656,7 +656,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in degrees in the range [-180, +180).</returns>
 		public static double SignedDoubleDegrees(this IRandom random)
 		{
-			return random.HalfOpenDoubleUnit() * _doubleDegreesPerTurn - _doubleDegreesPerHalfTurn;
+			return random.DoubleCO() * _doubleDegreesPerTurn - _doubleDegreesPerHalfTurn;
 		}
 
 		/// <summary>
@@ -666,7 +666,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in radians in the range [0, 2π).</returns>
 		public static double DoubleRadians(this IRandom random)
 		{
-			return random.HalfOpenDoubleUnit() * _doubleRadiansPerTurn;
+			return random.DoubleCO() * _doubleRadiansPerTurn;
 		}
 
 		/// <summary>
@@ -676,7 +676,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random angle measured in radians in the range [-π, +π).</returns>
 		public static double SignedDoubleRadians(this IRandom random)
 		{
-			return random.HalfOpenDoubleUnit() * _doubleRadiansPerTurn - _doubleRadiansPerHalfTurn;
+			return random.DoubleCO() * _doubleRadiansPerTurn - _doubleRadiansPerHalfTurn;
 		}
 
 		#endregion

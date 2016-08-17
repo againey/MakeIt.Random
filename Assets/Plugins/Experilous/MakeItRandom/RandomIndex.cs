@@ -18,7 +18,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="length"/>).</returns>
 		public static int UniformIndex(this IRandom random, int length)
 		{
-			return random.HalfOpenRange(length);
+			return random.RangeCO(length);
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="length"/>).</returns>
 		public static uint UniformIndex(this IRandom random, uint length)
 		{
-			return random.HalfOpenRange(length);
+			return random.RangeCO(length);
 		}
 
 		/// <summary>
@@ -40,7 +40,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="array"/>.Length).</returns>
 		public static int UniformIndex<T>(this IRandom random, T[] array)
 		{
-			return random.HalfOpenRange(array.Length);
+			return random.RangeCO(array.Length);
 		}
 
 		/// <summary>
@@ -51,7 +51,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		public static int UniformIndex(this IRandom random, System.Collections.IList list)
 		{
-			return random.HalfOpenRange(list.Count);
+			return random.RangeCO(list.Count);
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		public static int UniformIndex(this IRandom random, System.Collections.ArrayList list)
 		{
-			return random.HalfOpenRange(list.Count);
+			return random.RangeCO(list.Count);
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		public static int UniformIndex<T>(this IRandom random, System.Collections.Generic.IList<T> list)
 		{
-			return random.HalfOpenRange(list.Count);
+			return random.RangeCO(list.Count);
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		public static int UniformIndex<T>(this IRandom random, System.Collections.Generic.List<T> list)
 		{
-			return random.HalfOpenRange(list.Count);
+			return random.RangeCO(list.Count);
 		}
 
 		#endregion
@@ -121,7 +121,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -159,7 +159,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -197,7 +197,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -235,7 +235,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -273,7 +273,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -311,7 +311,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -349,7 +349,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -387,7 +387,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -425,7 +425,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -463,7 +463,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < weights.Length)
 			{
-				if (random.HalfOpenRange(weightSum) < weights[index])
+				if (random.RangeCO(weightSum) < weights[index])
 				{
 					return index;
 				}
@@ -501,7 +501,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -539,7 +539,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -577,7 +577,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -615,7 +615,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -653,7 +653,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -691,7 +691,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -729,7 +729,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -767,7 +767,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -805,7 +805,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}
@@ -843,7 +843,7 @@ namespace Experilous.MakeItRandom
 			int index = 0;
 			while (index < elementCount)
 			{
-				if (random.HalfOpenRange(weightSum) < weightsAccessor(index))
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
 				{
 					return index;
 				}

@@ -17,6 +17,8 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class RandomUnit
 	{
+		#region Private Helper Structs
+
 		[StructLayout(LayoutKind.Explicit)]
 		private struct BitwiseFloat
 		{
@@ -48,7 +50,69 @@ namespace Experilous.MakeItRandom
 		}
 #endif
 
-#region Open
+		#endregion
+
+		#region Private Generator Classes
+
+		private class FloatOOGenerator : IFloatGenerator
+		{
+			private IRandom _random;
+			public FloatOOGenerator(IRandom random) { _random = random; }
+			public float Next() { return _random.FloatOO(); }
+		}
+
+		private class FloatCOGenerator : IFloatGenerator
+		{
+			private IRandom _random;
+			public FloatCOGenerator(IRandom random) { _random = random; }
+			public float Next() { return _random.FloatCO(); }
+		}
+
+		private class FloatOCGenerator : IFloatGenerator
+		{
+			private IRandom _random;
+			public FloatOCGenerator(IRandom random) { _random = random; }
+			public float Next() { return _random.FloatOC(); }
+		}
+
+		private class FloatCCGenerator : IFloatGenerator
+		{
+			private IRandom _random;
+			public FloatCCGenerator(IRandom random) { _random = random; }
+			public float Next() { return _random.FloatCC(); }
+		}
+
+		private class DoubleOOGenerator : IDoubleGenerator
+		{
+			private IRandom _random;
+			public DoubleOOGenerator(IRandom random) { _random = random; }
+			public double Next() { return _random.DoubleOO(); }
+		}
+
+		private class DoubleCOGenerator : IDoubleGenerator
+		{
+			private IRandom _random;
+			public DoubleCOGenerator(IRandom random) { _random = random; }
+			public double Next() { return _random.DoubleCO(); }
+		}
+
+		private class DoubleOCGenerator : IDoubleGenerator
+		{
+			private IRandom _random;
+			public DoubleOCGenerator(IRandom random) { _random = random; }
+			public double Next() { return _random.DoubleOC(); }
+		}
+
+		private class DoubleCCGenerator : IDoubleGenerator
+		{
+			private IRandom _random;
+			public DoubleCCGenerator(IRandom random) { _random = random; }
+			public double Next() { return _random.DoubleCC(); }
+		}
+
+		#endregion
+
+		#region Unit Open/Open (0, 1)
 
 		/// <summary>
 		/// Returns a random floating point number strictly greater than zero and strictly less than one.
@@ -62,7 +126,7 @@ namespace Experilous.MakeItRandom
 		/// random engine.  Only one in 2^23 calls will require an additional call to <see cref="IBitGenerator.Next32()"/>, with the same
 		/// chance for requiring indefinitely more calls.</para>
 		/// </remarks>
-		public static float OpenFloatUnit(this IRandom random)
+		public static float FloatOO(this IRandom random)
 		{
 			uint n;
 			do
@@ -77,6 +141,17 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1).</returns>
+		/// <seealso cref="RandomRange.FloatOO(IRandom)"/>
+		public static IFloatGenerator MakeFloatOOGenerator(IRandom random)
+		{
+			return new FloatOOGenerator(random);
+		}
+
+		/// <summary>
 		/// Returns a random floating point number strictly greater than zero and strictly less than one.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -88,7 +163,7 @@ namespace Experilous.MakeItRandom
 		/// random engine.  Only one in 2^52 calls will require an additional call to <see cref="IBitGenerator.Next64()"/>, with the same
 		/// chance for requiring indefinitely more calls.</para>
 		/// </remarks>
-		public static double OpenDoubleUnit(this IRandom random)
+		public static double DoubleOO(this IRandom random)
 		{
 #if OPTIMIZE_FOR_32
 			uint lower, upper;
@@ -117,9 +192,20 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#endregion
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1).</returns>
+		/// <seealso cref="RandomRange.DoubleOO(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleOOGenerator(IRandom random)
+		{
+			return new DoubleOOGenerator(random);
+		}
 
-#region HalfOpen
+		#endregion
+
+		#region Unit Closed/Open [0, 1)
 
 		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and strictly less than one.
@@ -131,7 +217,7 @@ namespace Experilous.MakeItRandom
 		/// perfect distribution across 2^23 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
 		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next32()"/> once on the supplied random engine.</para>
 		/// </remarks>
-		public static float HalfOpenFloatUnit(this IRandom random)
+		public static float FloatCO(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
@@ -144,6 +230,17 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1).</returns>
+		/// <seealso cref="RandomRange.FloatCO(IRandom)"/>
+		public static IFloatGenerator MakeFloatCOGenerator(IRandom random)
+		{
+			return new FloatCOGenerator(random);
+		}
+
+		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and strictly less than one.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -153,7 +250,7 @@ namespace Experilous.MakeItRandom
 		/// perfect distribution across 2^52 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
 		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next64()"/> once on the supplied random engine.</para>
 		/// </remarks>
-		public static double HalfOpenDoubleUnit(this IRandom random)
+		public static double DoubleCO(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
@@ -175,9 +272,20 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#endregion
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1).</returns>
+		/// <seealso cref="RandomRange.DoubleCO(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleCOGenerator(IRandom random)
+		{
+			return new DoubleCOGenerator(random);
+		}
 
-#region HalfClosed
+		#endregion
+
+		#region Unit Open/Closed (0, 1]
 
 		/// <summary>
 		/// Returns a random floating point number strictly greater than zero and less than or equal to one.
@@ -189,12 +297,23 @@ namespace Experilous.MakeItRandom
 		/// perfect distribution across 2^23 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
 		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next32()"/> once on the supplied random engine.</para>
 		/// </remarks>
-		public static float HalfClosedFloatUnit(this IRandom random)
+		public static float FloatOC(this IRandom random)
 		{
 			BitwiseFloat value;
 			value.number = 0f;
 			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
 			return 2f - value.number;
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1].</returns>
+		/// <seealso cref="RandomRange.FloatOC(IRandom)"/>
+		public static IFloatGenerator MakeFloatOCGenerator(IRandom random)
+		{
+			return new FloatOCGenerator(random);
 		}
 
 		/// <summary>
@@ -207,7 +326,7 @@ namespace Experilous.MakeItRandom
 		/// perfect distribution across 2^52 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
 		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next64()"/> once on the supplied random engine.</para>
 		/// </remarks>
-		public static double HalfClosedDoubleUnit(this IRandom random)
+		public static double DoubleOC(this IRandom random)
 		{
 #if OPTIMIZE_FOR_32
 			uint lower, upper;
@@ -225,9 +344,20 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#endregion
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1].</returns>
+		/// <seealso cref="RandomRange.DoubleOC(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleOCGenerator(IRandom random)
+		{
+			return new DoubleOCGenerator(random);
+		}
 
-#region Closed
+		#endregion
+
+		#region Unit Closed/Closed [0, 1]
 
 		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and less than or equal to one.
@@ -238,10 +368,10 @@ namespace Experilous.MakeItRandom
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1] with
 		/// perfect distribution across 2^23 + 1 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
 		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next32()"/> once on the supplied
-		/// random engine.  Only one in 2048 calls will also require a call to <see cref="RandomRange.HalfOpenRange(IRandom, uint)"/>,
+		/// random engine.  Only one in 2048 calls will also require a call to <see cref="RandomRange.RangeCO(IRandom, uint)"/>,
 		/// which will involve one or more addtional calls to <see cref="IBitGenerator.Next32()"/> (on average rougly two calls will be made).</para>
 		/// </remarks>
-		public static float ClosedFloatUnit(this IRandom random)
+		public static float FloatCC(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x00800000U);
@@ -267,7 +397,7 @@ namespace Experilous.MakeItRandom
 			value.number = 0f;
 			value.bits = 0x3F800000U | 0x007FFFFFU & n;
 
-			if ((n & 0xFF800000U) != 0xFF800000U || random.HalfOpenRange(0x00800001U) < 0x007FF801U)
+			if ((n & 0xFF800000U) != 0xFF800000U || random.RangeCO(0x00800001U) < 0x007FF801U)
 			{
 				return value.number - 1f;
 			}
@@ -279,6 +409,17 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1].</returns>
+		/// <seealso cref="RandomRange.FloatCC(IRandom)"/>
+		public static IFloatGenerator MakeFloatCCGenerator(IRandom random)
+		{
+			return new FloatCCGenerator(random);
+		}
+
+		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and less than or equal to one.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -287,10 +428,10 @@ namespace Experilous.MakeItRandom
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1] with
 		/// perfect distribution across 2^52 + 1 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
 		/// <para>The vast majority of the time, this function will only need to call <see cref="IBitGenerator.Next64()"/> once on the supplied
-		/// random engine.  Only one in 4096 calls will also require a call to <see cref="RandomRange.HalfOpenRange(IRandom, ulong)"/>,
+		/// random engine.  Only one in 4096 calls will also require a call to <see cref="RandomRange.RangeCO(IRandom, ulong)"/>,
 		/// which will involve one or more addtional calls to <see cref="IBitGenerator.Next64()"/> (on average rougly two calls will be made).</para>
 		/// </remarks>
-		public static double ClosedDoubleUnit(this IRandom random)
+		public static double DoubleCC(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x0010000000000000UL);
@@ -318,7 +459,7 @@ namespace Experilous.MakeItRandom
 			value.number = 0d;
 			value.lowerBits = lower;
 			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
-			if ((upper & 0xFFF00000U) != 0xFFF00000U || random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			if ((upper & 0xFFF00000U) != 0xFFF00000U || random.RangeCO(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
 			{
 				return value.number - 1d;
 			}
@@ -344,6 +485,17 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#endregion
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1].</returns>
+		/// <seealso cref="RandomRange.DoubleCC(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleCCGenerator(IRandom random)
+		{
+			return new DoubleCCGenerator(random);
+		}
+
+		#endregion
 	}
 }

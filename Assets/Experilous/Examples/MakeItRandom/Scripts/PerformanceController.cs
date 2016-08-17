@@ -992,7 +992,7 @@ namespace Experilous.Examples.MakeItRandom
 		private void MeasurePerformance_UIntLessThan6(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
-			IUIntGenerator sequence = random.UIntGenerator(6U);
+			IUIntGenerator sequence = random.MakeRangeCOGenerator(6U);
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedUInt = sequence.Next();
@@ -1022,25 +1022,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
 
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
 
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
 
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
-				_generatedFloat = random.OpenFloatUnit();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
+				_generatedFloat = random.FloatOO();
 			}
 		}
 
@@ -1049,25 +1049,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
 
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
 
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
 
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
-				_generatedFloat = random.HalfOpenFloatUnit();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
+				_generatedFloat = random.FloatCO();
 			}
 		}
 
@@ -1076,25 +1076,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
 
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
 
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
 
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
-				_generatedFloat = random.HalfClosedFloatUnit();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
+				_generatedFloat = random.FloatOC();
 			}
 		}
 
@@ -1103,25 +1103,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
 
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
 
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
 
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
-				_generatedFloat = random.ClosedFloatUnit();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
+				_generatedFloat = random.FloatCC();
 			}
 		}
 
@@ -1130,25 +1130,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
 
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
 
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
 
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
-				_generatedDouble = random.OpenDoubleUnit();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
+				_generatedDouble = random.DoubleOO();
 			}
 		}
 
@@ -1157,25 +1157,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
 
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
 
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
 
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
-				_generatedDouble = random.HalfOpenDoubleUnit();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
+				_generatedDouble = random.DoubleCO();
 			}
 		}
 
@@ -1184,25 +1184,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
 
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
 
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
 
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
-				_generatedDouble = random.HalfClosedDoubleUnit();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
+				_generatedDouble = random.DoubleOC();
 			}
 		}
 
@@ -1211,25 +1211,25 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
 
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
 
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
 
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
-				_generatedDouble = random.ClosedDoubleUnit();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
+				_generatedDouble = random.DoubleCC();
 			}
 		}
 

@@ -35,7 +35,7 @@ namespace Experilous.MakeItRandom
 		#endregion
 #endif
 
-		#region Open
+		#region Range Open/Open (lowerExclusive, upperExclusive)
 
 		/// <summary>
 		/// Returns a random signed byte strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
@@ -52,9 +52,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte OpenRange(this IRandom random, sbyte lowerExclusive, sbyte upperExclusive)
+		public static sbyte RangeOO(this IRandom random, sbyte lowerExclusive, sbyte upperExclusive)
 		{
-			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
+			return (sbyte)(RangeCO(random, (byte)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
 		}
 
 		/// <summary>
@@ -71,9 +71,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte OpenRange(this IRandom random, sbyte upperExclusive)
+		public static sbyte RangeOO(this IRandom random, sbyte upperExclusive)
 		{
-			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - 1)) + 1);
+			return (sbyte)(RangeCO(random, (byte)(upperExclusive - 1)) + 1);
 		}
 
 		/// <summary>
@@ -91,9 +91,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte OpenRange(this IRandom random, byte lowerExclusive, byte upperExclusive)
+		public static byte RangeOO(this IRandom random, byte lowerExclusive, byte upperExclusive)
 		{
-			return (byte)(HalfOpenRange(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U);
+			return (byte)(RangeCO(random, (byte)(upperExclusive - lowerExclusive - 1U)) + lowerExclusive + 1U);
 		}
 
 		/// <summary>
@@ -110,9 +110,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte OpenRange(this IRandom random, byte upperExclusive)
+		public static byte RangeOO(this IRandom random, byte upperExclusive)
 		{
-			return (byte)(HalfOpenRange(random, upperExclusive - 1U) + 1U);
+			return (byte)(RangeCO(random, (byte)(upperExclusive - 1U)) + 1U);
 		}
 
 		/// <summary>
@@ -130,9 +130,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short OpenRange(this IRandom random, short lowerExclusive, short upperExclusive)
+		public static short RangeOO(this IRandom random, short lowerExclusive, short upperExclusive)
 		{
-			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
+			return (short)(RangeCO(random, (ushort)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1);
 		}
 
 		/// <summary>
@@ -149,9 +149,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short OpenRange(this IRandom random, short upperExclusive)
+		public static short RangeOO(this IRandom random, short upperExclusive)
 		{
-			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - 1)) + 1);
+			return (short)(RangeCO(random, (ushort)(upperExclusive - 1)) + 1);
 		}
 
 		/// <summary>
@@ -169,9 +169,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort OpenRange(this IRandom random, ushort lowerExclusive, ushort upperExclusive)
+		public static ushort RangeOO(this IRandom random, ushort lowerExclusive, ushort upperExclusive)
 		{
-			return (ushort)(HalfOpenRange(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U);
+			return (ushort)(RangeCO(random, (ushort)(upperExclusive - lowerExclusive - 1U)) + lowerExclusive + 1U);
 		}
 
 		/// <summary>
@@ -188,9 +188,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort OpenRange(this IRandom random, ushort upperExclusive)
+		public static ushort RangeOO(this IRandom random, ushort upperExclusive)
 		{
-			return (ushort)(HalfOpenRange(random, upperExclusive - 1U) + 1U);
+			return (ushort)(RangeCO(random, (ushort)(upperExclusive - 1U)) + 1U);
 		}
 
 		/// <summary>
@@ -208,9 +208,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int OpenRange(this IRandom random, int lowerExclusive, int upperExclusive)
+		public static int RangeOO(this IRandom random, int lowerExclusive, int upperExclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1;
+			return (int)RangeCO(random, (uint)(upperExclusive - lowerExclusive - 1)) + lowerExclusive + 1;
 		}
 
 		/// <summary>
@@ -227,9 +227,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int OpenRange(this IRandom random, int upperExclusive)
+		public static int RangeOO(this IRandom random, int upperExclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperExclusive - 1)) + 1;
+			return (int)RangeCO(random, (uint)(upperExclusive - 1)) + 1;
 		}
 
 		/// <summary>
@@ -247,9 +247,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint OpenRange(this IRandom random, uint lowerExclusive, uint upperExclusive)
+		public static uint RangeOO(this IRandom random, uint lowerExclusive, uint upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U;
+			return RangeCO(random, upperExclusive - lowerExclusive - 1U) + lowerExclusive + 1U;
 		}
 
 		/// <summary>
@@ -266,9 +266,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint OpenRange(this IRandom random, uint upperExclusive)
+		public static uint RangeOO(this IRandom random, uint upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - 1U) + 1U;
+			return RangeCO(random, upperExclusive - 1U) + 1U;
 		}
 
 		/// <summary>
@@ -286,9 +286,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long OpenRange(this IRandom random, long lowerExclusive, long upperExclusive)
+		public static long RangeOO(this IRandom random, long lowerExclusive, long upperExclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperExclusive - lowerExclusive - 1L)) + lowerExclusive + 1L;
+			return (long)RangeCO(random, (ulong)(upperExclusive - lowerExclusive - 1L)) + lowerExclusive + 1L;
 		}
 
 		/// <summary>
@@ -305,9 +305,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long OpenRange(this IRandom random, long upperExclusive)
+		public static long RangeOO(this IRandom random, long upperExclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperExclusive - 1L)) + 1L;
+			return (long)RangeCO(random, (ulong)(upperExclusive - 1L)) + 1L;
 		}
 
 		/// <summary>
@@ -325,9 +325,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong OpenRange(this IRandom random, ulong lowerExclusive, ulong upperExclusive)
+		public static ulong RangeOO(this IRandom random, ulong lowerExclusive, ulong upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - lowerExclusive - 1UL) + lowerExclusive + 1UL;
+			return RangeCO(random, upperExclusive - lowerExclusive - 1UL) + lowerExclusive + 1UL;
 		}
 
 		/// <summary>
@@ -344,9 +344,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong OpenRange(this IRandom random, ulong upperExclusive)
+		public static ulong RangeOO(this IRandom random, ulong upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - 1UL) + 1UL;
+			return RangeCO(random, upperExclusive - 1UL) + 1UL;
 		}
 
 		/// <summary>
@@ -356,10 +356,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random float in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.OpenFloatUnit(IRandom)"/>.</remarks>
-		public static float OpenRange(this IRandom random, float lowerExclusive, float upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOO(IRandom)"/>.</remarks>
+		public static float RangeOO(this IRandom random, float lowerExclusive, float upperExclusive)
 		{
-			return (upperExclusive - lowerExclusive) * random.OpenFloatUnit() + lowerExclusive;
+			return (upperExclusive - lowerExclusive) * random.FloatOO() + lowerExclusive;
 		}
 
 		/// <summary>
@@ -368,10 +368,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random float in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.OpenFloatUnit(IRandom)"/>.</remarks>
-		public static float OpenRange(this IRandom random, float upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOO(IRandom)"/>.</remarks>
+		public static float RangeOO(this IRandom random, float upperExclusive)
 		{
-			return upperExclusive * random.OpenFloatUnit();
+			return upperExclusive * random.FloatOO();
 		}
 
 		/// <summary>
@@ -381,10 +381,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random double in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.OpenDoubleUnit(IRandom)"/>.</remarks>
-		public static double OpenRange(this IRandom random, double lowerExclusive, double upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOO(IRandom)"/>.</remarks>
+		public static double RangeOO(this IRandom random, double lowerExclusive, double upperExclusive)
 		{
-			return (upperExclusive - lowerExclusive) * random.OpenDoubleUnit() + lowerExclusive;
+			return (upperExclusive - lowerExclusive) * random.DoubleOO() + lowerExclusive;
 		}
 
 		/// <summary>
@@ -393,15 +393,15 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random double in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.OpenDoubleUnit(IRandom)"/>.</remarks>
-		public static double OpenRange(this IRandom random, double upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOO(IRandom)"/>.</remarks>
+		public static double RangeOO(this IRandom random, double upperExclusive)
 		{
-			return upperExclusive * random.OpenDoubleUnit();
+			return upperExclusive * random.DoubleOO();
 		}
 
 		#endregion
 
-		#region HalfOpen
+		#region Range Closed/Open [lowerInclusive, upperExclusive)
 
 		/// <summary>
 		/// Returns a random signed byte greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
@@ -418,9 +418,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte HalfOpenRange(this IRandom random, sbyte lowerInclusive, sbyte upperExclusive)
+		public static sbyte RangeCO(this IRandom random, sbyte lowerInclusive, sbyte upperExclusive)
 		{
-			return (sbyte)(HalfOpenRange(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
+			return (sbyte)(RangeCO(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -437,9 +437,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte HalfOpenRange(this IRandom random, sbyte upperExclusive)
+		public static sbyte RangeCO(this IRandom random, sbyte upperExclusive)
 		{
-			return (sbyte)HalfOpenRange(random, (byte)upperExclusive);
+			return (sbyte)RangeCO(random, (byte)upperExclusive);
 		}
 
 		/// <summary>
@@ -457,9 +457,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte HalfOpenRange(this IRandom random, byte lowerInclusive, byte upperExclusive)
+		public static byte RangeCO(this IRandom random, byte lowerInclusive, byte upperExclusive)
 		{
-			return (byte)(HalfOpenRange(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
+			return (byte)(RangeCO(random, (byte)(upperExclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -476,7 +476,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte HalfOpenRange(this IRandom random, byte upperExclusive)
+		public static byte RangeCO(this IRandom random, byte upperExclusive)
 		{
 			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint mask = upperExclusive - 1U;
@@ -507,9 +507,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short HalfOpenRange(this IRandom random, short lowerInclusive, short upperExclusive)
+		public static short RangeCO(this IRandom random, short lowerInclusive, short upperExclusive)
 		{
-			return (short)(HalfOpenRange(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
+			return (short)(RangeCO(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -526,9 +526,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short HalfOpenRange(this IRandom random, short upperExclusive)
+		public static short RangeCO(this IRandom random, short upperExclusive)
 		{
-			return (short)HalfOpenRange(random, (ushort)upperExclusive);
+			return (short)RangeCO(random, (ushort)upperExclusive);
 		}
 
 		/// <summary>
@@ -546,9 +546,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort HalfOpenRange(this IRandom random, ushort lowerInclusive, ushort upperExclusive)
+		public static ushort RangeCO(this IRandom random, ushort lowerInclusive, ushort upperExclusive)
 		{
-			return (ushort)(HalfOpenRange(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
+			return (ushort)(RangeCO(random, (ushort)(upperExclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -565,7 +565,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort HalfOpenRange(this IRandom random, ushort upperExclusive)
+		public static ushort RangeCO(this IRandom random, ushort upperExclusive)
 		{
 			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint mask = upperExclusive - 1U;
@@ -597,9 +597,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int HalfOpenRange(this IRandom random, int lowerInclusive, int upperExclusive)
+		public static int RangeCO(this IRandom random, int lowerInclusive, int upperExclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperExclusive - lowerInclusive)) + lowerInclusive;
+			return (int)RangeCO(random, (uint)(upperExclusive - lowerInclusive)) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -616,9 +616,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int HalfOpenRange(this IRandom random, int upperExclusive)
+		public static int RangeCO(this IRandom random, int upperExclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)upperExclusive);
+			return (int)RangeCO(random, (uint)upperExclusive);
 		}
 
 		/// <summary>
@@ -636,9 +636,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint HalfOpenRange(this IRandom random, uint lowerInclusive, uint upperExclusive)
+		public static uint RangeCO(this IRandom random, uint lowerInclusive, uint upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - lowerInclusive) + lowerInclusive;
+			return RangeCO(random, upperExclusive - lowerInclusive) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -655,7 +655,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint HalfOpenRange(this IRandom random, uint upperExclusive)
+		public static uint RangeCO(this IRandom random, uint upperExclusive)
 		{
 			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -698,9 +698,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long HalfOpenRange(this IRandom random, long lowerInclusive, long upperExclusive)
+		public static long RangeCO(this IRandom random, long lowerInclusive, long upperExclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperExclusive - lowerInclusive)) + lowerInclusive;
+			return (long)RangeCO(random, (ulong)(upperExclusive - lowerInclusive)) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -717,9 +717,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long HalfOpenRange(this IRandom random, long upperExclusive)
+		public static long RangeCO(this IRandom random, long upperExclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)upperExclusive);
+			return (long)RangeCO(random, (ulong)upperExclusive);
 		}
 
 		/// <summary>
@@ -737,9 +737,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong HalfOpenRange(this IRandom random, ulong lowerInclusive, ulong upperExclusive)
+		public static ulong RangeCO(this IRandom random, ulong lowerInclusive, ulong upperExclusive)
 		{
-			return HalfOpenRange(random, upperExclusive - lowerInclusive) + lowerInclusive;
+			return RangeCO(random, upperExclusive - lowerInclusive) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -756,7 +756,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong HalfOpenRange(this IRandom random, ulong upperExclusive)
+		public static ulong RangeCO(this IRandom random, ulong upperExclusive)
 		{
 			if (upperExclusive == 0UL) throw new System.ArgumentOutOfRangeException("upperBound");
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -792,10 +792,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random float in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfOpenFloatUnit(IRandom)"/>.</remarks>
-		public static float HalfOpenRange(this IRandom random, float lowerInclusive, float upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCO(IRandom)"/>.</remarks>
+		public static float RangeCO(this IRandom random, float lowerInclusive, float upperExclusive)
 		{
-			return (upperExclusive - lowerInclusive) * random.HalfOpenFloatUnit() + lowerInclusive;
+			return (upperExclusive - lowerInclusive) * random.FloatCO() + lowerInclusive;
 		}
 
 		/// <summary>
@@ -804,10 +804,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random float in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfOpenFloatUnit(IRandom)"/>.</remarks>
-		public static float HalfOpenRange(this IRandom random, float upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCO(IRandom)"/>.</remarks>
+		public static float RangeCO(this IRandom random, float upperExclusive)
 		{
-			return upperExclusive * random.HalfOpenFloatUnit();
+			return upperExclusive * random.FloatCO();
 		}
 
 		/// <summary>
@@ -817,10 +817,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random double in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfOpenDoubleUnit(IRandom)"/>.</remarks>
-		public static double HalfOpenRange(this IRandom random, double lowerInclusive, double upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCO(IRandom)"/>.</remarks>
+		public static double RangeCO(this IRandom random, double lowerInclusive, double upperExclusive)
 		{
-			return (upperExclusive - lowerInclusive) * random.HalfOpenDoubleUnit() + lowerInclusive;
+			return (upperExclusive - lowerInclusive) * random.DoubleCO() + lowerInclusive;
 		}
 
 		/// <summary>
@@ -829,15 +829,15 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random double in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfOpenDoubleUnit(IRandom)"/>.</remarks>
-		public static double HalfOpenRange(this IRandom random, double upperExclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCO(IRandom)"/>.</remarks>
+		public static double RangeCO(this IRandom random, double upperExclusive)
 		{
-			return upperExclusive * random.HalfOpenDoubleUnit();
+			return upperExclusive * random.DoubleCO();
 		}
 
 		#endregion
 
-		#region HalfClosed
+		#region Range Open/Closed (lowerExclusive, upperInclusive]
 
 		/// <summary>
 		/// Returns a random signed byte strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
@@ -854,9 +854,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte HalfClosedRange(this IRandom random, sbyte lowerExclusive, sbyte upperInclusive)
+		public static sbyte RangeOC(this IRandom random, sbyte lowerExclusive, sbyte upperInclusive)
 		{
-			return (sbyte)(HalfOpenRange(random, (byte)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
+			return (sbyte)(RangeCO(random, (byte)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
 		}
 
 		/// <summary>
@@ -873,9 +873,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte HalfClosedRange(this IRandom random, sbyte upperInclusive)
+		public static sbyte RangeOC(this IRandom random, sbyte upperInclusive)
 		{
-			return (sbyte)(HalfOpenRange(random, (byte)(upperInclusive)) + 1);
+			return (sbyte)(RangeCO(random, (byte)upperInclusive) + 1);
 		}
 
 		/// <summary>
@@ -893,9 +893,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte HalfClosedRange(this IRandom random, byte lowerExclusive, byte upperInclusive)
+		public static byte RangeOC(this IRandom random, byte lowerExclusive, byte upperInclusive)
 		{
-			return (byte)(HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U);
+			return (byte)(RangeCO(random, (byte)(upperInclusive - lowerExclusive)) + lowerExclusive + 1U);
 		}
 
 		/// <summary>
@@ -912,9 +912,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte HalfClosedRange(this IRandom random, byte upperInclusive)
+		public static byte RangeOC(this IRandom random, byte upperInclusive)
 		{
-			return (byte)(HalfOpenRange(random, upperInclusive) + 1U);
+			return (byte)(RangeCO(random, (byte)upperInclusive) + 1U);
 		}
 
 		/// <summary>
@@ -932,9 +932,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short HalfClosedRange(this IRandom random, short lowerExclusive, short upperInclusive)
+		public static short RangeOC(this IRandom random, short lowerExclusive, short upperInclusive)
 		{
-			return (short)(HalfOpenRange(random, (ushort)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
+			return (short)(RangeCO(random, (ushort)(upperInclusive - lowerExclusive)) + lowerExclusive + 1);
 		}
 
 		/// <summary>
@@ -951,9 +951,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short HalfClosedRange(this IRandom random, short upperInclusive)
+		public static short RangeOC(this IRandom random, short upperInclusive)
 		{
-			return (short)(HalfOpenRange(random, (ushort)(upperInclusive)) + 1);
+			return (short)(RangeCO(random, (ushort)upperInclusive) + 1);
 		}
 
 		/// <summary>
@@ -971,9 +971,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort HalfClosedRange(this IRandom random, ushort lowerExclusive, ushort upperInclusive)
+		public static ushort RangeOC(this IRandom random, ushort lowerExclusive, ushort upperInclusive)
 		{
-			return (ushort)(HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U);
+			return (ushort)(RangeCO(random, (ushort)(upperInclusive - lowerExclusive)) + lowerExclusive + 1U);
 		}
 
 		/// <summary>
@@ -990,9 +990,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort HalfClosedRange(this IRandom random, ushort upperInclusive)
+		public static ushort RangeOC(this IRandom random, ushort upperInclusive)
 		{
-			return (ushort)(HalfOpenRange(random, upperInclusive) + 1U);
+			return (ushort)(RangeCO(random, (ushort)upperInclusive) + 1U);
 		}
 
 		/// <summary>
@@ -1010,9 +1010,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int HalfClosedRange(this IRandom random, int lowerExclusive, int upperInclusive)
+		public static int RangeOC(this IRandom random, int lowerExclusive, int upperInclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperInclusive - lowerExclusive)) + lowerExclusive + 1;
+			return (int)RangeCO(random, (uint)(upperInclusive - lowerExclusive)) + lowerExclusive + 1;
 		}
 
 		/// <summary>
@@ -1029,9 +1029,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int HalfClosedRange(this IRandom random, int upperInclusive)
+		public static int RangeOC(this IRandom random, int upperInclusive)
 		{
-			return (int)HalfOpenRange(random, (uint)(upperInclusive)) + 1;
+			return (int)RangeCO(random, (uint)upperInclusive) + 1;
 		}
 
 		/// <summary>
@@ -1049,9 +1049,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint HalfClosedRange(this IRandom random, uint lowerExclusive, uint upperInclusive)
+		public static uint RangeOC(this IRandom random, uint lowerExclusive, uint upperInclusive)
 		{
-			return HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U;
+			return RangeCO(random, upperInclusive - lowerExclusive) + lowerExclusive + 1U;
 		}
 
 		/// <summary>
@@ -1068,9 +1068,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint HalfClosedRange(this IRandom random, uint upperInclusive)
+		public static uint RangeOC(this IRandom random, uint upperInclusive)
 		{
-			return HalfOpenRange(random, upperInclusive) + 1U;
+			return RangeCO(random, upperInclusive) + 1U;
 		}
 
 		/// <summary>
@@ -1088,9 +1088,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long HalfClosedRange(this IRandom random, long lowerExclusive, long upperInclusive)
+		public static long RangeOC(this IRandom random, long lowerExclusive, long upperInclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperInclusive - lowerExclusive)) + lowerExclusive + 1L;
+			return (long)RangeCO(random, (ulong)(upperInclusive - lowerExclusive)) + lowerExclusive + 1L;
 		}
 
 		/// <summary>
@@ -1107,9 +1107,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long HalfClosedRange(this IRandom random, long upperInclusive)
+		public static long RangeOC(this IRandom random, long upperInclusive)
 		{
-			return (long)HalfOpenRange(random, (ulong)(upperInclusive)) + 1L;
+			return (long)RangeCO(random, (ulong)upperInclusive) + 1L;
 		}
 
 		/// <summary>
@@ -1127,9 +1127,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong HalfClosedRange(this IRandom random, ulong lowerExclusive, ulong upperInclusive)
+		public static ulong RangeOC(this IRandom random, ulong lowerExclusive, ulong upperInclusive)
 		{
-			return HalfOpenRange(random, upperInclusive - lowerExclusive) + lowerExclusive + 1UL;
+			return RangeCO(random, upperInclusive - lowerExclusive) + lowerExclusive + 1UL;
 		}
 
 		/// <summary>
@@ -1146,9 +1146,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong HalfClosedRange(this IRandom random, ulong upperInclusive)
+		public static ulong RangeOC(this IRandom random, ulong upperInclusive)
 		{
-			return HalfOpenRange(random, upperInclusive) + 1UL;
+			return RangeCO(random, upperInclusive) + 1UL;
 		}
 
 		/// <summary>
@@ -1158,10 +1158,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random float in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfClosedFloatUnit(IRandom)"/>.</remarks>
-		public static float HalfClosedRange(this IRandom random, float lowerExclusive, float upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOC(IRandom)"/>.</remarks>
+		public static float RangeOC(this IRandom random, float lowerExclusive, float upperInclusive)
 		{
-			return (upperInclusive - lowerExclusive) * random.HalfClosedFloatUnit() + lowerExclusive;
+			return (upperInclusive - lowerExclusive) * random.FloatOC() + lowerExclusive;
 		}
 
 		/// <summary>
@@ -1170,10 +1170,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random float in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfClosedFloatUnit(IRandom)"/>.</remarks>
-		public static float HalfClosedRange(this IRandom random, float upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOC(IRandom)"/>.</remarks>
+		public static float RangeOC(this IRandom random, float upperInclusive)
 		{
-			return upperInclusive * random.HalfClosedFloatUnit();
+			return upperInclusive * random.FloatOC();
 		}
 
 		/// <summary>
@@ -1183,10 +1183,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random double in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfClosedDoubleUnit(IRandom)"/>.</remarks>
-		public static double HalfClosedRange(this IRandom random, double lowerExclusive, double upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOC(IRandom)"/>.</remarks>
+		public static double RangeOC(this IRandom random, double lowerExclusive, double upperInclusive)
 		{
-			return (upperInclusive - lowerExclusive) * random.HalfClosedDoubleUnit() + lowerExclusive;
+			return (upperInclusive - lowerExclusive) * random.DoubleOC() + lowerExclusive;
 		}
 
 		/// <summary>
@@ -1195,15 +1195,15 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random double in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.HalfClosedDoubleUnit(IRandom)"/>.</remarks>
-		public static double HalfClosedRange(this IRandom random, double upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOC(IRandom)"/>.</remarks>
+		public static double RangeOC(this IRandom random, double upperInclusive)
 		{
-			return upperInclusive * random.HalfClosedDoubleUnit();
+			return upperInclusive * random.DoubleOC();
 		}
 
 		#endregion
 
-		#region Closed
+		#region Range Closed/Closed [lowerInclusive, upperInclusive]
 
 		/// <summary>
 		/// Returns a random signed byte greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
@@ -1220,9 +1220,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte ClosedRange(this IRandom random, sbyte lowerInclusive, sbyte upperInclusive)
+		public static sbyte RangeCC(this IRandom random, sbyte lowerInclusive, sbyte upperInclusive)
 		{
-			return (sbyte)(ClosedRange(random, (byte)(upperInclusive - lowerInclusive)) + lowerInclusive);
+			return (sbyte)(RangeCC(random, (byte)(upperInclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -1239,9 +1239,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static sbyte ClosedRange(this IRandom random, sbyte upperInclusive)
+		public static sbyte RangeCC(this IRandom random, sbyte upperInclusive)
 		{
-			return (sbyte)ClosedRange(random, (byte)(upperInclusive));
+			return (sbyte)RangeCC(random, (byte)upperInclusive);
 		}
 
 		/// <summary>
@@ -1259,9 +1259,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte ClosedRange(this IRandom random, byte lowerInclusive, byte upperInclusive)
+		public static byte RangeCC(this IRandom random, byte lowerInclusive, byte upperInclusive)
 		{
-			return (byte)(ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive);
+			return (byte)(RangeCC(random, (byte)(upperInclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -1278,7 +1278,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static byte ClosedRange(this IRandom random, byte upperInclusive)
+		public static byte RangeCC(this IRandom random, byte upperInclusive)
 		{
 			uint mask = upperInclusive;
 			mask |= mask >> 1;
@@ -1308,9 +1308,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short ClosedRange(this IRandom random, short lowerInclusive, short upperInclusive)
+		public static short RangeCC(this IRandom random, short lowerInclusive, short upperInclusive)
 		{
-			return (short)(ClosedRange(random, (ushort)(upperInclusive - lowerInclusive)) + lowerInclusive);
+			return (short)(RangeCC(random, (ushort)(upperInclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -1327,9 +1327,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static short ClosedRange(this IRandom random, short upperInclusive)
+		public static short RangeCC(this IRandom random, short upperInclusive)
 		{
-			return (short)ClosedRange(random, (ushort)(upperInclusive));
+			return (short)RangeCC(random, (ushort)upperInclusive);
 		}
 
 		/// <summary>
@@ -1347,9 +1347,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort ClosedRange(this IRandom random, ushort lowerInclusive, ushort upperInclusive)
+		public static ushort RangeCC(this IRandom random, ushort lowerInclusive, ushort upperInclusive)
 		{
-			return (ushort)(ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive);
+			return (ushort)(RangeCC(random, (ushort)(upperInclusive - lowerInclusive)) + lowerInclusive);
 		}
 
 		/// <summary>
@@ -1366,7 +1366,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ushort ClosedRange(this IRandom random, ushort upperInclusive)
+		public static ushort RangeCC(this IRandom random, ushort upperInclusive)
 		{
 			uint mask = upperInclusive;
 			mask |= mask >> 1;
@@ -1397,9 +1397,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int ClosedRange(this IRandom random, int lowerInclusive, int upperInclusive)
+		public static int RangeCC(this IRandom random, int lowerInclusive, int upperInclusive)
 		{
-			return (int)ClosedRange(random, (uint)(upperInclusive - lowerInclusive)) + lowerInclusive;
+			return (int)RangeCC(random, (uint)(upperInclusive - lowerInclusive)) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1416,9 +1416,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static int ClosedRange(this IRandom random, int upperInclusive)
+		public static int RangeCC(this IRandom random, int upperInclusive)
 		{
-			return (int)ClosedRange(random, (uint)(upperInclusive));
+			return (int)RangeCC(random, (uint)upperInclusive);
 		}
 
 		/// <summary>
@@ -1436,9 +1436,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint ClosedRange(this IRandom random, uint lowerInclusive, uint upperInclusive)
+		public static uint RangeCC(this IRandom random, uint lowerInclusive, uint upperInclusive)
 		{
-			return ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive;
+			return RangeCC(random, upperInclusive - lowerInclusive) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1455,7 +1455,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static uint ClosedRange(this IRandom random, uint upperInclusive)
+		public static uint RangeCC(this IRandom random, uint upperInclusive)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperInclusive == 0U) return 0U;
@@ -1497,9 +1497,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long ClosedRange(this IRandom random, long lowerInclusive, long upperInclusive)
+		public static long RangeCC(this IRandom random, long lowerInclusive, long upperInclusive)
 		{
-			return (long)ClosedRange(random, (ulong)(upperInclusive - lowerInclusive)) + lowerInclusive;
+			return (long)RangeCC(random, (ulong)(upperInclusive - lowerInclusive)) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1516,9 +1516,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static long ClosedRange(this IRandom random, long upperInclusive)
+		public static long RangeCC(this IRandom random, long upperInclusive)
 		{
-			return (long)ClosedRange(random, (ulong)(upperInclusive));
+			return (long)RangeCC(random, (ulong)upperInclusive);
 		}
 
 		/// <summary>
@@ -1536,9 +1536,9 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong ClosedRange(this IRandom random, ulong lowerInclusive, ulong upperInclusive)
+		public static ulong RangeCC(this IRandom random, ulong lowerInclusive, ulong upperInclusive)
 		{
-			return ClosedRange(random, upperInclusive - lowerInclusive) + lowerInclusive;
+			return RangeCC(random, upperInclusive - lowerInclusive) + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1555,7 +1555,7 @@ namespace Experilous.MakeItRandom
 		/// will be just under two, though the maximum number of calls for any single call to this function is theoretically unbounded.
 		/// The closer the range size is to the next larger power of two, the more efficient the function will be on average.</para>
 		/// </remarks>
-		public static ulong ClosedRange(this IRandom random, ulong upperInclusive)
+		public static ulong RangeCC(this IRandom random, ulong upperInclusive)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			if (upperInclusive == 0UL) return 0UL;
@@ -1590,10 +1590,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The exclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random float in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.ClosedFloatUnit(IRandom)"/>.</remarks>
-		public static float ClosedRange(this IRandom random, float lowerInclusive, float upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCC(IRandom)"/>.</remarks>
+		public static float RangeCC(this IRandom random, float lowerInclusive, float upperInclusive)
 		{
-			return (upperInclusive - lowerInclusive) * random.ClosedFloatUnit() + lowerInclusive;
+			return (upperInclusive - lowerInclusive) * random.FloatCC() + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1602,10 +1602,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random float in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.ClosedFloatUnit(IRandom)"/>.</remarks>
-		public static float ClosedRange(this IRandom random, float upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCC(IRandom)"/>.</remarks>
+		public static float RangeCC(this IRandom random, float upperInclusive)
 		{
-			return upperInclusive * random.ClosedFloatUnit();
+			return upperInclusive * random.FloatCC();
 		}
 
 		/// <summary>
@@ -1615,10 +1615,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The exclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random double in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.ClosedDoubleUnit(IRandom)"/>.</remarks>
-		public static double ClosedRange(this IRandom random, double lowerInclusive, double upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCC(IRandom)"/>.</remarks>
+		public static double RangeCC(this IRandom random, double lowerInclusive, double upperInclusive)
 		{
-			return (upperInclusive - lowerInclusive) * random.ClosedDoubleUnit() + lowerInclusive;
+			return (upperInclusive - lowerInclusive) * random.DoubleCC() + lowerInclusive;
 		}
 
 		/// <summary>
@@ -1627,10 +1627,10 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
 		/// <returns>A random double in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.ClosedDoubleUnit(IRandom)"/>.</remarks>
-		public static double ClosedRange(this IRandom random, double upperInclusive)
+		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCC(IRandom)"/>.</remarks>
+		public static double RangeCC(this IRandom random, double upperInclusive)
 		{
-			return upperInclusive * random.ClosedDoubleUnit();
+			return upperInclusive * random.DoubleCC();
 		}
 
 		#endregion

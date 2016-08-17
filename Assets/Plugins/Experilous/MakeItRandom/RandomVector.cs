@@ -25,8 +25,8 @@ namespace Experilous.MakeItRandom
 			return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 #else
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -50,8 +50,8 @@ namespace Experilous.MakeItRandom
 			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 #else
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -70,16 +70,16 @@ namespace Experilous.MakeItRandom
 		public static Vector4 UnitVector4(this IRandom random)
 		{
 			Start1:
-			float u1 = random.OpenFloatUnit() * 2f - 1f;
-			float v1 = random.OpenFloatUnit() * 2f - 1f;
+			float u1 = random.FloatOO() * 2f - 1f;
+			float v1 = random.FloatOO() * 2f - 1f;
 			float uSqr1 = u1 * u1;
 			float vSqr1 = v1 * v1;
 			float uvSqr1 = uSqr1 + vSqr1;
 			if (uvSqr1 >= 1f) goto Start1;
 
 			Start2:
-			float u2 = random.OpenFloatUnit() * 2f - 1f;
-			float v2 = random.OpenFloatUnit() * 2f - 1f;
+			float u2 = random.FloatOO() * 2f - 1f;
+			float v2 = random.FloatOO() * 2f - 1f;
 			float uSqr2 = u2 * u2;
 			float vSqr2 = v2 * v2;
 			float uvSqr2 = uSqr2 + vSqr2;
@@ -142,8 +142,8 @@ namespace Experilous.MakeItRandom
 			return random.UnitVector2() * distance;
 #else
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -168,8 +168,8 @@ namespace Experilous.MakeItRandom
 			float rSqr = radius * radius;
 
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -199,8 +199,8 @@ namespace Experilous.MakeItRandom
 			float orSqr = outerRadius * outerRadius;
 
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float uvSqr = uSqr + vSqr;
@@ -222,9 +222,9 @@ namespace Experilous.MakeItRandom
 			return random.UnitVector3() * distance;
 #else
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
-			float w = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
+			float w = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -250,9 +250,9 @@ namespace Experilous.MakeItRandom
 			float rSqr = radius * radius;
 
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
-			float w = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
+			float w = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -283,9 +283,9 @@ namespace Experilous.MakeItRandom
 			float orSqr = outerRadius * outerRadius;
 
 			Start:
-			float u = random.OpenFloatUnit() * 2f - 1f;
-			float v = random.OpenFloatUnit() * 2f - 1f;
-			float w = random.OpenFloatUnit() * 2f - 1f;
+			float u = random.FloatOO() * 2f - 1f;
+			float v = random.FloatOO() * 2f - 1f;
+			float w = random.FloatOO() * 2f - 1f;
 			float uSqr = u * u;
 			float vSqr = v * v;
 			float wSqr = w * w;
@@ -307,7 +307,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector from within a unit square.</returns>
 		public static Vector2 PointWithinSquare(this IRandom random)
 		{
-			return new Vector2(random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new Vector2(random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -318,7 +318,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector from within a square.</returns>
 		public static Vector2 PointWithinSquare(this IRandom random, float sideLength)
 		{
-			return new Vector2(random.ClosedRange(sideLength), random.ClosedRange(sideLength));
+			return new Vector2(random.RangeCC(sideLength), random.RangeCC(sideLength));
 		}
 
 		/// <summary>
@@ -329,7 +329,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector from within a rectangle.</returns>
 		public static Vector2 PointWithinRectangle(this IRandom random, Vector2 size)
 		{
-			return new Vector2(random.ClosedRange(size.x), random.ClosedRange(size.y));
+			return new Vector2(random.RangeCC(size.x), random.RangeCC(size.y));
 		}
 
 		/// <summary>
@@ -341,7 +341,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector from within a parallelogram.</returns>
 		public static Vector2 PointWithinParallelogram(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
-			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1;
+			return random.FloatCC() * axis0 + random.FloatCC() * axis1;
 		}
 
 		/// <summary>
@@ -353,8 +353,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector from within a triangle.</returns>
 		public static Vector2 PointWithinTriangle(this IRandom random, Vector2 axis0, Vector2 axis1)
 		{
-			float u = Mathf.Sqrt(random.ClosedFloatUnit());
-			float v = random.ClosedRange(u);
+			float u = Mathf.Sqrt(random.FloatCC());
+			float v = random.RangeCC(u);
 			return (1f - u) * axis0 + v * axis1;
 		}
 
@@ -365,7 +365,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional vector from within a unit cube.</returns>
 		public static Vector3 PointWithinCube(this IRandom random)
 		{
-			return new Vector3(random.ClosedFloatUnit(), random.ClosedFloatUnit(), random.ClosedFloatUnit());
+			return new Vector3(random.FloatCC(), random.FloatCC(), random.FloatCC());
 		}
 
 		/// <summary>
@@ -376,7 +376,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional vector from within a cube.</returns>
 		public static Vector3 PointWithinCube(this IRandom random, float sideLength)
 		{
-			return new Vector3(random.ClosedRange(sideLength), random.ClosedRange(sideLength), random.ClosedRange(sideLength));
+			return new Vector3(random.RangeCC(sideLength), random.RangeCC(sideLength), random.RangeCC(sideLength));
 		}
 
 		/// <summary>
@@ -387,7 +387,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional vector from within a box.</returns>
 		public static Vector3 PointWithinBox(this IRandom random, Vector3 size)
 		{
-			return new Vector3(random.ClosedRange(size.x), random.ClosedRange(size.y), random.ClosedRange(size.z));
+			return new Vector3(random.RangeCC(size.x), random.RangeCC(size.y), random.RangeCC(size.z));
 		}
 
 		/// <summary>
@@ -411,7 +411,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional vector from within a rhomboid.</returns>
 		public static Vector3 PointWithinRhomboid(this IRandom random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
 		{
-			return random.ClosedFloatUnit() * axis0 + random.ClosedFloatUnit() * axis1 + random.ClosedFloatUnit() * axis2;
+			return random.FloatCC() * axis0 + random.FloatCC() * axis1 + random.FloatCC() * axis2;
 		}
 
 		#endregion
