@@ -142,6 +142,18 @@ namespace Experilous.MakeItRandom
 		public abstract ulong Next64();
 
 		/// <summary>
+		/// Get the next 64 bits of generated data as two 32-bit values.
+		/// </summary>
+		/// <param name="lower">The lower 32 bits of generated data.</param>
+		/// <param name="upper">The upper 32 bits of generated data.</param>
+		public virtual void Next64(out uint lower, out uint upper)
+		{
+			ulong next = Next64();
+			lower = (uint)next;
+			upper = (uint)(next >> 32);
+		}
+
+		/// <summary>
 		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
 		/// </summary>
 		/// <remarks>

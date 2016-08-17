@@ -23,5 +23,12 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A 64-bit unsigned integer representing the next 64 bits of generated data.</returns>
 		ulong Next64();
+
+		/// <summary>
+		/// Get the next 64 bits of generated data as two 32-bit values.
+		/// </summary>
+		/// <param name="lower">The lower 32 bits of generated data.</param>
+		/// <param name="upper">The upper 32 bits of generated data.</param>
+		void Next64(out uint lower, out uint upper);
 	}
 }

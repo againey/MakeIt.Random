@@ -2,6 +2,12 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
+#define OPTIMIZE_FOR_64
+#else
+#define OPTIMIZE_FOR_32
+#endif
+
 using System.Runtime.InteropServices;
 
 namespace Experilous.MakeItRandom
@@ -20,6 +26,18 @@ namespace Experilous.MakeItRandom
 			public float number;
 		}
 
+#if OPTIMIZE_FOR_32
+		[StructLayout(LayoutKind.Explicit)]
+		private struct BitwiseDouble
+		{
+			[FieldOffset(0)]
+			public uint lowerBits;
+			[FieldOffset(4)]
+			public uint upperBits;
+			[FieldOffset(0)]
+			public double number;
+		}
+#else
 		[StructLayout(LayoutKind.Explicit)]
 		private struct BitwiseDouble
 		{
@@ -28,8 +46,9 @@ namespace Experilous.MakeItRandom
 			[FieldOffset(0)]
 			public double number;
 		}
+#endif
 
-		#region Open
+#region Open
 
 		/// <summary>
 		/// Returns a random floating point number strictly greater than zero and strictly less than one.
@@ -71,6 +90,20 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double OpenDoubleUnit(this IRandom random)
 		{
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			do
+			{
+				random.Next64(out lower, out upper);
+				upper &= 0x000FFFFFU;
+			} while ((lower | upper) == 0U);
+
+			BitwiseDouble value;
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = 0x3FF00000U | upper;
+			return value.number - 1d;
+#else
 			ulong n;
 			do
 			{
@@ -78,14 +111,15 @@ namespace Experilous.MakeItRandom
 			} while (n == 0UL);
 
 			BitwiseDouble value;
-			value.number = 0.0;
+			value.number = 0d;
 			value.bits = 0x3FF0000000000000UL | n;
-			return value.number - 1.0;
+			return value.number - 1d;
+#endif
 		}
 
-		#endregion
+#endregion
 
-		#region HalfOpen
+#region HalfOpen
 
 		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and strictly less than one.
@@ -100,7 +134,7 @@ namespace Experilous.MakeItRandom
 		public static float HalfOpenFloatUnit(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1.0f;
+			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
 #else
 			BitwiseFloat value;
 			value.number = 0f;
@@ -122,18 +156,28 @@ namespace Experilous.MakeItRandom
 		public static double HalfOpenDoubleUnit(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1.0;
+			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
+#else
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
+			BitwiseDouble value;
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
+			return value.number - 1d;
 #else
 			BitwiseDouble value;
-			value.number = 0.0;
+			value.number = 0d;
 			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
-			return value.number - 1.0;
+			return value.number - 1d;
+#endif
 #endif
 		}
 
-		#endregion
+#endregion
 
-		#region HalfClosed
+#region HalfClosed
 
 		/// <summary>
 		/// Returns a random floating point number strictly greater than zero and less than or equal to one.
@@ -165,15 +209,25 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double HalfClosedDoubleUnit(this IRandom random)
 		{
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
 			BitwiseDouble value;
-			value.number = 0.0;
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
+			return 2d - value.number;
+#else
+			BitwiseDouble value;
+			value.number = 0d;
 			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
-			return 2.0 - value.number;
+			return 2d - value.number;
+#endif
 		}
 
-		#endregion
+#endregion
 
-		#region Closed
+#region Closed
 
 		/// <summary>
 		/// Returns a random floating point number greater than or equal to zero and less than or equal to one.
@@ -191,18 +245,18 @@ namespace Experilous.MakeItRandom
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x00800000U);
-			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1.0f : 1.0f;
+			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1df : 1df;
 #else
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
-			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
-			// that had a 2^23 in 2^23 + 1 chance of passing, and on failure resulted in a value of 1.0 being returned
+			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
+			// that had a 2^23 in 2^23 + 1 chance of passing, and on failure resulted in a value of 1d being returned
 			// instead of the originally generated number, then all values would have exactly the correct target probability.
 
 			// To achieve this while still avoiding that second random check in most cases, the excess 11 bits generated by
 			// a call to Next32() are used to perform part of that second random check.  This check has a 2^11 - 1 in 2^11
 			// chance of passing, in which case the original number is returned.  On that rare 1 in 2048 case that it fails,
 			// then another random check is performed which has a 2^23 - 2^11 + 1 in 2^23 + 1 chance of passing.  If it still
-			// passes, then the original number is still returned; otherwise, 1.0 is returned.  The effect is that this pair
+			// passes, then the original number is still returned; otherwise, 1d is returned.  The effect is that this pair
 			// of secondary random checks additively has the requisite 2^23 in 2^23 + 1 chance of passing, but over 99.95%
 			// of the time only one call to Next32() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
@@ -213,11 +267,7 @@ namespace Experilous.MakeItRandom
 			value.number = 0f;
 			value.bits = 0x3F800000U | 0x007FFFFFU & n;
 
-			if ((n & 0xFF800000U) != 0xFF800000U)
-			{
-				return value.number - 1f;
-			}
-			else if (random.HalfOpenRange(0x00800001U) < 0x007FF801U)
+			if ((n & 0xFF800000U) != 0xFF800000U || random.HalfOpenRange(0x00800001U) < 0x007FF801U)
 			{
 				return value.number - 1f;
 			}
@@ -244,43 +294,56 @@ namespace Experilous.MakeItRandom
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var n = random.ClosedRange(0x0010000000000000UL);
-			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1.0 : 1.0;
+			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1d : 1d;
 #else
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
-			// with 1.0 having a 0 probability, and is very efficient to generate.  If a second random check were performed
-			// that had a 2^52 in 2^52 + 1 chance of passing, and on failure resulted in a value of 1.0 being returned
+			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
+			// that had a 2^52 in 2^52 + 1 chance of passing, and on failure resulted in a value of 1d being returned
 			// instead of the originally generated number, then all values would have exactly the correct target probability.
 
 			// To achieve this while still avoiding that second random check in most cases, the excess 12 bits generated by
 			// a call to Next64() are used to perform part of that second random check.  This check has a 2^12 - 1 in 2^12
 			// chance of passing, in which case the original number is returned.  On that rare 1 in 4096 case that it fails,
 			// then another random check is performed which has a 2^52 - 2^12 + 1 in 2^52 + 1 chance of passing.  If it still
-			// passes, then the original number is still returned; otherwise, 1.0 is returned.  The effect is that this pair
+			// passes, then the original number is still returned; otherwise, 1d is returned.  The effect is that this pair
 			// of secondary random checks additively has the requisite 2^52 in 2^52 + 1 chance of passing, but over 99.97%
 			// of the time only one call to Next64() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
 			// on how RandomRange.HalfOpen() is implemented.
 
-			ulong n = random.Next64();
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
 			BitwiseDouble value;
-			value.number = 0.0;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & n;
-
-			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL)
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
+			if ((upper & 0xFFF00000U) != 0xFFF00000U || random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
 			{
-				return value.number - 1.0;
-			}
-			else if (random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
-			{
-				return value.number - 1.0;
+				return value.number - 1d;
 			}
 			else
 			{
-				return 1.0;
+				return 1d;
 			}
+#else
+			ulong n = random.Next64();
+			BitwiseDouble value;
+			value.number = 0d;
+			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & n;
+
+			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL || random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			{
+				return value.number - 1d;
+			}
+			else
+			{
+				return 1d;
+			}
+#endif
 #endif
 		}
 
-		#endregion
+#endregion
 	}
 }

@@ -268,5 +268,18 @@ namespace Experilous.MakeItRandom
 			_seedOffset = (_seedOffset + _seedOffsetIncrement) % _seedData.Length;
 			return h;
 		}
+
+		/// <summary>
+		/// Get the next 64 bits of generated data as two 32-bit values.
+		/// Generate the next 64 bits of hashed data as two 32-bit unsigned integers for use as part of a PRNG's initial state.
+		/// </summary>
+		/// <param name="lower">The lower 32 bits of hashed data.</param>
+		/// <param name="upper">The upper 32 bits of hashed data.</param>
+		public virtual void Next64(out uint lower, out uint upper)
+		{
+			ulong next = Next64();
+			lower = (uint)next;
+			upper = (uint)(next >> 32);
+		}
 	}
 }

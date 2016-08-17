@@ -2,6 +2,12 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
+#define OPTIMIZE_FOR_64
+#else
+#define OPTIMIZE_FOR_32
+#endif
+
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -72,6 +78,9 @@ namespace Experilous.Examples.MakeItRandom
 #pragma warning disable 0414
 		private int _generatedInt;
 		private uint _generatedUInt;
+#if OPTIMIZE_FOR_32
+		private uint _generatedUInt2;
+#endif
 		private ulong _generatedULong;
 		private float _generatedFloat;
 		private double _generatedDouble;
@@ -926,6 +935,27 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
+#if OPTIMIZE_FOR_32
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+				random.Next64(out _generatedUInt, out _generatedUInt2);
+#else
 				_generatedULong = random.Next64();
 				_generatedULong = random.Next64();
 				_generatedULong = random.Next64();
@@ -945,6 +975,7 @@ namespace Experilous.Examples.MakeItRandom
 				_generatedULong = random.Next64();
 				_generatedULong = random.Next64();
 				_generatedULong = random.Next64();
+#endif
 			}
 		}
 
