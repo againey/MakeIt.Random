@@ -313,9 +313,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-#endregion
+		#endregion
 
-#region Private Concrete Range Generators
+		#region Private Concrete Range Generators
 
 		private static class BufferedSByteRangeGenerator
 		{
@@ -705,9 +705,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-#endregion
+		#endregion
 
-#region Public Extension Methods
+		#region Public Extension Methods
 
 		public static ISByteGenerator SByteGenerator(this IRandom random)
 		{
@@ -793,6 +793,6 @@ namespace Experilous.MakeItRandom
 			return BufferedUIntRangeGenerator.Create(random, rangeMin, rangeSize);
 		}
 
-#endregion
+		#endregion
 	}
 }
