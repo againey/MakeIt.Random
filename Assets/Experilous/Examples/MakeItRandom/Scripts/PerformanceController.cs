@@ -27,6 +27,7 @@ namespace Experilous.Examples.MakeItRandom
 		public Toggle xorShift1024StarToggle;
 		public Toggle xoroShiro128PlusToggle;
 		public Toggle splitMix64Toggle;
+		public Toggle xorShiftAddToggle;
 		public Toggle unityRandomToggle;
 		public Toggle systemRandomToggle;
 
@@ -92,6 +93,8 @@ namespace Experilous.Examples.MakeItRandom
 			performanceResultItemsScrollRect.scrollSensitivity = 25;
 #endif
 
+			Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
 			OnWarmupDurationSliderValueChanged();
 			OnMeasurementDurationSliderValueChanged();
 			EnableDisableMeasurePerformanceButton();
@@ -127,6 +130,7 @@ namespace Experilous.Examples.MakeItRandom
 				xorShift1024StarToggle.isOn ||
 				xoroShiro128PlusToggle.isOn ||
 				splitMix64Toggle.isOn ||
+				xorShiftAddToggle.isOn ||
 				unityRandomToggle.isOn ||
 				systemRandomToggle.isOn;
 
@@ -181,6 +185,7 @@ namespace Experilous.Examples.MakeItRandom
 			if (xorShift1024StarToggle.isOn) generatorToggles.Add(xorShift1024StarToggle);
 			if (xoroShiro128PlusToggle.isOn) generatorToggles.Add(xoroShiro128PlusToggle);
 			if (splitMix64Toggle.isOn) generatorToggles.Add(splitMix64Toggle);
+			if (xorShiftAddToggle.isOn) generatorToggles.Add(xorShiftAddToggle);
 			if (unityRandomToggle.isOn) generatorToggles.Add(unityRandomToggle);
 			if (systemRandomToggle.isOn) generatorToggles.Add(systemRandomToggle);
 
@@ -378,6 +383,11 @@ namespace Experilous.Examples.MakeItRandom
 				{
 					_currentGeneratorName = "SplitMix64";
 					random = SplitMix64.Create();
+				}
+				else if (generatorToggle = xorShiftAddToggle)
+				{
+					_currentGeneratorName = "XorShift-Add";
+					random = XorShiftAdd.Create();
 				}
 				else if (generatorToggle == unityRandomToggle)
 				{
