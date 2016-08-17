@@ -34,16 +34,18 @@ namespace Experilous.MakeItRandom
 		/// <param name="characters">The allowable characters to select from when generating the string.</param>
 		/// <param name="separator">The separator character to be randomly inserted into the string according to the probability specified.</param>
 		/// <param name="separatorProbability">The probability of any specific index in the string being a separator character.  Must be in the range [0, 1].</param>
+		/// <param name="allowSeparatorAtEnd">Whether or not the last character to be generated is allowed to be a separator character.</param>
+		/// <param name="allowSeparatorAtBegin">Whether or not the first character to be generated is allowed to be a separator character.</param>
+		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorState"/> is false.</param>
 		/// <returns>A random string, with each character being a uniformly random selection from the provided character set.</returns>
-		/// <remarks><para>The generated string is guaranteed to not start with the separator character, and it is further guaranteed that
-		/// two separator characters will never be generated one immediately after the other, regardless of the separator probability.</para>
+		/// <remarks><para>It is guaranteed that two separator characters will never be generated one immediately after the other, regardless of the separator probability.</para>
 		/// <para>A separator probability of 0 will guarantee that there are no separators at all, while a probability of 1 will guarantee
 		/// that every second character is a separtor character.  Probabilities less than 1 but greater that 0.5 will be biased toward the
 		/// same every-other character outcome, but will have a chance of generating longer sequences of non-separator characters, rather than
 		/// being strictly limited to one non-separator character at a time.</para></remarks>
 		/// <seealso cref="String(IRandom, int, char[])"/>
 		/// <seealso cref="Characters(IRandom, char[], int, int, char[], char, float, bool, bool)"/>
-		public static string String(this IRandom random, int length, char[] characters, char separator, float separatorProbability)
+		public static string String(this IRandom random, int length, char[] characters, char separator, float separatorProbability, bool allowSeparatorAtEnd = false, bool allowSeparatorAtBegin = false, bool forceSeparatorAtBegin = false)
 		{
 			char[] buffer = new char[length];
 			random.Characters(buffer, 0, length, characters, separator, separatorProbability);
@@ -82,8 +84,9 @@ namespace Experilous.MakeItRandom
 		/// <param name="characters">The allowable characters to select from when generating the string.</param>
 		/// <param name="separator">The separator character to be randomly inserted into the string according to the probability specified.</param>
 		/// <param name="separatorProbability">The probability of any specific index in the string being a separator character.  Must be in the range [0, 1].</param>
-		/// <param name="allowSeparatorState">Whether or not the first character to be generated is allowed to be a separator character.</param>
-		/// <param name="forceSeparatorState">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorState"/> is false.</param>
+		/// <param name="allowSeparatorAtEnd">Whether or not the last character to be generated is allowed to be a separator character.</param>
+		/// <param name="allowSeparatorAtBegin">Whether or not the first character to be generated is allowed to be a separator character.</param>
+		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorState"/> is false.</param>
 		/// <remarks><para>It is guaranteed that two separator characters will never be generated one immediately after the other within the
 		/// character sequence, regardless of the separator probability.</para>
 		/// <para>A separator probability of 0 will guarantee that there are no separators at all, while a probability of 1 will guarantee
@@ -92,15 +95,18 @@ namespace Experilous.MakeItRandom
 		/// being strictly limited to one non-separator character at a time.</para></remarks>
 		/// <seealso cref="Characters(IRandom, char[], int, int, char[])"/>
 		/// <seealso cref="String(IRandom, int, char[], char, float)"/>
-		public static void Characters(this IRandom random, char[] buffer, int start, int length, char[] characters, char separator, float separatorProbability, bool allowSeparatorState = false, bool forceSeparatorState = false)
+		public static void Characters(this IRandom random, char[] buffer, int start, int length, char[] characters, char separator, float separatorProbability, bool allowSeparatorAtEnd = false, bool allowSeparatorAtBegin = false, bool forceSeparatorAtBegin = false)
 		{
 			if (length <= 0) return;
+
+			bool allowSeparatorState = allowSeparatorAtBegin;
+			bool forceSeparatorState = forceSeparatorAtBegin;
 
 			int end = start + length;
 			IIntGenerator generator = random.IntGenerator(characters.Length);
 			for (int i = start; i < end; ++i)
 			{
-				if (allowSeparatorState)
+				if (allowSeparatorState && (allowSeparatorAtEnd || i + 1 < end))
 				{
 					if (forceSeparatorState || random.Probability(separatorProbability))
 					{
@@ -728,7 +734,7 @@ namespace Experilous.MakeItRandom
 			{
 				buffer[0] = _alphabeticCharacters.RandomElement(random);
 			}
-			random.Characters(buffer, 1, length - 1, _alphaNumericCharacters, '_', underscoreProbability, true, false);
+			random.Characters(buffer, 1, length - 1, _alphaNumericCharacters, '_', underscoreProbability, true, true, false);
 			return new string(buffer);
 		}
 
@@ -780,7 +786,7 @@ namespace Experilous.MakeItRandom
 			{
 				buffer[0] = GetAlphabeticCharacters(casing).RandomElement(random);
 			}
-			random.Characters(buffer, 1, length - 1, GetAlphaNumericCharacters(casing), '_', underscoreProbability, true, false);
+			random.Characters(buffer, 1, length - 1, GetAlphaNumericCharacters(casing), '_', underscoreProbability, true, true, false);
 			return new string(buffer);
 		}
 
