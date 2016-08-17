@@ -11,6 +11,21 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class RandomDice
 	{
+		#region Die Generator
+
+		/// <summary>
+		/// Prepares an efficient range generator which will generate dice rolls, one at a time, with values greater than or equal to 1 and less than or equal to <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generated values of the returned generator are derived.</param>
+		/// <param name="sides">The number of sides of the die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
+		/// <returns></returns>
+		public static IIntGenerator DiceGenerator(this IRandom random, int sides)
+		{
+			return random.IntGenerator(1, sides);
+		}
+
+		#endregion
+
 		#region Roll
 
 		/// <summary>
@@ -22,6 +37,16 @@ namespace Experilous.MakeItRandom
 		public static int RollDie(this IRandom random, int sides)
 		{
 			return random.HalfOpenRange(sides) + 1;
+		}
+
+		/// <summary>
+		/// Generates a random die roll, simulating a die with the specified number of <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <returns>The numeric value of the simulated die roll, in the range [1, <paramref name="sides"/>].</returns>
+		public static int RollDie(this IIntGenerator diceGenerator)
+		{
+			return diceGenerator.Next();
 		}
 
 		/// <summary>
@@ -37,6 +62,22 @@ namespace Experilous.MakeItRandom
 			for (int i = 0; i < quantity; ++i)
 			{
 				dice[i] = random.HalfOpenRange(sides) + 1;
+			}
+			return dice;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <returns>An array of the numeric values of the simulated dice rolls, each element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int[] RollDice(this IIntGenerator diceGenerator, int quantity)
+		{
+			var dice = new int[quantity];
+			for (int i = 0; i < quantity; ++i)
+			{
+				dice[i] = diceGenerator.Next();
 			}
 			return dice;
 		}
@@ -62,6 +103,23 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dice">A pre-allocated array into which the numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/>.</param>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDice(this IIntGenerator diceGenerator, int quantity, int[] dice)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
+			for (int i = 0; i < quantity; ++i)
+			{
+				dice[i] = diceGenerator.Next();
+			}
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -74,6 +132,23 @@ namespace Experilous.MakeItRandom
 			while (dice.Count < quantity)
 			{
 				dice.Add(random.HalfOpenRange(sides) + 1);
+			}
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dice">A list into which the numeric values of the simulated dice rolls will be stored.</param>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.  After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>, and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDice(this IIntGenerator diceGenerator, int quantity, List<int> dice)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			dice.Clear();
+			while (dice.Count < quantity)
+			{
+				dice.Add(diceGenerator.Next());
 			}
 		}
 
@@ -101,6 +176,22 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int SumRollDice(this IIntGenerator diceGenerator, int quantity)
+		{
+			int sum = 0;
+			for (int i = 0; i < quantity; ++i)
+			{
+				sum += diceGenerator.Next();
+			}
+			return sum;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -115,6 +206,28 @@ namespace Experilous.MakeItRandom
 			for (int i = 0; i < quantity; ++i)
 			{
 				int die = random.HalfOpenRange(sides) + 1;
+				dice[i] = die;
+				sum += die;
+			}
+			return sum;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dice">A an output array into which the numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDice(this IIntGenerator diceGenerator, int quantity, out int[] dice)
+		{
+			dice = new int[quantity];
+			int sum = 0;
+			for (int i = 0; i < quantity; ++i)
+			{
+				int die = diceGenerator.Next();
 				dice[i] = die;
 				sum += die;
 			}
@@ -147,6 +260,28 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dice">A pre-allocated array into which the numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/>.</param>
+		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDice(this IIntGenerator diceGenerator, int quantity, int[] dice)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
+			int sum = 0;
+			for (int i = 0; i < quantity; ++i)
+			{
+				int die = diceGenerator.Next();
+				dice[i] = die;
+				sum += die;
+			}
+			return sum;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -161,6 +296,28 @@ namespace Experilous.MakeItRandom
 			while (dice.Count < quantity)
 			{
 				int die = random.HalfOpenRange(sides) + 1;
+				dice.Add(die);
+				sum += die;
+			}
+			return sum;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dice">A list into which the numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.  After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>, and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDice(this IIntGenerator diceGenerator, int quantity, List<int> dice)
+		{
+			if (dice == null) throw new System.ArgumentNullException("dice");
+			dice.Clear();
+			int sum = 0;
+			while (dice.Count < quantity)
+			{
+				int die = diceGenerator.Next();
 				dice.Add(die);
 				sum += die;
 			}
@@ -240,6 +397,25 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		private static void RollAdditionalKeepHighest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice)
+		{
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				do
+				{
+					if (i >= additionalQuantity) return;
+					die = diceGenerator.Next();
+					++i;
+				} while (die <= min);
+
+				dice[minIndex] = die;
+			}
+		}
+
 		private static void RollAdditionalKeepHighest(this IRandom random, int additionalQuantity, int sides, IList<int> dice, int[] discardedDice)
 		{
 			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
@@ -256,6 +432,36 @@ namespace Experilous.MakeItRandom
 					if (i >= additionalQuantity) return;
 
 					die = random.HalfOpenRange(sides) + 1;
+					if (die <= min)
+					{
+						discardedDice[i++] = die;
+					}
+					else
+					{
+						discardedDice[i++] = min;
+						dice[minIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		private static void RollAdditionalKeepHighest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
+		{
+			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
+			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
+
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				while (true)
+				{
+					if (i >= additionalQuantity) return;
+
+					die = diceGenerator.Next();
 					if (die <= min)
 					{
 						discardedDice[i++] = die;
@@ -299,6 +505,35 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		private static void RollAdditionalKeepHighest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
+		{
+			discardedDice.Clear();
+
+			while (discardedDice.Count < additionalQuantity)
+			{
+				int minIndex = FindMinIndex(dice);
+				int min = dice[minIndex];
+				int die;
+				while (true)
+				{
+					
+					if (discardedDice.Count >= additionalQuantity) return;
+
+					die = diceGenerator.Next();
+					if (die <= min)
+					{
+						discardedDice.Add(die);
+					}
+					else
+					{
+						discardedDice.Add(min);
+						dice[minIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
 		private static void RollAdditionalKeepLowest(this IRandom random, int additionalQuantity, int sides, IList<int> dice)
 		{
 			int i = 0;
@@ -311,6 +546,25 @@ namespace Experilous.MakeItRandom
 				{
 					if (i >= additionalQuantity) return;
 					die = random.HalfOpenRange(sides) + 1;
+					++i;
+				} while (die >= max);
+
+				dice[maxIndex] = die;
+			}
+		}
+
+		private static void RollAdditionalKeepLowest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice)
+		{
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				do
+				{
+					if (i >= additionalQuantity) return;
+					die = diceGenerator.Next();
 					++i;
 				} while (die >= max);
 
@@ -334,6 +588,36 @@ namespace Experilous.MakeItRandom
 					if (i >= additionalQuantity) return;
 
 					die = random.HalfOpenRange(sides) + 1;
+					if (die >= max)
+					{
+						discardedDice[i++] = die;
+					}
+					else
+					{
+						discardedDice[i++] = max;
+						dice[maxIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
+		private static void RollAdditionalKeepLowest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
+		{
+			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
+			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
+
+			int i = 0;
+			while (i < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				while (true)
+				{
+					if (i >= additionalQuantity) return;
+
+					die = diceGenerator.Next();
 					if (die >= max)
 					{
 						discardedDice[i++] = die;
@@ -377,6 +661,35 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		private static void RollAdditionalKeepLowest(this IIntGenerator diceGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
+		{
+			discardedDice.Clear();
+
+			while (discardedDice.Count < additionalQuantity)
+			{
+				int maxIndex = FindMaxIndex(dice);
+				int max = dice[maxIndex];
+				int die;
+				while (true)
+				{
+					
+					if (discardedDice.Count >= additionalQuantity) return;
+
+					die = diceGenerator.Next();
+					if (die >= max)
+					{
+						discardedDice.Add(die);
+					}
+					else
+					{
+						discardedDice.Add(max);
+						dice[maxIndex] = die;
+						break;
+					}
+				}
+			}
+		}
+
 		#endregion
 
 		#region RollKeep/Drop
@@ -401,6 +714,21 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>An array of the highest numeric values of the simulated dice rolls, each element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int[] RollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity)
+		{
+			int[] dice = diceGenerator.RollDice(keepQuantity);
+			diceGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
+			return dice;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -411,6 +739,21 @@ namespace Experilous.MakeItRandom
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
 		}
 
 		/// <summary>
@@ -428,6 +771,22 @@ namespace Experilous.MakeItRandom
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepHighest(quantity - keepQuantity, sides, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -452,6 +811,23 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -470,6 +846,25 @@ namespace Experilous.MakeItRandom
 
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the lowest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <remarks>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -481,6 +876,21 @@ namespace Experilous.MakeItRandom
 		{
 			int[] dice = random.RollDice(keepQuantity, sides);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice);
+			return dice;
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>An array of the lowest numeric values of the simulated dice rolls, each element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int[] RollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity)
+		{
+			int[] dice = diceGenerator.RollDice(keepQuantity);
+			diceGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
 			return dice;
 		}
 
@@ -504,6 +914,21 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -515,6 +940,22 @@ namespace Experilous.MakeItRandom
 		{
 			random.RollDice(keepQuantity, sides, dice);
 			random.RollAdditionalKeepLowest(quantity - keepQuantity, sides, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -539,6 +980,23 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -557,6 +1015,25 @@ namespace Experilous.MakeItRandom
 
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the highest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <remarks>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static void RollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDice(keepQuantity, dice);
+			diceGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -568,6 +1045,20 @@ namespace Experilous.MakeItRandom
 		public static int[] RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>An array of the lowest numeric values of the simulated dice rolls, each element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int)"/>.</note></remarks>
+		public static int[] RollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity)
+		{
+			return diceGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity);
 		}
 
 		/// <summary>
@@ -590,6 +1081,21 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, int[])"/>.</note></remarks>
+		public static void RollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -601,6 +1107,22 @@ namespace Experilous.MakeItRandom
 		public static void RollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
+		public static void RollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -625,6 +1147,23 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, List`1{int})"/>.</note></remarks>
+		public static void RollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -643,6 +1182,25 @@ namespace Experilous.MakeItRandom
 
 		/// <summary>
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the highest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, List`1{int}, List`1{int})"/>.</note></remarks>
+		public static void RollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -654,6 +1212,20 @@ namespace Experilous.MakeItRandom
 		public static int[] RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity)
 		{
 			return random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>An array of the highest numeric values of the simulated dice rolls, each element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int)"/>.</note></remarks>
+		public static int[] RollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity)
+		{
+			return diceGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity);
 		}
 
 		/// <summary>
@@ -676,6 +1248,21 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, int[])"/>.</note></remarks>
+		public static void RollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -687,6 +1274,22 @@ namespace Experilous.MakeItRandom
 		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
+		public static void RollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -711,6 +1314,23 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, List`1{int})"/>.</note></remarks>
+		public static void RollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -725,6 +1345,25 @@ namespace Experilous.MakeItRandom
 		public static void RollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the lowest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, List`1{int}, List`1{int})"/>.</note></remarks>
+		public static void RollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		#endregion
@@ -750,6 +1389,20 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity)
+		{
+			int[] dice = diceGenerator.RollDiceKeepHighest(quantity, keepQuantity);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -761,6 +1414,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice)
 		{
 			dice = random.RollDiceKeepHighest(quantity, sides, keepQuantity);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A an output array into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, out int[] dice)
+		{
+			dice = diceGenerator.RollDiceKeepHighest(quantity, keepQuantity);
 			return Sum(dice);
 		}
 
@@ -790,6 +1460,27 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
+		{
+			dice = new int[keepQuantity];
+			discardedDice = new int[quantity - keepQuantity];
+			diceGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -800,6 +1491,22 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice);
 			return Sum(dice);
 		}
 
@@ -818,6 +1525,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
@@ -844,6 +1568,24 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -858,6 +1600,26 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepHighest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepHighest(quantity, sides, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the highest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the lowest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepHighest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
@@ -880,6 +1642,20 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity)
+		{
+			int[] dice = diceGenerator.RollDiceKeepLowest(quantity, keepQuantity);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -891,6 +1667,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, out int[] dice)
 		{
 			dice = random.RollDiceKeepLowest(quantity, sides, keepQuantity);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A an output array into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, out int[] dice)
+		{
+			dice = diceGenerator.RollDiceKeepLowest(quantity, keepQuantity);
 			return Sum(dice);
 		}
 
@@ -920,6 +1713,27 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
+		{
+			dice = new int[keepQuantity];
+			discardedDice = new int[quantity - keepQuantity];
+			diceGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -930,6 +1744,22 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice);
 			return Sum(dice);
 		}
 
@@ -948,6 +1778,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
@@ -974,6 +1821,24 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -988,6 +1853,26 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceKeepLowest(this IRandom random, int quantity, int sides, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			random.RollDiceKeepLowest(quantity, sides, keepQuantity, dice, discardedDice);
+			return Sum(dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// keeping only the lowest <paramref name="keepQuantity"/> dice and discarding the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="keepQuantity">The number of dice to keep.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the highest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</remarks>
+		public static int SumRollDiceKeepLowest(this IIntGenerator diceGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		{
+			diceGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
 		}
 
@@ -1010,6 +1895,20 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int)"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1022,6 +1921,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, out dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A an output array into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, out int[])"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, out int[] dice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, out dice);
 		}
 
 		/// <summary>
@@ -1048,6 +1964,25 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, out int[], out int[])"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, out dice, out discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1059,6 +1994,22 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, int[])"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
 		}
 
 		/// <summary>
@@ -1077,6 +2028,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -1102,6 +2070,24 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, List`1{int})"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1117,6 +2103,26 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropHighest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return random.SumRollDiceKeepLowest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the lowest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the lowest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the highest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, List`1{int}, List`1{int})"/>.</note></remarks>
+		public static int SumRollDiceDropHighest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -1138,6 +2144,20 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int)"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1150,6 +2170,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, out int[] dice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, out dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A an output array into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, out int[])"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, out int[] dice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, out dice);
 		}
 
 		/// <summary>
@@ -1176,6 +2213,25 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, out int[], out int[])"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, out dice, out discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1187,6 +2243,22 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, int[])"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
 		}
 
 		/// <summary>
@@ -1205,6 +2277,23 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
+		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		/// <summary>
@@ -1230,6 +2319,24 @@ namespace Experilous.MakeItRandom
 		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
 		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
 		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, List`1{int})"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="sides">The number of sides of each die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
@@ -1245,6 +2352,26 @@ namespace Experilous.MakeItRandom
 		public static int SumRollDiceDropLowest(this IRandom random, int quantity, int sides, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return random.SumRollDiceKeepHighest(quantity, sides, quantity - dropQuantity, dice, discardedDice);
+		}
+
+		/// <summary>
+		/// Generates random dice rolls, simulating the specified <paramref name="quantity"/> of dice each with the specified number of <paramref name="sides"/>,
+		/// dropping the highest <paramref name="dropQuantity"/> dice and keeping the rest.
+		/// </summary>
+		/// <param name="diceGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
+		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
+		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than or equal to <paramref name="quantity"/>.</param>
+		/// <param name="dice">A list into which the highest numeric values of the simulated dice rolls will be stored.</param>
+		/// <param name="discardedDice">A list into which the lowest numeric values of the discarded simulated dice rolls will be stored.</param>
+		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range [1, <paramref name="sides"/>].</returns>
+		/// <remarks><para>All existing elements in <paramref name="dice"/> and <paramref name="discardedDice"/> will be removed by this function.
+		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
+		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
+		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range [1, <paramref name="sides"/>].</para>
+		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, List`1{int}, List`1{int})"/>.</note></remarks>
+		public static int SumRollDiceDropLowest(this IIntGenerator diceGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		{
+			return diceGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
 
 		#endregion
