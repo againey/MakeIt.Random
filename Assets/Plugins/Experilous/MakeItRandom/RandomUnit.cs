@@ -146,7 +146,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random floats in the range (0, 1).</returns>
 		/// <seealso cref="RandomRange.FloatOO(IRandom)"/>
-		public static IFloatGenerator MakeFloatOOGenerator(IRandom random)
+		public static IFloatGenerator MakeFloatOOGenerator(this IRandom random)
 		{
 			return new FloatOOGenerator(random);
 		}
@@ -198,7 +198,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random doubles in the range (0, 1).</returns>
 		/// <seealso cref="RandomRange.DoubleOO(IRandom)"/>
-		public static IDoubleGenerator MakeDoubleOOGenerator(IRandom random)
+		public static IDoubleGenerator MakeDoubleOOGenerator(this IRandom random)
 		{
 			return new DoubleOOGenerator(random);
 		}
@@ -235,7 +235,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random floats in the range [0, 1).</returns>
 		/// <seealso cref="RandomRange.FloatCO(IRandom)"/>
-		public static IFloatGenerator MakeFloatCOGenerator(IRandom random)
+		public static IFloatGenerator MakeFloatCOGenerator(this IRandom random)
 		{
 			return new FloatCOGenerator(random);
 		}
@@ -278,7 +278,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random doubles in the range [0, 1).</returns>
 		/// <seealso cref="RandomRange.DoubleCO(IRandom)"/>
-		public static IDoubleGenerator MakeDoubleCOGenerator(IRandom random)
+		public static IDoubleGenerator MakeDoubleCOGenerator(this IRandom random)
 		{
 			return new DoubleCOGenerator(random);
 		}
@@ -311,7 +311,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random floats in the range (0, 1].</returns>
 		/// <seealso cref="RandomRange.FloatOC(IRandom)"/>
-		public static IFloatGenerator MakeFloatOCGenerator(IRandom random)
+		public static IFloatGenerator MakeFloatOCGenerator(this IRandom random)
 		{
 			return new FloatOCGenerator(random);
 		}
@@ -350,7 +350,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random doubles in the range (0, 1].</returns>
 		/// <seealso cref="RandomRange.DoubleOC(IRandom)"/>
-		public static IDoubleGenerator MakeDoubleOCGenerator(IRandom random)
+		public static IDoubleGenerator MakeDoubleOCGenerator(this IRandom random)
 		{
 			return new DoubleOCGenerator(random);
 		}
@@ -414,7 +414,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random floats in the range [0, 1].</returns>
 		/// <seealso cref="RandomRange.FloatCC(IRandom)"/>
-		public static IFloatGenerator MakeFloatCCGenerator(IRandom random)
+		public static IFloatGenerator MakeFloatCCGenerator(this IRandom random)
 		{
 			return new FloatCCGenerator(random);
 		}
@@ -491,7 +491,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A range generator producing random doubles in the range [0, 1].</returns>
 		/// <seealso cref="RandomRange.DoubleCC(IRandom)"/>
-		public static IDoubleGenerator MakeDoubleCCGenerator(IRandom random)
+		public static IDoubleGenerator MakeDoubleCCGenerator(this IRandom random)
 		{
 			return new DoubleCCGenerator(random);
 		}
