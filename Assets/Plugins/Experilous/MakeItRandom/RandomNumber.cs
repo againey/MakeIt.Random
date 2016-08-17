@@ -99,8 +99,8 @@ namespace Experilous.MakeItRandom
 			{
 				n = random.Next32();
 			}
-			while (n >= 3U);
-			return (int)n - 1;
+			while (n >= 0xC0000000U);
+			return (int)(n >> 30) - 1;
 		}
 
 		#endregion
