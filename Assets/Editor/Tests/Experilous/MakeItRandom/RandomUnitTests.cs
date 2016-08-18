@@ -2,6 +2,12 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
+#define OPTIMIZE_FOR_64
+#else
+#define OPTIMIZE_FOR_32
+#endif
+
 #if UNITY_5_3
 using UnityEngine;
 using NUnit.Framework;
@@ -17,7 +23,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenFloatUnit();
+				var n = random.FloatOO();
 				Assert.Greater(n, 0.0f);
 				Assert.Less(n, 1.0f);
 			}
@@ -27,7 +33,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenDoubleUnit();
+				var n = random.DoubleOO();
 				Assert.Greater(n, 0.0);
 				Assert.Less(n, 1.0);
 			}
@@ -37,7 +43,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenFloatUnit();
+				var n = random.FloatCO();
 				Assert.GreaterOrEqual(n, 0.0f);
 				Assert.Less(n, 1.0f);
 			}
@@ -47,7 +53,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenDoubleUnit();
+				var n = random.DoubleCO();
 				Assert.GreaterOrEqual(n, 0.0);
 				Assert.Less(n, 1.0);
 			}
@@ -57,7 +63,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedFloatUnit();
+				var n = random.FloatOC();
 				Assert.Greater(n, 0.0f);
 				Assert.LessOrEqual(n, 1.0f);
 			}
@@ -67,7 +73,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedDoubleUnit();
+				var n = random.DoubleOC();
 				Assert.Greater(n, 0.0);
 				Assert.LessOrEqual(n, 1.0);
 			}
@@ -77,7 +83,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedFloatUnit();
+				var n = random.FloatCC();
 				Assert.GreaterOrEqual(n, 0.0f);
 				Assert.LessOrEqual(n, 1.0f);
 			}
@@ -87,7 +93,7 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedDoubleUnit();
+				var n = random.DoubleCC();
 				Assert.GreaterOrEqual(n, 0.0);
 				Assert.LessOrEqual(n, 1.0);
 			}
@@ -98,7 +104,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenFloatUnit();
+				var n = random.FloatOO();
 				buckets[Mathf.FloorToInt(n * bucketCount)] += 1;
 			}
 
@@ -110,7 +116,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenDoubleUnit();
+				var n = random.DoubleOO();
 				buckets[(int)System.Math.Floor(n * bucketCount)] += 1;
 			}
 
@@ -122,7 +128,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenFloatUnit();
+				var n = random.FloatCO();
 				buckets[Mathf.FloorToInt(n * bucketCount)] += 1;
 			}
 
@@ -134,7 +140,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenDoubleUnit();
+				var n = random.DoubleCO();
 				buckets[(int)System.Math.Floor(n * bucketCount)] += 1;
 			}
 
@@ -146,7 +152,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedFloatUnit();
+				var n = random.FloatOC();
 				buckets[Mathf.CeilToInt(n * bucketCount) - 1] += 1;
 			}
 
@@ -158,7 +164,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedDoubleUnit();
+				var n = random.DoubleOC();
 				buckets[(int)System.Math.Ceiling(n * bucketCount) - 1] += 1;
 			}
 
@@ -170,7 +176,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedFloatUnit();
+				var n = random.FloatCC();
 				if (n != 1.0f) buckets[Mathf.FloorToInt(n * bucketCount)] += 1;
 			}
 
@@ -182,7 +188,7 @@ namespace Experilous.MakeItRandom.Tests
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedDoubleUnit();
+				var n = random.DoubleCC();
 				if (n != 1.0) buckets[(int)System.Math.Floor(n * bucketCount)] += 1;
 			}
 
@@ -207,6 +213,9 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var mock = Substitute.For<IRandom>();
 			mock.Next64().Returns(0x0000000000000000UL, 0x0000000000000000UL, 0x0000000000000000UL, 0x0000000000000001UL, 0x0010000000000000UL, 0x0010000000000000UL, 0x0010000000000000UL, 0x000FFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
+#if OPTIMIZE_FOR_32
+			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
+#endif
 			ValidateOpenDoubleUnitRange(8, mock);
 			ValidateOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
@@ -233,6 +242,9 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var mock = Substitute.For<IRandom>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
+#if OPTIMIZE_FOR_32
+			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
+#endif
 			ValidateHalfOpenDoubleUnitRange(10, mock);
 			ValidateHalfOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
@@ -259,6 +271,9 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var mock = Substitute.For<IRandom>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
+#if OPTIMIZE_FOR_32
+			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
+#endif
 			ValidateHalfClosedDoubleUnitRange(10, mock);
 			ValidateHalfClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
@@ -285,6 +300,9 @@ namespace Experilous.MakeItRandom.Tests
 		{
 			var mock = Substitute.For<IRandom>();
 			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0x0000000000000000UL, 0xFFFFFFFF00000000UL, 0x0000000000000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL, 0xFFF0000000000001UL, 0x000FFFFFFFFFF000UL, 0xFFF0000000000001UL, 0x000FFFFFFFFFF001UL, 0xFFF0000000000001UL, 0x0010000000000000UL, 0xFFF0000000000001UL, 0x0010000000000001UL, 0x0010000000000000UL);
+#if OPTIMIZE_FOR_32
+			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
+#endif
 			ValidateClosedDoubleUnitRange(14, mock);
 			ValidateClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateClosedDoubleUnitRange(10000, SplitMix64.Create(seed));

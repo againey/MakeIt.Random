@@ -71,7 +71,7 @@ namespace Experilous.MakeItRandom.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = random.ClosedRange(2f, 8f);
+				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;
 				var v = random.ScaledVector2(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);
@@ -84,7 +84,7 @@ namespace Experilous.MakeItRandom.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = random.ClosedRange(2f, 8f);
+				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;
 				var v = random.ScaledVector3(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);
@@ -97,7 +97,7 @@ namespace Experilous.MakeItRandom.Tests
 			var random = XorShift128Plus.Create(seed);
 			for (int i = 0; i < 10000; ++i)
 			{
-				var l = random.ClosedRange(2f, 8f);
+				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;
 				var v = random.ScaledVector4(l);
 				Assert.AreEqual(l2, v.sqrMagnitude, l2 * 0.0001);

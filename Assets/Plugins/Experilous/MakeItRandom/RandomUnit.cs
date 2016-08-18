@@ -473,7 +473,7 @@ namespace Experilous.MakeItRandom
 			value.number = 0d;
 			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & n;
 
-			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL || random.HalfOpenRange(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL || random.RangeCO(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
 			{
 				return value.number - 1d;
 			}

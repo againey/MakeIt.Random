@@ -11,321 +11,321 @@ namespace Experilous.MakeItRandom.Tests
 	{
 		private const string seed = "random seed";
 
-		public static void ValidateOpenRange(int count, int max, IRandom random)
+		public static void ValidateRangeOO(int count, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				Assert.Greater(n, 0);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, uint max, IRandom random)
+		public static void ValidateRangeOO(int count, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				Assert.Greater(n, 0U);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, long max, IRandom random)
+		public static void ValidateRangeOO(int count, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				Assert.Greater(n, 0L);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, ulong max, IRandom random)
+		public static void ValidateRangeOO(int count, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				Assert.Greater(n, 0UL);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, int min, int max, IRandom random)
+		public static void ValidateRangeOO(int count, int min, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				Assert.Greater(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, uint min, uint max, IRandom random)
+		public static void ValidateRangeOO(int count, uint min, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				Assert.Greater(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, long min, long max, IRandom random)
+		public static void ValidateRangeOO(int count, long min, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				Assert.Greater(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateOpenRange(int count, ulong min, ulong max, IRandom random)
+		public static void ValidateRangeOO(int count, ulong min, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				Assert.Greater(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, int max, IRandom random)
+		public static void ValidateRangeCO(int count, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				Assert.GreaterOrEqual(n, 0);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, uint max, IRandom random)
+		public static void ValidateRangeCO(int count, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				Assert.GreaterOrEqual(n, 0U);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, long max, IRandom random)
+		public static void ValidateRangeCO(int count, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				Assert.GreaterOrEqual(n, 0L);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, ulong max, IRandom random)
+		public static void ValidateRangeCO(int count, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				Assert.GreaterOrEqual(n, 0UL);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, int min, int max, IRandom random)
+		public static void ValidateRangeCO(int count, int min, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, uint min, uint max, IRandom random)
+		public static void ValidateRangeCO(int count, uint min, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, long min, long max, IRandom random)
+		public static void ValidateRangeCO(int count, long min, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfOpenRange(int count, ulong min, ulong max, IRandom random)
+		public static void ValidateRangeCO(int count, ulong min, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.Less(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, int max, IRandom random)
+		public static void ValidateRangeOC(int count, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				Assert.Greater(n, 0);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, uint max, IRandom random)
+		public static void ValidateRangeOC(int count, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				Assert.Greater(n, 0U);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, long max, IRandom random)
+		public static void ValidateRangeOC(int count, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				Assert.Greater(n, 0L);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, ulong max, IRandom random)
+		public static void ValidateRangeOC(int count, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				Assert.Greater(n, 0UL);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, int min, int max, IRandom random)
+		public static void ValidateRangeOC(int count, int min, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				Assert.Greater(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, uint min, uint max, IRandom random)
+		public static void ValidateRangeOC(int count, uint min, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				Assert.Greater(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, long min, long max, IRandom random)
+		public static void ValidateRangeOC(int count, long min, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				Assert.Greater(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateHalfClosedRange(int count, ulong min, ulong max, IRandom random)
+		public static void ValidateRangeOC(int count, ulong min, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				Assert.Greater(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, int max, IRandom random)
+		public static void ValidateRangeCC(int count, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				Assert.GreaterOrEqual(n, 0);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, uint max, IRandom random)
+		public static void ValidateRangeCC(int count, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				Assert.GreaterOrEqual(n, 0U);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, long max, IRandom random)
+		public static void ValidateRangeCC(int count, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				Assert.GreaterOrEqual(n, 0L);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, ulong max, IRandom random)
+		public static void ValidateRangeCC(int count, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				Assert.GreaterOrEqual(n, 0UL);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, int min, int max, IRandom random)
+		public static void ValidateRangeCC(int count, int min, int max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, uint min, uint max, IRandom random)
+		public static void ValidateRangeCC(int count, uint min, uint max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, long min, long max, IRandom random)
+		public static void ValidateRangeCC(int count, long min, long max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.LessOrEqual(n, max);
 			}
 		}
 
-		public static void ValidateClosedRange(int count, ulong min, ulong max, IRandom random)
+		public static void ValidateRangeCC(int count, ulong min, ulong max, IRandom random)
 		{
 			for (int i = 0; i < count; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				Assert.GreaterOrEqual(n, min);
 				Assert.LessOrEqual(n, max);
 			}
@@ -337,7 +337,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				buckets[(uint)System.Math.Floor((n - 1) * scale)] += 1;
 			}
 
@@ -350,7 +350,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min - 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1) * scale)] += 1;
 			}
 
@@ -363,7 +363,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				buckets[(uint)System.Math.Floor((n - 1U) * scale)] += 1;
 			}
 
@@ -376,7 +376,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min - 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1U) * scale)] += 1;
 			}
 
@@ -389,7 +389,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				buckets[(uint)System.Math.Floor((n - 1L) * scale)] += 1;
 			}
 
@@ -402,7 +402,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min - 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1L) * scale)] += 1;
 			}
 
@@ -415,7 +415,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(max);
+				var n = random.RangeOO(max);
 				buckets[(uint)System.Math.Floor((n - 1UL) * scale)] += 1;
 			}
 
@@ -428,7 +428,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min - 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.OpenRange(min, max);
+				var n = random.RangeOO(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1UL) * scale)] += 1;
 			}
 
@@ -441,7 +441,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -454,7 +454,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -467,7 +467,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -480,7 +480,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -493,7 +493,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -506,7 +506,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -519,7 +519,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(max);
+				var n = random.RangeCO(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -532,7 +532,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfOpenRange(min, max);
+				var n = random.RangeCO(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -545,7 +545,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				buckets[(uint)System.Math.Floor((n - 1) * scale)] += 1;
 			}
 
@@ -558,7 +558,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1) * scale)] += 1;
 			}
 
@@ -571,7 +571,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				buckets[(uint)System.Math.Floor((n - 1U) * scale)] += 1;
 			}
 
@@ -584,7 +584,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1U) * scale)] += 1;
 			}
 
@@ -597,7 +597,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				buckets[(uint)System.Math.Floor((n - 1L) * scale)] += 1;
 			}
 
@@ -610,7 +610,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1L) * scale)] += 1;
 			}
 
@@ -623,7 +623,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(max);
+				var n = random.RangeOC(max);
 				buckets[(uint)System.Math.Floor((n - 1UL) * scale)] += 1;
 			}
 
@@ -636,7 +636,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.HalfClosedRange(min, max);
+				var n = random.RangeOC(min, max);
 				buckets[(uint)System.Math.Floor((n - min - 1UL) * scale)] += 1;
 			}
 
@@ -649,7 +649,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max + 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -662,7 +662,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min + 1);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -675,7 +675,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max + 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -688,7 +688,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min + 1U);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -701,7 +701,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max + 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -714,7 +714,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min + 1L);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -727,7 +727,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max + 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(max);
+				var n = random.RangeCC(max);
 				buckets[(uint)System.Math.Floor((n) * scale)] += 1;
 			}
 
@@ -740,7 +740,7 @@ namespace Experilous.MakeItRandom.Tests
 			var scale = (double)bucketCount / (max - min + 1UL);
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
-				var n = random.ClosedRange(min, max);
+				var n = random.RangeCC(min, max);
 				buckets[(uint)System.Math.Floor((n - min) * scale)] += 1;
 			}
 
@@ -750,496 +750,496 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void OpenInt32Range()
 		{
-			ValidateOpenRange(10000, 257, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 257, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 257, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 257, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 257, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 257, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 257, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 257, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 257, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 257, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 127, 384, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 127, 384, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 127, 384, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 127, 384, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 127, 384, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 127, 384, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 127, 384, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 127, 384, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 127, 384, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 127, 384, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 43, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 43, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 43, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 43, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 43, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 43, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 43, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 43, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 43, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 43, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 140, 183, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 140, 183, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 140, 183, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 140, 183, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 140, 183, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 140, 183, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 140, 183, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 140, 183, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 140, 183, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 140, 183, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void OpenUInt32Range()
 		{
-			ValidateOpenRange(10000, 257U, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 257U, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 257U, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 257U, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 257U, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 257U, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 257U, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 257U, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 257U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 257U, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 127U, 384U, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 127U, 384U, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 127U, 384U, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 127U, 384U, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 127U, 384U, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 127U, 384U, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 127U, 384U, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 127U, 384U, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 127U, 384U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 127U, 384U, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 43U, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 43U, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 43U, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 43U, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 43U, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 43U, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 43U, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 43U, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 43U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 43U, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 140U, 183U, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 140U, 183U, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 140U, 183U, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 140U, 183U, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 140U, 183U, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 140U, 183U, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 140U, 183U, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void OpenInt64Range()
 		{
-			ValidateOpenRange(10000, 257L, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 257L, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 257L, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 257L, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 257L, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 257L, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 257L, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 257L, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 257L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 257L, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 127L, 384L, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 127L, 384L, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 127L, 384L, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 127L, 384L, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 127L, 384L, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 127L, 384L, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 127L, 384L, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 127L, 384L, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 127L, 384L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 127L, 384L, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 2340982340892342L, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342L, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342L, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342L, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342L, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342L, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 43L, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 43L, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 43L, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 43L, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 43L, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 43L, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 43L, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 43L, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 43L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 43L, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 140L, 183L, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 140L, 183L, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 140L, 183L, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 140L, 183L, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 140L, 183L, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 140L, 183L, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 140L, 183L, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void OpenUInt64Range()
 		{
-			ValidateOpenRange(10000, 257UL, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 257UL, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 257UL, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 257UL, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 257UL, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 257UL, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 257UL, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 257UL, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 257UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 257UL, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 127UL, 384UL, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 127UL, 384UL, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 127UL, 384UL, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 127UL, 384UL, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 127UL, 384UL, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 127UL, 384UL, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 127UL, 384UL, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 127UL, 384UL, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 127UL, 384UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 127UL, 384UL, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 2340982340892342UL, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342UL, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342UL, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342UL, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 43UL, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 43UL, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 43UL, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 43UL, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 43UL, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 43UL, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 43UL, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 43UL, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 43UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 43UL, XorShift1024Star.Create(seed));
 
-			ValidateOpenRange(10000, 140UL, 183UL, SystemRandom.Create(seed));
-			ValidateOpenRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
-			ValidateOpenRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
-			ValidateOpenRange(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
-			ValidateOpenRange(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
+			ValidateRangeOO(10000, 140UL, 183UL, SystemRandom.Create(seed));
+			ValidateRangeOO(10000, 140UL, 183UL, SplitMix64.Create(seed));
+			ValidateRangeOO(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
+			ValidateRangeOO(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOO(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfOpenInt32Range()
 		{
-			ValidateHalfOpenRange(10000, 256, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 256, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 256, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 256, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 256, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 256, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 256, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 256, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 128, 384, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 128, 384, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 128, 384, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128, 384, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128, 384, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 128, 384, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 128, 384, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 128, 384, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 128, 384, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 128, 384, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 43, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 43, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 43, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 43, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 43, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 43, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 43, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 43, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 140, 183, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 140, 183, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 140, 183, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140, 183, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140, 183, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 140, 183, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 140, 183, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 140, 183, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 140, 183, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 140, 183, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfOpenUInt32Range()
 		{
-			ValidateHalfOpenRange(10000, 256U, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 256U, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 256U, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256U, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256U, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 256U, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 256U, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 256U, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 256U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 256U, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 128U, 384U, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 128U, 384U, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 128U, 384U, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128U, 384U, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 128U, 384U, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 128U, 384U, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 128U, 384U, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 128U, 384U, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 43U, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 43U, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 43U, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43U, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43U, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 43U, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 43U, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 43U, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 43U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 43U, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 140U, 183U, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 140U, 183U, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140U, 183U, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 140U, 183U, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 140U, 183U, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 140U, 183U, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 140U, 183U, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfOpenInt64Range()
 		{
-			ValidateHalfOpenRange(10000, 256L, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 256L, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 256L, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256L, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256L, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 256L, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 256L, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 256L, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 256L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 256L, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 128L, 384L, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 128L, 384L, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 128L, 384L, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128L, 384L, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128L, 384L, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 128L, 384L, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 128L, 384L, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 128L, 384L, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 128L, 384L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 128L, 384L, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 2340982340892342L, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342L, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342L, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342L, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342L, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342L, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 43L, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 43L, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 43L, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43L, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43L, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 43L, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 43L, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 43L, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 43L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 43L, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 140L, 183L, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 140L, 183L, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140L, 183L, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 140L, 183L, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 140L, 183L, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 140L, 183L, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 140L, 183L, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfOpenUInt64Range()
 		{
-			ValidateHalfOpenRange(10000, 256UL, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 256UL, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 256UL, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 256UL, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 256UL, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 256UL, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 256UL, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 256UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 256UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 128UL, 384UL, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 128UL, 384UL, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 128UL, 384UL, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128UL, 384UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 128UL, 384UL, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 128UL, 384UL, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 128UL, 384UL, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 128UL, 384UL, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 128UL, 384UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 128UL, 384UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 2340982340892342UL, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342UL, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
-			ValidateHalfOpenRange(10000, 43UL, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 43UL, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 43UL, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 43UL, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342UL, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342UL, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 43UL, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 43UL, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 43UL, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 43UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 43UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfOpenRange(10000, 140UL, 183UL, SystemRandom.Create(seed));
-			ValidateHalfOpenRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
-			ValidateHalfOpenRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenRange(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
+			ValidateRangeCO(10000, 140UL, 183UL, SystemRandom.Create(seed));
+			ValidateRangeCO(10000, 140UL, 183UL, SplitMix64.Create(seed));
+			ValidateRangeCO(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
+			ValidateRangeCO(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCO(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfClosedInt32Range()
 		{
-			ValidateHalfClosedRange(10000, 256, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 256, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 256, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 256, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 256, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 256, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 256, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 256, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 128, 384, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 128, 384, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 128, 384, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128, 384, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128, 384, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 128, 384, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 128, 384, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 128, 384, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 128, 384, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 128, 384, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 43, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 43, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 43, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 43, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 43, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 43, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 43, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 43, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 140, 183, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 140, 183, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 140, 183, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140, 183, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140, 183, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 140, 183, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 140, 183, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 140, 183, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 140, 183, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 140, 183, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfClosedUInt32Range()
 		{
-			ValidateHalfClosedRange(10000, 256U, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 256U, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 256U, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256U, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256U, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 256U, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 256U, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 256U, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 256U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 256U, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 128U, 384U, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 128U, 384U, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 128U, 384U, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128U, 384U, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 128U, 384U, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 128U, 384U, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 128U, 384U, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 128U, 384U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 128U, 384U, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 43U, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 43U, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 43U, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43U, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43U, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 43U, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 43U, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 43U, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 43U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 43U, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 140U, 183U, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 140U, 183U, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140U, 183U, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 140U, 183U, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 140U, 183U, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 140U, 183U, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 140U, 183U, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfClosedInt64Range()
 		{
-			ValidateHalfClosedRange(10000, 256L, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 256L, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 256L, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256L, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256L, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 256L, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 256L, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 256L, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 256L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 256L, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 128L, 384L, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 128L, 384L, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 128L, 384L, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128L, 384L, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128L, 384L, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 128L, 384L, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 128L, 384L, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 128L, 384L, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 128L, 384L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 128L, 384L, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 2340982340892342L, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342L, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342L, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342L, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342L, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342L, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 43L, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 43L, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 43L, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43L, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43L, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 43L, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 43L, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 43L, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 43L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 43L, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 140L, 183L, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 140L, 183L, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140L, 183L, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 140L, 183L, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 140L, 183L, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 140L, 183L, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 140L, 183L, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void HalfClosedUInt64Range()
 		{
-			ValidateHalfClosedRange(10000, 256UL, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 256UL, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 256UL, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 256UL, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 256UL, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 256UL, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 256UL, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 256UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 256UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 128UL, 384UL, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 128UL, 384UL, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 128UL, 384UL, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128UL, 384UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 128UL, 384UL, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 128UL, 384UL, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 128UL, 384UL, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 128UL, 384UL, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 128UL, 384UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 128UL, 384UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 2340982340892342UL, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342UL, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342UL, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342UL, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 43UL, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 43UL, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 43UL, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 43UL, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 43UL, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 43UL, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 43UL, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 43UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 43UL, XorShift1024Star.Create(seed));
 
-			ValidateHalfClosedRange(10000, 140UL, 183UL, SystemRandom.Create(seed));
-			ValidateHalfClosedRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
-			ValidateHalfClosedRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedRange(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
+			ValidateRangeOC(10000, 140UL, 183UL, SystemRandom.Create(seed));
+			ValidateRangeOC(10000, 140UL, 183UL, SplitMix64.Create(seed));
+			ValidateRangeOC(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
+			ValidateRangeOC(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeOC(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void ClosedInt32Range()
 		{
-			ValidateClosedRange(10000, 255, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 255, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 255, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 255, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 255, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 255, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 255, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 255, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 255, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 255, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 128, 383, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 128, 383, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 128, 383, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 128, 383, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 128, 383, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 128, 383, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 128, 383, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 128, 383, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 128, 383, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 128, 383, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 43, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 43, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 43, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 43, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 43, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 43, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 43, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 43, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 43, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 43, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 140, 183, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 140, 183, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 140, 183, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 140, 183, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 140, 183, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 140, 183, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 140, 183, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 140, 183, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 140, 183, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 140, 183, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void ClosedUInt32Range()
 		{
-			ValidateClosedRange(10000, 255U, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 255U, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 255U, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 255U, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 255U, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 255U, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 255U, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 255U, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 255U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 255U, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 128U, 383U, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 128U, 383U, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 128U, 383U, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 128U, 383U, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 128U, 383U, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 128U, 383U, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 128U, 383U, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 128U, 383U, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 128U, 383U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 128U, 383U, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 43U, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 43U, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 43U, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 43U, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 43U, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 43U, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 43U, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 43U, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 43U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 43U, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 140U, 183U, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 140U, 183U, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 140U, 183U, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 140U, 183U, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 140U, 183U, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 140U, 183U, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 140U, 183U, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 140U, 183U, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 140U, 183U, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void ClosedInt64Range()
 		{
-			ValidateClosedRange(10000, 255L, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 255L, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 255L, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 255L, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 255L, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 255L, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 255L, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 255L, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 255L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 255L, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 128L, 383L, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 128L, 383L, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 128L, 383L, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 128L, 383L, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 128L, 383L, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 128L, 383L, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 128L, 383L, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 128L, 383L, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 128L, 383L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 128L, 383L, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 2340982340892342L, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342L, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342L, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342L, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342L, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342L, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342L, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342L, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 43L, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 43L, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 43L, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 43L, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 43L, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 43L, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 43L, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 43L, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 43L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 43L, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 140L, 183L, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 140L, 183L, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 140L, 183L, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 140L, 183L, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 140L, 183L, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 140L, 183L, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 140L, 183L, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 140L, 183L, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 140L, 183L, XorShift1024Star.Create(seed));
 		}
 
 		[Test]
 		public void ClosedUInt64Range()
 		{
-			ValidateClosedRange(10000, 255UL, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 255UL, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 255UL, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 255UL, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 255UL, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 255UL, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 255UL, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 255UL, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 255UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 255UL, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 128UL, 383UL, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 128UL, 383UL, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 128UL, 383UL, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 128UL, 383UL, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 128UL, 383UL, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 128UL, 383UL, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 128UL, 383UL, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 128UL, 383UL, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 128UL, 383UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 128UL, 383UL, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 2340982340892342UL, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342UL, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342UL, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342UL, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342UL, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 2340982340892342UL, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 43UL, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 43UL, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 43UL, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 43UL, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 43UL, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 43UL, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 43UL, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 43UL, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 43UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 43UL, XorShift1024Star.Create(seed));
 
-			ValidateClosedRange(10000, 140UL, 183UL, SystemRandom.Create(seed));
-			ValidateClosedRange(10000, 140UL, 183UL, SplitMix64.Create(seed));
-			ValidateClosedRange(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
-			ValidateClosedRange(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
-			ValidateClosedRange(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
+			ValidateRangeCC(10000, 140UL, 183UL, SystemRandom.Create(seed));
+			ValidateRangeCC(10000, 140UL, 183UL, SplitMix64.Create(seed));
+			ValidateRangeCC(10000, 140UL, 183UL, XorShift128Plus.Create(seed));
+			ValidateRangeCC(10000, 140UL, 183UL, XoroShiro128Plus.Create(seed));
+			ValidateRangeCC(10000, 140UL, 183UL, XorShift1024Star.Create(seed));
 		}
 
 		[Test]

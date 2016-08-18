@@ -19,7 +19,7 @@ namespace Experilous.MakeItRandom.Tests
 
 			for (int i = 0; i < bucketCount; ++i)
 			{
-				int weight = random.ClosedRange(weightMin, weightMax);
+				int weight = random.RangeCC(weightMin, weightMax);
 				weights[i] = weight;
 				weightSum += weight;
 			}

@@ -4,6 +4,7 @@
 
 #if UNITY_5_3
 using NUnit.Framework;
+using NSubstitute;
 using System.Collections.Generic;
 
 namespace Experilous.MakeItRandom.Tests
@@ -19,7 +20,41 @@ namespace Experilous.MakeItRandom.Tests
 		private enum TenItemEnumWithHoles { One = 1, Two = 2, Three = 3, Six = 6, Eight = 8, Fourteen= 14, Fifteen = 15, Sixteen = 16, Nineteen = 19, Twenty = 20, }
 		private enum FiveValueEightItemEnumWithHoles { One = 1, Two = 2, Three = 3, Five = 5, NineThousand = 9000, Dos = 2, OnePlusOne = 2, Tres = 3, }
 
-		private static void ValidateEnumDistributesUniformly<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
+		private static void ValidateByValueEnumDistributesUniformly<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
+		{
+			var buckets = new Dictionary<TEnum, int>();
+			var enumValues = System.Enum.GetValues(typeof(TEnum));
+			foreach (var value in enumValues)
+			{
+				TEnum enumValue = (TEnum)value;
+				if (!buckets.ContainsKey(enumValue))
+				{
+					buckets.Add(enumValue, itemsPerBucket);
+				}
+			}
+			int iterations = itemsPerBucket * buckets.Count;
+			var random = XorShift128Plus.Create(seed);
+			var generator = random.MakeEnumGenerator<TEnum>(false);
+			for (int i = 0; i < iterations; ++i)
+			{
+				int currentTarget;
+				TEnum enumValue = generator.Next();
+				if (buckets.TryGetValue(enumValue, out currentTarget))
+				{
+					buckets[enumValue] = currentTarget - 1;
+				}
+				else
+				{
+					Assert.Fail("An invalid enum value was generated.");
+				}
+			}
+
+			int[] bucketsArray = new int[buckets.Count];
+			buckets.Values.CopyTo(bucketsArray, 0);
+			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(bucketsArray, 0), tolerance * itemsPerBucket);
+		}
+
+		private static void ValidateByNameEnumDistributesUniformly<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
 		{
 			var buckets = new Dictionary<TEnum, int>();
 			var enumValues = System.Enum.GetValues(typeof(TEnum));
@@ -37,12 +72,12 @@ namespace Experilous.MakeItRandom.Tests
 				}
 			}
 			int iterations = itemsPerBucket * enumValues.Length;
-			var randomEnum = RandomEnum.Prepare<TEnum>();
 			var random = XorShift128Plus.Create(seed);
+			var generator = random.MakeEnumGenerator<TEnum>(true);
 			for (int i = 0; i < iterations; ++i)
 			{
 				int currentTarget;
-				TEnum enumValue = randomEnum(random);
+				TEnum enumValue = generator.Next();
 				if (buckets.TryGetValue(enumValue, out currentTarget))
 				{
 					buckets[enumValue] = currentTarget - 1;
@@ -58,25 +93,43 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(bucketsArray, 0), tolerance * itemsPerBucket);
 		}
 
-		private static void ValidateDistinctEnumDistributesUniformly<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
+		private static void ValidateByValueEnumDistributesWithCorrectWeights<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
 		{
+			var random = XorShift128Plus.Create(seed);
+			var weights = new Dictionary<TEnum, int>();
+			int weightSum = 0;
 			var buckets = new Dictionary<TEnum, int>();
 			var enumValues = System.Enum.GetValues(typeof(TEnum));
 			foreach (var value in enumValues)
 			{
 				TEnum enumValue = (TEnum)value;
-				if (!buckets.ContainsKey(enumValue))
+				if (!weights.ContainsKey(enumValue))
 				{
-					buckets.Add(enumValue, itemsPerBucket);
+					int weight = random.RangeCC(3, 10);
+					weights.Add(enumValue, weight);
+					weightSum += weight;
 				}
 			}
-			int iterations = itemsPerBucket * buckets.Count;
-			var randomEnum = RandomEnum.PrepareDistinct<TEnum>();
-			var random = XorShift128Plus.Create(seed);
+
+			foreach (var value in enumValues)
+			{
+				TEnum enumValue = (TEnum)value;
+				if (!buckets.ContainsKey(enumValue))
+				{
+					buckets.Add(enumValue, itemsPerBucket * weights.Count * weights[enumValue] / weightSum);
+				}
+			}
+
+			int iterations = 0;
+			foreach (var target in buckets.Values)
+			{
+				iterations += target;
+			}
+			var generator = random.MakeWeightedEnumGenerator<TEnum>((TEnum value) => weights[value]);
 			for (int i = 0; i < iterations; ++i)
 			{
 				int currentTarget;
-				TEnum enumValue = randomEnum(random);
+				TEnum enumValue = generator.Next();
 				if (buckets.TryGetValue(enumValue, out currentTarget))
 				{
 					buckets[enumValue] = currentTarget - 1;
@@ -92,7 +145,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(bucketsArray, 0), tolerance * itemsPerBucket);
 		}
 
-		private static void ValidateEnumDistributesWithCorrectWeights<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
+		private static void ValidateByNameEnumDistributesWithCorrectWeights<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
 		{
 			var random = XorShift128Plus.Create(seed);
 			var weights = new Dictionary<string, int>();
@@ -101,7 +154,7 @@ namespace Experilous.MakeItRandom.Tests
 			var enumNames = System.Enum.GetNames(typeof(TEnum));
 			foreach (var name in enumNames)
 			{
-				int weight = random.ClosedRange(3, 10);
+				int weight = random.RangeCC(3, 10);
 				weights.Add(name, weight);
 				weightSum += weight;
 			}
@@ -125,63 +178,11 @@ namespace Experilous.MakeItRandom.Tests
 			{
 				iterations += target;
 			}
-			var randomEnum = RandomEnum.PrepareWeighted<TEnum>(weights);
+			var generator = random.MakeWeightedEnumGenerator<TEnum>((System.Func<string, int>)((string name) => weights[name]));
 			for (int i = 0; i < iterations; ++i)
 			{
 				int currentTarget;
-				TEnum enumValue = randomEnum(random);
-				if (buckets.TryGetValue(enumValue, out currentTarget))
-				{
-					buckets[enumValue] = currentTarget - 1;
-				}
-				else
-				{
-					Assert.Fail("An invalid enum value was generated.");
-				}
-			}
-
-			int[] bucketsArray = new int[buckets.Count];
-			buckets.Values.CopyTo(bucketsArray, 0);
-			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(bucketsArray, 0), tolerance * itemsPerBucket);
-		}
-
-		private static void ValidateDistinctEnumDistributesWithCorrectWeights<TEnum>(int itemsPerBucket, float tolerance) where TEnum : struct
-		{
-			var random = XorShift128Plus.Create(seed);
-			var weights = new Dictionary<TEnum, int>();
-			int weightSum = 0;
-			var buckets = new Dictionary<TEnum, int>();
-			var enumValues = System.Enum.GetValues(typeof(TEnum));
-			foreach (var value in enumValues)
-			{
-				TEnum enumValue = (TEnum)value;
-				if (!weights.ContainsKey(enumValue))
-				{
-					int weight = random.ClosedRange(3, 10);
-					weights.Add(enumValue, weight);
-					weightSum += weight;
-				}
-			}
-
-			foreach (var value in enumValues)
-			{
-				TEnum enumValue = (TEnum)value;
-				if (!buckets.ContainsKey(enumValue))
-				{
-					buckets.Add(enumValue, itemsPerBucket * weights.Count * weights[enumValue] / weightSum);
-				}
-			}
-
-			int iterations = 0;
-			foreach (var target in buckets.Values)
-			{
-				iterations += target;
-			}
-			var randomEnum = RandomEnum.PrepareDistinctWeighted<TEnum>(weights);
-			for (int i = 0; i < iterations; ++i)
-			{
-				int currentTarget;
-				TEnum enumValue = randomEnum(random);
+				TEnum enumValue = generator.Next();
 				if (buckets.TryGetValue(enumValue, out currentTarget))
 				{
 					buckets[enumValue] = currentTarget - 1;
@@ -198,147 +199,147 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[Test]
-		public void PrepareWithEmptyEnumThrows()
+		public void PrepareByValueWithEmptyEnumThrows()
 		{
-			Assert.Throws<System.ArgumentException>(() => RandomEnum.Prepare<EmptyEnum>());
+			Assert.Throws<System.ArgumentException>(() => Substitute.For<IRandom>().MakeEnumGenerator<EmptyEnum>(true));
 		}
 
 		[Test]
-		public void PrepareDistinctWithEmptyEnumThrows()
+		public void PrepareByNameWithEmptyEnumThrows()
 		{
-			Assert.Throws<System.ArgumentException>(() => RandomEnum.PrepareDistinct<EmptyEnum>());
+			Assert.Throws<System.ArgumentException>(() => Substitute.For<IRandom>().MakeEnumGenerator<EmptyEnum>(true));
 		}
 
 		[Test]
-		public void PrepareWeightedWithEmptyEnumThrows()
+		public void PrepareByValueWeightedWithEmptyEnumThrows()
 		{
-			Assert.Throws<System.ArgumentException>(() => RandomEnum.PrepareWeighted<EmptyEnum>(new Dictionary<string, int>()));
+			Assert.Throws<System.ArgumentException>(() => Substitute.For<IRandom>().MakeWeightedEnumGenerator<EmptyEnum>((EmptyEnum value) => 0));
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithEmptyEnumThrows()
+		public void PrepareByNameWeightedWithEmptyEnumThrows()
 		{
-			Assert.Throws<System.ArgumentException>(() => RandomEnum.PrepareDistinctWeighted(new Dictionary<EmptyEnum, int>()));
+			Assert.Throws<System.ArgumentException>(() => Substitute.For<IRandom>().MakeWeightedEnumGenerator<EmptyEnum>((string name) => 0));
 		}
 
 		[Test]
 		public void PrepareWithOneItemEnumDistributesUniformly()
 		{
-			ValidateEnumDistributesUniformly<OneItemEnum>(1000, 0.001f);
+			ValidateByNameEnumDistributesUniformly<OneItemEnum>(1000, 0.001f);
 		}
 
 		[Test]
 		public void PrepareWithTwoItemEnumDistributesUniformly()
 		{
-			ValidateEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f);
+			ValidateByNameEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWithTwentyItemEnumDistributesUniformly()
 		{
-			ValidateEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f);
+			ValidateByNameEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWithTenItemEnumWithHolesDistributesUniformly()
 		{
-			ValidateEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f);
+			ValidateByNameEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWithFiveValueEightItemEnumWithHolesDistributesUniformly()
 		{
-			ValidateEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
+			ValidateByNameEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWithOneItemEnumDistributesUniformly()
+		public void PrepareByValueWithOneItemEnumDistributesUniformly()
 		{
-			ValidateDistinctEnumDistributesUniformly<OneItemEnum>(1000, 0.001f);
+			ValidateByValueEnumDistributesUniformly<OneItemEnum>(1000, 0.001f);
 		}
 
 		[Test]
-		public void PrepareDistinctWithTwoItemEnumDistributesUniformly()
+		public void PrepareByValueWithTwoItemEnumDistributesUniformly()
 		{
-			ValidateDistinctEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f);
+			ValidateByValueEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWithTwentyItemEnumDistributesUniformly()
+		public void PrepareByValueWithTwentyItemEnumDistributesUniformly()
 		{
-			ValidateDistinctEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f);
+			ValidateByValueEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWithTenItemEnumWithHolesDistributesUniformly()
+		public void PrepareByValueWithTenItemEnumWithHolesDistributesUniformly()
 		{
-			ValidateDistinctEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f);
+			ValidateByValueEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWithFiveValueEightItemEnumWithHolesDistributesUniformly()
+		public void PrepareByValueWithFiveValueEightItemEnumWithHolesDistributesUniformly()
 		{
-			ValidateDistinctEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
+			ValidateByValueEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWeightedWithOneItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f);
+			ValidateByNameEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f);
 		}
 
 		[Test]
 		public void PrepareWeightedWithTwoItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f);
+			ValidateByNameEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWeightedWithTwentyItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f);
+			ValidateByNameEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWeightedWithTenItemEnumWithHolesDistributesWithCorrectWeights()
 		{
-			ValidateEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f);
+			ValidateByNameEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f);
 		}
 
 		[Test]
 		public void PrepareWeightedWithFiveValueEightItemEnumWithHolesDistributesWithCorrectWeights()
 		{
-			ValidateEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
+			ValidateByNameEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithOneItemEnumDistributesWithCorrectWeights()
+		public void PrepareByValueWeightedWithOneItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateDistinctEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f);
+			ValidateByValueEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f);
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithTwoItemEnumDistributesWithCorrectWeights()
+		public void PrepareByValueWeightedWithTwoItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateDistinctEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f);
+			ValidateByValueEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithTwentyItemEnumDistributesWithCorrectWeights()
+		public void PrepareByValueWeightedWithTwentyItemEnumDistributesWithCorrectWeights()
 		{
-			ValidateDistinctEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f);
+			ValidateByValueEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithTenItemEnumWithHolesDistributesWithCorrectWeights()
+		public void PrepareByValueWeightedWithTenItemEnumWithHolesDistributesWithCorrectWeights()
 		{
-			ValidateDistinctEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f);
+			ValidateByValueEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f);
 		}
 
 		[Test]
-		public void PrepareDistinctWeightedWithFiveValueEightItemEnumWithHolesDistributesWithCorrectWeights()
+		public void PrepareByValueWeightedWithFiveValueEightItemEnumWithHolesDistributesWithCorrectWeights()
 		{
-			ValidateDistinctEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
+			ValidateByValueEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f);
 		}
 	}
 }

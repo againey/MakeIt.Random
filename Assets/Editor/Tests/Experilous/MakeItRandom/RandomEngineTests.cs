@@ -122,7 +122,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateChanceDistribution(UnityRandom.Create(seed), 25, 32, 100000, 0.002f);
 			ValidateChanceDistribution(XoroShiro128Plus.Create(seed), 25, 32, 100000, 0.002f);
 			ValidateChanceDistribution(XorShift1024Star.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(XorShift128Plus.Create(seed), 25, 32, 100000, 0.002f);
+			ValidateChanceDistribution(XorShift128Plus.Create(seed), 25, 32, 100000, 0.0025f);
 			ValidateChanceDistribution(XorShiftAdd.Create(seed), 25, 32, 100000, 0.002f);
 		}
 
