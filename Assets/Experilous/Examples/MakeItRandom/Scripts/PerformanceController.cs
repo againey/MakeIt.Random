@@ -1319,25 +1319,51 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+#if true
+				Vector2 v;
 
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
-				_generatedFloat = RandomVector.PointWithinCircle(random).x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+				v = random.PointWithinCircle(); _generatedFloat = v.x;
+#else
+				Vector2 v;
+
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+				random.PointWithinCircle(out v); _generatedFloat = v.x;
+#endif
 			}
 		}
 
@@ -1368,6 +1394,6 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
