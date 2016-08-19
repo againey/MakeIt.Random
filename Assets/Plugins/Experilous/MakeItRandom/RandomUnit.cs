@@ -17,41 +17,6 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class RandomUnit
 	{
-		#region Private Helper Structs
-
-		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseFloat
-		{
-			[FieldOffset(0)]
-			public uint bits;
-			[FieldOffset(0)]
-			public float number;
-		}
-
-#if OPTIMIZE_FOR_32
-		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseDouble
-		{
-			[FieldOffset(0)]
-			public uint lowerBits;
-			[FieldOffset(4)]
-			public uint upperBits;
-			[FieldOffset(0)]
-			public double number;
-		}
-#else
-		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseDouble
-		{
-			[FieldOffset(0)]
-			public ulong bits;
-			[FieldOffset(0)]
-			public double number;
-		}
-#endif
-
-		#endregion
-
 		#region Private Generator Classes
 
 		private class FloatOOGenerator : IFloatGenerator
@@ -82,6 +47,13 @@ namespace Experilous.MakeItRandom
 			public float Next() { return _random.FloatCC(); }
 		}
 
+		private class FloatC1O2Generator : IFloatGenerator
+		{
+			private IRandom _random;
+			public FloatC1O2Generator(IRandom random) { _random = random; }
+			public float Next() { return _random.FloatC1O2(); }
+		}
+
 		private class DoubleOOGenerator : IDoubleGenerator
 		{
 			private IRandom _random;
@@ -110,6 +82,13 @@ namespace Experilous.MakeItRandom
 			public double Next() { return _random.DoubleCC(); }
 		}
 
+		private class DoubleC1O2Generator : IDoubleGenerator
+		{
+			private IRandom _random;
+			public DoubleC1O2Generator(IRandom random) { _random = random; }
+			public double Next() { return _random.DoubleC1O2(); }
+		}
+
 		#endregion
 
 		#region Unit Open/Open (0, 1)
@@ -131,12 +110,11 @@ namespace Experilous.MakeItRandom
 			uint n;
 			do
 			{
-				n = random.Next32() & 0x007FFFFFU;
-			} while (n == 0U);
-
-			BitwiseFloat value;
+				n = random.Next32();
+			} while (n <= 0x1FFU); // While the upper 23 bits are all zeros.
+			Detail.FloatingPoint.BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | n;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & (n >> 9);
 			return value.number - 1f;
 		}
 
@@ -170,24 +148,22 @@ namespace Experilous.MakeItRandom
 			do
 			{
 				random.Next64(out lower, out upper);
-				upper &= 0x000FFFFFU;
-			} while ((lower | upper) == 0U);
+			} while (upper == 0U && lower <= 0xFFFU); // While the upper 52 bits are all zeros.
 
-			BitwiseDouble value;
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
-			value.lowerBits = lower;
-			value.upperBits = 0x3FF00000U | upper;
+			value.lowerBits = (lower >> 12) | (upper << 20);
+			value.upperBits = Detail.FloatingPoint.doubleOneUpper | Detail.FloatingPoint.doubleMantissaMaskUpper & (upper >> 12);
 			return value.number - 1d;
 #else
 			ulong n;
 			do
 			{
-				n = random.Next64() & 0x000FFFFFFFFFFFFFUL;
-			} while (n == 0UL);
-
-			BitwiseDouble value;
+				n = random.Next64();
+			} while (n <= 0xFFFUL); // While the upper 52 bits are all zeros.
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
-			value.bits = 0x3FF0000000000000UL | n;
+			value.bits = Detail.FloatingPoint.doubleOne | Detail.FloatingPoint.doubleMantissaMask & (n >> 12);
 			return value.number - 1d;
 #endif
 		}
@@ -222,9 +198,9 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
 #else
-			BitwiseFloat value;
+			Detail.FloatingPoint.BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & (random.Next32());
 			return value.number - 1f;
 #endif
 		}
@@ -258,15 +234,15 @@ namespace Experilous.MakeItRandom
 #if OPTIMIZE_FOR_32
 			uint lower, upper;
 			random.Next64(out lower, out upper);
-			BitwiseDouble value;
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
 			value.lowerBits = lower;
-			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
+			value.upperBits = Detail.FloatingPoint.doubleOneUpper | Detail.FloatingPoint.doubleMantissaMaskUpper & upper;
 			return value.number - 1d;
 #else
-			BitwiseDouble value;
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
+			value.bits = Detail.FloatingPoint.doubleOne | Detail.FloatingPoint.doubleMantissaMask & random.Next64();
 			return value.number - 1d;
 #endif
 #endif
@@ -299,9 +275,9 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float FloatOC(this IRandom random)
 		{
-			BitwiseFloat value;
+			Detail.FloatingPoint.BitwiseFloat value;
 			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & random.Next32();
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & (random.Next32());
 			return 2f - value.number;
 		}
 
@@ -331,15 +307,15 @@ namespace Experilous.MakeItRandom
 #if OPTIMIZE_FOR_32
 			uint lower, upper;
 			random.Next64(out lower, out upper);
-			BitwiseDouble value;
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
 			value.lowerBits = lower;
-			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
+			value.upperBits = Detail.FloatingPoint.doubleOneUpper | Detail.FloatingPoint.doubleMantissaMaskUpper & upper;
 			return 2d - value.number;
 #else
-			BitwiseDouble value;
+			Detail.FloatingPoint.BitwiseDouble value;
 			value.number = 0d;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64();
+			value.bits = Detail.FloatingPoint.doubleOne | Detail.FloatingPoint.doubleMantissaMask & random.Next64();
 			return 2d - value.number;
 #endif
 		}
@@ -379,31 +355,30 @@ namespace Experilous.MakeItRandom
 #else
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
 			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
-			// that had a 2^23 in 2^23 + 1 chance of passing, and on failure resulted in a value of 1d being returned
+			// that only had a 1 in 2^23 + 1 chance of passing, and on passing resulted in a value of 1d being returned
 			// instead of the originally generated number, then all values would have exactly the correct target probability.
-
-			// To achieve this while still avoiding that second random check in most cases, the excess 11 bits generated by
-			// a call to Next32() are used to perform part of that second random check.  This check has a 2^11 - 1 in 2^11
-			// chance of passing, in which case the original number is returned.  On that rare 1 in 2048 case that it fails,
-			// then another random check is performed which has a 2^23 - 2^11 + 1 in 2^23 + 1 chance of passing.  If it still
-			// passes, then the original number is still returned; otherwise, 1d is returned.  The effect is that this pair
-			// of secondary random checks additively has the requisite 2^23 in 2^23 + 1 chance of passing, but over 99.95%
+			//
+			// To achieve this while still avoiding that second random check in most cases, the excess 9 bits generated by
+			// a call to Next32() are used to perform part of that second random check.  This check has a 2^9 - 1 in 2^9
+			// chance of failing, in which case the original number is returned.  On that rare 1 in 512 case that it passes,
+			// then another random check is performed which has a 2^9 in 2^23 + 1 chance of passing.  If that also passes
+			// then 1 is returned; otherwise, the standard float value is computed and returned.  The effect is that this
+			// pair of secondary random checks combined has the requisite 1 in 2^23 + 1 chance of passing, but over 99.80%
 			// of the time only one call to Next32() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
-			// on how RandomRange.HalfOpen() is implemented.
+			// on how RandomRange.RangeCO() is implemented.
 
 			uint n = random.Next32();
-			BitwiseFloat value;
-			value.number = 0f;
-			value.bits = 0x3F800000U | 0x007FFFFFU & n;
-
-			if ((n & 0xFF800000U) != 0xFF800000U || random.RangeCO(0x00800001U) < 0x007FF801U)
+			if (n >= 0xFF800000U && random.RangeCO(0x00800001U) < 0x00000200U)
 			{
-				return value.number - 1f;
+				return 1f;
 			}
 			else
 			{
-				return 1f;
+				Detail.FloatingPoint.BitwiseFloat value;
+				value.number = 0f;
+				value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & (n);
+				return value.number - 1f;
 			}
 #endif
 		}
@@ -439,47 +414,46 @@ namespace Experilous.MakeItRandom
 #else
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
 			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
-			// that had a 2^52 in 2^52 + 1 chance of passing, and on failure resulted in a value of 1d being returned
+			// that only had a 1 in 2^52 + 1 chance of passing, and on passing resulted in a value of 1d being returned
 			// instead of the originally generated number, then all values would have exactly the correct target probability.
-
+			//
 			// To achieve this while still avoiding that second random check in most cases, the excess 12 bits generated by
 			// a call to Next64() are used to perform part of that second random check.  This check has a 2^12 - 1 in 2^12
-			// chance of passing, in which case the original number is returned.  On that rare 1 in 4096 case that it fails,
-			// then another random check is performed which has a 2^52 - 2^12 + 1 in 2^52 + 1 chance of passing.  If it still
-			// passes, then the original number is still returned; otherwise, 1d is returned.  The effect is that this pair
-			// of secondary random checks additively has the requisite 2^52 in 2^52 + 1 chance of passing, but over 99.97%
+			// chance of failing, in which case the original number is returned.  On that rare 1 in 4096 case that it passes,
+			// then another random check is performed which has a 2^12 in 2^52 + 1 chance of passing.  If that also passes
+			// then 1 is returned; otherwise, the standard double value is computed and returned.  The effect is that this
+			// pair of secondary random checks combined has the requisite 1 in 2^52 + 1 chance of passing, but over 99.97%
 			// of the time only one call to Next64() is ever executed.  In the remaining few cases, on average about two
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
-			// on how RandomRange.HalfOpen() is implemented.
+			// on how RandomRange.RangeCO() is implemented.
 
 #if OPTIMIZE_FOR_32
 			uint lower, upper;
 			random.Next64(out lower, out upper);
-			BitwiseDouble value;
-			value.number = 0d;
-			value.lowerBits = lower;
-			value.upperBits = 0x3FF00000U | 0x000FFFFFU & upper;
-			if ((upper & 0xFFF00000U) != 0xFFF00000U || random.RangeCO(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			if (upper >= 0xFFF00000U && random.RangeCO(0x0010000000000001UL) < 0x00001000UL)
 			{
-				return value.number - 1d;
+				return 1d;
 			}
 			else
 			{
-				return 1d;
+				Detail.FloatingPoint.BitwiseDouble value;
+				value.number = 0d;
+				value.lowerBits = lower;
+				value.upperBits = Detail.FloatingPoint.doubleOneUpper | Detail.FloatingPoint.doubleMantissaMaskUpper & upper;
+				return value.number - 1d;
 			}
 #else
 			ulong n = random.Next64();
-			BitwiseDouble value;
-			value.number = 0d;
-			value.bits = 0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & n;
-
-			if ((n & 0xFFF0000000000000UL) != 0xFFF0000000000000UL || random.RangeCO(0x0010000000000001UL) < 0x000FFFFFFFFFF001UL)
+			if (n >= 0xFFF0000000000000UL && random.RangeCO(0x0010000000000001UL) < 0x00001000UL)
 			{
-				return value.number - 1d;
+				return 1d;
 			}
 			else
 			{
-				return 1d;
+				Detail.FloatingPoint.BitwiseDouble value;
+				value.number = 0d;
+				value.bits = Detail.FloatingPoint.doubleOne | Detail.FloatingPoint.doubleMantissaMask & n;
+				return value.number - 1d;
 			}
 #endif
 #endif
@@ -494,6 +468,86 @@ namespace Experilous.MakeItRandom
 		public static IDoubleGenerator MakeDoubleCCGenerator(this IRandom random)
 		{
 			return new DoubleCCGenerator(random);
+		}
+
+		#endregion
+
+		#region Unit Closed/Open [1, 2)
+
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [0, 1).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [0, 1) with
+		/// perfect distribution across 2^23 unique 32-bit float values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next32()"/> once on the supplied random engine.</para>
+		/// <para>Given the implementation details, this function is slightly faster than the other unit ranges.</para>
+		/// </remarks>
+		public static float FloatC1O2(this IRandom random)
+		{
+			Detail.FloatingPoint.BitwiseFloat value;
+			value.number = 0f;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & (random.Next32());
+			return value.number;
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [1, 2).</returns>
+		/// <remarks><para>Given the implementation details, this function is slightly faster than the other unit ranges.</para></remarks>
+		/// <seealso cref="RandomRange.FloatC1O2(IRandom)"/>
+		public static IFloatGenerator MakeFloatC1O2Generator(this IRandom random)
+		{
+			return new FloatC1O2Generator(random);
+		}
+
+		/// <summary>
+		/// Returns a random floating point number greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random floating point number in the range [1, 2).</returns>
+		/// <remarks>
+		/// <para>Limited only by the quality of the underlying random engine used, this method generates floats in the range [1, 2) with
+		/// perfect distribution across 2^52 unique 64-bit double values which are precisely equidistant from each other in sequence.</para>
+		/// <para>This function will only ever need to call <see cref="IBitGenerator.Next64()"/> once on the supplied random engine.</para>
+		/// <para>Given the implementation details, this function is slightly faster than the other unit ranges.</para>
+		/// </remarks>
+		public static double DoubleC1O2(this IRandom random)
+		{
+#if MAKEITRANDOM_BACK_C1O2MPAT_V0_1
+			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
+#else
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
+			Detail.FloatingPoint.BitwiseDouble value;
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = Detail.FloatingPoint.doubleOneUpper | Detail.FloatingPoint.doubleMantissaMaskUpper & upper;
+			return value.number;
+#else
+			Detail.FloatingPoint.BitwiseDouble value;
+			value.number = 0d;
+			value.bits = Detail.FloatingPoint.doubleOne | Detail.FloatingPoint.doubleMantissaMask & random.Next64();
+			return value.number;
+#endif
+#endif
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [1, 2).</returns>
+		/// <remarks><para>Given the implementation details, this function is slightly faster than the other unit ranges.</para></remarks>
+		/// <seealso cref="RandomRange.DoubleC1O2(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleC1O2Generator(this IRandom random)
+		{
+			return new DoubleC1O2Generator(random);
 		}
 
 		#endregion

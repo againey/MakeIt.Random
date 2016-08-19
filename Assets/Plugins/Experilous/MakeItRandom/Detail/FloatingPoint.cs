@@ -13,12 +13,12 @@ using System.Runtime.InteropServices;
 namespace Experilous.MakeItRandom.Detail
 {
 	/// <summary>
-	/// A static class of lookup tables and methods for quickly looking up common attributes associated with integer values.
+	/// A static class of constants and methods for efficiently doing various floating point bit manipulation.
 	/// </summary>
 	public static class FloatingPoint
 	{
 		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseFloat
+		public struct BitwiseFloat
 		{
 			[FieldOffset(0)]
 			public uint bits;
@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom.Detail
 
 #if OPTIMIZE_FOR_32
 		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseDouble
+		public struct BitwiseDouble
 		{
 			[FieldOffset(0)]
 			public uint lowerBits;
@@ -39,7 +39,7 @@ namespace Experilous.MakeItRandom.Detail
 		}
 #else
 		[StructLayout(LayoutKind.Explicit)]
-		private struct BitwiseDouble
+		public struct BitwiseDouble
 		{
 			[FieldOffset(0)]
 			public ulong bits;
@@ -54,14 +54,61 @@ namespace Experilous.MakeItRandom.Detail
 		public const uint floatExponentMask = ((1U << floatExponentBitCount) - 1U) << floatMantissaBitCount;
 		public const uint floatSignExponentMask = floatSignMask | floatExponentMask;
 		public const uint floatMantissaMask = (1U << floatMantissaBitCount) - 1U;
-		public const uint floatSignExponent1 = 0x3F800000U;
+		public const uint floatOne = 0x3F800000U;
 
+		public const int doubleExponentBitCount = 11;
+		public const int doubleMantissaBitCount = 52;
+		public const ulong doubleSignMask = 1UL << (doubleExponentBitCount + doubleMantissaBitCount);
+		public const ulong doubleExponentMask = ((1UL << doubleExponentBitCount) - 1UL) << doubleMantissaBitCount;
+		public const ulong doubleSignExponentMask = doubleSignMask | doubleExponentMask;
+		public const ulong doubleMantissaMask = (1UL << doubleMantissaBitCount) - 1UL;
+		public const ulong doubleOne = 0x3FF0000000000000UL;
+
+		public const uint doubleSignMaskUpper = (uint)(doubleSignMask >> 32);
+		public const uint doubleExponentMaskUpper = (uint)(doubleExponentMask >> 32);
+		public const uint doubleSignExponentMaskUpper = (uint)(doubleSignExponentMask >> 32);
+		public const uint doubleMantissaMaskUpper = (uint)(doubleMantissaMask >> 32);
+		public const uint doubleOneUpper = (uint)(doubleOne >> 32);
+/*
 		public static float BitsToFloatC1O2(uint bits)
 		{
 			BitwiseFloat value;
 			value.number = 0f;
-			value.bits = floatSignExponent1 | floatMantissaMask & bits;
+			value.bits = floatOne | floatMantissaMask & bits;
 			return value.number;
 		}
+
+		public static double BitsToDoubleC1O2(ulong bits)
+		{
+#if OPTIMIZE_FOR_32
+			BitwiseDouble value;
+			value.number = 0d;
+			value.lowerBits = (uint)bits;
+			value.upperBits = doubleOneUpper | doubleMantissaMaskUpper & (uint)(bits >> 32);
+			return value.number;
+#else
+			BitwiseDouble value;
+			value.number = 0d;
+			value.bits = doubleOne | doubleMantissaMask & bits;
+			return value.number;
+#endif
+		}
+
+		public static double BitsToDoubleC1O2(uint lower, uint upper)
+		{
+#if OPTIMIZE_FOR_32
+			BitwiseDouble value;
+			value.number = 0d;
+			value.lowerBits = lower;
+			value.upperBits = doubleOneUpper | doubleMantissaMaskUpper & upper;
+			return value.number;
+#else
+			BitwiseDouble value;
+			value.number = 0d;
+			value.bits = doubleOne | doubleMantissaMask & ((ulong)upper << 32) | lower;
+			return value.number;
+#endif
+		}
+*/
 	}
 }

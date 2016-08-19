@@ -11,7 +11,6 @@
 #if UNITY_5_3
 using UnityEngine;
 using NUnit.Framework;
-using NSubstitute;
 
 namespace Experilous.MakeItRandom.Tests
 {
@@ -198,9 +197,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void OpenFloatUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next32().Returns(0x00000000U, 0x00000000U, 0x00000000U, 0x00000001U, 0x00800000U, 0x00800000U, 0x00800000U, 0x007FFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U, 0xFFFFFFFFU);
-			ValidateOpenFloatUnitRange(8, mock);
 			ValidateOpenFloatUnitRange(10000, SystemRandom.Create(seed));
 			ValidateOpenFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateOpenFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -211,12 +207,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void OpenDoubleUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next64().Returns(0x0000000000000000UL, 0x0000000000000000UL, 0x0000000000000000UL, 0x0000000000000001UL, 0x0010000000000000UL, 0x0010000000000000UL, 0x0010000000000000UL, 0x000FFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL, 0xFFFFFFFFFFFFFFFFUL);
-#if OPTIMIZE_FOR_32
-			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
-#endif
-			ValidateOpenDoubleUnitRange(8, mock);
 			ValidateOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -227,9 +217,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void HalfOpenFloatUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U);
-			ValidateHalfOpenFloatUnitRange(10, mock);
 			ValidateHalfOpenFloatUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfOpenFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfOpenFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -240,12 +227,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void HalfOpenDoubleUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
-#if OPTIMIZE_FOR_32
-			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
-#endif
-			ValidateHalfOpenDoubleUnitRange(10, mock);
 			ValidateHalfOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -256,9 +237,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void HalfClosedFloatUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0xFFFF0000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U);
-			ValidateHalfClosedFloatUnitRange(10, mock);
 			ValidateHalfClosedFloatUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfClosedFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -269,12 +247,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void HalfClosedDoubleUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0xFFFFFFFF00000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL);
-#if OPTIMIZE_FOR_32
-			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
-#endif
-			ValidateHalfClosedDoubleUnitRange(10, mock);
 			ValidateHalfClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateHalfClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateHalfClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed));
@@ -285,9 +257,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void ClosedFloatUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next32().Returns(0x00000000U, 0xFFFFFFFFU, 0x00000000U, 0xFFFF0000U, 0x00000000U, 0x0000FFFFU, 0x3FFFFFFFU, 0x40000000U, 0x7FFFFFFFU, 0x80000000U, 0xBFFFFFFFU, 0xC0000000U, 0xFFE00001U, 0x007FF800U, 0xFFE00001U, 0x007FF801U, 0xFFE00001U, 0x00800000U, 0xFFE00001U, 0x00800001U, 0x00800000U);
-			ValidateClosedFloatUnitRange(14, mock);
 			ValidateClosedFloatUnitRange(10000, SystemRandom.Create(seed));
 			ValidateClosedFloatUnitRange(10000, SplitMix64.Create(seed));
 			ValidateClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
@@ -298,12 +267,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void ClosedDoubleUnitRange()
 		{
-			var mock = Substitute.For<IRandom>();
-			mock.Next64().Returns(0x0000000000000000UL, 0xFFFFFFFFFFFFFFFFUL, 0x0000000000000000UL, 0xFFFFFFFF00000000UL, 0x0000000000000000UL, 0x00000000FFFFFFFFUL, 0x3FFFFFFFFFFFFFFFU, 0x4000000000000000UL, 0x7FFFFFFFFFFFFFFFUL, 0x8000000000000000UL, 0xBFFFFFFFFFFFFFFFUL, 0xC000000000000000UL, 0xFFF0000000000001UL, 0x000FFFFFFFFFF000UL, 0xFFF0000000000001UL, 0x000FFFFFFFFFF001UL, 0xFFF0000000000001UL, 0x0010000000000000UL, 0xFFF0000000000001UL, 0x0010000000000001UL, 0x0010000000000000UL);
-#if OPTIMIZE_FOR_32
-			mock.When(x => { uint lower, upper; x.Next64(out lower, out upper); }).Do(x => { ulong next = mock.Next64(); x[0] = (uint)next; x[1] = (uint)(next >> 32); });
-#endif
-			ValidateClosedDoubleUnitRange(14, mock);
 			ValidateClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
 			ValidateClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
 			ValidateClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed));

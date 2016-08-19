@@ -384,7 +384,7 @@ namespace Experilous.Examples.MakeItRandom
 					_currentGeneratorName = "SplitMix64";
 					random = SplitMix64.Create();
 				}
-				else if (generatorToggle = xorShiftAddToggle)
+				else if (generatorToggle == xorShiftAddToggle)
 				{
 					_currentGeneratorName = "XorShift-Add";
 					random = XorShiftAdd.Create();
@@ -1319,29 +1319,6 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-#if true
-				Vector2 v;
-
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-				v = random.PointWithinCircle(); _generatedFloat = v.x;
-#else
 				Vector2 v;
 
 				random.PointWithinCircle(out v); _generatedFloat = v.x;
@@ -1363,7 +1340,6 @@ namespace Experilous.Examples.MakeItRandom
 				random.PointWithinCircle(out v); _generatedFloat = v.x;
 				random.PointWithinCircle(out v); _generatedFloat = v.x;
 				random.PointWithinCircle(out v); _generatedFloat = v.x;
-#endif
 			}
 		}
 
