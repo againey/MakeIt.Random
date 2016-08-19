@@ -2,8 +2,6 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-using System.Collections.Generic;
-
 namespace Experilous.MakeItRandom.Detail
 {
 	/// <summary>

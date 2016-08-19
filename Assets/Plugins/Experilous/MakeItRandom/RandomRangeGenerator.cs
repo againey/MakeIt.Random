@@ -2,12 +2,6 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
-#endif
-
 namespace Experilous.MakeItRandom
 {
 	#region Interfaces
