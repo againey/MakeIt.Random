@@ -24,21 +24,97 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random 2-dimensional unit vector.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="UnitVector2(IRandom, out Vector2)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector2(IRandom, out Vector2)"/>
 		public static Vector2 UnitVector2(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var angle = random.HalfOpenRange(0f, Mathf.PI * 2f);
 			return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 #else
-			Start:
-			float u = random.FloatOO() * 2f - 1f;
-			float v = random.FloatOO() * 2f - 1f;
-			float uSqr = u * u;
-			float vSqr = v * v;
-			float uvSqr = uSqr + vSqr;
-			if (uvSqr >= 1f) goto Start;
+			Vector2 v;
+			random.UnitVector2(out v);
+			return v;
+#endif
+		}
 
-			return new Vector2((uSqr - vSqr) / uvSqr, 2f * u * v / uvSqr);
+		/// <summary>
+		/// Generates a random 2-dimensional unit vector, selected from a uniform distribution of all points on the perimeter of a unit circle.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="v">The out parameter which will hold random 2-dimensional vector with a magnitude equal to 1 upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="UnitVector2(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector2(IRandom)"/>
+		public static void UnitVector2(this IRandom random, out Vector2 v)
+		{
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
+			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
+			v = random.UnitVector2() * distance;
+#else
+#if OPTIMIZE_FOR_32
+			Start:
+			uint lower, upper;
+			random.Next64(out lower, out upper);
+			if (upper >= 0xFFFF8000U && random.RangeCO(0x0000400000000002UL) < 0x0000000000080000UL)
+			{
+				v = ((upper & 0x00004000U) == 0UL) ? new Vector2(1f, 0f) : new Vector2(0f, 1f);
+				return;
+			}
+			upper = (lower >> 23) | (upper << 9);
+			int ix = (int)(upper & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
+			int iy = (int)(lower & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
+			int ixScaled = ix >> 8;
+			int iyScaled = iy >> 8;
+			int scaledRadiusSquared = ixScaled * ixScaled + iyScaled * iyScaled;
+			if (scaledRadiusSquared > 0x10000000) goto Start; // x^2 + y^2 > r^2, so generated point is outside the circle.
+
+			long lx = ix;
+			long ly = iy;
+			long lxSqr = lx * lx;
+			long lySqr = ly * ly;
+			long lxySqr = lxSqr + lySqr;
+			if (scaledRadiusSquared > 0x0FFF8000 && lxySqr > 0x0000100000000000L) goto Start; // x^2 + y^2 > r^2, so generated point is outside the circle.
+
+			// Formula is from http://mathworld.wolfram.com/CirclePointPicking.html
+			lxySqr = lxySqr >> 4;
+			upper = (uint)((int)(((lxSqr - lySqr) << 18) / lxySqr) + 0x00400000);
+			lower = (uint)((int)(((lx * ly) << 19) / lxySqr) + 0x00400000);
+
+			Detail.FloatingPoint.BitwiseFloat value;
+			value.number = 0f;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & upper;
+			v.x = value.number * 2f - 3f;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower;
+			v.y = value.number * 2f - 3f;
+#else
+			Start:
+			ulong bits = random.Next64();
+			if (bits >= 0xFFFF800000000000UL && random.RangeCO(0x0000400000000002UL) < 0x0000000000080000UL)
+			{
+				v = ((bits & 0x0000400000000000UL) == 0UL) ? new Vector2(1f, 0f) : new Vector2(0f, 1f);
+				return;
+			}
+			uint upper = (uint)(bits >> 23);
+			uint lower = (uint)bits;
+			long ix = (int)(upper & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
+			long iy = (int)(lower & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
+			long ixSqr = ix * ix;
+			long iySqr = iy * iy;
+			long ixySqr = ixSqr + iySqr;
+			if (ixySqr > 0x0000100000000000L) goto Start; // x^2 + y^2 > r^2, so generated point is outside the circle.
+			
+			// Formula is from http://mathworld.wolfram.com/CirclePointPicking.html
+			ixySqr = ixySqr >> 4;
+			upper = (uint)(((ixSqr - iySqr) << 18) / ixySqr + 0x00400000L);
+			lower = (uint)(((ix * iy) << 19) / ixySqr + 0x00400000L);
+
+			Detail.FloatingPoint.BitwiseFloat value;
+			value.number = 0f;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & upper;
+			v.x = value.number * 2f - 3f;
+			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower;
+			v.y = value.number * 2f - 3f;
+#endif
 #endif
 		}
 

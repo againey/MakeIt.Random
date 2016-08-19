@@ -1238,25 +1238,27 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
+				Vector2 v;
 
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
-				_generatedFloat = RandomVector.UnitVector2(random).x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
+				random.UnitVector2(out v); _generatedFloat = v.x;
 			}
 		}
 
