@@ -67,24 +67,35 @@ namespace Experilous.MakeItRandom
 		public override void NextBytes(byte[] buffer)
 		{
 #if OPTIMIZE_FOR_32
-			int maxUnrolled = (buffer.Length + 3) >> 2;
+			int maxUnrolled = (buffer.Length + 7) >> 3;
 			int i = 0;
 			while (i < maxUnrolled)
 			{
-				uint next = _random.Next32();
-				buffer[i] = (byte)next;
-				buffer[i + 1] = (byte)(next >> 8);
-				buffer[i + 2] = (byte)(next >> 16);
-				buffer[i + 3] = (byte)(next >> 24);
+				uint lower, upper;
+				_random.Next64(out lower, out upper);
+				buffer[i] = (byte)lower;
+				buffer[i + 1] = (byte)(lower >> 8);
+				buffer[i + 2] = (byte)(lower >> 16);
+				buffer[i + 3] = (byte)(lower >> 24);
+				buffer[i + 4] = (byte)upper;
+				buffer[i + 5] = (byte)(upper >> 8);
+				buffer[i + 6] = (byte)(upper >> 16);
+				buffer[i + 7] = (byte)(upper >> 24);
+				i += 8;
 			}
 			if (i < buffer.Length)
 			{
-				uint next = _random.Next32();
+				uint lower, upper;
+				_random.Next64(out lower, out upper);
 				switch (buffer.Length - i)
 				{
-					case 3: buffer[i + 2] = (byte)(next >> 16); goto case 2;
-					case 2: buffer[i + 1] = (byte)(next >>  8); goto case 1;
-					case 1: buffer[i    ] = (byte)next; break;
+					case 7: buffer[i + 6] = (byte)(upper >> 16); goto case 6;
+					case 6: buffer[i + 5] = (byte)(upper >>  8); goto case 5;
+					case 5: buffer[i + 4] = (byte)upper;         goto case 4;
+					case 4: buffer[i + 3] = (byte)(lower >> 24); goto case 3;
+					case 3: buffer[i + 2] = (byte)(lower >> 16); goto case 2;
+					case 2: buffer[i + 1] = (byte)(lower >>  8); goto case 1;
+					case 1: buffer[i    ] = (byte)lower; break;
 				}
 			}
 #else
