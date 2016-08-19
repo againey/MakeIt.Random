@@ -141,6 +141,8 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random 2-dimensional vector with a magnitude less than or equal to 1.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="PointWithinCircle(IRandom, out Vector2)"/> in some environments.</note></remarks>
+		/// <seealso cref="PointWithinCircle(IRandom, out Vector2)"/>
 		public static Vector2 PointWithinCircle(this IRandom random)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -153,6 +155,13 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a unit circle.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="v">The out parameter which will hold random 2-dimensional vector with a magnitude less than or equal to 1 upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="PointWithinCircle(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="PointWithinCircle(IRandom)"/>
 		public static void PointWithinCircle(this IRandom random, out Vector2 v)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
