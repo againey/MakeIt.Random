@@ -55,14 +55,17 @@ namespace Experilous.MakeItRandom.Detail
 		public const uint floatSignExponentMask = floatSignMask | floatExponentMask;
 		public const uint floatMantissaMask = (1U << floatMantissaBitCount) - 1U;
 		public const uint floatOne = 0x3F800000U;
+		public const uint floatTwo = 0x40000000U;
 
 		public const int doubleExponentBitCount = 11;
 		public const int doubleMantissaBitCount = 52;
+		public const int doubleMantissaBitCountUpper = 20;
 		public const ulong doubleSignMask = 1UL << (doubleExponentBitCount + doubleMantissaBitCount);
 		public const ulong doubleExponentMask = ((1UL << doubleExponentBitCount) - 1UL) << doubleMantissaBitCount;
 		public const ulong doubleSignExponentMask = doubleSignMask | doubleExponentMask;
 		public const ulong doubleMantissaMask = (1UL << doubleMantissaBitCount) - 1UL;
 		public const ulong doubleOne = 0x3FF0000000000000UL;
+		public const ulong doubleTwo = 0x4000000000000000UL;
 
 		public const uint doubleSignMaskUpper = (uint)(doubleSignMask >> 32);
 		public const uint doubleExponentMaskUpper = (uint)(doubleExponentMask >> 32);
@@ -152,36 +155,64 @@ namespace Experilous.MakeItRandom.Detail
 		public static double FixedToDouble(int n, uint fractionalBits)
 		{
 			BitwiseDouble value;
-			value.bits = 0U;
+#if OPTIMIZE_FOR_32
+			value.lowerBits = 0U;
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= (fractionalBits << doubleMantissaBitCountUpper);
+#else
+			value.bits = 0UL;
 			value.number = n;
 			value.bits -= (fractionalBits << doubleMantissaBitCount);
+#endif
 			return value.number;
 		}
 
 		public static double FixedToDouble(uint n, uint fractionalBits)
 		{
 			BitwiseDouble value;
-			value.bits = 0U;
+#if OPTIMIZE_FOR_32
+			value.lowerBits = 0U;
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= (fractionalBits << doubleMantissaBitCountUpper);
+#else
+			value.bits = 0UL;
 			value.number = n;
 			value.bits -= (fractionalBits << doubleMantissaBitCount);
+#endif
 			return value.number;
 		}
 
 		public static double FixedToDouble(long n, uint fractionalBits)
 		{
 			BitwiseDouble value;
-			value.bits = 0U;
+#if OPTIMIZE_FOR_32
+			value.lowerBits = 0U;
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= (fractionalBits << doubleMantissaBitCountUpper);
+#else
+			value.bits = 0UL;
 			value.number = n;
 			value.bits -= (fractionalBits << doubleMantissaBitCount);
+#endif
 			return value.number;
 		}
 
 		public static double FixedToDouble(ulong n, uint fractionalBits)
 		{
 			BitwiseDouble value;
-			value.bits = 0U;
+#if OPTIMIZE_FOR_32
+			value.lowerBits = 0U;
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= (fractionalBits << doubleMantissaBitCountUpper);
+#else
+			value.bits = 0UL;
 			value.number = n;
 			value.bits -= (fractionalBits << doubleMantissaBitCount);
+#endif
 			return value.number;
 		}
 

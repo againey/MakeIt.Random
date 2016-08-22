@@ -59,6 +59,32 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
 		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
 		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
+		public static bool Chance(this IRandom random, long ratioTrue, long ratioFalse)
+		{
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
+		}
+
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
+		public static bool Chance(this IRandom random, ulong ratioTrue, ulong ratioFalse)
+		{
+			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
+		}
+
+		/// <summary>
+		/// Returns a random bool where on average the ratio of true results to false results will be <paramref name="ratioTrue"/>:<paramref name="ratioFalse"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="ratioTrue">The weight determining the probability of a result being true.  Must be non-negative.</param>
+		/// <param name="ratioFalse">The weight determining the probability of a result being false.  Must be non-negative.</param>
+		/// <returns>A random bool weighted according to the ratio of the parameters.</returns>
+		/// <remarks>The sum of the ratio parameters must be positive.</remarks>
 		public static bool Chance(this IRandom random, float ratioTrue, float ratioFalse)
 		{
 			return random.RangeCO(ratioTrue + ratioFalse) < ratioTrue;
@@ -101,6 +127,30 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
 		public static bool Probability(this IRandom random, uint numerator, uint denominator)
+		{
+			return random.RangeCO(denominator) < numerator;
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
+		public static bool Probability(this IRandom random, long numerator, long denominator)
+		{
+			return random.RangeCO(denominator) < numerator;
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
+		public static bool Probability(this IRandom random, ulong numerator, ulong denominator)
 		{
 			return random.RangeCO(denominator) < numerator;
 		}
