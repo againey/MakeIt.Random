@@ -305,5 +305,49 @@ namespace Experilous.MakeItRandom.Detail
 			bitMask |= bitMask >> 32;
 			return rangeMax == bitMask;
 		}
+
+		#region Lookup Table Generation
+
+#if UNITY_EDITOR
+		//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
+		private static void GenerateDeBruijnBitCountLookupTables()
+		{
+			var sb = new System.Text.StringBuilder();
+
+			sb.Append("\t\tpublic static readonly byte[] bitCountTable32 = new byte[] { ");
+			for (int i = 0; i < 32; ++i)
+			{
+				for (int bitCount = 1; bitCount <= 32; ++bitCount)
+				{
+					int calculatedIndex = (int)((0xFFFFFFFFU >> (32 - bitCount)) * multiplier32 >> shift32);
+					if (calculatedIndex == i)
+					{
+						sb.AppendFormat("{0}, ", bitCount);
+						break;
+					}
+				}
+			}
+			sb.Append("};\n");
+
+			sb.Append("\t\tpublic static readonly byte[] bitCountTable64 = new byte[] { ");
+			for (int i = 0; i < 64; ++i)
+			{
+				for (int bitCount = 1; bitCount <= 64; ++bitCount)
+				{
+					int calculatedIndex = (int)((0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount)) * multiplier64 >> shift64);
+					if (calculatedIndex == i)
+					{
+						sb.AppendFormat("{0}, ", bitCount);
+						break;
+					}
+				}
+			}
+			sb.Append("};\n");
+
+			UnityEngine.Debug.Log(sb.ToString( ));
+		}
+#endif
+
+		#endregion
 	}
 }

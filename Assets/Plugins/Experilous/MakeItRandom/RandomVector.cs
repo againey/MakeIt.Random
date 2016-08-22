@@ -164,49 +164,7 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#if UNITY_EDITOR
-		//[UnityEditor.Callbacks.DidReloadScripts]
-		private static void Test()
-		{
-			var sb = new System.Text.StringBuilder();
-			sb.Append("private static uint[] _fastSqrtUpper = new uint[] { 0, ");
-			for (int i = 0; i < 64; ++i)
-			{
-				sb.AppendFormat("{0}, ", (uint)System.Math.Floor(System.Math.Sqrt(System.Math.Pow(2d, i))));
-			}
-			sb.Append("};\n");
-			sb.Append("private static uint[] _fastSqrtMid = new uint[] { ");
-			for (int i = 0; i < 64; ++i)
-			{
-				sb.AppendFormat("{0}, ", (uint)System.Math.Floor(System.Math.Sqrt(1d + i / 64d) * (1L << 31)));
-			}
-			sb.Append("};\n");
-			sb.Append("private static uint[] _fastSqrtMidRecip = new uint[] { ");
-			for (int i = 0; i < 64; ++i)
-			{
-				sb.AppendFormat("{0}, ", (uint)System.Math.Floor(1d / (1d + i / 64d) * (1L << 31)));
-			}
-			sb.Append("};\n");
-			sb.Append("private static uint[] _fastSqrtLower = new uint[] { ");
-			for (int i = 0; i < 64; ++i)
-			{
-				sb.AppendFormat("{0}, ", (uint)System.Math.Floor(System.Math.Sqrt(1d + i / 4096d) * (1L << 31)));
-			}
-			sb.Append("};\n");
-			Debug.Log(sb.ToString( ));
-
-			var r = XorShift128Plus.Create(4647564);
-			Vector3 v;
-			r.UnitVector3(out v);
-		}
-#endif
-
-private static uint[] _fastSqrtUpper = new uint[] { 0, 1, 1, 2, 2, 4, 5, 8, 11, 16, 22, 32, 45, 64, 90, 128, 181, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792, 8192, 11585, 16384, 23170, 32768, 46340, 65536, 92681, 131072, 185363, 262144, 370727, 524288, 741455, 1048576, 1482910, 2097152, 2965820, 4194304, 5931641, 8388608, 11863283, 16777216, 23726566, 33554432, 47453132, 67108864, 94906265, 134217728, 189812531, 268435456, 379625062, 536870912, 759250124, 1073741824, 1518500249, 2147483648, 3037000499, };
-private static uint[] _fastSqrtMid = new uint[] { 2147483648, 2164195835, 2180779953, 2197238903, 2213575477, 2229792364, 2245892157, 2261877356, 2277750374, 2293513541, 2309169105, 2324719241, 2340166051, 2355511566, 2370757755, 2385906521, 2400959708, 2415919104, 2430786438, 2445563392, 2460251592, 2474852620, 2489368009, 2503799249, 2518147786, 2532415027, 2546602337, 2560711045, 2574742443, 2588697789, 2602578306, 2616385184, 2630119584, 2643782635, 2657375437, 2670899063, 2684354560, 2697742945, 2711065213, 2724322335, 2737515256, 2750644901, 2763712171, 2776717947, 2789663090, 2802548438, 2815374814, 2828143019, 2840853838, 2853508038, 2866106369, 2878649564, 2891138341, 2903573402, 2915955434, 2928285110, 2940563089, 2952790016, 2964966521, 2977093224, 2989170731, 3001199635, 3013180520, 3025113955, };
-private static uint[] _fastSqrtMidRecip = new uint[] { 2147483648, 2114445438, 2082408385, 2051327663, 2021161080, 1991868890, 1963413621, 1935759908, 1908874353, 1882725390, 1857283155, 1832519379, 1808407282, 1784921473, 1762037865, 1739733588, 1717986918, 1696777203, 1676084798, 1655891005, 1636178017, 1616928864, 1598127365, 1579758085, 1561806289, 1544257904, 1527099483, 1510318170, 1493901668, 1477838209, 1462116526, 1446725826, 1431655765, 1416896427, 1402438300, 1388272257, 1374389534, 1360781717, 1347440720, 1334358771, 1321528398, 1308942414, 1296593900, 1284476200, 1272582902, 1260907830, 1249445031, 1238188770, 1227133513, 1216273924, 1205604855, 1195121334, 1184818564, 1174691910, 1164736893, 1154949188, 1145324612, 1135859119, 1126548798, 1117389865, 1108378657, 1099511627, 1090785345, 1082196484, };
-private static uint[] _fastSqrtLower = new uint[] { 2147483648, 2147745776, 2148007872, 2148269936, 2148531968, 2148793968, 2149055936, 2149317872, 2149579776, 2149841649, 2150103489, 2150365298, 2150627075, 2150888820, 2151150533, 2151412214, 2151673863, 2151935481, 2152197067, 2152458621, 2152720143, 2152981634, 2153243092, 2153504519, 2153765914, 2154027278, 2154288610, 2154549910, 2154811178, 2155072415, 2155333620, 2155594793, 2155855935, 2156117045, 2156378124, 2156639171, 2156900186, 2157161170, 2157422122, 2157683043, 2157943932, 2158204789, 2158465615, 2158726410, 2158987173, 2159247904, 2159508604, 2159769273, 2160029910, 2160290516, 2160551090, 2160811633, 2161072144, 2161332624, 2161593073, 2161853490, 2162113876, 2162374230, 2162634553, 2162894845, 2163155106, 2163415335, 2163675533, 2163935699, };
-
-		public static void UnitVector3(this IRandom random, out Vector3 v)
+		public static void UnitVector3(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
@@ -238,324 +196,88 @@ private static uint[] _fastSqrtLower = new uint[] { 2147483648, 2147745776, 2148
 			v.x = value.number * 2f - 3f;
 			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower;
 			v.y = value.number * 2f - 3f;
-#elif true
-			// Method by Marsaglia
+#else
+			// The overall method used is that derived by Marsaglia, and described in his paper found at
 			//   http://projecteuclid.org/download/pdf_1/euclid.aoms/1177692644
+			// We first need to find a 2D point inside a unit circle.  Then there's a square root that
+			// needs to be calculated, followed by the rest of Marsaglia's formula.  It's all done in
+			// fixed point form up until the end to maintain speed and bit-level reliability.  Final
+			// conversion to float is designed to get maximum possible precision for numbers near zero.
 
+			// Find a point inside a circle, modified inline of RandomVector.PointWithinCircle()
 			Start:
 			ulong bits = random.Next64();
-			uint upper = (uint)(bits >> 26);
+			uint upper = (uint)(bits >> 32);
 			uint lower = (uint)bits;
+			// Using 26 bits of each of the 2D components, that gives us 2^52 possible positions in 2D space.
+			// This is a half-closed square, so positions with u = +1 or v = +1 never occur, but that's okay
+			// because we reject points that are exactly on the edge of the circle anyway.  But technically,
+			// any point exactly on the circumference should map to (0, 0, -1) using Marsaglia's formula, and
+			// no other (u, v) pair inside the circle will.  So we increase the number of possible states by
+			// one, and in that rare 1 out of 2^52 + 1 times, we return exactly (0, 0, -1).
 			// 1/2^6 * 1/2^6 * 2^12/(2^52+1) = 1/(2^52+1)
+			// We divide the first 12-bit check into two 6-bit checks so that the 32-bit version of this
+			// function is more efficient.
 			if (upper >= 0xFC000000U && lower >= 0xFC000000U && random.RangeCO(0x0010000000000001UL) < 0x0000000000001000UL)
 			{
-				v.x = 0f;
-				v.y = 0f;
-				v.z = -1f;
+				vec.x = 0f;
+				vec.y = 0f;
+				vec.z = -1f;
 				return;
 			}
-			long ix = (upper & 0x03FFFFFFU) - (1L << 25); // x*2^25
-			long iy = (lower & 0x03FFFFFFU) - (1L << 25); // y*2^25
-			//ix = 0x40000000L;
-			//iy = 0x18000000L;
-			ulong ixSqr = (ulong)(ix * ix); // x*x*2^50
-			ulong iySqr = (ulong)(iy * iy); // y*y*2^50
-			ulong ixySqr = ixSqr + iySqr; // (x*x + y*y) * 2^50
-			if (ixySqr >= (1UL << 50)) goto Start; // x^2 + y^2 > r^2, so generated point is outside the circle.
+			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
+			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
+			ulong uSqr = (ulong)(u * u); // x^2 * 2^50
+			ulong vSqr = (ulong)(v * v); // y^2 * 2^50
+			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
+			if (uvSqr >= 0x0004000000000000UL) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 
-			//float t = 2f * Mathf.Sqrt(1f - uvSqr);
-			//return new Vector3(u * t, v * t, 1f - 2f * uvSqr);
-			//t = 2 * sqrt(1 - sqr)
-			//x = u * t;
-			//y = v * t;
-			//z = 1 - 2 * sqr = 2(1/2 - sqr)
+			ulong uvSqrInv = (0x0004000000000000UL - uvSqr) << 12; // (1 - (x^2 + y^2)) * 2^62
 
-#if true //Integer Square Root Method
-#if truef //Loopy Version
-			ulong ixySqrInv = (1UL << 50) - ixySqr; // 2^50 - x*x*2^50 + y*y*2^50
-			//ixySqrInv = ixySqrInv << 0;
-			ulong ixyInv = 0;
-			ulong rem = ((ixySqrInv & 0xC000000000000000UL) >> 62);
-			for (int i = 0; i < 32; ++i)
-			{
-				ulong cmp = ixyInv << 1;
-				if ((ixyInv != 0 || rem != 0) && cmp < rem)
-				{
-					ixyInv |= 1;
-					cmp |= 1;
-					rem = rem - cmp;
-				}
-				ixySqrInv = ixySqrInv << 2;
-				rem = (rem << 2) | ((ixySqrInv & 0xC000000000000000UL) >> 62);
-				ixyInv = ixyInv << 1;
-			}
-			// ixyInv = 2 * sqrt(2^62 - x*x*2^62 - y*y*2^62) = 2 * sqrt(2^62 * (1 - x*x - y*y)) = 2 * 2^31 * sqrt(1 - x*x - y*y)
-			//ixyInv = (ixyInv + (1UL << 5)) >> 6;
+			// Calculate the square root of uvSqrInv.  This starts with an approximation found at
+			//   http://stackoverflow.com/a/1100591
+			// It is followed by two uses of the divide-and-average method to improve the initial approximation.
 
-			long llx = ix * (long)ixyInv; // x*2^25 * 2 * 2^25 * sqrt(1 - x*x - y*y) = 2^51 * x * sqrt(1 - x*x - y*y)
-			long lly = iy * (long)ixyInv; // y*2^25 * 2 * 2^25 * sqrt(1 - x*x - y*y) = 2^51 * y * sqrt(1 - x*x - y*y)
-			long llz = (1L << 50) - ((long)ixySqr << 1); // 2 * (0.5 - x*x - y*y) * 2^50 = 2^51 * (0.5 - x*x - y*y) = 2^50 - (x*x + y*y) * 2^51
-#elif truef //Other Loopy Version
-			ulong ixySqrInv = (1UL << 50) - ixySqr; // 2^50 - x*x*2^50 + y*y*2^50
-			//ixySqrInv = ixySqrInv << 12;
-			ulong one = 1UL << 62;
-			ulong ixyInv = 0UL;
-			while (one > ixySqrInv)
-			{
-				one = one >> 2;
-			}
-			while (one != 0UL)
-			{
-				ixyInv = ixyInv >> 1;
-				ulong sqrtPlusOne = ixyInv + one;
-				if (ixySqrInv >= sqrtPlusOne)
-				{
-					ixySqrInv -= sqrtPlusOne;
-					ixyInv += one << 1;
-				}
-				one = one >> 2;
-			}
-
-			long llx = ix * (long)ixyInv; // x*2^25 * 2 * 2^25 * sqrt(1 - x*x - y*y) = 2^51 * x * sqrt(1 - x*x - y*y)
-			long lly = iy * (long)ixyInv; // y*2^25 * 2 * 2^25 * sqrt(1 - x*x - y*y) = 2^51 * y * sqrt(1 - x*x - y*y)
-			long llz = (1L << 50) - ((long)ixySqr << 1); // 2 * (0.5 - x*x - y*y) * 2^50 = 2^51 * (0.5 - x*x - y*y) = 2^50 - (x*x + y*y) * 2^51
-#else //Lookup Table
-			ulong ixySqrInv = (1UL << 50) - ixySqr; // 2^50 - x*x*2^50 + y*y*2^50
-			ixySqrInv = ixySqrInv << 12;
-			ulong mask = ixySqrInv | (ixySqrInv >> 1);
+			// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
+			ulong mask = uvSqrInv | (uvSqrInv >> 1);
 			mask |= mask >> 2;
 			mask |= mask >> 4;
 			mask |= mask >> 8;
 			mask |= mask >> 16;
 			mask |= mask >> 32;
 			int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
-			int b = (int)((bitCount >= 7 ? (ixySqrInv >> (bitCount - 7)) : (ixySqrInv << (7 - bitCount))) & 0x3FU);
-			//long c = (long)((bitCount >= 13 ? (ixySqrInv >> (bitCount - 13)) : (ixySqrInv << (13 - bitCount))) & 0x3FUL);
-			ulong sqrtA = _fastSqrtUpper[bitCount];
-			ulong sqrtB = _fastSqrtMid[b];
-			//long sqrtC = 0L;
-			ulong ixyInv = (sqrtA * sqrtB) >> 31;
-			//ixyInv = ((long)ixySqrInv / ixyInv + ixyInv) >> 1;
-			//ixyInv = ((long)ixySqrInv / ixyInv + ixyInv) >> 1;
-			ixyInv = (ixySqrInv / ixyInv + ixyInv) >> 1;
-			ixyInv = (ixySqrInv / ixyInv + ixyInv);
-			//long bRecip = _fastSqrtMidRecip[b];
-			//long cOverB = (c * bRecip) >> 31;
-			//long sqrtCOverBPlusOne = _fastSqrtLower[cOverB];
-			//long ixyInv = (((sqrtA * sqrtB) >> 31) * sqrtCOverBPlusOne) >> 18;
-			//Debug.LogFormat("{0}, 0x{1:X2}, 0x{2:X2}", bitCount, b, c);
-			//Debug.LogFormat("0x{0:X16}, 0x{1:X16}, 0x{2:X16}, 0x{3:X16}, 0x{4:X2}, 0x{5:X16}, 0x{6:X16}", ixySqrInv, sqrtA, sqrtB, bRecip, cOverB, sqrtCOverBPlusOne, ixyInv);
-			//Debug.LogFormat("{0:F16}, {1:F16}, {2:F16}, {3:F16}, {4:F16}, {5:F16}, {6:F16}", ixySqrInv / (double)(1UL << 50), sqrtA / (double)(1UL << 25), sqrtB / (double)(1UL << 31), bRecip / (double)(1UL << 31), cOverB / (double)(1UL << 31), sqrtCOverBPlusOne / (double)(1UL << 31), ixyInv / (double)(1UL << 38));
-			//ixyInv = (long)(System.Math.Sqrt(ixySqrInv / (double)(1UL << 50)) * (1L << 38));
 
-			long llx = ix * (long)ixyInv; // x*2^25 * 2 * 2^31 * sqrt(1 - x*x - y*y) = 2^57 * x * sqrt(1 - x*x - y*y)
-			long lly = iy * (long)ixyInv; // y*2^25 * 2 * 2^31 * sqrt(1 - x*x - y*y) = 2^57 * y * sqrt(1 - x*x - y*y)
-			long llz = (1L << 50) - ((long)ixySqr << 1); // 2 * (0.5 - x*x - y*y) * 2^50 = 2^51 * (0.5 - x*x - y*y) = 2^50 - (x*x + y*y) * 2^51
-#endif
+			// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
+			ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
+			// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
+			ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (uvSqrInv >> (bitCount - 7)) : (uvSqrInv << (7 - bitCount))) & 0x3FU]; // b * 2^31
+			// Square root is a*b
+			ulong uvInv = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt(1 - (x^2 + y^2)) * 2^31
 
-			//Debug.LogFormat("0x{0:X16}, 0x{1:X16}, 0x{2:X16}, 0x{3:X16}", ixyInv, llx, lly, llz);
-#if truef // meticulous conversion
-			ulong ulx = (ulong)System.Math.Abs(llx);
-			ulong uly = (ulong)System.Math.Abs(lly);
-			ulong ulz = (ulong)System.Math.Abs(llz);
+			// Improve the square root approximation using the divide-and-average method twice
+			uvInv = (uvSqrInv / uvInv + uvInv) >> 1; // sqrt(1 - (x^2 + y^2)) * 2^31, better approximation
+			uvInv = (uvSqrInv / uvInv + uvInv); // 2 * sqrt(1 - (x^2 + y^2)) * 2^31, even better approximation, multiplied by 2
 
-			//Debug.LogFormat("0x{0:X16}, 0x{1:X16}, 0x{2:X16}", ulx, uly, ulz);
+			// Determine the final components using Marsaglia's formulas:  t = 2 * sqrt(1 - (u^2 + v^2)); x = u*t; y = v*t; z = 1 - 2 * (u^2 + v^2))
+			long x = u * (long)uvInv; // x * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * x * sqrt(1 - (x^2 + y^2)) * 2^56
+			long y = v * (long)uvInv; // y * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * y * sqrt(1 - (x^2 + y^2)) * 2^56
+			long z = 0x0004000000000000L - ((long)uvSqr << 1); // 2 * (1/2 - (x^2 + y^2)) * 2^50
 
-			int bx = Detail.DeBruijnLookup.GetBitCountForRangeSize(ulx);
-			int by = Detail.DeBruijnLookup.GetBitCountForRangeSize(uly);
-			int bz = Detail.DeBruijnLookup.GetBitCountForRangeSize(ulz);
-
-			//Debug.LogFormat("{0}, {1}, {2}", bx, by, bz);
-
-			uint ux = (uint)((ulx + (1UL << (bx - 24))) >> (bx - 24));
-			uint uy = (uint)((uly + (1UL << (bx - 24))) >> (by - 24));
-			uint uz = (uint)((ulz + (1UL << (bx - 24))) >> (bz - 24));
-
-			//Debug.LogFormat("0x{0:X8}, 0x{1:X8}, 0x{2:X8}", ux, uy, uz);
-
-			uint ex = 0x3F800000U - ((51U - (uint)bx) << 23);
-			uint ey = 0x3F800000U - ((51U - (uint)by) << 23);
-			uint ez = 0x3F800000U - ((51U - (uint)bz) << 23);
-
-			//Debug.LogFormat("0x{0:X8}, 0x{1:X8}, 0x{2:X8}", ex, ey, ez);
-
-			ux = (ux & 0x007FFFFF) | ex | (uint)((ulong)llx >> 32) & 0x80000000U;
-			uy = (uy & 0x007FFFFF) | ey | (uint)((ulong)lly >> 32) & 0x80000000U;
-			uz = (uz & 0x007FFFFF) | ez | (uint)((ulong)llz >> 32) & 0x80000000U;
-
-			//Debug.LogFormat("0x{0:X8}, 0x{1:X8}, 0x{2:X8}", ux, uy, uz);
-
-			Detail.FloatingPoint.BitwiseFloat t;
-			t.number = 0f;
-			t.bits = ux; v.x = t.number;
-			t.bits = uy; v.y = t.number;
-			t.bits = uz; v.z = t.number;
-			//Debug.LogFormat("< {0:F8}, {1:F8}, {2:F3} >, {3:F8}", v.x, v.y, v.z, v.magnitude);
-
-
-			//uint ux = (uint)(llx + (1L << 62));
-
-			//uint ux = (uint)(((ix * (long)ixyInv + (1L << 39)) >> 40) + 0x00400000L);
-			//uint uy = (uint)(((iy * (long)ixyInv + (1L << 39)) >> 40) + 0x00400000L);
-			//uint uz = (uint)((((1L << 61) - (long)ixySqr + (1L << 38)) >> 39) + 0x00400000L);
-
-			//Detail.FloatingPoint.BitwiseFloat value;
-			//value.number = 0f;
-			//value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & ux;
-			//v.x = value.number * 2f - 3f;
-			//value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & uy;
-			//v.y = value.number * 2f - 3f;
-			//value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & uz;
-			//v.z = value.number * 2f - 3f;
-#else
+			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
 			conv.bits = 0U;
-			conv.number = llx;
+			conv.number = x;
 			conv.bits -= 0x1C000000U; // exponent -= 56
-			//conv.bits -= (56U << 23);
-			v.x = conv.number;
-			conv.number = lly;
+			vec.x = conv.number;
+			conv.number = y;
 			conv.bits -= 0x1C000000U; // exponent -= 56
-			//conv.bits -= (56U << 23);
-			v.y = conv.number;
-			conv.number = llz;
+			vec.y = conv.number;
+			conv.number = z;
 			conv.bits -= 0x19000000U; // exponent -= 50
-			//conv.bits -= (50U << 23);
-			v.z = conv.number;
-			//Debug.LogFormat("< {0:F8}, {1:F8}, {2:F3} >, {3:F8}", v.x, v.y, v.z, v.magnitude);
-#endif
-
-#elif true //Float Square Root Method
-			ulong ixySqrInvT4 = (1UL << 52) - (ixySqr << 2); // (1 - x*x - y*y) * 2^50 * 4 = (1 - x*x - y*y) * 2^52
-			long llz = (1L << 50) - ((long)ixySqr << 1); // 2 * (0.5 - x*x - y*y) * 2^50 = 2^51 * (0.5 - x*x - y*y) = 2^50 - (x*x + y*y) * 2^51
-
-			Detail.FloatingPoint.BitwiseFloat conv;
-			conv.bits = 0U;
-			conv.number = ixySqrInvT4;
-			conv.bits -= 0x19000000U; // exponent -= 50
-			float fxyInvT2 = Mathf.Sqrt(conv.number);
-			conv.number = ix;
-			conv.bits -= 0x0C800000U; // exponent -= 25
-			v.x = conv.number * fxyInvT2;
-			conv.number = iy;
-			conv.bits -= 0x0C800000U; // exponent -= 25
-			v.y = conv.number * fxyInvT2;
-			conv.number = llz;
-			conv.bits -= 0x19000000U; // exponent -= 50
-			v.z = conv.number;
-#endif
-
-
-#if truef //Measure Error
-			float makeItDelta = v.magnitude - 1f;
-			_sumPosMakeItDelta += makeItDelta > 0f ? makeItDelta : 0d;
-			_sumNegMakeItDelta += makeItDelta < 0f ? makeItDelta : 0d;
-			_worstPosMakeItDelta = Mathf.Max(_worstPosMakeItDelta, makeItDelta);
-			_worstNegMakeItDelta = Mathf.Min(_worstNegMakeItDelta, makeItDelta);
-			float unityDelta = Random.onUnitSphere.magnitude - 1f;
-			_sumPosUnityDelta += unityDelta > 0f ? unityDelta : 0d;
-			_sumNegUnityDelta += unityDelta < 0f ? unityDelta : 0d;
-			_worstPosUnityDelta = Mathf.Max(_worstPosUnityDelta, unityDelta);
-			_worstNegUnityDelta = Mathf.Min(_worstNegUnityDelta, unityDelta);
-			++_countUnit;
-			if (_countUnit % 1024 == 0)
-			Debug.LogFormat("{0:F8}, {1:F8}, {2:F8}, {3:F8}, {4:F8}, {5:F8}, {6:F8}, {7:F8}, {8:F8}, {9:F8}", v.magnitude, makeItDelta, _worstPosMakeItDelta, _worstNegMakeItDelta, _worstPosUnityDelta, _worstNegUnityDelta, _sumPosMakeItDelta, _sumNegMakeItDelta, _sumPosUnityDelta, _sumNegUnityDelta);
-#endif
-#else //Cook method
-			Start:
-			ulong bits0 = random.Next64();
-			ulong bits1 = random.Next64();
-			if (bits0 >= 0xFFFF800000000000UL && random.RangeCO(0x0000400000000002UL) < 0x0000000000080000UL)
-			{
-				v = ((bits0 & 0x0000400000000000UL) == 0UL) ? new Vector2(1f, 0f) : new Vector2(0f, 1f);
-				return;
-			}
-			uint upper0 = (uint)(bits0 >> 23);
-			uint lower0 = (uint)bits0;
-			uint upper1 = (uint)(bits1 >> 23);
-			uint lower1 = (uint)bits1;
-			long t0 = (int)(upper0 & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
-			long t1 = (int)(lower0 & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
-			long t2 = (int)(upper1 & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
-			long t3 = (int)(lower1 & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
-			ulong t0Sqr = (ulong)(t0 * t0);
-			ulong t1Sqr = (ulong)(t1 * t1);
-			ulong t2Sqr = (ulong)(t2 * t2);
-			ulong t3Sqr = (ulong)(t3 * t3);
-			ulong t03Sqr = t0Sqr + t3Sqr;
-			ulong t12Sqr = t1Sqr + t2Sqr;
-			ulong tSqr = t03Sqr + t12Sqr;
-			if (tSqr > 0x0000100000000000UL) goto Start; // x^2 + y^2 > r^2, so generated point is outside the circle.
-
-			long lxn = (t1 * t3 + t0 * t2) << 1;
-			long lyn = (t2 * t3 - t0 * t1) << 1;
-			long lzn = (long)t03Sqr - (long)t12Sqr;
-
-			long mul = (long)(0x4000000000000000UL / tSqr);
-			uint ux = (uint)(((lxn * mul) >> 40) + 0x00400000L);
-			uint uy = (uint)(((lyn * mul) >> 40) + 0x00400000L);
-			uint uz = (uint)(((lzn * mul) >> 40) + 0x00400000L);
-
-			Detail.FloatingPoint.BitwiseFloat value;
-			value.number = 0f;
-			value.bits = Detail.FloatingPoint.floatOne + ux;
-			v.x = value.number * 2f - 3f;
-			value.bits = Detail.FloatingPoint.floatOne + uy;
-			v.y = value.number * 2f - 3f;
-			value.bits = Detail.FloatingPoint.floatOne + uz;
-			v.z = value.number * 2f - 3f;
-
-			/*value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & upper0;
-			float ft0 = value.number * 2f - 3f;
-			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower0;
-			float ft1 = value.number * 2f - 3f;
-			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & upper1;
-			float ft2 = value.number * 2f - 3f;
-			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower1;
-			float ft3 = value.number * 2f - 3f;
-
-			float fxn = (ft1 * ft3 + ft0 * ft2) * 2f;
-			float fyn = (ft2 * ft3 - ft0 * ft1) * 2f;
-			float fzn = (ft0 * ft0 + ft3 * ft3) - (ft1 * ft1 + ft2 * ft2);
-			float fdv = (ft0 * ft0 + ft3 * ft3 + ft1 * ft1 + ft2 * ft2);
-
-			Vector3 v2 = new Vector3(fxn / fdv, fyn / fdv, fzn / fdv);
-			v = v2;
-
-			float makeItDelta = v.magnitude - 1f;
-			_sumPosMakeItDelta += makeItDelta > 0f ? makeItDelta : 0d;
-			_sumNegMakeItDelta += makeItDelta < 0f ? makeItDelta : 0d;
-			_worstPosMakeItDelta = Mathf.Max(_worstPosMakeItDelta, makeItDelta);
-			_worstNegMakeItDelta = Mathf.Min(_worstNegMakeItDelta, makeItDelta);
-			float unityDelta = Random.onUnitSphere.magnitude - 1f;
-			_sumPosUnityDelta += unityDelta > 0f ? unityDelta : 0d;
-			_sumNegUnityDelta += unityDelta < 0f ? unityDelta : 0d;
-			_worstPosUnityDelta = Mathf.Max(_worstPosUnityDelta, unityDelta);
-			_worstNegUnityDelta = Mathf.Min(_worstNegUnityDelta, unityDelta);
-			++_countUnit;
-			if (_countUnit % 1024 == 0)
-			Debug.LogFormat("{0:F8}, {1:F8}, {2:F8}, {3:F8}, {4:F8}, {5:F8}, {6:F8}, {7:F8}, {8:F8}, {9:F8}", v.magnitude, makeItDelta, _worstPosMakeItDelta, _worstNegMakeItDelta, _worstPosUnityDelta, _worstNegUnityDelta, _sumPosMakeItDelta, _sumNegMakeItDelta, _sumPosUnityDelta, _sumNegUnityDelta);*/
+			vec.z = conv.number;
 #endif
 #endif
 		}
-
-		private static float ToFloatNegOnePosOne(uint bits)
-		{
-			Detail.FloatingPoint.BitwiseFloat value;
-			value.number = 0f;
-			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & bits;
-			return value.number * 2f - 3f;
-		}
-
-		static float _worstPosMakeItDelta = 0f;
-		static float _worstNegMakeItDelta = 0f;
-		static float _worstPosUnityDelta = 0f;
-		static float _worstNegUnityDelta = 0f;
-		static double _sumPosMakeItDelta = 0d;
-		static double _sumNegMakeItDelta = 0d;
-		static double _sumPosUnityDelta = 0d;
-		static double _sumNegUnityDelta = 0d;
-		static int _countUnit = 0;
 
 		/// <summary>
 		/// Generates a random 4-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit hypersphere.
@@ -698,24 +420,9 @@ private static uint[] _fastSqrtLower = new uint[] { 2147483648, 2147745776, 2148
 			v.x = value.number * 2f - 3f;
 			value.bits = Detail.FloatingPoint.floatOne | Detail.FloatingPoint.floatMantissaMask & lower;
 			v.y = value.number * 2f - 3f;
-
-			/*_maxMine = Mathf.Max(_maxMine, v.magnitude);
-			_sumMine += 1d - v.magnitude;
-			float vUm = Random.insideUnitCircle.magnitude;
-			_maxUnity = Mathf.Max(_maxUnity, vUm);
-			_sumUnity += 1d - vUm;
-			++_count;
-			if (_count % 1024 == 0)
-			Debug.LogFormat("{0:F8}, {1:F16}, {2:F8}, {3:F16}", _maxMine, _sumMine / _count, _maxUnity, _sumUnity / _count);*/
 #endif
 #endif
 		}
-
-		static float _maxMine = 0f;
-		static double _sumMine = 0d;
-		static float _maxUnity = 0f;
-		static double _sumUnity = 0d;
-		static int _count;
 
 		/// <summary>
 		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a circle with the specified <paramref name="radius"/>.
