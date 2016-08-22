@@ -1267,25 +1267,27 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
+				Vector3 v;
 
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
-				_generatedFloat = RandomVector.UnitVector3(random).x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
+				random.UnitVector3(out v); _generatedFloat = v.x;
 			}
 		}
 
@@ -1350,25 +1352,27 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				Vector3 v;
 
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
 
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
-				_generatedFloat = RandomVector.PointWithinSphere(random).x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
+				random.PointWithinSphere(out v); _generatedFloat = v.x;
 			}
 		}
 
