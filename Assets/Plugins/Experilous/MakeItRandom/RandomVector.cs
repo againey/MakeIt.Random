@@ -93,12 +93,28 @@ namespace Experilous.MakeItRandom
 			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
 			conv.bits = 0U;
-			conv.number = x;
-			conv.bits -= 0x0F800000U; // exponent -= 31
-			vec.x = conv.number;
-			conv.number = y;
-			conv.bits -= 0x0F800000U; // exponent -= 31
-			vec.y = conv.number;
+
+			if (x == 0L)
+			{
+				vec.x = 0f;
+			}
+			else
+			{
+				conv.number = x;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.x = conv.number;
+			}
+
+			if (y == 0L)
+			{
+				vec.y = 0f;
+			}
+			else
+			{
+				conv.number = y;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.y = conv.number;
+			}
 #endif
 		}
 
@@ -220,15 +236,39 @@ namespace Experilous.MakeItRandom
 			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
 			conv.bits = 0U;
-			conv.number = x;
-			conv.bits -= 0x1C000000U; // exponent -= 56
-			vec.x = conv.number;
-			conv.number = y;
-			conv.bits -= 0x1C000000U; // exponent -= 56
-			vec.y = conv.number;
-			conv.number = z;
-			conv.bits -= 0x19000000U; // exponent -= 50
-			vec.z = conv.number;
+
+			if (x == 0L)
+			{
+				vec.x = 0f;
+			}
+			else
+			{
+				conv.number = x;
+				conv.bits -= 0x1C000000U; // exponent -= 56
+				vec.x = conv.number;
+			}
+
+			if (y == 0L)
+			{
+				vec.y = 0f;
+			}
+			else
+			{
+				conv.number = y;
+				conv.bits -= 0x1C000000U; // exponent -= 56
+				vec.y = conv.number;
+			}
+
+			if (z == 0L)
+			{
+				vec.z = 0f;
+			}
+			else
+			{
+				conv.number = z;
+				conv.bits -= 0x19000000U; // exponent -= 50
+				vec.z = conv.number;
+			}
 #endif
 		}
 
