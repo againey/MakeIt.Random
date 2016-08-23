@@ -32,7 +32,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random double greater than or equal to zero and strictly less than one.
 		/// </summary>
 		/// <returns>A random double in the range [0, 1).</returns>
-		/// <seealso cref="RandomUnit.DoubleCO(IRandom)"/>
+		/// <seealso cref="RandomFloatingPoint.DoubleCO(IRandom)"/>
 		protected override double Sample()
 		{
 			return _random.DoubleCO();
@@ -42,7 +42,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random integer greater than or equal to zero and strictly less than <see cref="int.MaxValue"/>.
 		/// </summary>
 		/// <returns>A random integer in the range [0, <see cref="int.MaxValue"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, int)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, int)"/>
 		public override int Next()
 		{
 			return _random.RangeCO(int.MaxValue);
@@ -54,7 +54,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="minValue">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
 		/// <param name="maxValue">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
 		/// <returns>A random integer in the range [<paramref name="minValue"/>, <paramref name="maxValue"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, int, int)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, int, int)"/>
 		public override int Next(int minValue, int maxValue)
 		{
 			return _random.RangeCO(minValue, maxValue);
@@ -135,7 +135,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random double greater than or equal to zero and strictly less than one.
 		/// </summary>
 		/// <returns>A random double in the range [0, 1).</returns>
-		/// <seealso cref="RandomUnit.DoubleCO(IRandom)"/>
+		/// <seealso cref="RandomFloatingPoint.DoubleCO(IRandom)"/>
 		public override double NextDouble()
 		{
 			return _random.DoubleCO();

@@ -7,7 +7,7 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// A static class of extension methods for generating random numbers within custom ranges.
 	/// </summary>
-	public static class RandomRange
+	public static class RandomInteger
 	{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 		#region Private Helper Tables
@@ -347,56 +347,6 @@ namespace Experilous.MakeItRandom
 		public static ulong RangeOO(this IRandom random, ulong upperExclusive)
 		{
 			return RangeCO(random, upperExclusive - 1UL) + 1UL;
-		}
-
-		/// <summary>
-		/// Returns a random float strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random float in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOO(IRandom)"/>.</remarks>
-		public static float RangeOO(this IRandom random, float lowerExclusive, float upperExclusive)
-		{
-			return (upperExclusive - lowerExclusive) * random.FloatOO() + lowerExclusive;
-		}
-
-		/// <summary>
-		/// Returns a random float strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random float in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOO(IRandom)"/>.</remarks>
-		public static float RangeOO(this IRandom random, float upperExclusive)
-		{
-			return upperExclusive * random.FloatOO();
-		}
-
-		/// <summary>
-		/// Returns a random double strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random double in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOO(IRandom)"/>.</remarks>
-		public static double RangeOO(this IRandom random, double lowerExclusive, double upperExclusive)
-		{
-			return (upperExclusive - lowerExclusive) * random.DoubleOO() + lowerExclusive;
-		}
-
-		/// <summary>
-		/// Returns a random float strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random double in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOO(IRandom)"/>.</remarks>
-		public static double RangeOO(this IRandom random, double upperExclusive)
-		{
-			return upperExclusive * random.DoubleOO();
 		}
 
 		#endregion
@@ -785,56 +735,6 @@ namespace Experilous.MakeItRandom
 			return n;
 		}
 
-		/// <summary>
-		/// Returns a random float greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random float in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCO(IRandom)"/>.</remarks>
-		public static float RangeCO(this IRandom random, float lowerInclusive, float upperExclusive)
-		{
-			return (upperExclusive - lowerInclusive) * random.FloatCO() + lowerInclusive;
-		}
-
-		/// <summary>
-		/// Returns a random float greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random float in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCO(IRandom)"/>.</remarks>
-		public static float RangeCO(this IRandom random, float upperExclusive)
-		{
-			return upperExclusive * random.FloatCO();
-		}
-
-		/// <summary>
-		/// Returns a random double greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random double in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCO(IRandom)"/>.</remarks>
-		public static double RangeCO(this IRandom random, double lowerInclusive, double upperExclusive)
-		{
-			return (upperExclusive - lowerInclusive) * random.DoubleCO() + lowerInclusive;
-		}
-
-		/// <summary>
-		/// Returns a random double greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
-		/// <returns>A random double in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCO(IRandom)"/>.</remarks>
-		public static double RangeCO(this IRandom random, double upperExclusive)
-		{
-			return upperExclusive * random.DoubleCO();
-		}
-
 		#endregion
 
 		#region Range Open/Closed (lowerExclusive, upperInclusive]
@@ -1149,56 +1049,6 @@ namespace Experilous.MakeItRandom
 		public static ulong RangeOC(this IRandom random, ulong upperInclusive)
 		{
 			return RangeCO(random, upperInclusive) + 1UL;
-		}
-
-		/// <summary>
-		/// Returns a random float strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random float in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOC(IRandom)"/>.</remarks>
-		public static float RangeOC(this IRandom random, float lowerExclusive, float upperInclusive)
-		{
-			return (upperInclusive - lowerExclusive) * random.FloatOC() + lowerExclusive;
-		}
-
-		/// <summary>
-		/// Returns a random float strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random float in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatOC(IRandom)"/>.</remarks>
-		public static float RangeOC(this IRandom random, float upperInclusive)
-		{
-			return upperInclusive * random.FloatOC();
-		}
-
-		/// <summary>
-		/// Returns a random double strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  The generated number will be greater than this value.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random double in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOC(IRandom)"/>.</remarks>
-		public static double RangeOC(this IRandom random, double lowerExclusive, double upperInclusive)
-		{
-			return (upperInclusive - lowerExclusive) * random.DoubleOC() + lowerExclusive;
-		}
-
-		/// <summary>
-		/// Returns a random double strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random double in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleOC(IRandom)"/>.</remarks>
-		public static double RangeOC(this IRandom random, double upperInclusive)
-		{
-			return upperInclusive * random.DoubleOC();
 		}
 
 		#endregion
@@ -1581,56 +1431,6 @@ namespace Experilous.MakeItRandom
 			}
 			while (n > upperInclusive);
 			return n;
-		}
-
-		/// <summary>
-		/// Returns a random float greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerInclusive">The exclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random float in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCC(IRandom)"/>.</remarks>
-		public static float RangeCC(this IRandom random, float lowerInclusive, float upperInclusive)
-		{
-			return (upperInclusive - lowerInclusive) * random.FloatCC() + lowerInclusive;
-		}
-
-		/// <summary>
-		/// Returns a random float greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random float in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.FloatCC(IRandom)"/>.</remarks>
-		public static float RangeCC(this IRandom random, float upperInclusive)
-		{
-			return upperInclusive * random.FloatCC();
-		}
-
-		/// <summary>
-		/// Returns a random double greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lowerInclusive">The exclusive lower bound of the custom range.  The generated number will be greater than or equal to this value.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random double in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCC(IRandom)"/>.</remarks>
-		public static double RangeCC(this IRandom random, double lowerInclusive, double upperInclusive)
-		{
-			return (upperInclusive - lowerInclusive) * random.DoubleCC() + lowerInclusive;
-		}
-
-		/// <summary>
-		/// Returns a random double greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  The generated number will be less than or equal to this value.</param>
-		/// <returns>A random double in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <remarks>This function has time complexity equivalent to <see cref="RandomUnit.DoubleCC(IRandom)"/>.</remarks>
-		public static double RangeCC(this IRandom random, double upperInclusive)
-		{
-			return upperInclusive * random.DoubleCC();
 		}
 
 		#endregion

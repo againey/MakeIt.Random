@@ -108,6 +108,50 @@ namespace Experilous.MakeItRandom
 		#region Probability
 
 		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^31.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameter and the non-negative range of an integer.</returns>
+		public static bool Probability(this IRandom random, int numerator)
+		{
+			return (int)(random.Next32() & 0x7FFFFFFFU) < numerator;
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameter and the full range of an unsigned integer.</returns>
+		public static bool Probability(this IRandom random, uint numerator)
+		{
+			return random.Next32() < numerator;
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameter and the non-negative range of a long integer.</returns>
+		public static bool Probability(this IRandom random, long numerator)
+		{
+			return (int)(random.Next64() & 0x7FFFFFFFFFFFFFFFU) < numerator;
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameter and the full range of an unsigned long integer.</returns>
+		public static bool Probability(this IRandom random, ulong numerator)
+		{
+			return random.Next64() < numerator;
+		}
+
+		/// <summary>
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>

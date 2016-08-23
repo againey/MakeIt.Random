@@ -128,261 +128,6 @@ namespace Experilous.MakeItRandom
 
 	#endregion
 
-	namespace Detail
-	{
-		public class BufferedAnyRangeGeneratorBase32
-		{
-			IRandom _random;
-
-			uint _rangeMax;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per32Bits;
-			uint _bitMask;
-
-			int _bitGroupCount = 0;
-			uint _bits = 0U;
-
-			public BufferedAnyRangeGeneratorBase32(IRandom random, uint rangeMax, uint bitMask)
-			{
-				_random = random;
-
-				_rangeMax = rangeMax;
-				_bitMask = bitMask;
-				_bitCountPerGroup = DeBruijnLookup.GetBitCountForBitMask(bitMask);
-				_bitGroupCountMinus1Per32Bits = 32 / _bitCountPerGroup - 1;
-			}
-
-			protected uint Next32()
-			{
-				uint n;
-				do
-				{
-					if (_bitGroupCount > 0)
-					{
-						n = _bits & _bitMask;
-						_bits = _bits >> _bitCountPerGroup;
-						--_bitGroupCount;
-					}
-					else
-					{
-						_bits = _random.Next32();
-						n = _bits & _bitMask;
-						_bits = _bits >> _bitCountPerGroup;
-						_bitGroupCount = _bitGroupCountMinus1Per32Bits;
-					}
-				} while (n > _rangeMax);
-				return n;
-			}
-		}
-
-		public class BufferedAnyRangeGeneratorBase64
-		{
-			IRandom _random;
-
-			ulong _rangeMax;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per64Bits;
-			ulong _bitMask;
-
-			int _bitGroupCount = 0;
-			ulong _bits = 0UL;
-
-			public BufferedAnyRangeGeneratorBase64(IRandom random, ulong rangeMax, ulong bitMask)
-			{
-				_random = random;
-
-				_rangeMax = rangeMax;
-				_bitMask = bitMask;
-				_bitCountPerGroup = DeBruijnLookup.GetBitCountForBitMask(bitMask);
-				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
-			}
-
-			protected ulong Next64()
-			{
-				ulong n;
-				do
-				{
-					if (_bitGroupCount > 0)
-					{
-						n = _bits & _bitMask;
-						_bits = _bits >> _bitCountPerGroup;
-						--_bitGroupCount;
-					}
-					else
-					{
-						_bits = _random.Next64();
-						n = _bits & _bitMask;
-						_bits = _bits >> _bitCountPerGroup;
-						_bitGroupCount = _bitGroupCountMinus1Per64Bits;
-					}
-				} while (n > _rangeMax);
-				return n;
-			}
-		}
-
-		public class BufferedPow2RangeGeneratorBase32
-		{
-			IRandom _random;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per32Bits;
-			uint _bitMask;
-
-			int _bitGroupCount;
-			uint _bits;
-
-			public BufferedPow2RangeGeneratorBase32(IRandom random, int bitCount, uint bitMask)
-			{
-				_random = random;
-
-				_bitMask = bitMask;
-				_bitCountPerGroup = bitCount;
-				_bitGroupCountMinus1Per32Bits = 32 / _bitCountPerGroup - 1;
-			}
-
-			protected uint Next32()
-			{
-				if (_bitGroupCount > 0)
-				{
-					uint n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					--_bitGroupCount;
-					return n;
-				}
-				else
-				{
-					_bits = _random.Next32();
-					uint n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					_bitGroupCount = _bitGroupCountMinus1Per32Bits;
-					return n;
-				}
-			}
-		}
-
-		public class BufferedPow2RangeGeneratorBase64
-		{
-			IRandom _random;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per64Bits;
-			ulong _bitMask;
-
-			int _bitGroupCount;
-			ulong _bits;
-
-			public BufferedPow2RangeGeneratorBase64(IRandom random, int bitCount, ulong bitMask)
-			{
-				_random = random;
-
-				_bitMask = bitMask;
-				_bitCountPerGroup = bitCount;
-				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
-			}
-
-			protected ulong Next64()
-			{
-				if (_bitGroupCount > 0)
-				{
-					ulong n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					--_bitGroupCount;
-					return n;
-				}
-				else
-				{
-					_bits = _random.Next64();
-					ulong n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					_bitGroupCount = _bitGroupCountMinus1Per64Bits;
-					return n;
-				}
-			}
-		}
-
-		public class BufferedPowPow2RangeGeneratorBase32
-		{
-			IRandom _random;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per32Bits;
-			uint _bitMask;
-
-			int _bitGroupCount;
-			uint _bits;
-
-			public BufferedPowPow2RangeGeneratorBase32(IRandom random, int bitCount, uint bitMask)
-			{
-				_random = random;
-
-				_bitMask = bitMask;
-				_bitCountPerGroup = bitCount;
-				_bitGroupCountMinus1Per32Bits = 32 / _bitCountPerGroup - 1;
-			}
-
-			protected uint Next32()
-			{
-				if (_bitGroupCount > 0)
-				{
-					uint n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					--_bitGroupCount;
-					return n;
-				}
-				else
-				{
-					_bits = _random.Next32();
-					uint n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					_bitGroupCount = _bitGroupCountMinus1Per32Bits;
-					return n;
-				}
-			}
-		}
-
-		public class BufferedPowPow2RangeGeneratorBase64
-		{
-			IRandom _random;
-
-			int _bitCountPerGroup;
-			int _bitGroupCountMinus1Per64Bits;
-			ulong _bitMask;
-
-			int _bitGroupCount;
-			ulong _bits;
-
-			public BufferedPowPow2RangeGeneratorBase64(IRandom random, int bitCount, ulong bitMask)
-			{
-				_random = random;
-
-				_bitMask = bitMask;
-				_bitCountPerGroup = bitCount;
-				_bitGroupCountMinus1Per64Bits = 64 / _bitCountPerGroup - 1;
-			}
-
-			protected ulong Next64()
-			{
-				if (_bitGroupCount > 0)
-				{
-					ulong n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					--_bitGroupCount;
-					return n;
-				}
-				else
-				{
-					_bits = _random.Next64();
-					ulong n = _bits & _bitMask;
-					_bits = _bits >> _bitCountPerGroup;
-					_bitGroupCount = _bitGroupCountMinus1Per64Bits;
-					return n;
-				}
-			}
-		}
-	}
-
 	/// <summary>
 	/// A static class of extension methods for generating random numbers within custom ranges.
 	/// </summary>
@@ -1355,7 +1100,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, sbyte, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, sbyte, sbyte)"/>
 		public static ISByteGenerator MakeRangeOOGenerator(this IRandom random, sbyte lowerExclusive, sbyte upperExclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, (sbyte)(lowerExclusive + 1), (sbyte)(upperExclusive - 1));
@@ -1367,7 +1112,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, sbyte)"/>
 		public static ISByteGenerator MakeRangeOOGenerator(this IRandom random, sbyte upperExclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, (sbyte)1, (sbyte)(upperExclusive - 1));
@@ -1380,7 +1125,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random bytes in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, byte, byte)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, byte, byte)"/>
 		public static IByteGenerator MakeRangeOOGenerator(this IRandom random, byte lowerExclusive, byte upperExclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, (byte)(lowerExclusive + 1U), (byte)(upperExclusive - 1U));
@@ -1392,7 +1137,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random bytes in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, byte)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, byte)"/>
 		public static IByteGenerator MakeRangeOOGenerator(this IRandom random, byte upperExclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, (byte)1U, (byte)(upperExclusive - 1U));
@@ -1405,7 +1150,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random short integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, short, short)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, short, short)"/>
 		public static IShortGenerator MakeRangeOOGenerator(this IRandom random, short lowerExclusive, short upperExclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, (short)(lowerExclusive + 1), (short)(upperExclusive - 1));
@@ -1417,7 +1162,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random short integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, short)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, short)"/>
 		public static IShortGenerator MakeRangeOOGenerator(this IRandom random, short upperExclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, (short)1, (short)(upperExclusive - 1));
@@ -1430,7 +1175,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, ushort, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, ushort, ushort)"/>
 		public static IUShortGenerator MakeRangeOOGenerator(this IRandom random, ushort lowerExclusive, ushort upperExclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, (ushort)(lowerExclusive + 1U), (ushort)(upperExclusive - 1U));
@@ -1442,7 +1187,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, ushort)"/>
 		public static IUShortGenerator MakeRangeOOGenerator(this IRandom random, ushort upperExclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, (ushort)1U, (ushort)(upperExclusive - 1U));
@@ -1455,7 +1200,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, int, int)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, int, int)"/>
 		public static IIntGenerator MakeRangeOOGenerator(this IRandom random, int lowerExclusive, int upperExclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, lowerExclusive + 1, upperExclusive - 1);
@@ -1467,7 +1212,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, int)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, int)"/>
 		public static IIntGenerator MakeRangeOOGenerator(this IRandom random, int upperExclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, 1, upperExclusive - 1);
@@ -1480,7 +1225,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, uint, uint)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, uint, uint)"/>
 		public static IUIntGenerator MakeRangeOOGenerator(this IRandom random, uint lowerExclusive, uint upperExclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, lowerExclusive + 1U, upperExclusive - 1U);
@@ -1492,7 +1237,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, uint)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, uint)"/>
 		public static IUIntGenerator MakeRangeOOGenerator(this IRandom random, uint upperExclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, 1U, upperExclusive - 1U);
@@ -1505,7 +1250,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random long integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, long, long)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, long, long)"/>
 		public static ILongGenerator MakeRangeOOGenerator(this IRandom random, long lowerExclusive, long upperExclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, lowerExclusive + 1L, upperExclusive - 1L);
@@ -1517,7 +1262,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random long integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, long)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, long)"/>
 		public static ILongGenerator MakeRangeOOGenerator(this IRandom random, long upperExclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, 1L, upperExclusive - 1L);
@@ -1530,7 +1275,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, ulong, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, ulong, ulong)"/>
 		public static IULongGenerator MakeRangeOOGenerator(this IRandom random, ulong lowerExclusive, ulong upperExclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, lowerExclusive + 1UL, upperExclusive - 1UL);
@@ -1542,7 +1287,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, ulong)"/>
 		public static IULongGenerator MakeRangeOOGenerator(this IRandom random, ulong upperExclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, 1UL, upperExclusive - 1UL);
@@ -1555,7 +1300,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, float, float)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeOOGenerator(this IRandom random, float lowerExclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateOO(random, lowerExclusive, upperExclusive);
@@ -1567,7 +1312,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, float)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeOOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateOO(random, upperExclusive);
@@ -1580,7 +1325,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, double, double)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeOOGenerator(this IRandom random, double lowerExclusive, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateOO(random, lowerExclusive, upperExclusive);
@@ -1592,7 +1337,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeOO(IRandom, double)"/>
+		/// <seealso cref="RandomInteger.RangeOO(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeOOGenerator(this IRandom random, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateOO(random, upperExclusive);
@@ -1609,7 +1354,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, sbyte, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, sbyte, sbyte)"/>
 		public static ISByteGenerator MakeRangeCOGenerator(this IRandom random, sbyte lowerInclusive, sbyte upperExclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, lowerInclusive, (sbyte)(upperExclusive - 1));
@@ -1621,7 +1366,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, sbyte)"/>
 		public static ISByteGenerator MakeRangeCOGenerator(this IRandom random, sbyte upperExclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, (sbyte)(upperExclusive - 1));
@@ -1634,7 +1379,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random bytes in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, byte, byte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, byte, byte)"/>
 		public static IByteGenerator MakeRangeCOGenerator(this IRandom random, byte lowerInclusive, byte upperExclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, lowerInclusive, (byte)(upperExclusive - 1U));
@@ -1646,7 +1391,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random bytes in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, byte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, byte)"/>
 		public static IByteGenerator MakeRangeCOGenerator(this IRandom random, byte upperExclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, (byte)(upperExclusive - 1U));
@@ -1659,7 +1404,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random short integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, short, short)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, short, short)"/>
 		public static IShortGenerator MakeRangeCOGenerator(this IRandom random, short lowerInclusive, short upperExclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, lowerInclusive, (short)(upperExclusive - 1));
@@ -1671,7 +1416,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random short integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, short)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, short)"/>
 		public static IShortGenerator MakeRangeCOGenerator(this IRandom random, short upperExclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, (short)(upperExclusive - 1));
@@ -1684,7 +1429,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ushort, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ushort, ushort)"/>
 		public static IUShortGenerator MakeRangeCOGenerator(this IRandom random, ushort lowerInclusive, ushort upperExclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, lowerInclusive, (ushort)(upperExclusive - 1U));
@@ -1696,7 +1441,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ushort)"/>
 		public static IUShortGenerator MakeRangeCOGenerator(this IRandom random, ushort upperExclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, (ushort)(upperExclusive - 1U));
@@ -1709,7 +1454,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, int, int)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, int, int)"/>
 		public static IIntGenerator MakeRangeCOGenerator(this IRandom random, int lowerInclusive, int upperExclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, lowerInclusive, upperExclusive - 1);
@@ -1721,7 +1466,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, int)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, int)"/>
 		public static IIntGenerator MakeRangeCOGenerator(this IRandom random, int upperExclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, upperExclusive - 1);
@@ -1734,7 +1479,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, uint, uint)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, uint, uint)"/>
 		public static IUIntGenerator MakeRangeCOGenerator(this IRandom random, uint lowerInclusive, uint upperExclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, lowerInclusive, upperExclusive - 1U);
@@ -1746,7 +1491,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, uint)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, uint)"/>
 		public static IUIntGenerator MakeRangeCOGenerator(this IRandom random, uint upperExclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, upperExclusive - 1U);
@@ -1759,7 +1504,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random long integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, long, long)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, long, long)"/>
 		public static ILongGenerator MakeRangeCOGenerator(this IRandom random, long lowerInclusive, long upperExclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, lowerInclusive, upperExclusive - 1L);
@@ -1771,7 +1516,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random long integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, long)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, long)"/>
 		public static ILongGenerator MakeRangeCOGenerator(this IRandom random, long upperExclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, upperExclusive - 1L);
@@ -1784,7 +1529,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ulong, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ulong, ulong)"/>
 		public static IULongGenerator MakeRangeCOGenerator(this IRandom random, ulong lowerInclusive, ulong upperExclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, lowerInclusive, upperExclusive - 1UL);
@@ -1796,7 +1541,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ulong)"/>
 		public static IULongGenerator MakeRangeCOGenerator(this IRandom random, ulong upperExclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, upperExclusive - 1UL);
@@ -1809,7 +1554,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, float, float)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeCOGenerator(this IRandom random, float lowerInclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateCO(random, lowerInclusive, upperExclusive);
@@ -1821,7 +1566,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, float)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeCOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateCO(random, upperExclusive);
@@ -1834,7 +1579,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, double, double)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeCOGenerator(this IRandom random, double lowerInclusive, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateCO(random, lowerInclusive, upperExclusive);
@@ -1846,7 +1591,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomRange.RangeCO(IRandom, double)"/>
+		/// <seealso cref="RandomInteger.RangeCO(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeCOGenerator(this IRandom random, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateCO(random, upperExclusive);
@@ -1863,7 +1608,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, sbyte, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, sbyte, sbyte)"/>
 		public static ISByteGenerator MakeRangeOCGenerator(this IRandom random, sbyte lowerExclusive, sbyte upperInclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, (sbyte)(lowerExclusive + 1), upperInclusive);
@@ -1875,7 +1620,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, sbyte)"/>
 		public static ISByteGenerator MakeRangeOCGenerator(this IRandom random, sbyte upperInclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, (sbyte)1, upperInclusive);
@@ -1888,7 +1633,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random bytes in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, byte, byte)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, byte, byte)"/>
 		public static IByteGenerator MakeRangeOCGenerator(this IRandom random, byte lowerExclusive, byte upperInclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, (byte)(lowerExclusive + 1U), upperInclusive);
@@ -1900,7 +1645,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random bytes in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, byte)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, byte)"/>
 		public static IByteGenerator MakeRangeOCGenerator(this IRandom random, byte upperInclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, (byte)1U, upperInclusive);
@@ -1913,7 +1658,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random short integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, short, short)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, short, short)"/>
 		public static IShortGenerator MakeRangeOCGenerator(this IRandom random, short lowerExclusive, short upperInclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, (short)(lowerExclusive + 1), upperInclusive);
@@ -1925,7 +1670,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random short integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, short)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, short)"/>
 		public static IShortGenerator MakeRangeOCGenerator(this IRandom random, short upperInclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, (short)1, upperInclusive);
@@ -1938,7 +1683,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, ushort, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, ushort, ushort)"/>
 		public static IUShortGenerator MakeRangeOCGenerator(this IRandom random, ushort lowerExclusive, ushort upperInclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, (ushort)(lowerExclusive + 1U), upperInclusive);
@@ -1950,7 +1695,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, ushort)"/>
 		public static IUShortGenerator MakeRangeOCGenerator(this IRandom random, ushort upperInclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, (ushort)1U, upperInclusive);
@@ -1963,7 +1708,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, int, int)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, int, int)"/>
 		public static IIntGenerator MakeRangeOCGenerator(this IRandom random, int lowerExclusive, int upperInclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, lowerExclusive + 1, upperInclusive);
@@ -1975,7 +1720,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, int)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, int)"/>
 		public static IIntGenerator MakeRangeOCGenerator(this IRandom random, int upperInclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, 1, upperInclusive);
@@ -1988,7 +1733,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, uint, uint)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, uint, uint)"/>
 		public static IUIntGenerator MakeRangeOCGenerator(this IRandom random, uint lowerExclusive, uint upperInclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, lowerExclusive + 1U, upperInclusive);
@@ -2000,7 +1745,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, uint)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, uint)"/>
 		public static IUIntGenerator MakeRangeOCGenerator(this IRandom random, uint upperInclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, 1U, upperInclusive);
@@ -2013,7 +1758,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random long integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, long, long)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, long, long)"/>
 		public static ILongGenerator MakeRangeOCGenerator(this IRandom random, long lowerExclusive, long upperInclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, lowerExclusive + 1L, upperInclusive);
@@ -2025,7 +1770,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random long integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, long)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, long)"/>
 		public static ILongGenerator MakeRangeOCGenerator(this IRandom random, long upperInclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, 1L, upperInclusive);
@@ -2038,7 +1783,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, ulong, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, ulong, ulong)"/>
 		public static IULongGenerator MakeRangeOCGenerator(this IRandom random, ulong lowerExclusive, ulong upperInclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, lowerExclusive + 1UL, upperInclusive);
@@ -2050,7 +1795,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, ulong)"/>
 		public static IULongGenerator MakeRangeOCGenerator(this IRandom random, ulong upperInclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, 1UL, upperInclusive);
@@ -2063,7 +1808,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, float, float)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeOCGenerator(this IRandom random, float lowerExclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateOC(random, lowerExclusive, upperInclusive);
@@ -2075,7 +1820,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, float)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeOCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateOC(random, upperInclusive);
@@ -2088,7 +1833,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, double, double)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeOCGenerator(this IRandom random, double lowerExclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateOC(random, lowerExclusive, upperInclusive);
@@ -2100,7 +1845,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeOC(IRandom, double)"/>
+		/// <seealso cref="RandomInteger.RangeOC(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeOCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateOC(random, upperInclusive);
@@ -2117,7 +1862,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, sbyte, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, sbyte, sbyte)"/>
 		public static ISByteGenerator MakeRangeCCGenerator(this IRandom random, sbyte lowerInclusive, sbyte upperInclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2129,7 +1874,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random signed bytes in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, sbyte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, sbyte)"/>
 		public static ISByteGenerator MakeRangeCCGenerator(this IRandom random, sbyte upperInclusive)
 		{
 			return BufferedSByteRangeGenerator.Create(random, upperInclusive);
@@ -2142,7 +1887,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random bytes in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, byte, byte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, byte, byte)"/>
 		public static IByteGenerator MakeRangeCCGenerator(this IRandom random, byte lowerInclusive, byte upperInclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2154,7 +1899,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random bytes in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, byte)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, byte)"/>
 		public static IByteGenerator MakeRangeCCGenerator(this IRandom random, byte upperInclusive)
 		{
 			return BufferedByteRangeGenerator.Create(random, upperInclusive);
@@ -2167,7 +1912,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random short integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, short, short)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, short, short)"/>
 		public static IShortGenerator MakeRangeCCGenerator(this IRandom random, short lowerInclusive, short upperInclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2179,7 +1924,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random short integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, short)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, short)"/>
 		public static IShortGenerator MakeRangeCCGenerator(this IRandom random, short upperInclusive)
 		{
 			return BufferedShortRangeGenerator.Create(random, upperInclusive);
@@ -2192,7 +1937,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ushort, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ushort, ushort)"/>
 		public static IUShortGenerator MakeRangeCCGenerator(this IRandom random, ushort lowerInclusive, ushort upperInclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2204,7 +1949,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned short integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ushort)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ushort)"/>
 		public static IUShortGenerator MakeRangeCCGenerator(this IRandom random, ushort upperInclusive)
 		{
 			return BufferedUShortRangeGenerator.Create(random, upperInclusive);
@@ -2217,7 +1962,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, int, int)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, int, int)"/>
 		public static IIntGenerator MakeRangeCCGenerator(this IRandom random, int lowerInclusive, int upperInclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2229,7 +1974,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, int)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, int)"/>
 		public static IIntGenerator MakeRangeCCGenerator(this IRandom random, int upperInclusive)
 		{
 			return BufferedIntRangeGenerator.Create(random, upperInclusive);
@@ -2242,7 +1987,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, uint, uint)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, uint, uint)"/>
 		public static IUIntGenerator MakeRangeCCGenerator(this IRandom random, uint lowerInclusive, uint upperInclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2254,7 +1999,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, uint)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, uint)"/>
 		public static IUIntGenerator MakeRangeCCGenerator(this IRandom random, uint upperInclusive)
 		{
 			return BufferedUIntRangeGenerator.Create(random, upperInclusive);
@@ -2267,7 +2012,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random long integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, long, long)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, long, long)"/>
 		public static ILongGenerator MakeRangeCCGenerator(this IRandom random, long lowerInclusive, long upperInclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2279,7 +2024,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random long integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, long)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, long)"/>
 		public static ILongGenerator MakeRangeCCGenerator(this IRandom random, long upperInclusive)
 		{
 			return BufferedLongRangeGenerator.Create(random, upperInclusive);
@@ -2292,7 +2037,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ulong, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ulong, ulong)"/>
 		public static IULongGenerator MakeRangeCCGenerator(this IRandom random, ulong lowerInclusive, ulong upperInclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, lowerInclusive, upperInclusive);
@@ -2304,7 +2049,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random unsigned long integers in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, ulong)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, ulong)"/>
 		public static IULongGenerator MakeRangeCCGenerator(this IRandom random, ulong upperInclusive)
 		{
 			return BufferedULongRangeGenerator.Create(random, upperInclusive);
@@ -2317,7 +2062,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, float, float)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeCCGenerator(this IRandom random, float lowerInclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateCC(random, lowerInclusive, upperInclusive);
@@ -2329,7 +2074,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, float)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeCCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateCC(random, upperInclusive);
@@ -2342,7 +2087,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, double, double)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeCCGenerator(this IRandom random, double lowerInclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateCC(random, lowerInclusive, upperInclusive);
@@ -2354,7 +2099,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomRange.RangeCC(IRandom, double)"/>
+		/// <seealso cref="RandomInteger.RangeCC(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeCCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateCC(random, upperInclusive);

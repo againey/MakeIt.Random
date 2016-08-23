@@ -400,26 +400,15 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 2-dimensional vector with a magnitude greater than or equal to <paramref name="innerRadius"/> and less than or equal to <paramref name="outerRadius"/>.</returns>
 		public static Vector2 PointWithinCircularShell(this IRandom random, float innerRadius, float outerRadius)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitMin = innerRadius / outerRadius;
 			var unitMinSquared = unitMin * unitMin;
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitRange = 1f - unitMinSquared;
-			var distance = Mathf.Sqrt(random.ClosedFloatUnit() * unitRange + unitMinSquared) * outerRadius;
-			return random.UnitVector2() * distance;
+			var distance = Mathf.Sqrt(random.FloatCC() * unitRange + unitMinSquared) * outerRadius;
 #else
-			float irSqr = innerRadius * innerRadius;
-			float orSqr = outerRadius * outerRadius;
-
-			Start:
-			float u = random.FloatOO() * 2f - 1f;
-			float v = random.FloatOO() * 2f - 1f;
-			float uSqr = u * u;
-			float vSqr = v * v;
-			float uvSqr = uSqr + vSqr;
-			if (uvSqr < irSqr || uvSqr > orSqr) goto Start;
-
-			return new Vector2(u, v);
+			var distance = Mathf.Sqrt(random.PreciseRangeCC(unitMinSquared, 1f)) * outerRadius;
 #endif
+			return random.UnitVector2() * distance;
 		}
 
 		/// <summary>
@@ -475,8 +464,8 @@ namespace Experilous.MakeItRandom
 				switch (random.RangeCO(3U))
 				{
 					case 0U: vec = new Vector3(1f, 0f, 0f); return;
-					case 1U: vec = new Vector3(1f, 0f, 0f); return;
-					case 2U: vec = new Vector3(1f, 0f, 0f); return;
+					case 1U: vec = new Vector3(0f, 1f, 0f); return;
+					case 2U: vec = new Vector3(0f, 0f, 1f); return;
 					default: throw new System.InvalidOperationException();
 				}
 			}
@@ -536,28 +525,15 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional vector with a magnitude greater than or equal to <paramref name="innerRadius"/> and less than or equal to <paramref name="outerRadius"/>.</returns>
 		public static Vector3 PointWithinSphericalShell(this IRandom random, float innerRadius, float outerRadius)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitMin = innerRadius / outerRadius;
 			var unitMinPow3 = unitMin * unitMin * unitMin;
+#if MAKEITRANDOM_BACK_COMPAT_V0_1
 			var unitRange = 1f - unitMinPow3;
-			var distance = Mathf.Pow(random.ClosedFloatUnit() * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
-			return random.UnitVector3() * distance;
+			var distance = Mathf.Pow(random.FloatCC() * unitRange + unitMinPow3, 1f / 3f) * outerRadius;
 #else
-			float irSqr = innerRadius * innerRadius;
-			float orSqr = outerRadius * outerRadius;
-
-			Start:
-			float u = random.FloatOO() * 2f - 1f;
-			float v = random.FloatOO() * 2f - 1f;
-			float w = random.FloatOO() * 2f - 1f;
-			float uSqr = u * u;
-			float vSqr = v * v;
-			float wSqr = w * w;
-			float uvwSqr = uSqr + vSqr + wSqr;
-			if (uvwSqr < irSqr || uvwSqr > orSqr) goto Start;
-
-			return new Vector3(u, v, w);
+			var distance = Mathf.Pow(random.PreciseRangeCC(unitMinPow3, 1f), 1f / 3f) * outerRadius;
 #endif
+			return random.UnitVector3() * distance;
 		}
 
 		#endregion
