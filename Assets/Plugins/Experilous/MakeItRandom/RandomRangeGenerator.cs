@@ -887,6 +887,11 @@ namespace Experilous.MakeItRandom
 				return new RangeZOOGenerator(random, rangeMax);
 			}
 
+			public static IFloatGenerator CreateOO(IRandom random)
+			{
+				return new UnitOOGenerator(random);
+			}
+
 			public static IFloatGenerator CreateCO(IRandom random, float rangeMin, float rangeMax)
 			{
 				return new RangeCOGenerator(random, rangeMin, rangeMax);
@@ -895,6 +900,11 @@ namespace Experilous.MakeItRandom
 			public static IFloatGenerator CreateCO(IRandom random, float rangeMax)
 			{
 				return new RangeZCOGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreateCO(IRandom random)
+			{
+				return new UnitCOGenerator(random);
 			}
 
 			public static IFloatGenerator CreateOC(IRandom random, float rangeMin, float rangeMax)
@@ -907,6 +917,11 @@ namespace Experilous.MakeItRandom
 				return new RangeZOCGenerator(random, rangeMax);
 			}
 
+			public static IFloatGenerator CreateOC(IRandom random)
+			{
+				return new UnitOCGenerator(random);
+			}
+
 			public static IFloatGenerator CreateCC(IRandom random, float rangeMin, float rangeMax)
 			{
 				return new RangeCCGenerator(random, rangeMin, rangeMax);
@@ -915,6 +930,247 @@ namespace Experilous.MakeItRandom
 			public static IFloatGenerator CreateCC(IRandom random, float rangeMax)
 			{
 				return new RangeZCCGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreateCC(IRandom random)
+			{
+				return new UnitCCGenerator(random);
+			}
+
+			public static IFloatGenerator CreateSignedOO(IRandom random)
+			{
+				return new SignedOOGenerator(random);
+			}
+
+			public static IFloatGenerator CreateSignedCO(IRandom random)
+			{
+				return new SignedCOGenerator(random);
+			}
+
+			public static IFloatGenerator CreateSignedOC(IRandom random)
+			{
+				return new SignedOCGenerator(random);
+			}
+
+			public static IFloatGenerator CreateSignedCC(IRandom random)
+			{
+				return new SignedCCGenerator(random);
+			}
+
+			public static IFloatGenerator CreateC1O2(IRandom random)
+			{
+				return new UnitC1O2Generator(random);
+			}
+
+			public static IFloatGenerator CreateC2O4(IRandom random)
+			{
+				return new UnitC2O4Generator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseOO(IRandom random, float rangeMin, float rangeMax)
+			{
+				return new PreciseRangeOOGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseOO(IRandom random, float rangeMax)
+			{
+				return new PreciseRangeZOOGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseOO(IRandom random)
+			{
+				return new PreciseUnitOOGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseCO(IRandom random, float rangeMin, float rangeMax)
+			{
+				return new PreciseRangeCOGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseCO(IRandom random, float rangeMax)
+			{
+				return new PreciseRangeZCOGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseCO(IRandom random)
+			{
+				return new PreciseUnitCOGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseOC(IRandom random, float rangeMin, float rangeMax)
+			{
+				return new PreciseRangeOCGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseOC(IRandom random, float rangeMax)
+			{
+				return new PreciseRangeZOCGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseOC(IRandom random)
+			{
+				return new PreciseUnitOCGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseCC(IRandom random, float rangeMin, float rangeMax)
+			{
+				return new PreciseRangeCCGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseCC(IRandom random, float rangeMax)
+			{
+				return new PreciseRangeZCCGenerator(random, rangeMax);
+			}
+
+			public static IFloatGenerator CreatePreciseCC(IRandom random)
+			{
+				return new PreciseUnitCCGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseSignedOO(IRandom random)
+			{
+				return new PreciseSignedOOGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseSignedCO(IRandom random)
+			{
+				return new PreciseSignedCOGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseSignedOC(IRandom random)
+			{
+				return new PreciseSignedOCGenerator(random);
+			}
+
+			public static IFloatGenerator CreatePreciseSignedCC(IRandom random)
+			{
+				return new PreciseSignedCCGenerator(random);
+			}
+
+			private class UnitOOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitOOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatOO(); }
+			}
+
+			private class UnitCOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitCOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatCO(); }
+			}
+
+			private class UnitOCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitOCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatOC(); }
+			}
+
+			private class UnitCCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitCCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatCC(); }
+			}
+
+			private class SignedOOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public SignedOOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.SignedFloatOO(); }
+			}
+
+			private class SignedCOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public SignedCOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.SignedFloatCO(); }
+			}
+
+			private class SignedOCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public SignedOCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.SignedFloatOC(); }
+			}
+
+			private class SignedCCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public SignedCCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.SignedFloatCC(); }
+			}
+
+			private class UnitC1O2Generator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitC1O2Generator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatC1O2(); }
+			}
+
+			private class UnitC2O4Generator : IFloatGenerator
+			{
+				private IRandom _random;
+				public UnitC2O4Generator(IRandom random) { _random = random; }
+				public float Next() { return _random.FloatC2O4(); }
+			}
+
+			private class PreciseUnitOOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitOOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseFloatOO(); }
+			}
+
+			private class PreciseUnitCOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitCOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseFloatCO(); }
+			}
+
+			private class PreciseUnitOCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitOCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseFloatOC(); }
+			}
+
+			private class PreciseUnitCCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitCCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseFloatCC(); }
+			}
+
+			private class PreciseSignedOOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedOOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseSignedFloatOO(); }
+			}
+
+			private class PreciseSignedCOGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedCOGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseSignedFloatCO(); }
+			}
+
+			private class PreciseSignedOCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedOCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseSignedFloatOC(); }
+			}
+
+			private class PreciseSignedCCGenerator : IFloatGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedCCGenerator(IRandom random) { _random = random; }
+				public float Next() { return _random.PreciseSignedFloatCC(); }
 			}
 
 			private class RangeGeneratorBase
@@ -980,6 +1236,58 @@ namespace Experilous.MakeItRandom
 				public RangeZCCGenerator(IRandom random, float rangeMax) : base(random, rangeMax) { }
 				public float Next() { return _random.RangeCC(_rangeMax); }
 			}
+
+			private class PreciseRangeOOGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				private float _rangeMin;
+				public PreciseRangeOOGenerator(IRandom random, float rangeMin, float rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public float Next() { return _random.PreciseRangeOO(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZOOGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				public PreciseRangeZOOGenerator(IRandom random, float rangeMax) : base(random, rangeMax) { }
+				public float Next() { return _random.PreciseRangeOO(_rangeMax); }
+			}
+
+			private class PreciseRangeCOGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				private float _rangeMin;
+				public PreciseRangeCOGenerator(IRandom random, float rangeMin, float rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public float Next() { return _random.PreciseRangeCO(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZCOGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				public PreciseRangeZCOGenerator(IRandom random, float rangeMax) : base(random, rangeMax) { }
+				public float Next() { return _random.PreciseRangeCO(_rangeMax); }
+			}
+
+			private class PreciseRangeOCGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				private float _rangeMin;
+				public PreciseRangeOCGenerator(IRandom random, float rangeMin, float rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public float Next() { return _random.PreciseRangeOC(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZOCGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				public PreciseRangeZOCGenerator(IRandom random, float rangeMax) : base(random, rangeMax) { }
+				public float Next() { return _random.PreciseRangeOC(_rangeMax); }
+			}
+
+			private class PreciseRangeCCGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				private float _rangeMin;
+				public PreciseRangeCCGenerator(IRandom random, float rangeMin, float rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public float Next() { return _random.PreciseRangeCC(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZCCGenerator : RangeGeneratorBase, IFloatGenerator
+			{
+				public PreciseRangeZCCGenerator(IRandom random, float rangeMax) : base(random, rangeMax) { }
+				public float Next() { return _random.PreciseRangeCC(_rangeMax); }
+			}
 		}
 
 		private static class DoubleRangeGenerator
@@ -994,6 +1302,11 @@ namespace Experilous.MakeItRandom
 				return new RangeZOOGenerator(random, rangeMax);
 			}
 
+			public static IDoubleGenerator CreateOO(IRandom random)
+			{
+				return new UnitOOGenerator(random);
+			}
+
 			public static IDoubleGenerator CreateCO(IRandom random, double rangeMin, double rangeMax)
 			{
 				return new RangeCOGenerator(random, rangeMin, rangeMax);
@@ -1002,6 +1315,11 @@ namespace Experilous.MakeItRandom
 			public static IDoubleGenerator CreateCO(IRandom random, double rangeMax)
 			{
 				return new RangeZCOGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreateCO(IRandom random)
+			{
+				return new UnitCOGenerator(random);
 			}
 
 			public static IDoubleGenerator CreateOC(IRandom random, double rangeMin, double rangeMax)
@@ -1014,6 +1332,11 @@ namespace Experilous.MakeItRandom
 				return new RangeZOCGenerator(random, rangeMax);
 			}
 
+			public static IDoubleGenerator CreateOC(IRandom random)
+			{
+				return new UnitOCGenerator(random);
+			}
+
 			public static IDoubleGenerator CreateCC(IRandom random, double rangeMin, double rangeMax)
 			{
 				return new RangeCCGenerator(random, rangeMin, rangeMax);
@@ -1022,6 +1345,247 @@ namespace Experilous.MakeItRandom
 			public static IDoubleGenerator CreateCC(IRandom random, double rangeMax)
 			{
 				return new RangeZCCGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreateCC(IRandom random)
+			{
+				return new UnitCCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreateSignedOO(IRandom random)
+			{
+				return new SignedOOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreateSignedCO(IRandom random)
+			{
+				return new SignedCOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreateSignedOC(IRandom random)
+			{
+				return new SignedOCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreateSignedCC(IRandom random)
+			{
+				return new SignedCCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreateC1O2(IRandom random)
+			{
+				return new UnitC1O2Generator(random);
+			}
+
+			public static IDoubleGenerator CreateC2O4(IRandom random)
+			{
+				return new UnitC2O4Generator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseOO(IRandom random, double rangeMin, double rangeMax)
+			{
+				return new PreciseRangeOOGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseOO(IRandom random, double rangeMax)
+			{
+				return new PreciseRangeZOOGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseOO(IRandom random)
+			{
+				return new PreciseUnitOOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseCO(IRandom random, double rangeMin, double rangeMax)
+			{
+				return new PreciseRangeCOGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseCO(IRandom random, double rangeMax)
+			{
+				return new PreciseRangeZCOGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseCO(IRandom random)
+			{
+				return new PreciseUnitCOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseOC(IRandom random, double rangeMin, double rangeMax)
+			{
+				return new PreciseRangeOCGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseOC(IRandom random, double rangeMax)
+			{
+				return new PreciseRangeZOCGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseOC(IRandom random)
+			{
+				return new PreciseUnitOCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseCC(IRandom random, double rangeMin, double rangeMax)
+			{
+				return new PreciseRangeCCGenerator(random, rangeMin, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseCC(IRandom random, double rangeMax)
+			{
+				return new PreciseRangeZCCGenerator(random, rangeMax);
+			}
+
+			public static IDoubleGenerator CreatePreciseCC(IRandom random)
+			{
+				return new PreciseUnitCCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseSignedOO(IRandom random)
+			{
+				return new PreciseSignedOOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseSignedCO(IRandom random)
+			{
+				return new PreciseSignedCOGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseSignedOC(IRandom random)
+			{
+				return new PreciseSignedOCGenerator(random);
+			}
+
+			public static IDoubleGenerator CreatePreciseSignedCC(IRandom random)
+			{
+				return new PreciseSignedCCGenerator(random);
+			}
+
+			private class UnitOOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitOOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleOO(); }
+			}
+
+			private class UnitCOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitCOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleCO(); }
+			}
+
+			private class UnitOCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitOCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleOC(); }
+			}
+
+			private class UnitCCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitCCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleCC(); }
+			}
+
+			private class SignedOOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public SignedOOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.SignedDoubleOO(); }
+			}
+
+			private class SignedCOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public SignedCOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.SignedDoubleCO(); }
+			}
+
+			private class SignedOCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public SignedOCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.SignedDoubleOC(); }
+			}
+
+			private class SignedCCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public SignedCCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.SignedDoubleCC(); }
+			}
+
+			private class UnitC1O2Generator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitC1O2Generator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleC1O2(); }
+			}
+
+			private class UnitC2O4Generator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public UnitC2O4Generator(IRandom random) { _random = random; }
+				public double Next() { return _random.DoubleC2O4(); }
+			}
+
+			private class PreciseUnitOOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitOOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseDoubleOO(); }
+			}
+
+			private class PreciseUnitCOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitCOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseDoubleCO(); }
+			}
+
+			private class PreciseUnitOCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitOCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseDoubleOC(); }
+			}
+
+			private class PreciseUnitCCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseUnitCCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseDoubleCC(); }
+			}
+
+			private class PreciseSignedOOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedOOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseSignedDoubleOO(); }
+			}
+
+			private class PreciseSignedCOGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedCOGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseSignedDoubleCO(); }
+			}
+
+			private class PreciseSignedOCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedOCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseSignedDoubleOC(); }
+			}
+
+			private class PreciseSignedCCGenerator : IDoubleGenerator
+			{
+				private IRandom _random;
+				public PreciseSignedCCGenerator(IRandom random) { _random = random; }
+				public double Next() { return _random.PreciseSignedDoubleCC(); }
 			}
 
 			private class RangeGeneratorBase
@@ -1086,6 +1650,58 @@ namespace Experilous.MakeItRandom
 			{
 				public RangeZCCGenerator(IRandom random, double rangeMax) : base(random, rangeMax) { }
 				public double Next() { return _random.RangeCC(_rangeMax); }
+			}
+
+			private class PreciseRangeOOGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				private double _rangeMin;
+				public PreciseRangeOOGenerator(IRandom random, double rangeMin, double rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public double Next() { return _random.PreciseRangeOO(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZOOGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				public PreciseRangeZOOGenerator(IRandom random, double rangeMax) : base(random, rangeMax) { }
+				public double Next() { return _random.PreciseRangeOO(_rangeMax); }
+			}
+
+			private class PreciseRangeCOGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				private double _rangeMin;
+				public PreciseRangeCOGenerator(IRandom random, double rangeMin, double rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public double Next() { return _random.PreciseRangeCO(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZCOGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				public PreciseRangeZCOGenerator(IRandom random, double rangeMax) : base(random, rangeMax) { }
+				public double Next() { return _random.PreciseRangeCO(_rangeMax); }
+			}
+
+			private class PreciseRangeOCGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				private double _rangeMin;
+				public PreciseRangeOCGenerator(IRandom random, double rangeMin, double rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public double Next() { return _random.PreciseRangeOC(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZOCGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				public PreciseRangeZOCGenerator(IRandom random, double rangeMax) : base(random, rangeMax) { }
+				public double Next() { return _random.PreciseRangeOC(_rangeMax); }
+			}
+
+			private class PreciseRangeCCGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				private double _rangeMin;
+				public PreciseRangeCCGenerator(IRandom random, double rangeMin, double rangeMax) : base(random, rangeMax) { _rangeMin = rangeMin; }
+				public double Next() { return _random.PreciseRangeCC(_rangeMin, _rangeMax); }
+			}
+
+			private class PreciseRangeZCCGenerator : RangeGeneratorBase, IDoubleGenerator
+			{
+				public PreciseRangeZCCGenerator(IRandom random, double rangeMax) : base(random, rangeMax) { }
+				public double Next() { return _random.PreciseRangeCC(_rangeMax); }
 			}
 		}
 
@@ -1300,7 +1916,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeOO(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOO(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeOOGenerator(this IRandom random, float lowerExclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateOO(random, lowerExclusive, upperExclusive);
@@ -1312,35 +1928,64 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeOO(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOO(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeOOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateOO(random, upperExclusive);
 		}
 
 		/// <summary>
-		/// Returns a range generator which will produce doubles strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>.
+		/// Returns a range generator which will produce floats strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, float, float)"/>
+		public static IFloatGenerator MakePreciseRangeOOGenerator(this IRandom random, float lowerExclusive, float upperExclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseOO(random, lowerExclusive, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, float)"/>
+		public static IFloatGenerator MakePreciseRangeOOGenerator(this IRandom random, float upperExclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseOO(random, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than <paramref name="lowerExclusive"/> and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeOO(IRandom, double, double)"/>
-		public static IDoubleGenerator MakeRangeOOGenerator(this IRandom random, double lowerExclusive, double upperExclusive)
+		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, double, double)"/>
+		public static IDoubleGenerator MakePreciseRangeOOGenerator(this IRandom random, double lowerExclusive, double upperExclusive)
 		{
-			return DoubleRangeGenerator.CreateOO(random, lowerExclusive, upperExclusive);
+			return DoubleRangeGenerator.CreatePreciseOO(random, lowerExclusive, upperExclusive);
 		}
 
 		/// <summary>
-		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than <paramref name="upperExclusive"/>.
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeOO(IRandom, double)"/>
-		public static IDoubleGenerator MakeRangeOOGenerator(this IRandom random, double upperExclusive)
+		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, double)"/>
+		public static IDoubleGenerator MakePreciseRangeOOGenerator(this IRandom random, double upperExclusive)
 		{
-			return DoubleRangeGenerator.CreateOO(random, upperExclusive);
+			return DoubleRangeGenerator.CreatePreciseOO(random, upperExclusive);
 		}
 
 		#endregion
@@ -1554,7 +2199,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeCO(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCO(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeCOGenerator(this IRandom random, float lowerInclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateCO(random, lowerInclusive, upperExclusive);
@@ -1566,7 +2211,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeCO(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCO(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeCOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreateCO(random, upperExclusive);
@@ -1579,7 +2224,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeCO(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCO(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeCOGenerator(this IRandom random, double lowerInclusive, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateCO(random, lowerInclusive, upperExclusive);
@@ -1591,10 +2236,64 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.RangeCO(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCO(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeCOGenerator(this IRandom random, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreateCO(random, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, float, float)"/>
+		public static IFloatGenerator MakePreciseRangeCOGenerator(this IRandom random, float lowerInclusive, float upperExclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseCO(random, lowerInclusive, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, float)"/>
+		public static IFloatGenerator MakePreciseRangeCOGenerator(this IRandom random, float upperExclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseCO(random, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to <paramref name="lowerInclusive"/> and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, double, double)"/>
+		public static IDoubleGenerator MakePreciseRangeCOGenerator(this IRandom random, double lowerInclusive, double upperExclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseCO(random, lowerInclusive, upperExclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
+		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperExclusive"/>).</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, double)"/>
+		public static IDoubleGenerator MakePreciseRangeCOGenerator(this IRandom random, double upperExclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseCO(random, upperExclusive);
 		}
 
 		#endregion
@@ -1808,7 +2507,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeOC(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOC(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeOCGenerator(this IRandom random, float lowerExclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateOC(random, lowerExclusive, upperInclusive);
@@ -1820,7 +2519,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeOC(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOC(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeOCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateOC(random, upperInclusive);
@@ -1833,7 +2532,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeOC(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeOCGenerator(this IRandom random, double lowerExclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateOC(random, lowerExclusive, upperInclusive);
@@ -1845,10 +2544,64 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeOC(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeOC(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeOCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateOC(random, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, float, float)"/>
+		public static IFloatGenerator MakePreciseRangeOCGenerator(this IRandom random, float lowerExclusive, float upperInclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseOC(random, lowerExclusive, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, float)"/>
+		public static IFloatGenerator MakePreciseRangeOCGenerator(this IRandom random, float upperInclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseOC(random, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than <paramref name="lowerExclusive"/> and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, double, double)"/>
+		public static IDoubleGenerator MakePreciseRangeOCGenerator(this IRandom random, double lowerExclusive, double upperInclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseOC(random, lowerExclusive, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, double)"/>
+		public static IDoubleGenerator MakePreciseRangeOCGenerator(this IRandom random, double upperInclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseOC(random, upperInclusive);
 		}
 
 		#endregion
@@ -2062,7 +2815,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeCC(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCC(IRandom, float, float)"/>
 		public static IFloatGenerator MakeRangeCCGenerator(this IRandom random, float lowerInclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateCC(random, lowerInclusive, upperInclusive);
@@ -2074,7 +2827,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeCC(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCC(IRandom, float)"/>
 		public static IFloatGenerator MakeRangeCCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreateCC(random, upperInclusive);
@@ -2087,7 +2840,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeCC(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakeRangeCCGenerator(this IRandom random, double lowerInclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateCC(random, lowerInclusive, upperInclusive);
@@ -2099,10 +2852,488 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.RangeCC(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.RangeCC(IRandom, double)"/>
 		public static IDoubleGenerator MakeRangeCCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreateCC(random, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, float, float)"/>
+		public static IFloatGenerator MakePreciseRangeCCGenerator(this IRandom random, float lowerInclusive, float upperInclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseCC(random, lowerInclusive, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, float)"/>
+		public static IFloatGenerator MakePreciseRangeCCGenerator(this IRandom random, float upperInclusive)
+		{
+			return FloatRangeGenerator.CreatePreciseCC(random, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to <paramref name="lowerInclusive"/> and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, double, double)"/>
+		public static IDoubleGenerator MakePreciseRangeCCGenerator(this IRandom random, double lowerInclusive, double upperInclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseCC(random, lowerInclusive, upperInclusive);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to <paramref name="upperInclusive"/>,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
+		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperInclusive"/>].</returns>
+		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, double)"/>
+		public static IDoubleGenerator MakePreciseRangeCCGenerator(this IRandom random, double upperInclusive)
+		{
+			return DoubleRangeGenerator.CreatePreciseCC(random, upperInclusive);
+		}
+
+		#endregion
+
+		#region Float Generators
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatOO(IRandom)"/>
+		public static IFloatGenerator MakeFloatOOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatCO(IRandom)"/>
+		public static IFloatGenerator MakeFloatCOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatOC(IRandom)"/>
+		public static IFloatGenerator MakeFloatOCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatCC(IRandom)"/>
+		public static IFloatGenerator MakeFloatCCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatOO(IRandom)"/>
+		public static IFloatGenerator MakeSignedFloatOOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatCO(IRandom)"/>
+		public static IFloatGenerator MakeSignedFloatCOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatOC(IRandom)"/>
+		public static IFloatGenerator MakeSignedFloatOCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatCC(IRandom)"/>
+		public static IFloatGenerator MakeSignedFloatCCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [1, 2).</returns>
+		/// <remarks><para>Given the implementation details, this function is slightly faster than the other unit ranges.</para></remarks>
+		/// <seealso cref="RandomFloatingPoint.FloatC1O2(IRandom)"/>
+		public static IFloatGenerator MakeFloatC1O2Generator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateC1O2(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to two and strictly less than four.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [2, 4).</returns>
+		/// <para>Given the implementation details, this function is a quick way to generate a number with a range of 2.</para>
+		/// <seealso cref="RandomFloatingPoint.FloatC2O4(IRandom)"/>
+		public static IFloatGenerator MakeFloatC2O4Generator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateC2O4(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatOO(IRandom)"/>
+		public static IFloatGenerator MakePreciseFloatOOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatCO(IRandom)"/>
+		public static IFloatGenerator MakePreciseFloatCOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatOC(IRandom)"/>
+		public static IFloatGenerator MakePreciseFloatOCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.FloatCC(IRandom)"/>
+		public static IFloatGenerator MakePreciseFloatCCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatOO(IRandom)"/>
+		public static IFloatGenerator MakePreciseSignedFloatOOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatCO(IRandom)"/>
+		public static IFloatGenerator MakePreciseSignedFloatCOGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats strictly greater than zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range (-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatOC(IRandom)"/>
+		public static IFloatGenerator MakePreciseSignedFloatOCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce floats greater than or equal to zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random floats in the range [-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedFloatCC(IRandom)"/>
+		public static IFloatGenerator MakePreciseSignedFloatCCGenerator(this IRandom random)
+		{
+			return FloatRangeGenerator.CreateSignedCC(random);
+		}
+
+		#endregion
+
+		#region Double Generators
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleOO(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleOOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleCO(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleCOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleOC(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleOCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleCC(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleCCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleOO(IRandom)"/>
+		public static IDoubleGenerator MakeSignedDoubleOOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleCO(IRandom)"/>
+		public static IDoubleGenerator MakeSignedDoubleCOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleOC(IRandom)"/>
+		public static IDoubleGenerator MakeSignedDoubleOCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to one.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleCC(IRandom)"/>
+		public static IDoubleGenerator MakeSignedDoubleCCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to one and strictly less than two.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [1, 2).</returns>
+		/// <remarks><para>Given the implementation details, this function is slightly faster than the other unit ranges.</para></remarks>
+		/// <seealso cref="RandomFloatingPoint.DoubleC1O2(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleC1O2Generator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateC1O2(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to two and strictly less than four.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [2, 4).</returns>
+		/// <para>Given the implementation details, this function is a quick way to generate a number with a range of 2.</para>
+		/// <seealso cref="RandomFloatingPoint.DoubleC2O4(IRandom)"/>
+		public static IDoubleGenerator MakeDoubleC2O4Generator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateC2O4(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleOO(IRandom)"/>
+		public static IDoubleGenerator MakePreciseDoubleOOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1).</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleCO(IRandom)"/>
+		public static IDoubleGenerator MakePreciseDoubleCOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleOC(IRandom)"/>
+		public static IDoubleGenerator MakePreciseDoubleOCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [0, 1].</returns>
+		/// <seealso cref="RandomFloatingPoint.DoubleCC(IRandom)"/>
+		public static IDoubleGenerator MakePreciseDoubleCCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateCC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleOO(IRandom)"/>
+		public static IDoubleGenerator MakePreciseSignedDoubleOOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedOO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and strictly less than one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [-1, +1).</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleCO(IRandom)"/>
+		public static IDoubleGenerator MakePreciseSignedDoubleCOGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedCO(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles strictly greater than zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range (-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleOC(IRandom)"/>
+		public static IDoubleGenerator MakePreciseSignedDoubleOCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedOC(random);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce doubles greater than or equal to zero and less than or equal to one,
+		/// with no precision loss as numbers get closer to zero.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random doubles in the range [-1, +1].</returns>
+		/// <seealso cref="RandomFloatingPoint.SignedDoubleCC(IRandom)"/>
+		public static IDoubleGenerator MakePreciseSignedDoubleCCGenerator(this IRandom random)
+		{
+			return DoubleRangeGenerator.CreateSignedCC(random);
 		}
 
 		#endregion
