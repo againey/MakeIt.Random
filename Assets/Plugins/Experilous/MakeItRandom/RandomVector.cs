@@ -79,16 +79,61 @@ namespace Experilous.MakeItRandom
 			long uSqr = u * u;
 			long vSqr = v * v;
 			long uvSqr = uSqr + vSqr;
-			if (uvSqr >= 0x4000000000000000L || uvSqr <= 0x7FFFFFFFL) goto Start; // x^2 + y^2 > r^2, so generated point is not inside the circle, or is too close to the center for the division below.
+			if (uvSqr >= 0x4000000000000000L || uvSqr == 0L) goto Start; // x^2 + y^2 > r^2, so generated point is not inside the circle, or is too close to the center for the division below.
 #endif
 
 			// Formula is from http://mathworld.wolfram.com/CirclePointPicking.html
-			// uvSqr starts as a Q62 fixed point number, but we want our numerators to have
-			// twice as many bits as our denominator, so we'll shift uvSqr to become a Q31.
-			uvSqr = uvSqr >> 31;
-			int x = (int)((uSqr - vSqr) / uvSqr);
-			int y = (int)(((u * v) / uvSqr) << 1);
-			// The end result is that x and y are Q31.
+			// x = (u^2 - v^2) / (u^2 + v^2)
+			// y = 2uv / (u^2 + v^2)
+
+			// For the sake of minimizing precision loss, we need to carefully manage the number of fixed
+			// point fractional digits in the numerators and denominator.  So we'll shift uvSqr so that it
+			// has at least 32 significant bits, and the two numerators so that they have 62 significant
+			// bits.  The resulting division will never overflow a 32-bit signed integer.  And for the sake
+			// of performance, we'll manually inline the calls to GetBitsForRangeMax().
+
+			uint uvSqrMask = (uint)(uvSqr >> 32);
+			uvSqrMask |= uvSqrMask >> 1;
+			uvSqrMask |= uvSqrMask >> 2;
+			uvSqrMask |= uvSqrMask >> 4;
+			uvSqrMask |= uvSqrMask >> 8;
+			uvSqrMask |= uvSqrMask >> 16;
+			int bitCountD = Detail.DeBruijnLookup.bitCountTable32[(uvSqrMask * Detail.DeBruijnLookup.multiplier32) >> Detail.DeBruijnLookup.shift32];
+			int shiftD = 0;
+			if (bitCountD > 0)
+			{
+				shiftD = bitCountD;
+				// The inner addition is to round up the truncated bits, instead of rounding down.
+				// This ensures that the final vector never has a magnitude greater than one.
+				uvSqr = (uvSqr + ((1L << shiftD) - 1L)) >> shiftD;
+			}
+
+			long uvSqrDiff = uSqr - vSqr;
+			ulong uvSqrDiffMask = (ulong)System.Math.Abs(uvSqrDiff);
+			uvSqrDiffMask |= uvSqrDiffMask >> 1;
+			uvSqrDiffMask |= uvSqrDiffMask >> 2;
+			uvSqrDiffMask |= uvSqrDiffMask >> 4;
+			uvSqrDiffMask |= uvSqrDiffMask >> 8;
+			uvSqrDiffMask |= uvSqrDiffMask >> 16;
+			uvSqrDiffMask |= uvSqrDiffMask >> 32;
+			int bitCountNX = Detail.DeBruijnLookup.bitCountTable64[(uvSqrDiffMask * Detail.DeBruijnLookup.multiplier64) >> Detail.DeBruijnLookup.shift64];
+			int shiftNX = 62 - bitCountNX;
+			uvSqrDiff = uvSqrDiff << shiftNX;
+
+			long uv = u * v;
+			ulong uvMask = (ulong)System.Math.Abs(uv);
+			uvMask |= uvMask >> 1;
+			uvMask |= uvMask >> 2;
+			uvMask |= uvMask >> 4;
+			uvMask |= uvMask >> 8;
+			uvMask |= uvMask >> 16;
+			uvMask |= uvMask >> 32;
+			int bitCountNY = Detail.DeBruijnLookup.bitCountTable64[(uvMask * Detail.DeBruijnLookup.multiplier64) >> Detail.DeBruijnLookup.shift64];
+			int shiftNY = 62 - bitCountNY;
+			uv = uv << shiftNY;
+
+			int x = (int)(uvSqrDiff / uvSqr);
+			int y = (int)(uv / uvSqr); // This does not yet have the multiplication by 2; we'll do that when adjusting floating point exponent.
 
 			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
@@ -101,7 +146,7 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = x;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				conv.bits += ((uint)(-shiftNX - shiftD) << 23);
 				vec.x = conv.number;
 			}
 
@@ -112,14 +157,14 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = y;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				conv.bits += ((uint)(-shiftNY - shiftD + 1) << 23);
 				vec.y = conv.number;
 			}
 #endif
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.Callbacks.DidReloadScripts]
+		//[UnityEditor.Callbacks.DidReloadScripts]
 		private static void TestUnitVector2()
 		{
 			var r = XorShift128Plus.Create();
@@ -562,22 +607,59 @@ namespace Experilous.MakeItRandom
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.Callbacks.DidReloadScripts]
+		//[UnityEditor.Callbacks.DidReloadScripts]
 		private static void TestUnitVector4()
 		{
 			var r = XorShift128Plus.Create();
 
-			float negError0 = 0f;
-			float posError0 = 0f;
-			float minError0 = 0f;
-			float maxError0 = 0f;
+			var invSqrt2 = 1f / Mathf.Sqrt(2f);
+			var invSqrt3 = 1f / Mathf.Sqrt(3f);
+			var invSqrt4 = 1f / Mathf.Sqrt(4f);
+			Vector4[] comparisonVectors = new Vector4[]
+			{
+				new Vector4(1f, 0f, 0f, 0f),
+				new Vector4(0f, 1f, 0f, 0f),
+				new Vector4(0f, 0f, 1f, 0f),
+				new Vector4(0f, 0f, 0f, 1f),
+				new Vector4(invSqrt2, invSqrt2, 0f, 0f),
+				new Vector4(invSqrt2, 0f, invSqrt2, 0f),
+				new Vector4(invSqrt2, 0f, 0f, invSqrt2),
+				new Vector4(0f, invSqrt2, invSqrt2, 0f),
+				new Vector4(0f, invSqrt2, 0f, invSqrt2),
+				new Vector4(0f, 0f, invSqrt2, invSqrt2),
+				new Vector4(invSqrt3, invSqrt3, invSqrt3, 0f),
+				new Vector4(invSqrt3, invSqrt3, 0f, invSqrt3),
+				new Vector4(invSqrt3, 0f, invSqrt3, invSqrt3),
+				new Vector4(0f, invSqrt3, invSqrt3, invSqrt3),
+				new Vector4(invSqrt4, invSqrt4, invSqrt4, invSqrt4),
+			};
 
-			float negError1 = 0f;
-			float posError1 = 0f;
-			float minError1 = 0f;
-			float maxError1 = 0f;
+			Vector4[] componentVectors = new Vector4[]
+			{
+				new Vector4(1f, 0f, 0f, 0f),
+				new Vector4(0f, 1f, 0f, 0f),
+				new Vector4(0f, 0f, 1f, 0f),
+				new Vector4(0f, 0f, 0f, 1f),
+				new Vector4(1f, 1f, 0f, 0f),
+				new Vector4(1f, 0f, 1f, 0f),
+				new Vector4(1f, 0f, 0f, 1f),
+				new Vector4(0f, 1f, 1f, 0f),
+				new Vector4(0f, 1f, 0f, 1f),
+				new Vector4(0f, 0f, 1f, 1f),
+				new Vector4(1f, 1f, 1f, 0f),
+				new Vector4(1f, 1f, 0f, 1f),
+				new Vector4(1f, 0f, 1f, 1f),
+				new Vector4(0f, 1f, 1f, 1f),
+			};
 
-			int iterations = 10000000;
+			float negError = 0f;
+			float posError = 0f;
+			float minError = 0f;
+			float maxError = 0f;
+			float[] distanceSums = new float[comparisonVectors.Length];
+			float[] componentSquareSums = new float[componentVectors.Length];
+
+			int iterations = 1000000;
 
 			for (int i = 0; i < iterations; ++i)
 			{
@@ -586,32 +668,39 @@ namespace Experilous.MakeItRandom
 				float e = v.magnitude - 1f;
 				if (e > 0f)
 				{
-					posError0 += e;
-					maxError0 = Mathf.Max(maxError0, e);
+					posError += e;
+					maxError = Mathf.Max(maxError, e);
 				}
 				else if (e < 0f)
 				{
-					negError0 += e;
-					minError0 = Mathf.Min(minError0, e);
+					negError += e;
+					minError = Mathf.Min(minError, e);
 				}
 
-				var q = Random.rotationUniform;
-				v.Set(q.x, q.y, q.z, q.w);
-				e = v.magnitude - 1f;
-				if (e > 0f)
+				for (int j = 0; j < comparisonVectors.Length; ++j)
 				{
-					posError1 += e;
-					maxError1 = Mathf.Max(maxError1, e);
+					distanceSums[j] += (comparisonVectors[j] - v).magnitude;
 				}
-				else if (e < 0f)
+
+				for (int j = 0; j < componentVectors.Length; ++j)
 				{
-					negError1 += e;
-					minError1 = Mathf.Min(minError1, e);
+					componentSquareSums[j] += Vector4.Scale(componentVectors[j], v).sqrMagnitude;
 				}
 			}
 
-			Debug.LogFormat("MakeIt.UnitVector4:    Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
-			Debug.LogFormat("Unity.rotationUniform: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError1 / iterations, posError1 / iterations, minError1, maxError1);
+			Debug.LogFormat("MakeIt.UnitVector4:    Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError / iterations, posError / iterations, minError, maxError);
+
+			Debug.Log("Distances");
+			for (int j = 0; j < comparisonVectors.Length; ++j)
+			{
+				Debug.LogFormat("Comparison Vector {0}: {1:E12}", comparisonVectors[j], distanceSums[j] / iterations);
+			}
+
+			Debug.Log("Component Square Sums");
+			for (int j = 0; j < componentVectors.Length; ++j)
+			{
+				Debug.LogFormat("Component Vector {0}: {1:E12}", componentVectors[j], componentSquareSums[j] / iterations);
+			}
 		}
 #endif
 
