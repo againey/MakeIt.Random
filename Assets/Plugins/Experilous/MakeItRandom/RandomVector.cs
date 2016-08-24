@@ -79,7 +79,7 @@ namespace Experilous.MakeItRandom
 			long uSqr = u * u;
 			long vSqr = v * v;
 			long uvSqr = uSqr + vSqr;
-			if (uvSqr >= 0x4000000000000000L) goto Start; // x^2 + y^2 > r^2, so generated point is not inside the circle.
+			if (uvSqr >= 0x4000000000000000L || uvSqr <= 0x7FFFFFFFL) goto Start; // x^2 + y^2 > r^2, so generated point is not inside the circle, or is too close to the center for the division below.
 #endif
 
 			// Formula is from http://mathworld.wolfram.com/CirclePointPicking.html
