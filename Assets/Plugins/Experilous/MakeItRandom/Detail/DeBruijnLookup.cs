@@ -344,7 +344,7 @@ namespace Experilous.MakeItRandom.Detail
 			}
 			sb.Append("};\n");
 
-			UnityEngine.Debug.Log(sb.ToString( ));
+			UnityEngine.Debug.Log(sb.ToString());
 		}
 #endif
 
