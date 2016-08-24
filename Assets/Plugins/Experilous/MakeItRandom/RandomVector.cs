@@ -118,6 +118,40 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+#if UNITY_EDITOR
+		[UnityEditor.Callbacks.DidReloadScripts]
+		private static void TestUnitVector2()
+		{
+			var r = XorShift128Plus.Create();
+
+			float negError0 = 0f;
+			float posError0 = 0f;
+			float minError0 = 0f;
+			float maxError0 = 0f;
+
+			int iterations = 10000000;
+
+			for (int i = 0; i < iterations; ++i)
+			{
+				Vector2 v;
+				r.UnitVector2(out v);
+				float e = v.magnitude - 1f;
+				if (e > 0f)
+				{
+					posError0 += e;
+					maxError0 = Mathf.Max(maxError0, e);
+				}
+				else if (e < 0f)
+				{
+					negError0 += e;
+					minError0 = Mathf.Min(minError0, e);
+				}
+			}
+
+			Debug.LogFormat("MakeIt.UnitVector2: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
+		}
+#endif
+
 		/// <summary>
 		/// Generates a random 3-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit sphere.
 		/// </summary>
@@ -272,6 +306,59 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
+#if UNITY_EDITOR
+		[UnityEditor.Callbacks.DidReloadScripts]
+		private static void TestUnitVector3()
+		{
+			var r = XorShift128Plus.Create();
+
+			float negError0 = 0f;
+			float posError0 = 0f;
+			float minError0 = 0f;
+			float maxError0 = 0f;
+
+			float negError1 = 0f;
+			float posError1 = 0f;
+			float minError1 = 0f;
+			float maxError1 = 0f;
+
+			int iterations = 10000000;
+
+			for (int i = 0; i < iterations; ++i)
+			{
+				Vector3 v;
+				r.UnitVector3(out v);
+				float e = v.magnitude - 1f;
+				if (e > 0f)
+				{
+					posError0 += e;
+					maxError0 = Mathf.Max(maxError0, e);
+				}
+				else if (e < 0f)
+				{
+					negError0 += e;
+					minError0 = Mathf.Min(minError0, e);
+				}
+
+				v = Random.onUnitSphere;
+				e = v.magnitude - 1f;
+				if (e > 0f)
+				{
+					posError1 += e;
+					maxError1 = Mathf.Max(maxError1, e);
+				}
+				else if (e < 0f)
+				{
+					negError1 += e;
+					minError1 = Mathf.Min(minError1, e);
+				}
+			}
+
+			Debug.LogFormat("MakeIt.UnitVector3: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
+			Debug.LogFormat("Unity.onUnitSphere: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError1 / iterations, posError1 / iterations, minError1, maxError1);
+		}
+#endif
+
 		/// <summary>
 		/// Generates a random 4-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit hypersphere.
 		/// </summary>
@@ -279,25 +366,254 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 4-dimensional unit vector.</returns>
 		public static Vector4 UnitVector4(this IRandom random)
 		{
-			Start1:
-			float u1 = random.FloatOO() * 2f - 1f;
-			float v1 = random.FloatOO() * 2f - 1f;
-			float uSqr1 = u1 * u1;
-			float vSqr1 = v1 * v1;
-			float uvSqr1 = uSqr1 + vSqr1;
-			if (uvSqr1 >= 1f) goto Start1;
-
-			Start2:
-			float u2 = random.FloatOO() * 2f - 1f;
-			float v2 = random.FloatOO() * 2f - 1f;
-			float uSqr2 = u2 * u2;
-			float vSqr2 = v2 * v2;
-			float uvSqr2 = uSqr2 + vSqr2;
-			if (uvSqr2 >= 1f) goto Start2;
-
-			float t = Mathf.Sqrt((1f - uvSqr1) / uvSqr2);
-			return new Vector4(u1, v1, u2 * t, v2 * t);
+			Vector4 vec;
+			random.UnitVector4(out vec);
+			return vec;
 		}
+
+		/// <summary>
+		/// Generates a random 4-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit hypersphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random 4-dimensional unit vector.</returns>
+		public static void UnitVector4(this IRandom random, out Vector4 vec)
+		{
+			// General formula from:  http://mathworld.wolfram.com/HyperspherePointPicking.html
+
+			// First modified inline of RandomVector.PointWithinCircle()
+			Start1:
+
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
+			int iu = (int)upper;
+			int iv = (int)lower;
+			if (iu == 0 && iv == 0) goto Start;
+			int uScaled = iu >> 16;
+			int vScaled = iv >> 16;
+			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
+			// First do a check against the 32-bit radius before doing a full 64-bit calculation
+			if (uvSqrScaled >= 0x40000000) goto Start1; // x^2 + y^2 > r^2, so generated point is outside the circle.
+
+			long u1 = iu;
+			long v1 = iv;
+			long uSqr = u1 * u1;
+			long vSqr = v1 * v1;
+			long uvSqr1 = uSqr + vSqr;
+			// If 32-bit version is greater than a certain threshold, then the full 64-bit version might reach or go
+			// over the length of 1 even if the 32-bit version doesn't due to bit truncation.
+			if (uvSqrScaled >= 0x3FFF0000 && uvSqr1 >= 0x4000000000000000L) goto Start1; // x^2 + y^2 > r^2, so generated point is not inside the circle.
+#else
+			ulong bits = random.Next64();
+			uint upper = (uint)(bits >> 32);
+			uint lower = (uint)bits;
+			long u1 = (int)upper;
+			long v1 = (int)lower;
+			long uSqr = u1 * u1;
+			long vSqr = v1 * v1;
+			long uvSqr1 = uSqr + vSqr;
+			if (uvSqr1 >= 0x4000000000000000L) goto Start1; // x^2 + y^2 > r^2, so generated point is not inside the circle.
+#endif
+
+			// Second modified inline of RandomVector.PointWithinCircle()
+			Start2:
+
+#if OPTIMIZE_FOR_32
+			random.Next64(out lower, out upper);
+			iu = (int)upper;
+			iv = (int)lower;
+			if (iu == 0 && iv == 0) goto Start;
+			uScaled = iu >> 16;
+			vScaled = iv >> 16;
+			uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
+			// First do a check against the 32-bit radius before doing a full 64-bit calculation
+			if (uvSqrScaled >= 0x40000000) goto Start2; // x^2 + y^2 > r^2, so generated point is outside the circle.
+
+			long u2 = iu;
+			long v2 = iv;
+			uSqr = u2 * u2;
+			vSqr = v2 * v2;
+			long uvSqr2 = uSqr + vSqr;
+			// If 32-bit version is greater than a certain threshold, then the full 64-bit version might reach or go
+			// over the length of 1 even if the 32-bit version doesn't due to bit truncation.
+			if (uvSqrScaled >= 0x3FFF0000 && uvSqr2 >= 0x4000000000000000L) goto Start2; // x^2 + y^2 > r^2, so generated point is not inside the circle.
+#else
+			bits = random.Next64();
+			upper = (uint)(bits >> 32);
+			lower = (uint)bits;
+			long u2 = (int)upper;
+			long v2 = (int)lower;
+			uSqr = u2 * u2;
+			vSqr = v2 * v2;
+			long uvSqr2 = uSqr + vSqr;
+			if (uvSqr2 >= 0x4000000000000000L) goto Start2; // x^2 + y^2 > r^2, so generated point is not inside the circle.
+#endif
+
+			//Debug.LogFormat("< {0:F6}, {1:F6} >, {2:F12}, < {3:F6}, {4:F6} >, {5:F12}", (double)u1 / (1L << 31), (double)v1 / (1L << 31), (double)uvSqr1 / (1L << 62), (double)u2 / (1L << 31), (double)v2 / (1L << 31), (double)uvSqr2 / (1L << 62));
+
+			ulong tSqr;
+
+			if (uvSqr2 > 0x3FFFFFFFL)
+			{
+				tSqr = (ulong)((0x4000000000000000L - uvSqr1) / (uvSqr2 >> 30));
+			}
+			else if (uvSqr1 > 0x3FFFFFFFL)
+			{
+				tSqr = (ulong)((0x4000000000000000L - uvSqr2) / (uvSqr1 >> 30));
+			}
+			else
+			{
+				goto Start1;
+			}
+
+			// Calculate the square root of tSqr.  This starts with an approximation found at
+			//   http://stackoverflow.com/a/1100591
+			// It is followed by two uses of the divide-and-average method to improve the initial approximation.
+
+			// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
+			ulong mask = tSqr | (tSqr >> 1);
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
+			mask |= mask >> 32;
+			int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
+
+			// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
+			ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
+			// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
+			ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (tSqr >> (bitCount - 7)) : (tSqr << (7 - bitCount))) & 0x3FU]; // b * 2^31
+			// Square root is a*b
+			ulong t = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt((1 - uvSqr1) / uvSqr2) * 2^31
+
+			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)sqrtA / (1L << 15), (double)sqrtB / (1L << 31), sqrtA, sqrtB);
+			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)tSqr / (1L << 30), (double)t / (1L << 15), tSqr, t);
+
+			// Improve the square root approximation using the divide-and-average method twice
+			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, better approximation
+			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, even better approximation
+
+			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)tSqr / (1L << 30), (double)t / (1L << 15), tSqr, t);
+
+			int x, y, z, w;
+
+			if (uvSqr1 > uvSqr2)
+			{
+				x = (int)((u1 * (long)t) >> 15);
+				y = (int)((v1 * (long)t) >> 15);
+				z = (int)u2;
+				w = (int)v2;
+			}
+			else
+			{
+				x = (int)u1;
+				y = (int)v1;
+				z = (int)((u2 * (long)t) >> 15);
+				w = (int)((v2 * (long)t) >> 15);
+			}
+
+			// Inline of Detail.FloatingPoint.FixedToFloat()
+			Detail.FloatingPoint.BitwiseFloat conv;
+			conv.bits = 0U;
+
+			if (x == 0L)
+			{
+				vec.x = 0f;
+			}
+			else
+			{
+				conv.number = x;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.x = conv.number;
+			}
+
+			if (y == 0L)
+			{
+				vec.y = 0f;
+			}
+			else
+			{
+				conv.number = y;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.y = conv.number;
+			}
+
+			if (z == 0L)
+			{
+				vec.z = 0f;
+			}
+			else
+			{
+				conv.number = z;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.z = conv.number;
+			}
+
+			if (w == 0L)
+			{
+				vec.w = 0f;
+			}
+			else
+			{
+				conv.number = w;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				vec.w = conv.number;
+			}
+		}
+
+#if UNITY_EDITOR
+		[UnityEditor.Callbacks.DidReloadScripts]
+		private static void TestUnitVector4()
+		{
+			var r = XorShift128Plus.Create();
+
+			float negError0 = 0f;
+			float posError0 = 0f;
+			float minError0 = 0f;
+			float maxError0 = 0f;
+
+			float negError1 = 0f;
+			float posError1 = 0f;
+			float minError1 = 0f;
+			float maxError1 = 0f;
+
+			int iterations = 10000000;
+
+			for (int i = 0; i < iterations; ++i)
+			{
+				Vector4 v;
+				r.UnitVector4(out v);
+				float e = v.magnitude - 1f;
+				if (e > 0f)
+				{
+					posError0 += e;
+					maxError0 = Mathf.Max(maxError0, e);
+				}
+				else if (e < 0f)
+				{
+					negError0 += e;
+					minError0 = Mathf.Min(minError0, e);
+				}
+
+				var q = Random.rotationUniform;
+				v.Set(q.x, q.y, q.z, q.w);
+				e = v.magnitude - 1f;
+				if (e > 0f)
+				{
+					posError1 += e;
+					maxError1 = Mathf.Max(maxError1, e);
+				}
+				else if (e < 0f)
+				{
+					negError1 += e;
+					minError1 = Mathf.Min(minError1, e);
+				}
+			}
+
+			Debug.LogFormat("MakeIt.UnitVector4:    Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
+			Debug.LogFormat("Unity.rotationUniform: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError1 / iterations, posError1 / iterations, minError1, maxError1);
+		}
+#endif
 
 		#endregion
 
