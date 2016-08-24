@@ -352,7 +352,7 @@ namespace Experilous.MakeItRandom
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.Callbacks.DidReloadScripts]
+		//[UnityEditor.Callbacks.DidReloadScripts]
 		private static void TestUnitVector3()
 		{
 			var r = XorShift128Plus.Create();
@@ -494,22 +494,58 @@ namespace Experilous.MakeItRandom
 			if (uvSqr2 >= 0x4000000000000000L) goto Start2; // x^2 + y^2 > r^2, so generated point is not inside the circle.
 #endif
 
-			//Debug.LogFormat("< {0:F6}, {1:F6} >, {2:F12}, < {3:F6}, {4:F6} >, {5:F12}", (double)u1 / (1L << 31), (double)v1 / (1L << 31), (double)uvSqr1 / (1L << 62), (double)u2 / (1L << 31), (double)v2 / (1L << 31), (double)uvSqr2 / (1L << 62));
+			ulong numerator;
+			ulong denominator;
 
-			ulong tSqr;
-
-			if (uvSqr2 > 0x3FFFFFFFL)
+			if (uvSqr2 > 0xFFFFFFFFL)
 			{
-				tSqr = (ulong)((0x4000000000000000L - uvSqr1) / (uvSqr2 >> 30));
+				numerator = 0x4000000000000000UL - (ulong)uvSqr1;
+				denominator = (ulong)uvSqr2;
 			}
-			else if (uvSqr1 > 0x3FFFFFFFL)
+			else if (uvSqr1 > 0xFFFFFFFFL)
 			{
-				tSqr = (ulong)((0x4000000000000000L - uvSqr2) / (uvSqr1 >> 30));
+				numerator = 0x4000000000000000UL - (ulong)uvSqr2;
+				denominator = (ulong)uvSqr1;
 			}
 			else
 			{
 				goto Start1;
 			}
+
+			uint denominatorMask = (uint)(denominator >> 32);
+			denominatorMask |= denominatorMask >> 1;
+			denominatorMask |= denominatorMask >> 2;
+			denominatorMask |= denominatorMask >> 4;
+			denominatorMask |= denominatorMask >> 8;
+			denominatorMask |= denominatorMask >> 16;
+			int shiftD = Detail.DeBruijnLookup.bitCountTable32[(denominatorMask * Detail.DeBruijnLookup.multiplier32) >> Detail.DeBruijnLookup.shift32];
+
+			ulong numeratorMask = numerator;
+			numeratorMask |= numeratorMask >> 1;
+			numeratorMask |= numeratorMask >> 2;
+			numeratorMask |= numeratorMask >> 4;
+			numeratorMask |= numeratorMask >> 8;
+			numeratorMask |= numeratorMask >> 16;
+			numeratorMask |= numeratorMask >> 32;
+			int shiftN = 62 - Detail.DeBruijnLookup.bitCountTable64[(numeratorMask * Detail.DeBruijnLookup.multiplier64) >> Detail.DeBruijnLookup.shift64];
+
+			// Because of the square root below, we can't have these two shifts amount differ by
+			// an odd amount.
+			if (((shiftN + shiftD) & 1) == 1)
+			{
+				shiftD -= 1;
+			}
+
+			if (shiftD > 0)
+			{
+				// The inner addition is to round up the truncated bits, instead of rounding down.
+				// This ensures that the final vector never has a magnitude greater than one.
+				denominator = (denominator + ((1UL << shiftD) - 1UL)) >> shiftD;
+			}
+
+			numerator = numerator << shiftN;
+
+			ulong tSqr = (numerator / denominator) << 32;
 
 			// Calculate the square root of tSqr.  This starts with an approximation found at
 			//   http://stackoverflow.com/a/1100591
@@ -531,31 +567,29 @@ namespace Experilous.MakeItRandom
 			// Square root is a*b
 			ulong t = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt((1 - uvSqr1) / uvSqr2) * 2^31
 
-			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)sqrtA / (1L << 15), (double)sqrtB / (1L << 31), sqrtA, sqrtB);
-			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)tSqr / (1L << 30), (double)t / (1L << 15), tSqr, t);
-
 			// Improve the square root approximation using the divide-and-average method twice
 			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, better approximation
 			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, even better approximation
 
-			//Debug.LogFormat("{0:F12}, {1:F12}, 0x{2:X16}, 0x{3:X16}", (double)tSqr / (1L << 30), (double)t / (1L << 15), tSqr, t);
+			long x, y, z, w;
 
-			int x, y, z, w;
-
-			if (uvSqr1 > uvSqr2)
+			if (uvSqr2 > 0xFFFFFFFFL)
 			{
-				x = (int)((u1 * (long)t) >> 15);
-				y = (int)((v1 * (long)t) >> 15);
-				z = (int)u2;
-				w = (int)v2;
+				x = u1;
+				y = v1;
+				z = u2 * (long)t;
+				w = v2 * (long)t;
 			}
 			else
 			{
-				x = (int)u1;
-				y = (int)v1;
-				z = (int)((u2 * (long)t) >> 15);
-				w = (int)((v2 * (long)t) >> 15);
+				x = u1 * (long)t;
+				y = v1 * (long)t;
+				z = u2;
+				w = v2;
 			}
+
+			// The shift by 1 is due to the square root halving the effects of the shifts.
+			uint exponent = ((uint)(-47 - ((shiftN + shiftD) >> 1)) << 23);
 
 			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
@@ -568,7 +602,14 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = x;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				if (uvSqr2 > 0xFFFFFFFFL)
+				{
+					conv.bits -= 0x0F800000U; // exponent -= 31
+				}
+				else
+				{
+					conv.bits += exponent;
+				}
 				vec.x = conv.number;
 			}
 
@@ -579,7 +620,14 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = y;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				if (uvSqr2 > 0xFFFFFFFFL)
+				{
+					conv.bits -= 0x0F800000U; // exponent -= 31
+				}
+				else
+				{
+					conv.bits += exponent;
+				}
 				vec.y = conv.number;
 			}
 
@@ -590,7 +638,14 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = z;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				if (uvSqr2 > 0xFFFFFFFFL)
+				{
+					conv.bits += exponent;
+				}
+				else
+				{
+					conv.bits -= 0x0F800000U; // exponent -= 31
+				}
 				vec.z = conv.number;
 			}
 
@@ -601,7 +656,14 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = w;
-				conv.bits -= 0x0F800000U; // exponent -= 31
+				if (uvSqr2 > 0xFFFFFFFFL)
+				{
+					conv.bits += exponent;
+				}
+				else
+				{
+					conv.bits -= 0x0F800000U; // exponent -= 31
+				}
 				vec.w = conv.number;
 			}
 		}
