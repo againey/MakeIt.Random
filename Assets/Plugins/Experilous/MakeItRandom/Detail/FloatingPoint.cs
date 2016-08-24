@@ -118,6 +118,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static float FixedToFloat(int n, uint fractionalBits)
 		{
+			if (n == 0) return 0f;
 			BitwiseFloat value;
 			value.bits = 0U;
 			value.number = n;
@@ -127,6 +128,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static float FixedToFloat(uint n, uint fractionalBits)
 		{
+			if (n == 0U) return 0f;
 			BitwiseFloat value;
 			value.bits = 0U;
 			value.number = n;
@@ -136,6 +138,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static float FixedToFloat(long n, uint fractionalBits)
 		{
+			if (n == 0L) return 0f;
 			BitwiseFloat value;
 			value.bits = 0U;
 			value.number = n;
@@ -145,6 +148,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static float FixedToFloat(ulong n, uint fractionalBits)
 		{
+			if (n == 0UL) return 0f;
 			BitwiseFloat value;
 			value.bits = 0U;
 			value.number = n;
@@ -154,6 +158,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double FixedToDouble(int n, uint fractionalBits)
 		{
+			if (n == 0) return 0d;
 			BitwiseDouble value;
 #if OPTIMIZE_FOR_32
 			value.lowerBits = 0U;
@@ -170,6 +175,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double FixedToDouble(uint n, uint fractionalBits)
 		{
+			if (n == 0U) return 0d;
 			BitwiseDouble value;
 #if OPTIMIZE_FOR_32
 			value.lowerBits = 0U;
@@ -186,6 +192,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double FixedToDouble(long n, uint fractionalBits)
 		{
+			if (n == 0L) return 0d;
 			BitwiseDouble value;
 #if OPTIMIZE_FOR_32
 			value.lowerBits = 0U;
@@ -202,6 +209,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double FixedToDouble(ulong n, uint fractionalBits)
 		{
+			if (n == 0UL) return 0d;
 			BitwiseDouble value;
 #if OPTIMIZE_FOR_32
 			value.lowerBits = 0U;
