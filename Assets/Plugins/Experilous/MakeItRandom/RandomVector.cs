@@ -433,7 +433,7 @@ namespace Experilous.MakeItRandom
 			random.Next64(out lower, out upper);
 			int iu = (int)upper;
 			int iv = (int)lower;
-			if (iu == 0 && iv == 0) goto Start;
+			if (iu == 0 && iv == 0) goto Start1;
 			int uScaled = iu >> 16;
 			int vScaled = iv >> 16;
 			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
@@ -467,7 +467,7 @@ namespace Experilous.MakeItRandom
 			random.Next64(out lower, out upper);
 			iu = (int)upper;
 			iv = (int)lower;
-			if (iu == 0 && iv == 0) goto Start;
+			if (iu == 0 && iv == 0) goto Start2;
 			uScaled = iu >> 16;
 			vScaled = iv >> 16;
 			uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
