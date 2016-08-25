@@ -545,31 +545,38 @@ namespace Experilous.MakeItRandom
 
 			numerator = numerator << shiftN;
 
+			ulong t;
 			ulong tSqr = (numerator / denominator) << 32;
+			if (tSqr > 0UL)
+			{
+				// Calculate the square root of tSqr.  This starts with an approximation found at
+				//   http://stackoverflow.com/a/1100591
+				// It is followed by two uses of the divide-and-average method to improve the initial approximation.
 
-			// Calculate the square root of tSqr.  This starts with an approximation found at
-			//   http://stackoverflow.com/a/1100591
-			// It is followed by two uses of the divide-and-average method to improve the initial approximation.
+				// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
+				ulong mask = tSqr | (tSqr >> 1);
+				mask |= mask >> 2;
+				mask |= mask >> 4;
+				mask |= mask >> 8;
+				mask |= mask >> 16;
+				mask |= mask >> 32;
+				int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
 
-			// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
-			ulong mask = tSqr | (tSqr >> 1);
-			mask |= mask >> 2;
-			mask |= mask >> 4;
-			mask |= mask >> 8;
-			mask |= mask >> 16;
-			mask |= mask >> 32;
-			int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
+				// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
+				ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
+				// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
+				ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (tSqr >> (bitCount - 7)) : (tSqr << (7 - bitCount))) & 0x3FU]; // b * 2^31
+				// Square root is a*b
+				t = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt((1 - uvSqr1) / uvSqr2) * 2^31
 
-			// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
-			ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
-			// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
-			ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (tSqr >> (bitCount - 7)) : (tSqr << (7 - bitCount))) & 0x3FU]; // b * 2^31
-			// Square root is a*b
-			ulong t = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt((1 - uvSqr1) / uvSqr2) * 2^31
-
-			// Improve the square root approximation using the divide-and-average method twice
-			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, better approximation
-			t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, even better approximation
+				// Improve the square root approximation using the divide-and-average method twice
+				t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, better approximation
+				t = (tSqr / t + t) >> 1; // sqrt((1 - uvSqr1) / uvSqr2) * 2^31, even better approximation
+			}
+			else
+			{
+				t = 0UL;
+			}
 
 			long x, y, z, w;
 

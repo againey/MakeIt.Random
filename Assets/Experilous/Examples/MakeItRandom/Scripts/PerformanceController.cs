@@ -48,6 +48,7 @@ namespace Experilous.Examples.MakeItRandom
 		public Toggle unitVector2Toggle;
 		public Toggle unitVector3Toggle;
 		public Toggle unitVector4Toggle;
+		public Toggle quaternionToggle;
 		public Toggle vector2WithinCircleToggle;
 		public Toggle vector3WithinSphereToggle;
 
@@ -150,6 +151,7 @@ namespace Experilous.Examples.MakeItRandom
 				unitVector2Toggle.isOn ||
 				unitVector3Toggle.isOn ||
 				unitVector4Toggle.isOn ||
+				quaternionToggle.isOn ||
 				vector2WithinCircleToggle.isOn ||
 				vector3WithinSphereToggle.isOn;
 
@@ -206,6 +208,7 @@ namespace Experilous.Examples.MakeItRandom
 			if (unitVector2Toggle.isOn) operationToggles.Add(unitVector2Toggle);
 			if (unitVector3Toggle.isOn) operationToggles.Add(unitVector3Toggle);
 			if (unitVector4Toggle.isOn) operationToggles.Add(unitVector4Toggle);
+			if (quaternionToggle.isOn) operationToggles.Add(quaternionToggle);
 			if (vector2WithinCircleToggle.isOn) operationToggles.Add(vector2WithinCircleToggle);
 			if (vector3WithinSphereToggle.isOn) operationToggles.Add(vector3WithinSphereToggle);
 
@@ -225,7 +228,19 @@ namespace Experilous.Examples.MakeItRandom
 				{
 					yield return null;
 
-					WaitHandle waitHandle = MeasurePerformance(generatorToggle, operationToggle);
+					WaitHandle waitHandle;
+					try
+					{
+						waitHandle = MeasurePerformance(generatorToggle, operationToggle);
+					}
+					catch (Exception)
+					{
+						measurementProgressSlider.gameObject.SetActive(false);
+						measurementProgressSlider.value = 0;
+						measurePerformanceButtonText.text = originalMeasurePerformanceButtonText;
+						EnableDisableMeasurePerformanceButton();
+						throw;
+					}
 
 					if (waitHandle != null)
 					{
@@ -319,10 +334,10 @@ namespace Experilous.Examples.MakeItRandom
 						_currentOperationName = "Unit Vector3 (Random.onUnitSphere)";
 						operation = MeasurePerformance_UnityRandomUnitVector3;
 					}
-					else if (operationToggle == unitVector4Toggle)
+					else if (operationToggle == quaternionToggle)
 					{
-						_currentOperationName = "Unit Vector4 (Random.rotationUniform)";
-						operation = MeasurePerformance_UnityRandomUnitVector4;
+						_currentOperationName = "Quaternion (Random.rotationUniform)";
+						operation = MeasurePerformance_UnityRandomQuaternion;
 					}
 					else if (operationToggle == vector2WithinCircleToggle)
 					{
@@ -478,6 +493,11 @@ namespace Experilous.Examples.MakeItRandom
 				{
 					_currentOperationName = "Unit Vector4";
 					operation = (long iterations) => { MeasurePerformance_UnitVector4(random, iterations); };
+				}
+				else if (operationToggle == quaternionToggle)
+				{
+					_currentOperationName = "Quaternion";
+					operation = (long iterations) => { MeasurePerformance_Quaternion(random, iterations); };
 				}
 				else if (operationToggle == vector2WithinCircleToggle)
 				{
@@ -720,7 +740,7 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomUnitVector4(long iterations)
+		private void MeasurePerformance_UnityRandomQuaternion(long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1317,6 +1337,35 @@ namespace Experilous.Examples.MakeItRandom
 				random.UnitVector4(out v); _generatedFloat = v.x;
 				random.UnitVector4(out v); _generatedFloat = v.x;
 				random.UnitVector4(out v); _generatedFloat = v.x;
+			}
+		}
+
+		private void MeasurePerformance_Quaternion(IRandom random, long iterations)
+		{
+			long unrolledIterations = iterations >> 4;
+			for (int i = 0; i < unrolledIterations; ++i)
+			{
+				Quaternion q;
+
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
+				random.Rotation(out q); _generatedFloat = q.x;
 			}
 		}
 
