@@ -91,6 +91,32 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+#if UNITY_5_4_OR_NEWER
+		/// <summary>
+		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using the provided <paramref name="stateArray"/> data to directly initialize the engine's state.
+		/// </summary>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="IRandom.SaveState()"/> on a binary-compatible type of random engine.</param>
+		/// <returns>A newly created instance of the <c>UnityEngine.Random</c> engine.</returns>
+		public static UnityRandom CreateWithState(byte[] stateArray)
+		{
+			var instance = CreateInstance<UnityRandom>();
+			instance.RestoreState(stateArray);
+			return instance;
+		}
+
+		/// <summary>
+		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using the provided <paramref name="stateArray"/> data to directly initialize the engine's state.
+		/// </summary>
+		/// <param name="state">State data generated from an earlier call to <see cref="IRandom.SaveState()"/> on a binary-compatible type of random engine.</param>
+		/// <returns>A newly created instance of the <c>UnityEngine.Random</c> engine.</returns>
+		public static UnityRandom CreateWithState(UnityEngine.Random.State state)
+		{
+			var instance = CreateInstance<UnityRandom>();
+			instance.RestoreState(state);
+			return instance;
+		}
+#endif
+
 		/// <summary>
 		/// Creates an exact duplicate of the random engine, which will independently generate the same sequence of random values as this instance.
 		/// </summary>
@@ -117,8 +143,28 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		public override byte[] SaveState()
 		{
+#if UNITY_5_4_OR_NEWER
+			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+			using (var stream = new System.IO.MemoryStream())
+			{
+				binaryFormatter.Serialize(stream, UnityEngine.Random.state);
+				return stream.ToArray();
+			}
+#else
 			throw new NotSupportedException("The Unity Random class does not expose any method to save its state.");
+#endif
 		}
+
+#if UNITY_5_4_OR_NEWER
+		/// <summary>
+		/// Saves the Unity Random engine's internal state using Unity's own state structure, which can be restored later.
+		/// </summary>
+		/// <param name="state">The state instance into which the current state will be written.</param>
+		public void SaveState(out UnityEngine.Random.State state)
+		{
+			state = UnityEngine.Random.state;
+		}
+#endif
 
 		/// <summary>
 		/// Restores Unity Random engine's internal state from a byte array which had been previously saved.
@@ -126,8 +172,27 @@ namespace Experilous.MakeItRandom
 		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState()"/> on a binary-compatible type of random engine.</param>
 		public override void RestoreState(byte[] stateArray)
 		{
+#if UNITY_5_4_OR_NEWER
+			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+			using (var stream = new System.IO.MemoryStream(stateArray))
+			{
+				UnityEngine.Random.state = (UnityEngine.Random.State)binaryFormatter.Deserialize(stream);
+			}
+#else
 			throw new NotSupportedException("The Unity Random class does not expose any method to restore its state.");
+#endif
 		}
+
+#if UNITY_5_4_OR_NEWER
+		/// <summary>
+		/// Restores Unity Random engine's internal state from a byte array which had been previously saved.
+		/// </summary>
+		/// <param name="state">State data generated from an earlier call to <see cref="SaveState()"/> on a binary-compatible type of random engine.</param>
+		public void RestoreState(UnityEngine.Random.State state)
+		{
+			UnityEngine.Random.state = state;
+		}
+#endif
 
 		/// <summary>
 		/// Reseed the Unity Random engine with the supplied integer value.
@@ -137,7 +202,11 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="UnityEngine.Random.seed"/>
 		public override void Seed(int seed)
 		{
+#if UNITY_5_4_OR_NEWER
+			UnityEngine.Random.InitState(seed);
+#else
 			UnityEngine.Random.seed = seed;
+#endif
 		}
 
 		/// <summary>
@@ -148,7 +217,11 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public override void Seed(IBitGenerator bitGenerator)
 		{
+#if UNITY_5_4_OR_NEWER
+			UnityEngine.Random.InitState((int)bitGenerator.Next32());
+#else
 			UnityEngine.Random.seed = (int)bitGenerator.Next32();
+#endif
 		}
 
 		/// <summary>
@@ -159,7 +232,12 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public override void MergeSeed(IBitGenerator bitGenerator)
 		{
+#if UNITY_5_4_OR_NEWER
+			IBitGenerator currentState = new RandomStateGenerator(SaveState());
+			UnityEngine.Random.InitState((int)(currentState.Next32() ^ bitGenerator.Next32()));
+#else
 			UnityEngine.Random.seed ^= (int)bitGenerator.Next32();
+#endif
 		}
 
 		/// <summary>
