@@ -19,13 +19,13 @@ namespace Experilous.MakeItRandom
 	/// <para>This PRNG is based on Marsaglia's XorShift class of generators, and modified by Sebastiano Vigna
 	/// in his paper <a href="http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf">Further scramblings of
 	/// Marsaglia's xorshift generators</a>.</para>
-	/// 
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
+	[System.Serializable]
 	public sealed class XorShift128Plus : RandomBase
 	{
 #if OPTIMIZE_FOR_32
@@ -38,6 +38,13 @@ namespace Experilous.MakeItRandom
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state
 #endif
 
+		private XorShift128Plus() { }
+
+		private static XorShift128Plus CreateUninitialized()
+		{
+			return new XorShift128Plus();
+		}
+
 		/// <summary>
 		/// Creates an instance of the XorShift128+ engine using mildly unpredictable data to initialize the engine's state.
 		/// </summary>
@@ -45,7 +52,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static XorShift128Plus Create()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -58,7 +65,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XorShift128Plus Create(int seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -71,7 +78,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XorShift128Plus Create(params int[] seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -84,7 +91,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XorShift128Plus Create(string seed)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -98,7 +105,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static XorShift128Plus Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -110,7 +117,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		public static XorShift128Plus CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -125,7 +132,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		public static XorShift128Plus CreateWithState(uint state0, uint state1, uint state2, uint state3)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state0, state1, state2, state3);
 			return instance;
 		}
@@ -138,7 +145,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		public static XorShift128Plus CreateWithState(ulong state0, ulong state1)
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state0, state1);
 			return instance;
 		}
@@ -149,7 +156,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this XorShift128+ engine.</returns>
 		public XorShift128Plus Clone()
 		{
-			var instance = CreateInstance<XorShift128Plus>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

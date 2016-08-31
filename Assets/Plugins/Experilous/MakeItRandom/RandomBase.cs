@@ -18,7 +18,7 @@ namespace Experilous.MakeItRandom
 	/// class is not ideal.</para>
 	/// </remarks>
 	/// <seealso cref="IRandom"/>
-	public abstract class RandomBase : ScriptableObject, IRandom
+	public abstract class RandomBase : IRandom
 	{
 		/// <summary>
 		/// Saves the pseudo-random engine's internal state as a byte array, which can be restored later.

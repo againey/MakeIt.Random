@@ -12,16 +12,23 @@ namespace Experilous.MakeItRandom
 	/// <remarks>
 	/// <para>This PRNG implements the SplitMix64 algorithm provided by Sebastiano Vigna, based on the
 	/// following <a href="http://xorshift.di.unimi.it/splitmix64.c">implementation in C</a>.</para>
-	/// 
 	/// <para>As its name implies, it maintains 64 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
+	[System.Serializable]
 	public sealed class SplitMix64 : RandomBase
 	{
 		[SerializeField] private ulong _state;
+
+		private SplitMix64() { }
+
+		private static SplitMix64 CreateUninitialized()
+		{
+			return new SplitMix64();
+		}
 
 		/// <summary>
 		/// Creates an instance of the SplitMix64 engine using mildly unpredictable data to initialize the engine's state.
@@ -30,7 +37,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static SplitMix64 Create()
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -43,7 +50,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static SplitMix64 Create(int seed)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -56,7 +63,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static SplitMix64 Create(params int[] seed)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -69,7 +76,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static SplitMix64 Create(string seed)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -83,7 +90,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static SplitMix64 Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -95,7 +102,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		public static SplitMix64 CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -107,7 +114,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		public static SplitMix64 CreateWithState(ulong state)
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state);
 			return instance;
 		}
@@ -118,7 +125,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this SplitMix64 engine.</returns>
 		public SplitMix64 Clone()
 		{
-			var instance = CreateInstance<SplitMix64>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

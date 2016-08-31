@@ -12,16 +12,23 @@ namespace Experilous.MakeItRandom
 	/// <remarks>
 	/// <para>This PRNG is based on David Blackman's and Sebastiano Vigna's xoroshiro128+ generator, adapted from
 	/// a <a href="http://xorshift.di.unimi.it/xoroshiro128plus.c">C code reference implementation</a>.</para>
-	/// 
 	/// <para>As its name implies, it maintains 128 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
+	[System.Serializable]
 	public sealed class XoroShiro128Plus : RandomBase
 	{
 		[SerializeField] private ulong _state0 = 0UL;
 		[SerializeField] private ulong _state1 = 1UL; //to avoid ever having an invalid all 0-bit state
+
+		private XoroShiro128Plus() { }
+
+		private static XoroShiro128Plus CreateUninitialized()
+		{
+			return new XoroShiro128Plus();
+		}
 
 		/// <summary>
 		/// Creates an instance of the XoroShiro128+ engine using mildly unpredictable data to initialize the engine's state.
@@ -30,7 +37,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static XoroShiro128Plus Create()
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -43,7 +50,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XoroShiro128Plus Create(int seed)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -56,7 +63,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XoroShiro128Plus Create(params int[] seed)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -69,7 +76,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XoroShiro128Plus Create(string seed)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -83,7 +90,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static XoroShiro128Plus Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -95,7 +102,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XoroShiro128+ engine.</returns>
 		public static XoroShiro128Plus CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -108,7 +115,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XoroShiro128+ engine.</returns>
 		public static XoroShiro128Plus CreateWithState(ulong state0, ulong state1)
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state0, state1);
 			return instance;
 		}
@@ -119,7 +126,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this XoroShiro128+ engine.</returns>
 		public XoroShiro128Plus Clone()
 		{
-			var instance = CreateInstance<XoroShiro128Plus>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

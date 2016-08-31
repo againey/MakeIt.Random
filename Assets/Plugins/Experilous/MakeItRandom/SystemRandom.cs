@@ -16,6 +16,7 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	/// <seealso cref="System.Random"/>
+	[Serializable]
 	public sealed class SystemRandom : RandomBase
 	{
 		[SerializeField] private System.Random _random;
@@ -23,6 +24,13 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 		[SerializeField] private byte[] _buffer = new byte[4];
 #endif
+
+		private SystemRandom() { }
+
+		private static SystemRandom CreateUninitialized()
+		{
+			return new SystemRandom();
+		}
 
 		/// <summary>
 		/// Creates an instance of a wrapper around the .NET System.Random engine using mildly unpredictable data to initialize the engine's state.
@@ -32,7 +40,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="System.Random.Random()"/>
 		public static SystemRandom Create()
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -46,7 +54,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="System.Random.Random(int)"/>
 		public static SystemRandom Create(int seed)
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -59,7 +67,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static SystemRandom Create(params int[] seed)
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -72,7 +80,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static SystemRandom Create(string seed)
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -86,7 +94,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static SystemRandom Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -98,7 +106,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the .NET System.Random engine.</returns>
 		public static SystemRandom CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -109,7 +117,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this .NET System.Random engine.</returns>
 		public SystemRandom Clone()
 		{
-			var instance = CreateInstance<SystemRandom>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

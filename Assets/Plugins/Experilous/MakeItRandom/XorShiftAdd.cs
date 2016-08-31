@@ -45,19 +45,26 @@ namespace Experilous.MakeItRandom
 	/// <para>This PRNG is based on Marsaglia's XorShift class of generators, and modified by Mutsuo Saito and
 	/// Makoto Matsumoto as described <a href="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/XSADD/">here</a>.
 	/// </para>
-	/// 
 	/// <para>This random engine maintains 128 bits of state.  It natively generates 32 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
+	[System.Serializable]
 	public sealed class XorShiftAdd : RandomBase
 	{
 		[SerializeField] private uint _state0 = 0U;
 		[SerializeField] private uint _state1 = 0U;
 		[SerializeField] private uint _state2 = 0U;
 		[SerializeField] private uint _state3 = 1U; //to avoid ever having an invalid all 0-bit state
+
+		private XorShiftAdd() { }
+
+		private static XorShiftAdd CreateUninitialized()
+		{
+			return new XorShiftAdd();
+		}
 
 		/// <summary>
 		/// Creates an instance of the XorShift-Add engine using mildly unpredictable data to initialize the engine's state.
@@ -66,7 +73,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static XorShiftAdd Create()
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -79,7 +86,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XorShiftAdd Create(int seed)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -92,7 +99,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XorShiftAdd Create(params int[] seed)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -105,7 +112,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XorShiftAdd Create(string seed)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -119,7 +126,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static XorShiftAdd Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -131,7 +138,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift-Add engine.</returns>
 		public static XorShiftAdd CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -146,7 +153,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift-Add engine.</returns>
 		public static XorShiftAdd CreateWithState(uint state0, uint state1, uint state2, uint state3)
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state0, state1, state2, state3);
 			return instance;
 		}
@@ -157,7 +164,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this XorShift-Add engine.</returns>
 		public XorShiftAdd Clone()
 		{
-			var instance = CreateInstance<XorShiftAdd>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

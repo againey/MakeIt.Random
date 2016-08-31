@@ -12,17 +12,24 @@ namespace Experilous.MakeItRandom
 	/// <remarks>
 	/// <para>This PRNG is based on Sebastiano Vigna's xorshift1024* generator, adapted from a
 	/// <a href="http://xoroshiro.di.unimi.it/xorshift1024star.c">C code reference implementation</a>.</para>
-	/// 
 	/// <para>As its name implies, it maintains 1024 bits of state.  It natively generates 64 bits of pseudo-
 	/// random data at a time.</para>
 	/// </remarks>
 	/// <seealso cref="IBitGenerator"/>
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
+	[System.Serializable]
 	public sealed class XorShift1024Star : RandomBase
 	{
 		[SerializeField] private ulong[] _state = new ulong[] { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 1UL, };
 		[SerializeField] private int _offset;
+
+		private XorShift1024Star() { }
+
+		private static XorShift1024Star CreateUninitialized()
+		{
+			return new XorShift1024Star();
+		}
 
 		/// <summary>
 		/// Creates an instance of the XorShift1024* engine using mildly unpredictable data to initialize the engine's state.
@@ -31,7 +38,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static XorShift1024Star Create()
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -44,7 +51,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XorShift1024Star Create(int seed)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -57,7 +64,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XorShift1024Star Create(params int[] seed)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -70,7 +77,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XorShift1024Star Create(string seed)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -84,7 +91,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static XorShift1024Star Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -96,7 +103,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		public static XorShift1024Star CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -109,7 +116,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		public static XorShift1024Star CreateWithState(ulong[] state, int offset)
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state, offset);
 			return instance;
 		}
@@ -120,7 +127,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this XorShift1024* engine.</returns>
 		public XorShift1024Star Clone()
 		{
-			var instance = CreateInstance<XorShift1024Star>();
+			var instance = CreateUninitialized();
 			instance.CopyStateFrom(this);
 			return instance;
 		}

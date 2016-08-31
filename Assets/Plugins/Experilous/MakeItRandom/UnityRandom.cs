@@ -26,6 +26,13 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="UnityEngine.Random"/>
 	public sealed class UnityRandom : RandomBase
 	{
+		private UnityRandom() { }
+
+		private static UnityRandom CreateUninitialized()
+		{
+			return new UnityRandom();
+		}
+
 		/// <summary>
 		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using mildly unpredictable data to initialize the engine's state.
 		/// </summary>
@@ -33,7 +40,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static UnityRandom Create()
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed();
 			return instance;
 		}
@@ -46,7 +53,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static UnityRandom Create(int seed)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -59,7 +66,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static UnityRandom Create(params int[] seed)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -72,7 +79,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static UnityRandom Create(string seed)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
@@ -86,7 +93,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static UnityRandom Create(IBitGenerator bitGenerator)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.Seed(bitGenerator);
 			return instance;
 		}
@@ -99,7 +106,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the <c>UnityEngine.Random</c> engine.</returns>
 		public static UnityRandom CreateWithState(byte[] stateArray)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(stateArray);
 			return instance;
 		}
@@ -111,7 +118,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the <c>UnityEngine.Random</c> engine.</returns>
 		public static UnityRandom CreateWithState(UnityEngine.Random.State state)
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			instance.RestoreState(state);
 			return instance;
 		}
@@ -123,7 +130,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The cloned instance of this Unity Random engine.</returns>
 		public UnityRandom Clone()
 		{
-			var instance = CreateInstance<UnityRandom>();
+			var instance = CreateUninitialized();
 			return instance;
 		}
 
