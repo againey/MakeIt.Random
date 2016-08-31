@@ -587,96 +587,332 @@ namespace Experilous.MakeItRandom
 
 		#region Angle
 
-		private const float _floatDegreesPerTurn = 360.0f;
-		private const double _doubleDegreesPerTurn = 360.0;
-
-		private const float _floatDegreesPerHalfTurn = 180.0f;
-		private const double _doubleDegreesPerHalfTurn = 180.0;
+		private const float _floatDegreesPerTurn = 360f;
+		private const float _floatDegreesPerHalfTurn = 180f;
+		private const float _floatDegreesPerQuarterTurn = 90f;
 
 		private const float _floatRadiansPerTurn = 6.283185307179586476925286766559f;
-		private const double _doubleRadiansPerTurn = 6.283185307179586476925286766559;
-
 		private const float _floatRadiansPerHalfTurn = 3.1415926535897932384626433832795f;
-		private const double _doubleRadiansPerHalfTurn = 3.1415926535897932384626433832795;
+		private const float _floatRadiansPerQuarterTurn = 1.5707963267948966192313216916398f;
 
 		/// <summary>
-		/// Returns a random angle measured in degrees from the full range of rotation, from 0 degrees up to but not including 360 degrees.
+		/// Returns a random angle measured in degrees from the full range of rotation, strictly greater than 0 degrees and strictly less than 360 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (0, 360).</returns>
+		public static float AngleDegOO(this IRandom random)
+		{
+			return random.FloatOO() * _floatDegreesPerTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, strictly greater than -180 degrees and strictly less than +180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (-180, +180).</returns>
+		public static float SignedAngleDegOO(this IRandom random)
+		{
+			return random.SignedFloatOO() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, strictly greater than 0 degrees and strictly less than 180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (0, 180).</returns>
+		public static float HalfAngleDegOO(this IRandom random)
+		{
+			return random.FloatOO() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, half a turn in either direction, strictly greater than -90 degrees and strictly less than +90 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (-90, +90).</returns>
+		public static float SignedHalfAngleDegOO(this IRandom random)
+		{
+			return random.SignedFloatOO() * _floatDegreesPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, strictly greater than 0 radians and strictly less than 2π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (0, 2π).</returns>
+		public static float AngleRadOO(this IRandom random)
+		{
+			return random.FloatOO() * _floatRadiansPerTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, strictly greater than -π radians and strictly less than +π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (-π, +π).</returns>
+		public static float SignedAngleRadOO(this IRandom random)
+		{
+			return random.SignedFloatOO() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, strictly greater than 0 radians and strictly less than π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (0, π).</returns>
+		public static float HalfAngleRadOO(this IRandom random)
+		{
+			return random.FloatOO() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, half a turn in either direction, strictly greater than -π/2 radians and strictly less than +π/2 radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (-π/2, +π/2).</returns>
+		public static float SignedHalfAngleRadOO(this IRandom random)
+		{
+			return random.SignedFloatOO() * _floatRadiansPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from the full range of rotation, greater than or equal to 0 degrees and strictly less than 360 degrees.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random angle measured in degrees in the range [0, 360).</returns>
-		public static float FloatDegrees(this IRandom random)
+		public static float AngleDegCO(this IRandom random)
 		{
 			return random.FloatCO() * _floatDegreesPerTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, from -180 degrees up to but not including +180 degrees.
+		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, greater than or equal to -180 degrees and strictly less than +180 degrees.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random angle measured in degrees in the range [-180, +180).</returns>
-		public static float SignedFloatDegrees(this IRandom random)
+		public static float SignedAngleDegCO(this IRandom random)
 		{
-			return random.FloatCO() * _floatDegreesPerTurn - _floatDegreesPerHalfTurn;
+			return random.SignedFloatCO() * _floatDegreesPerHalfTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in radians from the full range of rotation, from 0 radians up to but not including 2π radians.
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, greater than or equal to 0 degrees and strictly less than 180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [0, 180).</returns>
+		public static float HalfAngleDegCO(this IRandom random)
+		{
+			return random.FloatCO() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, half a turn in either direction, greater than or equal to -90 degrees and strictly less than +90 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [-90, +90).</returns>
+		public static float SignedHalfAngleDegCO(this IRandom random)
+		{
+			return random.SignedFloatCO() * _floatDegreesPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, greater than or equal to 0 radians and strictly less than 2π radians.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random angle measured in radians in the range [0, 2π).</returns>
-		public static float FloatRadians(this IRandom random)
+		public static float AngleRadCO(this IRandom random)
 		{
 			return random.FloatCO() * _floatRadiansPerTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, from -π radians up to but not including +π radians.
+		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, greater than or equal to -π radians and strictly less than +π radians.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random angle measured in radians in the range [-π, +π).</returns>
-		public static float SignedFloatRadians(this IRandom random)
+		public static float SignedAngleRadCO(this IRandom random)
 		{
-			return random.FloatCO() * _floatRadiansPerTurn - _floatRadiansPerHalfTurn;
+			return random.SignedFloatCO() * _floatRadiansPerHalfTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in degrees from the full range of rotation, from 0 degrees up to but not including 360 degrees.
+		/// Returns a random angle measured in radians from only half of the full range of rotation, greater than or equal to 0 radians and strictly less than π radians.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random angle measured in degrees in the range [0, 360).</returns>
-		public static double DoubleDegrees(this IRandom random)
+		/// <returns>A random angle measured in radians in the range [0, π).</returns>
+		public static float HalfAngleRadCO(this IRandom random)
 		{
-			return random.DoubleCO() * _doubleDegreesPerTurn;
+			return random.FloatCO() * _floatRadiansPerHalfTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, from -180 degrees up to but not including +180 degrees.
+		/// Returns a random angle measured in radians from only half of the full range of rotation, half a turn in either direction, greater than or equal to -π/2 radians and strictly less than +π/2 radians.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random angle measured in degrees in the range [-180, +180).</returns>
-		public static double SignedDoubleDegrees(this IRandom random)
+		/// <returns>A random angle measured in radians in the range [-π/2, +π/2).</returns>
+		public static float SignedHalfAngleRadCO(this IRandom random)
 		{
-			return random.DoubleCO() * _doubleDegreesPerTurn - _doubleDegreesPerHalfTurn;
+			return random.SignedFloatCO() * _floatRadiansPerQuarterTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in radians from the full range of rotation, from 0 radians up to but not including 2π radians.
+		/// Returns a random angle measured in degrees from the full range of rotation, strictly greater than 0 degrees and less than or equal to 360 degrees.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random angle measured in radians in the range [0, 2π).</returns>
-		public static double DoubleRadians(this IRandom random)
+		/// <returns>A random angle measured in degrees in the range (0, 360].</returns>
+		public static float AngleDegOC(this IRandom random)
 		{
-			return random.DoubleCO() * _doubleRadiansPerTurn;
+			return random.FloatOC() * _floatDegreesPerTurn;
 		}
 
 		/// <summary>
-		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, from -π radians up to but not including +π radians.
+		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, strictly greater than -180 degrees and less than or equal to +180 degrees.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random angle measured in radians in the range [-π, +π).</returns>
-		public static double SignedDoubleRadians(this IRandom random)
+		/// <returns>A random angle measured in degrees in the range (-180, +180].</returns>
+		public static float SignedAngleDegOC(this IRandom random)
 		{
-			return random.DoubleCO() * _doubleRadiansPerTurn - _doubleRadiansPerHalfTurn;
+			return random.SignedFloatOC() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, strictly greater than 0 degrees and less than or equal to 180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (0, 180].</returns>
+		public static float HalfAngleDegOC(this IRandom random)
+		{
+			return random.FloatOC() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, half a turn in either direction, strictly greater than -90 degrees and less than or equal to +90 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range (-90, +90].</returns>
+		public static float SignedHalfAngleDegOC(this IRandom random)
+		{
+			return random.SignedFloatOC() * _floatDegreesPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, strictly greater than 0 radians and less than or equal to 2π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (0, 2π].</returns>
+		public static float AngleRadOC(this IRandom random)
+		{
+			return random.FloatOC() * _floatRadiansPerTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, strictly greater than -π radians and less than or equal to +π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (-π, +π].</returns>
+		public static float SignedAngleRadOC(this IRandom random)
+		{
+			return random.SignedFloatOC() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, strictly greater than 0 radians and less than or equal to π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (0, π].</returns>
+		public static float HalfAngleRadOC(this IRandom random)
+		{
+			return random.FloatOC() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, half a turn in either direction, strictly greater than -π/2 radians and less than or equal to +π/2 radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range (-π/2, +π/2].</returns>
+		public static float SignedHalfAngleRadOC(this IRandom random)
+		{
+			return random.SignedFloatOC() * _floatRadiansPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from the full range of rotation, greater than or equal to 0 degrees and less than or equal to 360 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [0, 360].</returns>
+		public static float AngleDegCC(this IRandom random)
+		{
+			return random.FloatCC() * _floatDegreesPerTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from the full range of rotation, half a turn in either direction, greater than or equal to -180 degrees and less than or equal to +180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [-180, +180].</returns>
+		public static float SignedAngleDegCC(this IRandom random)
+		{
+			return random.SignedFloatCC() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, greater than or equal to 0 degrees and less than or equal to 180 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [0, 180].</returns>
+		public static float HalfAngleDegCC(this IRandom random)
+		{
+			return random.FloatCC() * _floatDegreesPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in degrees from only half of the full range of rotation, half a turn in either direction, greater than or equal to -90 degrees and less than or equal to +90 degrees.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in degrees in the range [-90, +90].</returns>
+		public static float SignedHalfAngleDegCC(this IRandom random)
+		{
+			return random.SignedFloatCC() * _floatDegreesPerQuarterTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, greater than or equal to 0 radians and less than or equal to 2π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range [0, 2π].</returns>
+		public static float AngleRadCC(this IRandom random)
+		{
+			return random.FloatCC() * _floatRadiansPerTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from the full range of rotation, half a turn in either direction, greater than or equal to -π radians and less than or equal to +π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range [-π, +π].</returns>
+		public static float SignedAngleRadCC(this IRandom random)
+		{
+			return random.SignedFloatCC() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, greater than or equal to 0 radians and less than or equal to π radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range [0, π].</returns>
+		public static float HalfAngleRadCC(this IRandom random)
+		{
+			return random.FloatCC() * _floatRadiansPerHalfTurn;
+		}
+
+		/// <summary>
+		/// Returns a random angle measured in radians from only half of the full range of rotation, half a turn in either direction, greater than or equal to -π/2 radians and less than or equal to +π/2 radians.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random angle measured in radians in the range [-π/2, +π/2].</returns>
+		public static float SignedHalfAngleRadCC(this IRandom random)
+		{
+			return random.SignedFloatCC() * _floatRadiansPerQuarterTurn;
 		}
 
 		#endregion

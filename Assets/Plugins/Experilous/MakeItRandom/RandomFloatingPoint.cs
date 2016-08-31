@@ -28,8 +28,13 @@ namespace Experilous.MakeItRandom
 		private const ulong _maxUnsignedFixed64LessThanFloatOne = 0xFFFFFFFFFFFFFBFFUL;
 		private const long _maxSignedFixed64LessThanFloatOne = 0x7FFFFFFFFFFFFDFFL;
 
+#if OPTIMIZE_FOR_32
+		private const uint _doubleExponent63 = 0x02000000U;
+		private const uint _doubleExponent64 = 0x04000000U;
+#else
 		private const ulong _doubleExponent63 = 0x0200000000000000UL;
 		private const ulong _doubleExponent64 = 0x0400000000000000UL;
+#endif
 
 		#endregion
 
@@ -999,9 +1004,15 @@ namespace Experilous.MakeItRandom
 				n = random.Next64();
 			} while (n > _maxUnsignedFixed64LessThanFloatOne || n == 0UL);
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent64;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent64;
+#endif
 			return value.number;
 		}
 
@@ -1061,9 +1072,15 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxUnsignedFixed64LessThanFloatOne);
 			if (n == 0UL) return 0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent64;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent64;
+#endif
 			return value.number;
 		}
 
@@ -1115,9 +1132,15 @@ namespace Experilous.MakeItRandom
 			ulong n = random.Next64();
 			if (n == 0UL) return 1d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent64;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent64;
+#endif
 			return value.number;
 		}
 
@@ -1180,9 +1203,15 @@ namespace Experilous.MakeItRandom
 			ulong n = random.Next64();
 			if (n == 0UL) return 0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent64;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent64;
+#endif
 			return value.number;
 		}
 
@@ -1240,9 +1269,15 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne && n < -_maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent63;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent63;
+#endif
 			return value.number;
 		}
 
@@ -1300,9 +1335,15 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent63;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent63;
+#endif
 			return value.number;
 		}
 
@@ -1360,9 +1401,15 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? -0d : +0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent63;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent63;
+#endif
 			return -value.number;
 		}
 
@@ -1423,9 +1470,15 @@ namespace Experilous.MakeItRandom
 			long n = (long)random.Next64();
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
+#if OPTIMIZE_FOR_32
+			value.upperBits = 0U;
+			value.number = n;
+			value.upperBits -= _doubleExponent63;
+#else
 			value.bits = 0UL;
 			value.number = n;
 			value.bits -= _doubleExponent63;
+#endif
 			return value.number;
 		}
 
