@@ -15,26 +15,41 @@ namespace Experilous.Examples.MakeItRandom
 		public ToggleGroup colorGrid;
 		public ColorToggleButton firstColorButton;
 
-		public UnitComponentSlider rgbMaxRedDeltaSlider;
-		public UnitComponentSlider rgbMaxGreenDeltaSlider;
-		public UnitComponentSlider rgbMaxBlueDeltaSlider;
+		public Toggle rgbToggle;
+		public Toggle cmyToggle;
+		public Toggle cmykToggle;
+		public Toggle hsvToggle;
+		public Toggle hslToggle;
+		public Toggle hsyToggle;
+		public Toggle hcvToggle;
+		public Toggle hclToggle;
+		public Toggle hcyToggle;
 
-		public UnitComponentSlider hsvMaxHueDeltaSlider;
-		public UnitComponentSlider hsvMaxSatDeltaSlider;
-		public UnitComponentSlider hsvMaxValueDeltaSlider;
+		public ColorComponentSlider firstAbsoluteColorComponentSlider;
+		public ColorComponentSlider secondAbsoluteColorComponentSlider;
+		public ColorComponentSlider thirdAbsoluteColorComponentSlider;
+		public ColorComponentSlider fourthAbsoluteColorComponentSlider;
 
-		public UnitComponentSlider hslMaxHueDeltaSlider;
-		public UnitComponentSlider hslMaxSatDeltaSlider;
-		public UnitComponentSlider hslMaxLightDeltaSlider;
+		public ColorComponentSlider relativeColorComponentSlider;
 
-		public UnitComponentSlider hcyMaxHueDeltaSlider;
-		public UnitComponentSlider hcyMaxChromaDeltaSlider;
-		public UnitComponentSlider hcyMaxLumaDeltaSlider;
+		public RectTransform generateRedsPanel;
+		public RectTransform generateGreensPanel;
+		public RectTransform generateBluesPanel;
 
-		public Text rgbSelectedColorText;
-		public Text hsvSelectedColorText;
-		public Text hslSelectedColorText;
-		public Text hcySelectedColorText;
+		public RectTransform saturationPanel;
+		public RectTransform hardnessPanel;
+		public RectTransform lightnessPanel;
+
+		public Text firstColorComponentLabel;
+		public Text secondColorComponentLabel;
+		public Text thirdColorComponentLabel;
+		public Text fourthColorComponentLabel;
+
+		public Text firstColorComponentValue;
+		public Text secondColorComponentValue;
+		public Text thirdColorComponentValue;
+		public Text fourthColorComponentValue;
+		public Text colorHexadecimalValue;
 
 		private ColorToggleButton _selectedColorButton;
 		private ColorToggleButton[] _colorButtons;
@@ -48,6 +63,7 @@ namespace Experilous.Examples.MakeItRandom
 			_colorButtons = colorGrid.GetComponentsInChildren<ColorToggleButton>();
 
 			SelectColorButton(firstColorButton);
+			OnColorSpaceToggle(rgbToggle);
 		}
 
 		private Image GetColorButtonImage(Toggle colorButton)
@@ -66,26 +82,92 @@ namespace Experilous.Examples.MakeItRandom
 			firstColorButton.GetComponent<Toggle>().isOn = true;
 		}
 
-		private int ComponentsAs24BitInt(float a, float b, float c)
+		private uint ComponentsAs24BitInt(float a, float b, float c)
 		{
-			int ia = Mathf.FloorToInt(a * 255.99f);
-			int ib = Mathf.FloorToInt(b * 255.99f);
-			int ic = Mathf.FloorToInt(c * 255.99f);
-			return ia * 65536 + ib * 256 + ic;
+			uint ia = (uint)Mathf.FloorToInt(a * 255.99f);
+			uint ib = (uint)Mathf.FloorToInt(b * 255.99f);
+			uint ic = (uint)Mathf.FloorToInt(c * 255.99f);
+			return ia * 65536U + ib * 256U + ic;
+		}
+
+		private uint ComponentsAs32BitInt(float a, float b, float c, float d)
+		{
+			uint ia = (uint)Mathf.FloorToInt(a * 255.99f);
+			uint ib = (uint)Mathf.FloorToInt(b * 255.99f);
+			uint ic = (uint)Mathf.FloorToInt(c * 255.99f);
+			uint id = (uint)Mathf.FloorToInt(d * 255.99f);
+			return ia * 16777216U + ib * 65536U + ic * 256U + id;
 		}
 
 		private void SelectColor(Color rgb)
 		{
 			selectedColorImage.color = rgb;
 
-			ColorHSV hsv = ColorHSV.FromRGB(rgb);
-			ColorHSL hsl = ColorHSL.FromRGB(rgb);
-			ColorHCY hcy = ColorHCY.FromRGB(rgb);
+			if (rgbToggle.isOn)
+			{
+				UpdateSelectedColorFields(rgb.r, rgb.g, rgb.b);
+			}
+			else if (cmyToggle.isOn)
+			{
+				ColorCMY cmy = ColorCMY.FromRGB(rgb);
+				UpdateSelectedColorFields(cmy.c, cmy.m, cmy.y);
+			}
+			else if (cmykToggle.isOn)
+			{
+				ColorCMYK cmyk = ColorCMYK.FromRGB(rgb);
+				UpdateSelectedColorFields(cmyk.c, cmyk.m, cmyk.y, cmyk.k);
+			}
+			else if (hsvToggle.isOn)
+			{
+				ColorHSV hsv = ColorHSV.FromRGB(rgb);
+				UpdateSelectedColorFields(hsv.h, hsv.s, hsv.v);
+			}
+			else if (hslToggle.isOn)
+			{
+				ColorHSL hsl = ColorHSL.FromRGB(rgb);
+				UpdateSelectedColorFields(hsl.h, hsl.s, hsl.l);
+			}
+			else if (hsyToggle.isOn)
+			{
+				ColorHSY hsy = ColorHSY.FromRGB(rgb);
+				UpdateSelectedColorFields(hsy.h, hsy.s, hsy.y);
+			}
+			else if (hcvToggle.isOn)
+			{
+				ColorHCV hcv = ColorHCV.FromRGB(rgb);
+				UpdateSelectedColorFields(hcv.h, hcv.c, hcv.v);
+			}
+			else if (hclToggle.isOn)
+			{
+				ColorHCL hcl = ColorHCL.FromRGB(rgb);
+				UpdateSelectedColorFields(hcl.h, hcl.c, hcl.l);
+			}
+			else if (hcyToggle.isOn)
+			{
+				ColorHCY hcy = ColorHCY.FromRGB(rgb);
+				UpdateSelectedColorFields(hcy.h, hcy.c, hcy.y);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+		}
 
-			rgbSelectedColorText.text = string.Format("RGB({0:F3}, {1:F3}, {2:F3}), #{3:X6}", rgb.r, rgb.g, rgb.b, ComponentsAs24BitInt(rgb.r, rgb.g, rgb.b));
-			hsvSelectedColorText.text = string.Format("HSV({0:F3}, {1:F3}, {2:F3}), #{3:X6}", hsv.h, hsv.s, hsv.v, ComponentsAs24BitInt(hsv.h, hsv.s, hsv.v));
-			hslSelectedColorText.text = string.Format("HSL({0:F3}, {1:F3}, {2:F3}), #{3:X6}", hsl.h, hsl.s, hsl.l, ComponentsAs24BitInt(hsl.h, hsl.s, hsl.l));
-			hcySelectedColorText.text = string.Format("HCY({0:F3}, {1:F3}, {2:F3}), #{3:X6}", hcy.h, hcy.c, hcy.y, ComponentsAs24BitInt(hcy.h, hcy.c, hcy.y));
+		private void UpdateSelectedColorFields(float first, float second, float third)
+		{
+			firstColorComponentValue.text = first.ToString("F3");
+			secondColorComponentValue.text = second.ToString("F3");
+			thirdColorComponentValue.text = third.ToString("F3");
+			colorHexadecimalValue.text = '#' + ComponentsAs24BitInt(first, second, third).ToString("X6");
+		}
+
+		private void UpdateSelectedColorFields(float first, float second, float third, float fourth)
+		{
+			firstColorComponentValue.text = first.ToString("F3");
+			secondColorComponentValue.text = second.ToString("F3");
+			thirdColorComponentValue.text = third.ToString("F3");
+			fourthColorComponentValue.text = fourth.ToString("F3");
+			colorHexadecimalValue.text = '#' + ComponentsAs32BitInt(first, second, third, fourth).ToString("X8");
 		}
 
 		private void UpdateSelectedColor()
@@ -102,41 +184,144 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		public void GenerateRGB()
+		public void OnColorSpaceToggle(Toggle toggle)
 		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
+			if (toggle.isOn)
 			{
-				colorButton.colorImage.color = RandomColor.RGB(_random);
-			}
+				if (toggle == rgbToggle)
+				{
+					generateRedsPanel.gameObject.SetActive(true);
+					generateGreensPanel.gameObject.SetActive(true);
+					generateBluesPanel.gameObject.SetActive(true);
+				}
+				else
+				{
+					generateRedsPanel.gameObject.SetActive(false);
+					generateGreensPanel.gameObject.SetActive(false);
+					generateBluesPanel.gameObject.SetActive(false);
+				}
 
-			UpdateSelectedColor();
+				if (toggle == cmykToggle)
+				{
+					fourthAbsoluteColorComponentSlider.gameObject.SetActive(true);
+					fourthColorComponentLabel.transform.parent.gameObject.SetActive(true);
+					fourthAbsoluteColorComponentSlider.labelField.text = fourthColorComponentLabel.text = "Key";
+
+				}
+				else
+				{
+					fourthAbsoluteColorComponentSlider.gameObject.SetActive(false);
+					fourthColorComponentLabel.transform.parent.gameObject.SetActive(false);
+				}
+
+				if (toggle == hsvToggle || toggle == hslToggle || toggle == hsyToggle)
+				{
+					saturationPanel.gameObject.SetActive(true);
+				}
+				else
+				{
+					saturationPanel.gameObject.SetActive(false);
+				}
+
+				if (toggle == hcvToggle || toggle == hclToggle || toggle == hcyToggle)
+				{
+					hardnessPanel.gameObject.SetActive(true);
+				}
+				else
+				{
+					hardnessPanel.gameObject.SetActive(false);
+				}
+
+				if (toggle == rgbToggle)
+				{
+					firstAbsoluteColorComponentSlider.labelField.text = firstColorComponentLabel.text = "Red";
+					secondAbsoluteColorComponentSlider.labelField.text = secondColorComponentLabel.text = "Green";
+					thirdAbsoluteColorComponentSlider.labelField.text = thirdColorComponentLabel.text = "Blue";
+				}
+				else if (toggle == cmyToggle || toggle == cmykToggle)
+				{
+					firstAbsoluteColorComponentSlider.labelField.text = firstColorComponentLabel.text = "Cyan";
+					secondAbsoluteColorComponentSlider.labelField.text = secondColorComponentLabel.text = "Magenta";
+					thirdAbsoluteColorComponentSlider.labelField.text = thirdColorComponentLabel.text = "Yellow";
+				}
+				else
+				{
+					firstAbsoluteColorComponentSlider.labelField.text = firstColorComponentLabel.text = "Hue";
+					if (toggle == hsvToggle || toggle == hslToggle || toggle == hsyToggle)
+					{
+						secondAbsoluteColorComponentSlider.labelField.text = secondColorComponentLabel.text = "Saturation";
+					}
+					else
+					{
+						secondAbsoluteColorComponentSlider.labelField.text = secondColorComponentLabel.text = "Chroma";
+					}
+
+					if (toggle == hsvToggle || toggle == hcvToggle)
+					{
+						thirdAbsoluteColorComponentSlider.labelField.text = thirdColorComponentLabel.text = "Value";
+					}
+					else if (toggle == hslToggle || toggle == hclToggle)
+					{
+						thirdAbsoluteColorComponentSlider.labelField.text = thirdColorComponentLabel.text = "Lightness";
+					}
+					else
+					{
+						thirdAbsoluteColorComponentSlider.labelField.text = thirdColorComponentLabel.text = "Luma";
+					}
+				}
+
+				UpdateSelectedColor();
+			}
 		}
 
-		public void GenerateHSV()
+		public void GenerateRandomColors()
 		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
+			System.Func<Color> generator;
+
+			if (rgbToggle.isOn)
 			{
-				colorButton.colorImage.color = (Color)RandomColor.HSV(_random);
+				generator = () => _random.RGB();
+			}
+			else if (cmyToggle.isOn)
+			{
+				generator = () => (Color)_random.CMY();
+			}
+			else if (cmykToggle.isOn)
+			{
+				generator = () => (Color)_random.CMYK();
+			}
+			else if (hsvToggle.isOn)
+			{
+				generator = () => (Color)_random.HSV();
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = () => (Color)_random.HSL();
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = () => (Color)_random.HSY();
+			}
+			else if (hcvToggle.isOn)
+			{
+				generator = () => (Color)_random.HCV();
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = () => (Color)_random.HCL();
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = () => (Color)_random.HCY();
+			}
+			else
+			{
+				throw new System.NotImplementedException();
 			}
 
-			UpdateSelectedColor();
-		}
-
-		public void GenerateHSL()
-		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = (Color)RandomColor.HSL(_random);
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateHCY()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = (Color)RandomColor.HCY(_random);
+				colorButton.colorImage.color = generator();
 			}
 
 			UpdateSelectedColor();
@@ -146,7 +331,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.AnyRed(_random);
+				colorButton.colorImage.color = RandomColor.Red(_random);
 			}
 
 			UpdateSelectedColor();
@@ -176,7 +361,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.AnyGreen(_random);
+				colorButton.colorImage.color = RandomColor.Green(_random);
 			}
 
 			UpdateSelectedColor();
@@ -206,7 +391,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.AnyBlue(_random);
+				colorButton.colorImage.color = RandomColor.Blue(_random);
 			}
 
 			UpdateSelectedColor();
@@ -232,292 +417,315 @@ namespace Experilous.Examples.MakeItRandom
 			UpdateSelectedColor();
 		}
 
-		public void GenerateDarken()
+		public void GenerateChangeColors()
 		{
+			System.Func<Color, Color> generator;
+
+			float maxChange0 = firstAbsoluteColorComponentSlider.gameObject.activeSelf ? firstAbsoluteColorComponentSlider.value : 0f;
+			float maxChange1 = secondAbsoluteColorComponentSlider.gameObject.activeSelf ? secondAbsoluteColorComponentSlider.value : 0f;
+			float maxChange2 = thirdAbsoluteColorComponentSlider.gameObject.activeSelf ? thirdAbsoluteColorComponentSlider.value : 0f;
+			float maxChange3 = fourthAbsoluteColorComponentSlider.gameObject.activeSelf ? fourthAbsoluteColorComponentSlider.value : 0f;
+
+			if (rgbToggle.isOn)
+			{
+				generator = (Color color) => _random.RGBShift(color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (cmyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.CMYShift((ColorCMY)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (cmykToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.CMYKShift((ColorCMYK)color, maxChange0, maxChange1, maxChange2, maxChange3);
+			}
+			else if (hsvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HSVShift((ColorHSV)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HSLShift((ColorHSL)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HSYShift((ColorHSY)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (hcvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HCVShift((ColorHCV)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HCLShift((ColorHCL)color, maxChange0, maxChange1, maxChange2);
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.HCYShift((ColorHCY)color, maxChange0, maxChange1, maxChange2);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
 			Color selectedColor = _selectedColorButton.colorImage.color;
 
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					colorButton.colorImage.color = _random.Darken(selectedColor);
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}
 
 		public void GenerateLighten()
 		{
+			System.Func<Color, Color> generator;
+
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (rgbToggle.isOn)
+			{
+				generator = (Color color) => _random.IntensitySpread(color, 0f, maxProportion);
+			}
+			else if (cmyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.IntensitySpread((ColorCMY)color, 0f, maxProportion);
+			}
+			else if (cmykToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.KeySpread((ColorCMYK)color, -maxProportion, 0f);
+			}
+			else if (hsvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ValueSpread((ColorHSV)color, 0f, maxProportion);
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LightnessSpread((ColorHSL)color, 0f, maxProportion);
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LumaSpread((ColorHSY)color, 0f, maxProportion);
+			}
+			else if (hcvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ValueSpread((ColorHCV)color, 0f, maxProportion);
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LightnessSpread((ColorHCL)color, 0f, maxProportion);
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LumaSpread((ColorHCY)color, 0f, maxProportion);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
 			Color selectedColor = _selectedColorButton.colorImage.color;
 
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					colorButton.colorImage.color = _random.Lighten(selectedColor);
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}
 
-		public void GenerateChangeRGB()
+		public void GenerateDarken()
 		{
+			System.Func<Color, Color> generator;
+
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (rgbToggle.isOn)
+			{
+				generator = (Color color) => _random.IntensitySpread(color, -maxProportion, 0f);
+			}
+			else if (cmyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.IntensitySpread((ColorCMY)color, -maxProportion, 0f);
+			}
+			else if (cmykToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.KeySpread((ColorCMYK)color, 0f, maxProportion);
+			}
+			else if (hsvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ValueSpread((ColorHSV)color, -maxProportion, 0f);
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LightnessSpread((ColorHSL)color, -maxProportion, 0f);
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LumaSpread((ColorHSY)color, -maxProportion, 0f);
+			}
+			else if (hcvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ValueSpread((ColorHCV)color, -maxProportion, 0f);
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LightnessSpread((ColorHCL)color, -maxProportion, 0f);
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.LumaSpread((ColorHCY)color, -maxProportion, 0f);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
 			Color selectedColor = _selectedColorButton.colorImage.color;
 
-			float maxRedChange = rgbMaxRedDeltaSlider.value;
-			float maxGreenChange = rgbMaxGreenDeltaSlider.value;
-			float maxBlueChange = rgbMaxBlueDeltaSlider.value;
-
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					if (maxRedChange > 0f)
-					{
-						if (maxGreenChange > 0f)
-						{
-							if (maxBlueChange > 0f)
-							{
-								colorButton.colorImage.color = _random.ChangeRedGreenBlue(selectedColor, maxRedChange, maxGreenChange, maxBlueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = _random.ChangeRedGreen(selectedColor, maxRedChange, maxGreenChange);
-							}
-						}
-						else
-						{
-							if (maxBlueChange > 0f)
-							{
-								colorButton.colorImage.color = _random.ChangeRedBlue(selectedColor, maxRedChange, maxBlueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = _random.ChangeRed(selectedColor, maxRedChange);
-							}
-						}
-					}
-					else
-					{
-						if (maxGreenChange > 0f)
-						{
-							if (maxBlueChange > 0f)
-							{
-								colorButton.colorImage.color = _random.ChangeGreenBlue(selectedColor, maxGreenChange, maxBlueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = _random.ChangeGreen(selectedColor, maxGreenChange);
-							}
-						}
-						else
-						{
-							if (maxBlueChange > 0f)
-							{
-								colorButton.colorImage.color = _random.ChangeBlue(selectedColor, maxBlueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = selectedColor;
-							}
-						}
-					}
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}
 
-		public void GenerateChangeHSV()
+		public void GenerateSaturate()
 		{
-			ColorHSV selectedColor = (ColorHSV)_selectedColorButton.colorImage.color;
+			System.Func<Color, Color> generator;
 
-			float maxHueChange = hsvMaxHueDeltaSlider.value;
-			float maxSatChange = hsvMaxSatDeltaSlider.value;
-			float maxValueChange = hsvMaxValueDeltaSlider.value;
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (hsvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSV)color, 0f, maxProportion);
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSL)color, 0f, maxProportion);
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSY)color, 0f, maxProportion);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
+			Color selectedColor = _selectedColorButton.colorImage.color;
 
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					if (maxHueChange > 0f)
-					{
-						if (maxSatChange > 0f)
-						{
-							if (maxValueChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueSatValue(selectedColor, maxHueChange, maxSatChange, maxValueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueSat(selectedColor, maxHueChange, maxSatChange);
-							}
-						}
-						else
-						{
-							if (maxValueChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueValue(selectedColor, maxHueChange, maxValueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
-							}
-						}
-					}
-					else
-					{
-						if (maxSatChange > 0f)
-						{
-							if (maxValueChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeSatValue(selectedColor, maxSatChange, maxValueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeSat(selectedColor, maxSatChange);
-							}
-						}
-						else
-						{
-							if (maxValueChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeValue(selectedColor, maxValueChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)selectedColor;
-							}
-						}
-					}
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}
 
-		public void GenerateChangeHSL()
+		public void GenerateDesaturate()
 		{
-			ColorHSL selectedColor = (ColorHSL)_selectedColorButton.colorImage.color;
+			System.Func<Color, Color> generator;
 
-			float maxHueChange = hslMaxHueDeltaSlider.value;
-			float maxSatChange = hslMaxSatDeltaSlider.value;
-			float maxLightChange = hslMaxLightDeltaSlider.value;
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (hsvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSV)color, -maxProportion, 0f);
+			}
+			else if (hslToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSL)color, -maxProportion, 0f);
+			}
+			else if (hsyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSY)color, -maxProportion, 0f);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
+			Color selectedColor = _selectedColorButton.colorImage.color;
 
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					if (maxHueChange > 0f)
-					{
-						if (maxSatChange > 0f)
-						{
-							if (maxLightChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueSatLight(selectedColor, maxHueChange, maxSatChange, maxLightChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueSat(selectedColor, maxHueChange, maxSatChange);
-							}
-						}
-						else
-						{
-							if (maxLightChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueLight(selectedColor, maxHueChange, maxLightChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
-							}
-						}
-					}
-					else
-					{
-						if (maxSatChange > 0f)
-						{
-							if (maxLightChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeSatLight(selectedColor, maxSatChange, maxLightChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeSat(selectedColor, maxSatChange);
-							}
-						}
-						else
-						{
-							if (maxLightChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeLight(selectedColor, maxLightChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)selectedColor;
-							}
-						}
-					}
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}
 
-		public void GenerateChangeHCY()
+		public void GenerateHarden()
 		{
-			ColorHCY selectedColor = (ColorHCY)_selectedColorButton.colorImage.color;
+			System.Func<Color, Color> generator;
 
-			float maxHueChange = hcyMaxHueDeltaSlider.value;
-			float maxChromaChange = hcyMaxChromaDeltaSlider.value;
-			float maxLumaChange = hcyMaxLumaDeltaSlider.value;
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (hcvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCV)color, 0f, maxProportion);
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCL)color, 0f, maxProportion);
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCY)color, 0f, maxProportion);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
+			Color selectedColor = _selectedColorButton.colorImage.color;
 
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
 				if (colorButton != _selectedColorButton)
 				{
-					if (maxHueChange > 0f)
-					{
-						if (maxChromaChange > 0f)
-						{
-							if (maxLumaChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueChromaLuma(selectedColor, maxHueChange, maxChromaChange, maxLumaChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueChroma(selectedColor, maxHueChange, maxChromaChange);
-							}
-						}
-						else
-						{
-							if (maxLumaChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHueLuma(selectedColor, maxHueChange, maxLumaChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeHue(selectedColor, maxHueChange);
-							}
-						}
-					}
-					else
-					{
-						if (maxChromaChange > 0f)
-						{
-							if (maxLumaChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeChromaLuma(selectedColor, maxChromaChange, maxLumaChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeChroma(selectedColor, maxChromaChange);
-							}
-						}
-						else
-						{
-							if (maxLumaChange > 0f)
-							{
-								colorButton.colorImage.color = (Color)_random.ChangeLuma(selectedColor, maxLumaChange);
-							}
-							else
-							{
-								colorButton.colorImage.color = (Color)selectedColor;
-							}
-						}
-					}
+					colorButton.colorImage.color = generator(selectedColor);
+				}
+			}
+		}
+
+		public void GenerateSoften()
+		{
+			System.Func<Color, Color> generator;
+
+			float maxProportion = relativeColorComponentSlider.value;
+
+			if (hcvToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCV)color, -maxProportion, 0f);
+			}
+			else if (hclToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCL)color, -maxProportion, 0f);
+			}
+			else if (hcyToggle.isOn)
+			{
+				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCY)color, -maxProportion, 0f);
+			}
+			else
+			{
+				throw new System.NotImplementedException();
+			}
+
+			Color selectedColor = _selectedColorButton.colorImage.color;
+
+			foreach (ColorToggleButton colorButton in _colorButtons)
+			{
+				if (colorButton != _selectedColorButton)
+				{
+					colorButton.colorImage.color = generator(selectedColor);
 				}
 			}
 		}

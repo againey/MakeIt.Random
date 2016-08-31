@@ -114,7 +114,7 @@ GameObject:
   - 114: {fileID: 11458040}
   - 114: {fileID: 11498786}
   m_Layer: 5
-  m_Name: Unit Component Slider Panel
+  m_Name: Color Component Slider Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -371,7 +371,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dbf15109aad4a6409255598a23f918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textField: {fileID: 11400688}
+  labelField: {fileID: 0}
+  valueField: {fileID: 0}
+  isPercentage: 0
 --- !u!114 &11486508
 MonoBehaviour:
   m_ObjectHideFlags: 1
