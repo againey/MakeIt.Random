@@ -13,9 +13,9 @@ using UnityEngine;
 namespace Experilous.MakeItRandom
 {
 	/// <summary>
-	/// A static class of extension methods for generating random vectors of 2, 3, and 4 dimensions within various spatial distributions.
+	/// A static class of extension methods for generating random vectors of 2, 3, and 4 dimensions and random quaternions with various spatial attributes and constraints.
 	/// </summary>
-	public static class RandomVector
+	public static class RandomGeometry
 	{
 		#region Unit Vector
 
@@ -812,7 +812,7 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
-		#region Radial
+		#region Radial Vectors
 
 		/// <summary>
 		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a unit circle.
@@ -1052,7 +1052,7 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
-		#region Axial
+		#region Axial Vectors
 
 		/// <summary>
 		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a unit square from (0, 0) to (1, 1).
@@ -1166,6 +1166,32 @@ namespace Experilous.MakeItRandom
 		public static Vector3 PointWithinRhomboid(this IRandom random, Vector3 axis0, Vector3 axis1, Vector3 axis2)
 		{
 			return random.FloatCC() * axis0 + random.FloatCC() * axis1 + random.FloatCC() * axis2;
+		}
+
+		#endregion
+
+		#region Quaternion
+
+		/// <summary>
+		/// Generates a random unit quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random unit quaternion.</returns>
+		public static Quaternion Rotation(this IRandom random)
+		{
+			Quaternion quat;
+			random.Rotation(out quat);
+			return quat;
+		}
+
+		/// <summary>
+		/// Generates a random unit quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random unit quaternion.</returns>
+		public static void Rotation(this IRandom random, out Quaternion quat)
+		{
+			quat = Quaternion.AngleAxis(random.HalfAngleDegCO(), random.UnitVector3());
 		}
 
 		#endregion
