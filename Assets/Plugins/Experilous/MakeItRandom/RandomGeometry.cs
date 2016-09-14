@@ -204,23 +204,18 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random 3-dimensional unit vector.</returns>
 		public static Vector3 UnitVector3(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
-			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
-			var z = random.ClosedRange(-1f, +1f);
-			var invertedZ = Mathf.Sqrt(1f - z * z);
-			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
-#else
 			Vector3 v;
 			random.UnitVector3(out v);
 			return v;
-#endif
 		}
 
 		public static void UnitVector3(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
-			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
-			return random.UnitVector3() * distance;
+			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
+			var z = random.ClosedRange(-1f, +1f);
+			var invertedZ = Mathf.Sqrt(1f - z * z);
+			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 #else
 			// The overall method used is that derived by Marsaglia, and described in his paper found at
 			//   http://projecteuclid.org/download/pdf_1/euclid.aoms/1177692644
@@ -228,7 +223,6 @@ namespace Experilous.MakeItRandom
 			// needs to be calculated, followed by the rest of Marsaglia's formula.  It's all done in
 			// fixed point form up until the end to maintain speed and bit-level reliability.  Final
 			// conversion to float is designed to get maximum possible precision for numbers near zero.
-
 
 			// Find a point inside a circle, modified inline of RandomVector.PointWithinCircle()
 			Start:
