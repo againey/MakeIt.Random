@@ -1329,9 +1329,9 @@ namespace Experilous.MakeItRandom
 				sine = cosine;
 			}
 
-			x *= sine; // Q0.31 * Q0.31 = Q0.62
-			y *= sine; // Q0.31 * Q0.31 = Q0.62
-			z *= sine; // Q0.31 * Q0.31 = Q0.62
+			x *= sine; // Q0.32 * Q0.31 = Q0.63
+			y *= sine; // Q0.32 * Q0.31 = Q0.63
+			z *= sine; // Q0.32 * Q0.31 = Q0.63
 
 			// Inline of Detail.FloatingPoint.FixedToFloat()
 			Detail.FloatingPoint.BitwiseFloat conv;
@@ -1344,7 +1344,7 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = x;
-				conv.bits -= 0x1F000000U; // exponent -= 62
+				conv.bits -= 0x1F800000U; // exponent -= 63
 				quat.x = conv.number;
 			}
 
@@ -1355,7 +1355,7 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = y;
-				conv.bits -= 0x1F000000U; // exponent -= 62
+				conv.bits -= 0x1F800000U; // exponent -= 63
 				quat.y = conv.number;
 			}
 
@@ -1366,7 +1366,7 @@ namespace Experilous.MakeItRandom
 			else
 			{
 				conv.number = z;
-				conv.bits -= 0x1F000000U; // exponent -= 62
+				conv.bits -= 0x1F800000U; // exponent -= 63
 				quat.z = conv.number;
 			}
 
