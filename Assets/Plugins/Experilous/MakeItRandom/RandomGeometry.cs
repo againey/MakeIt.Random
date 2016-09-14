@@ -196,7 +196,7 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			Debug.LogFormat("MakeIt.UnitVector2: Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
+			Debug.LogFormat("MakeIt.UnitVector2: Neg: {0:F16}, Pos: {1:F16}, Min: {2:F16}, Max: {3:F16}", negError0 / iterations, posError0 / iterations, minError0, maxError0);
 		}
 #endif
 
@@ -259,16 +259,16 @@ namespace Experilous.MakeItRandom
 #if OPTIMIZE_FOR_32
 			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
 			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
-			int uScaled = u >> 8;
-			int vScaled = v >> 8;
-			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
+			int uScaled = u >> 10; //x*2^15
+			int vScaled = v >> 10; //y*2^15
+			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled; //(x^2 + y^2)*2^30
 			// First do a check against the 32-bit radius before doing a full 64-bit calculation
-			if (uvSqrScaled > 0x10000000) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqrScaled > 0x40000000) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 
 			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
 			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
 			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqrScaled > 0x0FFF8000 && uvSqr >= 0x0000100000000000UL) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqr >= 0x0000100000000000UL) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #else
 			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
 			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
@@ -349,7 +349,7 @@ namespace Experilous.MakeItRandom
 		}
 
 #if UNITY_EDITOR
-		[UnityEditor.Callbacks.DidReloadScripts]
+		//[UnityEditor.Callbacks.DidReloadScripts]
 		private static void TestUnitVector3()
 		{
 			var r = XorShift128Plus.Create();
@@ -754,18 +754,18 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			Debug.LogFormat("MakeIt.UnitVector4:    Neg: {0:E12}, Pos: {1:E12}, Min: {2:E12}, Max: {3:E12}", negError / iterations, posError / iterations, minError, maxError);
+			Debug.LogFormat("MakeIt.UnitVector4:    Neg: {0:F16}, Pos: {1:F16}, Min: {2:F16}, Max: {3:F16}", negError / iterations, posError / iterations, minError, maxError);
 
 			Debug.Log("Distances");
 			for (int j = 0; j < comparisonVectors.Length; ++j)
 			{
-				Debug.LogFormat("Comparison Vector {0}: {1:E12}", comparisonVectors[j], distanceSums[j] / iterations);
+				Debug.LogFormat("Comparison Vector {0}: {1:F16}", comparisonVectors[j], distanceSums[j] / iterations);
 			}
 
 			Debug.Log("Component Square Sums");
 			for (int j = 0; j < componentVectors.Length; ++j)
 			{
-				Debug.LogFormat("Component Vector {0}: {1:E12}", componentVectors[j], componentSquareSums[j] / iterations);
+				Debug.LogFormat("Component Vector {0}: {1:F16}", componentVectors[j], componentSquareSums[j] / iterations);
 			}
 		}
 #endif
@@ -1229,16 +1229,16 @@ namespace Experilous.MakeItRandom
 #if OPTIMIZE_FOR_32
 			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
 			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
-			int uScaled = u >> 8;
-			int vScaled = v >> 8;
-			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
+			int uScaled = u >> 10; //x*2^15
+			int vScaled = v >> 10; //y*2^15
+			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled; //(x^2 + y^2)*2^30
 			// First do a check against the 32-bit radius before doing a full 64-bit calculation
-			if (uvSqrScaled > 0x10000000) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqrScaled > 0x40000000) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 
 			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
 			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
 			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqrScaled > 0x0FFF8000 && uvSqr >= 0x0000100000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqr >= 0x0000100000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #else
 			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
 			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
