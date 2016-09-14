@@ -179,8 +179,9 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				float angle;
 				Vector3 axis;
-				_random.Rotation().ToAngleAxis(out angle, out axis);
-				_particles[i].position = axis;
+				Quaternion rotation = _random.Rotation();
+				rotation.ToAngleAxis(out angle, out axis);
+				_particles[i].position = axis.normalized;
 				_particles[i].rotation = angle;
 			}
 
