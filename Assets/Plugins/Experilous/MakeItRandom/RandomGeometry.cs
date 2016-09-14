@@ -1291,24 +1291,32 @@ namespace Experilous.MakeItRandom
 			//   http://www.coranac.com/2009/07/sines/
 			//
 			// sine(x⋅2/π) = sine(z) ≈ z⋅(a - z²⋅(b - z²⋅c)), x ∈ [0, π/2)
-			//   a = 4⋅(3/π - 9/16) ≈ 1.5697186342054880584532103209403, as Q1.32 ≈ 6741890198
-			//   b = 2⋅a - 5/2 ≈ 0.63943726841097611690642064188069, as Q0.32 ≈ 2746362156
-			//   c = a - 3/2 ≈ 0.06971863420548805845321032094034, as Q0.35 ≈ 2395514031
+			//   a = 4⋅(3/π - 9/16) ≈ 1.5697186342054880584532103209403, as Q1.31 ≈ 3370945099UL
+			//   b = 2⋅a - 5/2 ≈ 0.63943726841097611690642064188069, as Q0.32 ≈ 2746362156UL
+			//   c = a - 3/2 ≈ 0.06971863420548805845321032094034, as Q0.35 ≈ 2395514031UL
+			// More basic values, causes positive error to go even higher.
+			//   a = π/2 ≈ 1.5707963267948966192313216916398, as Q1.31 ≈ 3373259426UL
+			//   b = 2⋅a - 5/2 ≈ 0.6415926535897932384626433832795, as Q0.32 ≈ 2755619465UL
+			//   c = a - 3/2 ≈ 0.07079632679489661923132169163975, as Q0.35 ≈ 2432543266UL
+			// Arbitrary values, attempting to get positive and negative error more balanced.
+			//   a = 1.5694, as Q1.31 ≈ 3370260837UL
+			//   b = 2⋅a - 5/2 = 0.636, as Q0.32 ≈ 2743625109UL
+			//   c = a - 3/2 = 0.068, as Q0.35 ≈ 2384565843UL
 
 			ulong thetaS = angleBits >> 32; // Q0.32
 			if (thetaS > 0UL)
 			{
 				ulong thetaSSqr = (thetaS * thetaS) >> 32; // Q0.32
-				ulong n = (thetaSSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
-				n = (thetaSSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
-				n = (thetaS * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+				ulong n = (thetaSSqr * 2384565843UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+				n = (thetaSSqr * (2743625109UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+				n = (thetaS * (3370260837UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
 				sine = (long)n; // Q0.31
 
 				ulong thetaC = 0x100000000UL - thetaS; // Q0.32
 				ulong thetaCSqr = (thetaC * thetaC) >> 32; // Q0.32
-				n = (thetaCSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
-				n = (thetaCSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
-				n = (thetaC * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+				n = (thetaCSqr * 2384565843UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+				n = (thetaCSqr * (2743625109UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+				n = (thetaC * (3370260837UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
 				cosine = (long)n; // Q0.31
 			}
 			else
@@ -1383,6 +1391,19 @@ namespace Experilous.MakeItRandom
 		}
 
 #if UNITY_EDITOR
+		[UnityEditor.Callbacks.DidReloadScripts]
+		private static void CalculateFixedPointConstants()
+		{
+			double a = 1.5694d;
+			double b = 2d * a - 2.5d;
+			double c = a - 1.5d;
+
+			Debug.LogFormat("{0}UL, {1}UL, {2}UL",
+				(ulong)System.Math.Round(a * (1L << 31)),
+				(ulong)System.Math.Round(b * (1L << 32)),
+				(ulong)System.Math.Round(c * (1L << 35)));
+		}
+
 		//[UnityEditor.Callbacks.DidReloadScripts]
 		private static void TestSineCosine()
 		{
