@@ -8,6 +8,9 @@
 #define OPTIMIZE_FOR_32
 #endif
 
+//#define PRINT_ALL
+//#define PRINT_SOME
+
 using UnityEngine;
 
 namespace Experilous.MakeItRandom
@@ -1167,10 +1170,10 @@ namespace Experilous.MakeItRandom
 		#region Quaternion
 
 		/// <summary>
-		/// Generates a random unit quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
+		/// Generates a random quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random unit quaternion.</returns>
+		/// <returns>A random rotation quaternion.</returns>
 		public static Quaternion Rotation(this IRandom random)
 		{
 			Quaternion quat;
@@ -1179,15 +1182,468 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Generates a random unit quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
+		/// Generates a random quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random unit quaternion.</returns>
+		/// <returns>A random rotation quaternion.</returns>
 		public static void Rotation(this IRandom random, out Quaternion quat)
 		{
-			quat = Quaternion.AngleAxis(random.HalfAngleDegCO(), random.UnitVector3());
+			// Overall algorithm is to generate a uniformly distributed axis (3D unit vector), generate a
+			// random angle to rotate around that axis, and then convert that angle-axis pair to a quaternion
+			// the following formula:
+			//
+			//   qx = ax * sin(theta/2)
+			//   qy = ay * sin(theta/2)
+			//   qz = az * sin(theta/2)
+			//   qw = cos(theta/2)
+			//
+			// This is all done in fixed point, with sine and cosine approximations approximations based on
+			// fifth-order polynomials.
+
+			// Modified inline of UnitVector3
+
+			long x;
+			long y;
+			long z;
+
+			// Find a point inside a circle, modified inline of RandomVector.PointWithinCircle()
+			Axis:
+
+#if OPTIMIZE_FOR_32
+			uint lower, upper;
+			random.Next64(out lower, out upper);
+#else
+			ulong bits = random.Next64();
+			uint upper = (uint)(bits >> 32);
+			uint lower = (uint)bits;
+#endif
+
+			if (upper >= 0xFC000000U && lower >= 0xFC000000U && random.RangeCO(0x0010000000000001UL) < 0x0000000000001000UL)
+			{
+				x = 0L; // Q32.32
+				y = 0L; // Q32.32
+				z = -1L << 32; // Q32.32
+				goto Angle;
+			}
+
+#if OPTIMIZE_FOR_32
+			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
+			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
+			int uScaled = u >> 8;
+			int vScaled = v >> 8;
+			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled;
+			// First do a check against the 32-bit radius before doing a full 64-bit calculation
+			if (uvSqrScaled > 0x10000000) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+
+			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
+			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
+			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
+			if (uvSqrScaled > 0x0FFF8000 && uvSqr >= 0x0000100000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+#else
+			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
+			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
+			ulong uSqr = (ulong)(u * u); // x^2 * 2^50
+			ulong vSqr = (ulong)(v * v); // y^2 * 2^50
+			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
+			if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+#endif
+
+			ulong uvSqrInv = (0x0004000000000000UL - uvSqr) << 12; // (1 - (x^2 + y^2)) * 2^62
+
+			// Calculate the square root of uvSqrInv.  This starts with an approximation found at
+			//   http://stackoverflow.com/a/1100591
+			// It is followed by two uses of the divide-and-average method to improve the initial approximation.
+
+			// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
+			ulong mask = uvSqrInv | (uvSqrInv >> 1);
+			mask |= mask >> 2;
+			mask |= mask >> 4;
+			mask |= mask >> 8;
+			mask |= mask >> 16;
+			mask |= mask >> 32;
+			int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
+
+			// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
+			ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
+			// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
+			ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (uvSqrInv >> (bitCount - 7)) : (uvSqrInv << (7 - bitCount))) & 0x3FU]; // b * 2^31
+			// Square root is a*b
+			ulong uvInv = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt(1 - (x^2 + y^2)) * 2^31
+
+			// Improve the square root approximation using the divide-and-average method twice
+			uvInv = (uvSqrInv / uvInv + uvInv) >> 1; // sqrt(1 - (x^2 + y^2)) * 2^31, better approximation
+			uvInv = (uvSqrInv / uvInv + uvInv); // 2 * sqrt(1 - (x^2 + y^2)) * 2^31, even better approximation, multiplied by 2
+
+			// Determine the final components using Marsaglia's formulas:  t = 2 * sqrt(1 - (u^2 + v^2)); x = u*t; y = v*t; z = 1 - 2 * (u^2 + v^2))
+			x = (u * (long)uvInv) >> 24; // x * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * x * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
+			y = (v * (long)uvInv) >> 24; // y * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * y * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
+			z = (0x0002000000000000L - ((long)uvSqr)) >> 17; // 2 * (1/2 - (x^2 + y^2)) * 2^49, shifted down to Q32.32
+
+			Angle:
+
+			ulong angleBits = random.Next64(); // Q1.32, in range [0, 2), as if it were radians in [0, π), scaled by 2/π
+
+			long sine;
+			long cosine;
+			long w;
+
+			// Fifth order polynomial approximation of sine, with coefficients derived at
+			//   http://www.coranac.com/2009/07/sines/
+			//
+			// sine(x⋅2/π) = sine(z) ≈ z⋅(a - z²⋅(b - z²⋅c)), x ∈ [0, π/2)
+			//   a = 4⋅(3/π - 9/16) ≈ 1.5697186342054880584532103209403, as Q1.32 ≈ 6741890198
+			//   b = 2⋅a - 5/2 ≈ 0.63943726841097611690642064188069, as Q0.32 ≈ 2746362156
+			//   c = a - 3/2 ≈ 0.06971863420548805845321032094034, as Q0.35 ≈ 2395514031
+
+			ulong thetaS = angleBits >> 32; // Q0.32
+			ulong thetaSSqr = (thetaS * thetaS) >> 32; // Q0.32
+			ulong n = (thetaSSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+			n = (thetaSSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+			n = (thetaS * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+			sine = (long)n; // Q0.31
+
+			ulong thetaC = 0x100000000UL - thetaS; // Q0.32
+			ulong thetaCSqr = (thetaC * (thetaC >> 1)) >> 31; // Q0.32
+			n = (thetaCSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+			n = (thetaCSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+			n = (thetaC * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+			cosine = (long)n; // Q0.31
+
+			if ((angleBits & 0x80000000UL) == 0UL)
+			{
+				// If the angle is in the first quadrant of the trig cycle, sine stays as it is and w is simply cosine.
+				w = cosine;
+			}
+			else
+			{
+				// If the angle is in the second quadrant of the trig cycle, sine and cosine swap, and w is the negative of the swapped cosine.
+				w = -sine;
+				sine = cosine;
+			}
+
+			x *= sine; // Q0.31 * Q0.31 = Q0.62
+			y *= sine; // Q0.31 * Q0.31 = Q0.62
+			z *= sine; // Q0.31 * Q0.31 = Q0.62
+
+			// Inline of Detail.FloatingPoint.FixedToFloat()
+			Detail.FloatingPoint.BitwiseFloat conv;
+			conv.bits = 0U;
+
+			if (x == 0L)
+			{
+				quat.x = 0f;
+			}
+			else
+			{
+				conv.number = x;
+				conv.bits -= 0x1F000000U; // exponent -= 62
+				quat.x = conv.number;
+			}
+
+			if (y == 0L)
+			{
+				quat.y = 0f;
+			}
+			else
+			{
+				conv.number = y;
+				conv.bits -= 0x1F000000U; // exponent -= 62
+				quat.y = conv.number;
+			}
+
+			if (z == 0L)
+			{
+				quat.z = 0f;
+			}
+			else
+			{
+				conv.number = z;
+				conv.bits -= 0x1F000000U; // exponent -= 62
+				quat.z = conv.number;
+			}
+
+			if (w == 0L)
+			{
+				quat.w = 0f;
+			}
+			else
+			{
+				conv.number = w;
+				conv.bits -= 0x0F800000U; // exponent -= 31
+				quat.w = conv.number;
+			}
 		}
 
-		#endregion
+#if UNITY_EDITOR
+		//[UnityEditor.Callbacks.DidReloadScripts]
+		private static void TestSineCosine()
+		{
+			ulong increment = 1000UL; //0x100000000UL / (1UL << 30);
+
+			double minSineError = 0d;
+			double maxSineError = 0d;
+			double sineErrSqrSum = 0d;
+			double minCosineError = 0d;
+			double maxCosineError = 0d;
+			double cosineErrSqrSum = 0d;
+			double count = 0d;
+
+			ulong worstNegSine = 0;
+			ulong worstPosSine = 0;
+			ulong worstNegCosine = 0;
+			ulong worstPosCosine = 0;
+
+			//Sine Error:  Min: -9.999999998637E-001, Max: 1.926121030850E-004, StdDev: 3.776277259208E-007, Worst Neg Angle: 4295012448, Worst Pos Angle: 3153190176
+			//Cosine Error:  Min: -9.999999998637E-001, Max: 9.999999998637E-001, StdDev: 3.776277259211E-007, Worst Neg Angle: 45152, Worst Pos Angle: 8589889440
+
+			ulong angle = 0UL;
+			//ulong angle = 4295012448UL;
+			ulong angleBits = angle < 0x100000000UL ? (angle << 32) : ((angle << 32) | 0x80000000UL);
+
+			while (true)
+			{
+				long sine;
+				long cosine;
+
+				double dAngle;
+				double dSine;
+				double dCosine;
+
+				// Fifth order polynomial approximation of sine, with coefficients derived at
+				//   http://www.coranac.com/2009/07/sines/
+				//
+				// sine(x⋅2/π) = sine(z) ≈ z⋅(a - z²⋅(b - z²⋅c)), x ∈ [0, π/2)
+				//   a = 4⋅(3/π - 9/16) ≈ 1.5697186342054880584532103209403, as Q1.31 ≈ 3370945099
+				//   b = 2⋅a - 5/2 ≈ 0.63943726841097611690642064188069, as Q0.32 ≈ 2746362156
+				//   c = a - 3/2 ≈ 0.06971863420548805845321032094034, as Q0.35 ≈ 2395514031
+
+				if ((angleBits & 0x80000000UL) == 0UL)
+				{
+					// If the angle is in the first quadrant of the trig cycle.
+					ulong thetaS = angleBits >> 32; // Q0.32
+					ulong thetaSSqr = (thetaS * thetaS) >> 32; // Q0.32
+					ulong n = (thetaSSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[0] = {0:F16}", n / (double)(1UL << 32));
+#endif
+					n = (thetaSSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[1] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					n = (thetaS * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[2] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					sine = (long)n; // Q0.31
+
+					ulong thetaC = 0x100000000UL - thetaS; // Q0.32
+					ulong thetaCSqr = (thetaC * (thetaC >> 1)) >> 31; // Q0.32
+					n = (thetaCSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[0] = {0:F16}", n / (double)(1UL << 32));
+#endif
+					n = (thetaCSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[1] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					n = (thetaC * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[2] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					cosine = (long)n; // Q0.31
+
+					dAngle = angle * 1.5707963267948966192313216916398 / (double)(1UL << 32);
+					dSine = sine / (double)(1UL << 31);
+					dCosine = cosine / (double)(1UL << 31);
+
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Fixed Angle = 0x{0:X16}, Angle Bits = 0x{1:X16}, Float Angle = {2:F16}", angle, angleBits, dAngle);
+#endif
+
+					double dThetaS = angle / (double)(1UL << 32);
+					double dThetaSSqr = dThetaS * dThetaS;
+					double dN = dThetaSSqr * 0.06971863420548805845321032094034;
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[0] = {0:F16}", dN);
+#endif
+					dN = dThetaSSqr * (0.63943726841097611690642064188069 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[1] = {0:F16}", dN);
+#endif
+					dN = dThetaS * (1.5697186342054880584532103209403 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[2] = {0:F16}", dN);
+#endif
+
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Sine Angle = {0:F16}, Sine Angle Squared = {1:F16}, Fixed Sine = {2:F16}, Float Sine = {3:F16}, Degrees = {4:F4}, Actual Sine = {5:F16}", dThetaS, dThetaSSqr, dSine, dN, dThetaS * 90d, System.Math.Sin(dAngle));
+#endif
+
+					double dThetaC = 1d - dThetaS;
+					double dThetaCSqr = dThetaC * dThetaC;
+					dN = dThetaCSqr * 0.06971863420548805845321032094034;
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[0] = {0:F16}", dN);
+#endif
+					dN = dThetaCSqr * (0.63943726841097611690642064188069 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[1] = {0:F16}", dN);
+#endif
+					dN = dThetaC * (1.5697186342054880584532103209403 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[2] = {0:F16}", dN);
+#endif
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Cosine Angle = {0:F16}, Cosine Angle Squared = {1:F16}, Fixed Cosine = {2:F16}, Float Cosine = {3:F16}, Degrees = {4:F4}, Actual Cosine = {5:F16}", dThetaC, dThetaCSqr, dCosine, dN, dThetaC * 90d, System.Math.Cos(dAngle));
+#endif
+				}
+				else
+				{
+					// If the angle is in the second quadrant of the trig cycle.
+					ulong thetaC = angleBits >> 32; // Q0.32
+					ulong thetaCSqr = (thetaC * thetaC) >> 32; // Q0.32
+					ulong n = (thetaCSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[0] = {0:F16}", n / (double)(1UL << 32));
+#endif
+					n = (thetaCSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[1] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					n = (thetaC * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Cosine n[2] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					cosine = -((long)n); // Q0.31
+
+					ulong thetaS = 0x100000000UL - thetaC; // Q0.32
+					ulong thetaSSqr = (thetaS * (thetaS >> 1)) >> 31; // Q0.32
+					n = (thetaSSqr * 2395514031UL) >> 35; // z²⋅c, Q0.32 * Q0.35 / 2^35 -> Q0.32
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[0] = {0:F16}", n / (double)(1UL << 32));
+#endif
+					n = (thetaSSqr * (2746362156UL - n)) >> 33; // z²⋅(b - z²⋅c), Q0.32 * (Q0.32 - Q0.32) / 2^33 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[1] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					n = (thetaS * (3370945099UL - n)) >> 32; // z⋅(a - z²⋅(b - z²⋅c)), Q0.32 * (Q1.31 - Q0.31) / 2^32 -> Q0.31
+#if PRINT_ALL
+					Debug.LogFormat("Fixed Sine n[2] = {0:F16}", n / (double)(1UL << 31));
+#endif
+					sine = (long)n; // Q0.31
+
+					dAngle = angle * 1.5707963267948966192313216916398 / (double)(1UL << 32);
+					dSine = sine / (double)(1UL << 31);
+					dCosine = cosine / (double)(1UL << 31);
+
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Fixed Angle = 0x{0:X16}, Angle Bits = 0x{1:X16}, Float Angle = {2:F16}", angle, angleBits, dAngle);
+#endif
+
+					double dThetaC = (angleBits >> 32) / (double)(1UL << 32);
+					double dThetaCSqr = dThetaC * dThetaC;
+					double dN = dThetaCSqr * 0.06971863420548805845321032094034;
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[0] = {0:F16}", dN);
+#endif
+					dN = dThetaCSqr * (0.63943726841097611690642064188069 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[1] = {0:F16}", dN);
+#endif
+					dN = dThetaC * (1.5697186342054880584532103209403 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Cosine n[2] = {0:F16}", dN);
+#endif
+
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Cosine Angle = {0:F16}, Cosine Angle Squared = {1:F16}, Fixed Cosine = {2:F16}, Float Cosine = {3:F16}, Degrees = {4:F4}, Actual Cosine = {5:F16}", dThetaC, dThetaCSqr, dCosine, -dN, dThetaC * 90d, System.Math.Cos(dAngle));
+#endif
+
+					double dThetaS = 1d - dThetaC;
+					double dThetaSSqr = dThetaS * dThetaS;
+					dN = dThetaSSqr * 0.06971863420548805845321032094034;
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[0] = {0:F16}", dN);
+#endif
+					dN = dThetaSSqr * (0.63943726841097611690642064188069 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[1] = {0:F16}", dN);
+#endif
+					dN = dThetaS * (1.5697186342054880584532103209403 - dN);
+#if PRINT_ALL
+					Debug.LogFormat("Float Sine n[2] = {0:F16}", dN);
+#endif
+
+#if PRINT_SOME || PRINT_ALL
+					Debug.LogFormat("Sine Angle = {0:F16}, Sine Angle Squared = {1:F16}, Fixed Sine = {2:F16}, Float Sine = {3:F16}, Degrees = {4:F4}, Actual Sine = {5:F16}", dThetaS, dThetaSSqr, dSine, dN, dThetaS * 90d, System.Math.Sin(dAngle));
+#endif
+				}
+
+				double sineError = dSine - System.Math.Sin(dAngle);
+				double cosineError = dCosine - System.Math.Cos(dAngle);
+
+				if (sineError <= minSineError)
+				{
+					minSineError = sineError;
+					worstNegSine = angle;
+				}
+				if (sineError >= maxSineError)
+				{
+					maxSineError = sineError;
+					worstPosSine = angle;
+				}
+				sineErrSqrSum += sineError * sineError;
+				if (cosineError <= minCosineError)
+				{
+					minCosineError = cosineError;
+					worstNegCosine = angle;
+				}
+				if (cosineError >= maxCosineError)
+				{
+					maxCosineError = cosineError;
+					worstPosCosine = angle;
+				}
+				cosineErrSqrSum += cosineError * cosineError;
+				count += 1d;
+
+#if PRINT_ALL
+				break;
+#endif
+
+				if (angle < 0xFFFFFFFFUL)
+				{
+					angle += increment;
+					if (angle > 0xFFFFFFFFUL)
+					{
+						angle = 0xFFFFFFFFUL;
+					}
+					angleBits = angle << 32;
+				}
+				else if (angle == 0xFFFFFFFFUL)
+				{
+					angle = 0x100000000UL;
+					angleBits = (angle << 32) | 0x80000000UL;
+				}
+				else if (angle < 0x1FFFFFFFFUL)
+				{
+					angle += increment;
+					if (angle > 0x1FFFFFFFFUL)
+					{
+						angle = 0x1FFFFFFFFUL;
+					}
+					angleBits = (angle << 32) | 0x80000000UL;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			Debug.LogFormat("Sine Error:  Min: {0:E12}, Max: {1:E12}, StdDev: {2:E12}, Worst Neg Angle: {3}, Worst Pos Angle: {4}", minSineError, maxSineError, sineErrSqrSum / count, worstNegSine, worstPosSine);
+			Debug.LogFormat("Cosine Error:  Min: {0:E12}, Max: {1:E12}, StdDev: {2:E12}, Worst Neg Angle: {3}, Worst Pos Angle: {4}", minCosineError, maxCosineError, cosineErrSqrSum / count, worstNegCosine, worstPosCosine);
+		}
+#endif
+
+#endregion
 	}
 }
