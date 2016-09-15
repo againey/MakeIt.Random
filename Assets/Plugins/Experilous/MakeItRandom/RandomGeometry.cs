@@ -268,7 +268,7 @@ namespace Experilous.MakeItRandom
 			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
 			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
 			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqr >= 0x0000100000000000UL) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqr >= 0x0004000000000000UL) goto Start; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #else
 			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
 			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
@@ -1185,7 +1185,8 @@ namespace Experilous.MakeItRandom
 		private static ulong sinApprox9thOrderB = 2774394673UL; // 0.6459640975062460 as Q0.32
 		private static ulong sinApprox9thOrderC = 342258823UL; // 0.0796883420605488 as Q0.32
 		private static ulong sinApprox9thOrderD = 20058644UL; // 0.0046702668851237 as Q0.32
-		private static ulong sinApprox9thOrderE = 2630973174UL; // 0.0001495535101299 as Q0.44
+		private static ulong sinApprox9thOrderE = 2630973174UL; // 0.0001495535101299 as Q0.44
+
 		/// <summary>
 		/// Generates a random quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
 		/// </summary>
@@ -1243,7 +1244,7 @@ namespace Experilous.MakeItRandom
 			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
 			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
 			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqr >= 0x0000100000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+			if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #else
 			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
 			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
