@@ -1181,6 +1181,11 @@ namespace Experilous.MakeItRandom
 			return quat;
 		}
 
+		private static ulong sinApprox9thOrderA = 3373259731UL; // 1.5707964688206900 as Q1.31
+		private static ulong sinApprox9thOrderB = 2774394673UL; // 0.6459640975062460 as Q0.32
+		private static ulong sinApprox9thOrderC = 342258823UL; // 0.0796883420605488 as Q0.32
+		private static ulong sinApprox9thOrderD = 20058644UL; // 0.0046702668851237 as Q0.32
+		private static ulong sinApprox9thOrderE = 2630973174UL; // 0.0001495535101299 as Q0.44
 		/// <summary>
 		/// Generates a random quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
 		/// </summary>
@@ -1287,29 +1292,27 @@ namespace Experilous.MakeItRandom
 			long cosine;
 			long w;
 
-			// Seventh order polynomial approximation of sine
-			// sine(½πx) = sine(z) = (a - (b - (c - d⋅z²)⋅z²)⋅z²)⋅z, x ∈ [0, ½π)
-			//   a = ½π ≈ 1.5707557812310000, as Q1.31 ≈ 3373172355UL, precise value obtained experimentally to limit quaternions whose length is greater than 1.
-			//   b = 3a - 17/4 ≈ 0.6456924812270430, as Q0.32 ≈ 2773228090UL
-			//   c = 3a - 2b - 7/2 ≈ 0.0791176187610851, as Q0.32 ≈ 339807585UL
-			//   d = 1 - a + b - c ≈ 0.0041809187650426, as Q0.39 ≈ 2298484398UL
+			// Ninth order polynomial approximation of sine
+			// sine(½πx) = sine(z) = (a - (b - (c - (d - e⋅z²)⋅z²)⋅z²)⋅z²)⋅z, x ∈ [0, ½π)
 
 			ulong thetaS = angleBits >> 32; // Q0.32
 			if (thetaS > 0UL)
 			{
 				ulong thetaSSqr = (thetaS * thetaS) >> 32; // Q0.32
-				ulong n = (thetaSSqr * 2298484398UL) >> 39; // d⋅z², Q0.32 * Q0.39 / 2^39 -> Q0.32
-				n = (thetaSSqr * (339807585UL - n)) >> 32; // (c - d⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^32 -> Q0.32
-				n = (thetaSSqr * (2773228090UL - n)) >> 33; // (b - (c - d⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.31
-				n = (thetaS * (3373172355UL - n)) >> 32; // (a - (b - (c - d⋅z²)⋅z²)⋅z²)⋅z, (Q1.31 - Q0.31) * Q0.32 / 2^32 -> Q0.31
+				ulong n = (thetaSSqr * sinApprox9thOrderE) >> 44; // e⋅z², Q0.32 * Q0.44 / 2^44 -> Q0.32
+				n = (thetaSSqr * (sinApprox9thOrderD - n)) >> 32; // (d - e⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^32 -> Q0.32
+				n = (thetaSSqr * (sinApprox9thOrderC - n)) >> 32; // (c - (d - e⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.32
+				n = (thetaSSqr * (sinApprox9thOrderB - n)) >> 33; // (b - (c - (d - e⋅z²)⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.31
+				n = (thetaS * (sinApprox9thOrderA - n)) >> 32; // (a - (b - (c - (d - e⋅z²)⋅z²)⋅z²)⋅z²)⋅z, (Q1.31 - Q0.31) * Q0.32 / 2^32 -> Q0.31
 				sine = (long)n; // Q0.31
 
 				ulong thetaC = 0x100000000UL - thetaS; // Q0.32
 				ulong thetaCSqr = (thetaC * thetaC) >> 32; // Q0.32
-				n = (thetaCSqr * 2298484398UL) >> 39; // d⋅z², Q0.32 * Q0.39 / 2^39 -> Q0.32
-				n = (thetaCSqr * (339807585UL - n)) >> 32; // (c - d⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^32 -> Q0.32
-				n = (thetaCSqr * (2773228090UL - n)) >> 33; // (b - (c - d⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.31
-				n = (thetaC * (3373172355UL - n)) >> 32; // (a - (b - (c - d⋅z²)⋅z²)⋅z²)⋅z, (Q1.31 - Q0.31) * Q0.32 / 2^32 -> Q0.31
+				n = (thetaCSqr * sinApprox9thOrderE) >> 44; // e⋅z², Q0.32 * Q0.44 / 2^44 -> Q0.32
+				n = (thetaCSqr * (sinApprox9thOrderD - n)) >> 32; // (d - e⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^32 -> Q0.32
+				n = (thetaCSqr * (sinApprox9thOrderC - n)) >> 32; // (c - (d - e⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.32
+				n = (thetaCSqr * (sinApprox9thOrderB - n)) >> 33; // (b - (c - (d - e⋅z²)⋅z²)⋅z²)⋅z², (Q0.32 - Q0.32) * Q0.32 / 2^33 -> Q0.31
+				n = (thetaC * (sinApprox9thOrderA - n)) >> 32; // (a - (b - (c - (d - e⋅z²)⋅z²)⋅z²)⋅z²)⋅z, (Q1.31 - Q0.31) * Q0.32 / 2^32 -> Q0.31
 				cosine = (long)n; // Q0.31
 			}
 			else
@@ -1385,22 +1388,47 @@ namespace Experilous.MakeItRandom
 
 #if UNITY_EDITOR
 		//[UnityEditor.Callbacks.DidReloadScripts]
-		private static void CalculateFixedPointConstants()
+		private static void CalculateFixedPointSineConstants()
 		{
-			// f(x) = ax - bx^3 + cx^5 - dx^7
 			//double a = System.Math.PI / 2d;
-			double a = 1.570755781231;
-			//         1.5707963267948966192313216916398
-			double b = 3d * a - (140d - System.Math.PI * System.Math.PI) / 32d;
-			double c = -3d * a + 2d * b + 7d / 2d;
-			double d = a - b + c - 1d;
+			//double a = 1.5707963267948966192313216916398
+			//double a = 1.57079646882; // (π^2 * (π + 1) - 660)/384 + 10/π
+			double a = (System.Math.PI * System.Math.PI * (System.Math.PI + 1d) - 660d) / 384d + 10d / System.Math.PI;
+			double b, c, d, e;
+			ulong ia, ib, ic, id, ie;
+			int ieShift;
+			CalculateFixedPointSineConstants(a, out b, out c, out d, out e, out ia, out ib, out ic, out id, out ie, out ieShift);
 
-			Debug.LogFormat("{0:F16}   {1:F16}   {2:F16}   {3:F16}", a, b, c, d);
-			Debug.LogFormat("{0}UL   {1}UL   {2}UL   {3}UL",
-				(ulong)System.Math.Round(a * (1L << 31)),
-				(ulong)System.Math.Round(b * (1L << 32)),
-				(ulong)System.Math.Round(c * (1L << 32)),
-				(ulong)System.Math.Round(d * (1L << 39)));
+			Debug.LogFormat(
+				"private const ulong sinApprox9thOrderA = {0}UL; // {1:F16} as Q1.31\r\n" +
+				"private const ulong sinApprox9thOrderB = {2}UL; // {3:F16} as Q0.32\r\n" +
+				"private const ulong sinApprox9thOrderC = {4}UL; // {5:F16} as Q0.32\r\n" +
+				"private const ulong sinApprox9thOrderD = {6}UL; // {7:F16} as Q0.32\r\n" +
+				"private const ulong sinApprox9thOrderE = {8}UL; // {9:F16} as Q0.{10}\r\n",
+				ia, a, ib, b, ic, c, id, d, ie, e, ieShift);
+		}
+
+		private static void CalculateFixedPointSineConstants(double a, out double b, out double c, out double d, out double e, out ulong ia, out ulong ib, out ulong ic, out ulong id, out ulong ie, out int ieShift)
+		{
+			// f(x) = ax - bx^3 + cx^5 - dx^7 + ex^9
+			b = System.Math.PI * System.Math.PI * System.Math.PI / 48d;
+			c = -6d * a + 3d * b + (252d - System.Math.PI * System.Math.PI) / 32d;
+			d = 4d * a - 3d * b + 2d * c - 9d / 2d;
+			e = 1d - a + b - c + d;
+
+			double eShifted = e;
+			ieShift = 32;
+			while (eShifted < 0.5d && ieShift < 64)
+			{
+				++ieShift;
+				eShifted *= 2d;
+			}
+
+			ia = (ulong)System.Math.Round(a * (1L << 31));
+			ib = (ulong)System.Math.Round(b * (1L << 32));
+			ic = (ulong)System.Math.Round(c * (1L << 32));
+			id = (ulong)System.Math.Round(d * (1L << 32));
+			ie = (ulong)System.Math.Round(eShifted * (1L << 32));
 		}
 
 		//[UnityEditor.Callbacks.DidReloadScripts]
