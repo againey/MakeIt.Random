@@ -38,7 +38,11 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				_particles[i].angularVelocity = 0f;
 				_particles[i].lifetime = float.PositiveInfinity;
+#if UNITY_5_3_OR_NEWER
+				_particles[i].startSize = 0.1f;
+#else
 				_particles[i].size = 0.1f;
+#endif
 				_particles[i].startLifetime = 0f;
 				_particles[i].velocity = Vector3.zero;
 			}
