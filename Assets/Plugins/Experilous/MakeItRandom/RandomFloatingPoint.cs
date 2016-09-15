@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 using System.Runtime.InteropServices;
@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom
 		private const ulong _maxUnsignedFixed64LessThanFloatOne = 0xFFFFFFFFFFFFFBFFUL;
 		private const long _maxSignedFixed64LessThanFloatOne = 0x7FFFFFFFFFFFFDFFL;
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		private const uint _doubleExponent63 = 0x02000000U;
 		private const uint _doubleExponent64 = 0x04000000U;
 #else
@@ -79,7 +79,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double DoubleOO(this IRandom random)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			do
 			{
@@ -145,7 +145,7 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -196,7 +196,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double DoubleOC(this IRandom random)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -297,7 +297,7 @@ namespace Experilous.MakeItRandom
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
 			// on how RandomRange.RangeCO() is implemented.
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			if (upper >= 0xFFF00000U && random.RangeCO(0x0010000000000001UL) < 0x00001000UL)
@@ -372,7 +372,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleOO(this IRandom random)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			do
 			{
@@ -438,7 +438,7 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -489,7 +489,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleOC(this IRandom random)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -590,7 +590,7 @@ namespace Experilous.MakeItRandom
 			// additional calls will be required, or one call and some integer multiplication/division/remainder, depending
 			// on how RandomRange.RangeCO() is implemented.
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			if (upper >= 0xFFF00000U && random.RangeCO(0x0010000000000001UL) < 0x00001000UL)
@@ -661,7 +661,7 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_C1O2MPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -717,7 +717,7 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACK_C2O4MPAT_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			Detail.FloatingPoint.BitwiseDouble value;
@@ -1004,7 +1004,7 @@ namespace Experilous.MakeItRandom
 				n = random.Next64();
 			} while (n > _maxUnsignedFixed64LessThanFloatOne || n == 0UL);
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent64;
@@ -1072,7 +1072,7 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxUnsignedFixed64LessThanFloatOne);
 			if (n == 0UL) return 0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent64;
@@ -1132,7 +1132,7 @@ namespace Experilous.MakeItRandom
 			ulong n = random.Next64();
 			if (n == 0UL) return 1d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent64;
@@ -1203,7 +1203,7 @@ namespace Experilous.MakeItRandom
 			ulong n = random.Next64();
 			if (n == 0UL) return 0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent64;
@@ -1269,7 +1269,7 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne && n < -_maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent63;
@@ -1335,7 +1335,7 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent63;
@@ -1401,7 +1401,7 @@ namespace Experilous.MakeItRandom
 			} while (n > _maxSignedFixed64LessThanFloatOne);
 			if (n == 0L) return random.Chance() ? -0d : +0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent63;
@@ -1470,7 +1470,7 @@ namespace Experilous.MakeItRandom
 			long n = (long)random.Next64();
 			if (n == 0L) return random.Chance() ? +0d : -0d;
 			Detail.FloatingPoint.BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.upperBits = 0U;
 			value.number = n;
 			value.upperBits -= _doubleExponent63;

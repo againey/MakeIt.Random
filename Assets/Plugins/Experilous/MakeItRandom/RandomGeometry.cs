@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 //#define PRINT_ALL
@@ -49,7 +49,7 @@ namespace Experilous.MakeItRandom
 			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
 			v = random.UnitVector2() * distance;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			// Inline of RandomVector.PointWithinCircle()
 			Start:
 			uint lower, upper;
@@ -230,7 +230,7 @@ namespace Experilous.MakeItRandom
 			// Find a point inside a circle, modified inline of RandomVector.PointWithinCircle()
 			Start:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 #else
@@ -256,7 +256,7 @@ namespace Experilous.MakeItRandom
 				return;
 			}
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
 			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
 			int uScaled = u >> 10; //x*2^15
@@ -425,7 +425,7 @@ namespace Experilous.MakeItRandom
 			// First modified inline of RandomVector.PointWithinCircle()
 			Start1:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 			int iu = (int)upper;
@@ -460,7 +460,7 @@ namespace Experilous.MakeItRandom
 			// Second modified inline of RandomVector.PointWithinCircle()
 			Start2:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			random.Next64(out lower, out upper);
 			iu = (int)upper;
 			iv = (int)lower;
@@ -840,7 +840,7 @@ namespace Experilous.MakeItRandom
 #else
 			Start:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 #else
@@ -860,7 +860,7 @@ namespace Experilous.MakeItRandom
 				return;
 			}
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			int u = (int)(upper & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
 			int v = (int)(lower & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
 			int uScaled = u >> 8;
@@ -942,7 +942,7 @@ namespace Experilous.MakeItRandom
 #else
 			Start:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint ux, uy, uz, uw;
 			random.Next64(out ux, out uy);
 			random.Next64(out uz, out uw);
@@ -965,7 +965,7 @@ namespace Experilous.MakeItRandom
 			// random chance rolls as follows:
 			// 1/2^41 * 1/2^9 * 1/2^9 * 2^40/282149961813509 * (3 * 2^19)/(5 * 418427) = 3/(2^69+3)
 			if (
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 				uw == 0xFFFFFFFFU && uz >= 0xFF800000UL && ux >= 0xFF800000U && uy >= 0xFF800000U
 #else
 				uzuw >= 0xFFFFFFFFFF800000UL && ux >= 0xFF800000U && uy >= 0xFF800000U
@@ -981,7 +981,7 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			int ix = (int)(ux & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
 			int iy = (int)(uy & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
 			int iz = (int)(uz & Detail.FloatingPoint.floatMantissaMask) - 0x00400000;
@@ -1215,7 +1215,7 @@ namespace Experilous.MakeItRandom
 			// Find a point inside a circle, modified inline of RandomVector.PointWithinCircle()
 			Axis:
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
 #else
@@ -1232,7 +1232,7 @@ namespace Experilous.MakeItRandom
 				goto Angle;
 			}
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
 			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
 			int uScaled = u >> 10; //x*2^15

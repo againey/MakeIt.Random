@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 namespace Experilous.MakeItRandom
@@ -66,7 +66,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="buffer">An array of bytes to contain random numbers.</param>
 		public override void NextBytes(byte[] buffer)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			int maxUnrolled = (buffer.Length + 7) >> 3;
 			int i = 0;
 			while (i < maxUnrolled)

@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 using UnityEngine;
@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom
 	[System.Serializable]
 	public sealed class XorShift128Plus : RandomBase
 	{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		[SerializeField] private uint _state0 = 0U;
 		[SerializeField] private uint _state1 = 0U;
 		[SerializeField] private uint _state2 = 0U;
@@ -168,7 +168,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>The source engine is not altered.</remarks>
 		public void CopyStateFrom(XorShift128Plus source)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			_state0 = source._state0;
 			_state1 = source._state1;
 			_state2 = source._state2;
@@ -184,7 +184,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		public override byte[] SaveState()
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			var stateArray = new byte[sizeof(uint) * 4];
 			using (var stream = new System.IO.MemoryStream(stateArray))
 			{
@@ -219,7 +219,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="state3">The fourth 32 bits of state data to be saved.</param>
 		public void SaveState(out uint state0, out uint state1, out uint state2, out uint state3)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			state0 = _state0;
 			state1 = _state1;
 			state2 = _state2;
@@ -239,7 +239,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="state1">The second 64 bits of state data to be saved.</param>
 		public void SaveState(out ulong state0, out ulong state1)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			state0 = _state0 | ((ulong)_state1 << 32);
 			state1 = _state2 | ((ulong)_state3 << 32);
 #else
@@ -254,7 +254,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState()"/> on a binary-compatible type of random engine.</param>
 		public override void RestoreState(byte[] stateArray)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint state0;
 			uint state1;
 			uint state2;
@@ -298,7 +298,7 @@ namespace Experilous.MakeItRandom
 			{
 				throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift128+ random number generator.");
 			}
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			_state0 = state0;
 			_state1 = state1;
 			_state2 = state2;
@@ -320,7 +320,7 @@ namespace Experilous.MakeItRandom
 			{
 				throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift128+ random number generator.");
 			}
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			_state0 = (uint)(state0 & 0xFFFFFFFFUL);
 			_state1 = (uint)(state0 >> 32);
 			_state2 = (uint)(state1 & 0xFFFFFFFFUL);
@@ -365,7 +365,7 @@ namespace Experilous.MakeItRandom
 
 			do
 			{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 				uint state0 = bitGenerator.Next32();
 				uint state1 = bitGenerator.Next32();
 				uint state2 = bitGenerator.Next32();
@@ -427,7 +427,7 @@ namespace Experilous.MakeItRandom
 
 			do
 			{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 				uint state0 = _state0 ^ bitGenerator.Next32();
 				uint state1 = _state1 ^ bitGenerator.Next32();
 				uint state2 = _state2 ^ bitGenerator.Next32();
@@ -468,7 +468,7 @@ namespace Experilous.MakeItRandom
 			x ^= x << 23;
 			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint x0 = _state0;
 			uint x1 = _state1;
 			uint y0 = _state2;
@@ -505,7 +505,7 @@ namespace Experilous.MakeItRandom
 			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
 			return (uint)(_state1 + y);
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint x0 = _state0;
 			uint x1 = _state1;
 			uint y0 = _state2;
@@ -543,7 +543,7 @@ namespace Experilous.MakeItRandom
 			_state1 = x ^ y ^ (x >> 17) ^ (y >> 26);
 			return _state1 + y;
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint x0 = _state0;
 			uint x1 = _state1;
 			uint y0 = _state2;
@@ -586,7 +586,7 @@ namespace Experilous.MakeItRandom
 			lower = (uint)next;
 			upper = (uint)(next >> 32);
 #else
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint x0 = _state0;
 			uint x1 = _state1;
 			uint y0 = _state2;
@@ -621,7 +621,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public override int skipAheadMagnitude { get { return 64; } }
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		private void SkipAhead(uint b, ref uint x0, ref uint x1, ref uint y0, ref uint y1)
 		{
 			for (int i = 0; i < 32; ++i)
@@ -659,7 +659,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="skipAheadMagnitude"/>
 		public override void SkipAhead()
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint x0 = 0;
 			uint x1 = 0;
 			uint y0 = 0;

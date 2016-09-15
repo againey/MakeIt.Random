@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 using UnityEngine;
@@ -80,7 +80,7 @@ namespace Experilous.Examples.MakeItRandom
 #pragma warning disable 0414
 		private int _generatedInt;
 		private uint _generatedUInt;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		private uint _generatedUInt2;
 #endif
 		private ulong _generatedULong;
@@ -965,7 +965,7 @@ namespace Experilous.Examples.MakeItRandom
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 				random.Next64(out _generatedUInt, out _generatedUInt2);
 				random.Next64(out _generatedUInt, out _generatedUInt2);
 				random.Next64(out _generatedUInt, out _generatedUInt2);

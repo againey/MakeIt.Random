@@ -2,10 +2,10 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
-#if (UNITY_64 || MAKEITRANDOM_64) && !MAKEITRANDOM_32
-#define OPTIMIZE_FOR_64
-#else
-#define OPTIMIZE_FOR_32
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
 using System.Runtime.InteropServices;
@@ -26,7 +26,7 @@ namespace Experilous.MakeItRandom.Detail
 			public float number;
 		}
 
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		[StructLayout(LayoutKind.Explicit)]
 		public struct BitwiseDouble
 		{
@@ -86,7 +86,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double BitsToDoubleC1O2(ulong bits)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			BitwiseDouble value;
 			value.number = 0d;
 			value.lowerBits = (uint)bits;
@@ -102,7 +102,7 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static double BitsToDoubleC1O2(uint lower, uint upper)
 		{
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			BitwiseDouble value;
 			value.number = 0d;
 			value.lowerBits = lower;
@@ -160,7 +160,7 @@ namespace Experilous.MakeItRandom.Detail
 		{
 			if (n == 0) return 0d;
 			BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.lowerBits = 0U;
 			value.upperBits = 0U;
 			value.number = n;
@@ -177,7 +177,7 @@ namespace Experilous.MakeItRandom.Detail
 		{
 			if (n == 0U) return 0d;
 			BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.lowerBits = 0U;
 			value.upperBits = 0U;
 			value.number = n;
@@ -194,7 +194,7 @@ namespace Experilous.MakeItRandom.Detail
 		{
 			if (n == 0L) return 0d;
 			BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.lowerBits = 0U;
 			value.upperBits = 0U;
 			value.number = n;
@@ -211,7 +211,7 @@ namespace Experilous.MakeItRandom.Detail
 		{
 			if (n == 0UL) return 0d;
 			BitwiseDouble value;
-#if OPTIMIZE_FOR_32
+#if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			value.lowerBits = 0U;
 			value.upperBits = 0U;
 			value.number = n;
