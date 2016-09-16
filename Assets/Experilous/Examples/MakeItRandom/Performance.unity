@@ -984,7 +984,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &148749325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,7 +1096,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &195635002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2327,7 +2327,7 @@ GameObject:
   - 114: {fileID: 426890020}
   - 114: {fileID: 426890019}
   m_Layer: 5
-  m_Name: Point Within Shape Toggle Panel
+  m_Name: Geometry Toggle Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2345,7 +2345,7 @@ RectTransform:
   m_Children:
   - {fileID: 129578524}
   - {fileID: 911395428}
-  - {fileID: 1542326218}
+  - {fileID: 1520651466}
   m_Father: {fileID: 781427053}
   m_RootOrder: 9
   m_AnchorMin: {x: 0, y: 0}
@@ -2695,7 +2695,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &492252875
 GameObject:
   m_ObjectHideFlags: 0
@@ -3253,7 +3253,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Quat
+  m_Text: Rotation
 --- !u!222 &602081950
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4142,7 +4142,7 @@ GameObject:
   - 222: {fileID: 730675738}
   - 114: {fileID: 730675737}
   m_Layer: 5
-  m_Name: Point Within Shape Label
+  m_Name: Geometry Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4190,7 +4190,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Point Within Shape
+  m_Text: Geometry
 --- !u!222 &730675738
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5379,7 +5379,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &874239476
 GameObject:
   m_ObjectHideFlags: 0
@@ -5714,7 +5714,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &920842138
 GameObject:
   m_ObjectHideFlags: 0
@@ -5855,7 +5855,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Unit Vector & Uniform Rotation
+  m_Text: Unit Vector
 --- !u!222 &942169035
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6463,10 +6463,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1906267179}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: .0526315793, y: 0}
+  m_AnchorMax: {x: .0526315793, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1052573470
 MonoBehaviour:
@@ -8675,7 +8675,7 @@ GameObject:
   - 114: {fileID: 1520651468}
   - 114: {fileID: 1520651467}
   m_Layer: 5
-  m_Name: Quaternion Toggle
+  m_Name: Rotation Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8693,8 +8693,8 @@ RectTransform:
   m_Children:
   - {fileID: 1400428838}
   - {fileID: 602081947}
-  m_Father: {fileID: 2019153491}
-  m_RootOrder: 3
+  m_Father: {fileID: 426890018}
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -8775,7 +8775,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &1521715574
 GameObject:
   m_ObjectHideFlags: 0
@@ -8903,57 +8903,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1533378749}
---- !u!1 &1542326217
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 224: {fileID: 1542326218}
-  - 114: {fileID: 1542326219}
-  m_Layer: 5
-  m_Name: Spacer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1542326218
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1542326217}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 426890018}
-  m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: .5, y: .5}
---- !u!114 &1542326219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1542326217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: 48
-  m_PreferredHeight: 40
-  m_FlexibleWidth: 1
-  m_FlexibleHeight: -1
 --- !u!1 &1545159888
 GameObject:
   m_ObjectHideFlags: 0
@@ -9360,7 +9309,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &1589329529
 GameObject:
   m_ObjectHideFlags: 0
@@ -9974,10 +9923,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1171142847}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: .0677966103, y: 0}
+  m_AnchorMax: {x: .0677966103, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1693701270
 MonoBehaviour:
@@ -11041,7 +10990,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &1914467981
 GameObject:
   m_ObjectHideFlags: 0
@@ -11465,7 +11414,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &1988337854
 GameObject:
   m_ObjectHideFlags: 0
@@ -11707,7 +11656,6 @@ RectTransform:
   - {fileID: 742081599}
   - {fileID: 1987031793}
   - {fileID: 1289416830}
-  - {fileID: 1520651466}
   m_Father: {fileID: 781427053}
   m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 0}
