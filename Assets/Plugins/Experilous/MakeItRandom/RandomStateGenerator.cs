@@ -28,11 +28,15 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public RandomStateGenerator()
 		{
-			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 5);
+			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3 + sizeof(long) * 4);
 			System.IO.BinaryWriter writer = new System.IO.BinaryWriter(stream);
+			System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
 			writer.Write(DateTime.UtcNow.Ticks);
 			writer.Write(Environment.TickCount);
-			writer.Write(System.Diagnostics.Process.GetCurrentProcess().Id);
+			writer.Write(process.Id);
+			writer.Write(process.UserProcessorTime.Ticks);
+			writer.Write(process.PrivilegedProcessorTime.Ticks);
+			writer.Write(process.MainModule.BaseAddress.ToInt64());
 			writer.Write(System.Threading.Interlocked.Add(ref _unstableSeed, _internalSeedIncrement));
 			_seedData = stream.GetBuffer();
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
