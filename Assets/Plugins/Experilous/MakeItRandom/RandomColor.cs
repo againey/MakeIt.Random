@@ -5999,7 +5999,7 @@ namespace Experilous.MakeItRandom
 
 		private static float SpreadRepeated(this IRandom random, float original, float minSpread, float maxSpread)
 		{
-			if (Mathf.Abs(maxSpread - minSpread - 1f) > 0.00001f)
+			if (Mathf.Abs(maxSpread - minSpread) < 1f)
 			{
 				return Mathf.Repeat(random.RangeCC(original + minSpread, original + maxSpread), 1f);
 			}
