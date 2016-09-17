@@ -24,11 +24,15 @@ namespace Experilous.MakeItRandom
 		/// Constructs a random state generator which is initialized with unstable data, appropriate for seeding a random engine with unpredictable data.
 		/// </summary>
 		/// <remarks>
-		/// This constructor uses a combination of the number of ticks that have passed since the system last started, the process id, and an unstable seed which is incremented each time this particular constructor is called.
+		/// This constructor uses a combination of various transient values to initialize the seed data.
 		/// </remarks>
 		public RandomStateGenerator()
 		{
+#if UNITY_STANDALONE_WIN
 			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3 + sizeof(long) * 4);
+#else
+			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3 + sizeof(long) * 3);
+#endif
 			System.IO.BinaryWriter writer = new System.IO.BinaryWriter(stream);
 			System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess();
 			writer.Write(DateTime.UtcNow.Ticks);
@@ -36,7 +40,9 @@ namespace Experilous.MakeItRandom
 			writer.Write(process.Id);
 			writer.Write(process.UserProcessorTime.Ticks);
 			writer.Write(process.PrivilegedProcessorTime.Ticks);
+#if UNITY_STANDALONE_WIN
 			writer.Write(process.MainModule.BaseAddress.ToInt64());
+#endif
 			writer.Write(System.Threading.Interlocked.Add(ref _unstableSeed, _internalSeedIncrement));
 			_seedData = stream.GetBuffer();
 			_seedOffsetIncrement = GetSeedOffsetIncrement(_seedData.Length);
