@@ -11,6 +11,7 @@ namespace Experilous.MakeItRandom.Tests
 	class RandomeEngineTests
 	{
 		private const string seed = "random seed";
+		private const string secondarySeed = "[RANDOM_SEED]";
 
 		public static float CalculateStandardDeviation(int[] buckets, int hitsPerBucket)
 		{
@@ -2089,6 +2090,192 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(next0, next2);
 			Assert.AreEqual(next0, next3);
 			Assert.AreEqual(next0, next4);
+		}
+
+		private void SaveCreateWithState<TRandom>(System.Func<string, TRandom> createFromSeed, System.Func<byte[], TRandom> createWithState) where TRandom : IRandom
+		{
+			var random0 = createFromSeed(seed);
+
+			for (int i = 0; i < 71; ++i)
+			{
+				random0.Next64();
+			}
+
+			var state = random0.SaveState();
+
+			var random1 = createWithState(state);
+
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+		}
+
+		private void SaveRestoreState<TRandom>(System.Func<string, TRandom> createFromSeed) where TRandom : IRandom
+		{
+			var random0 = createFromSeed(seed);
+
+			for (int i = 0; i < 157; ++i)
+			{
+				random0.Next64();
+			}
+
+			var state = random0.SaveState();
+
+			var random1 = createFromSeed(secondarySeed);
+
+			for (int i = 0; i < 41; ++i)
+			{
+				random1.Next64();
+			}
+
+			random1.RestoreState(state);
+
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+			Assert.AreEqual(random0.Next64(), random1.Next64());
+		}
+
+		[Test]
+		public void SaveCreateWithState_XorShift128Plus()
+		{
+			SaveCreateWithState<XorShift128Plus>(XorShift128Plus.Create, XorShift128Plus.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_XorShift128Plus()
+		{
+			SaveRestoreState<XorShift128Plus>(XorShift128Plus.Create);
+		}
+
+		[Test]
+		public void SaveCreateWithState_XorShift1024Star()
+		{
+			SaveCreateWithState<XorShift1024Star>(XorShift1024Star.Create, XorShift1024Star.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_XorShift1024Star()
+		{
+			SaveRestoreState<XorShift1024Star>(XorShift1024Star.Create);
+		}
+
+		[Test]
+		public void SaveCreateWithState_XoroShiro128Plus()
+		{
+			SaveCreateWithState<XoroShiro128Plus>(XoroShiro128Plus.Create, XoroShiro128Plus.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_XoroShiro128Plus()
+		{
+			SaveRestoreState<XoroShiro128Plus>(XoroShiro128Plus.Create);
+		}
+
+		[Test]
+		public void SaveCreateWithState_XorShiftAdd()
+		{
+			SaveCreateWithState<XorShiftAdd>(XorShiftAdd.Create, XorShiftAdd.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_XorShiftAdd()
+		{
+			SaveRestoreState<XorShiftAdd>(XorShiftAdd.Create);
+		}
+
+		[Test]
+		public void SaveCreateWithState_SplitMix64()
+		{
+			SaveCreateWithState<SplitMix64>(SplitMix64.Create, SplitMix64.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_SplitMix64()
+		{
+			SaveRestoreState<SplitMix64>(SplitMix64.Create);
+		}
+
+#if UNITY_5_4_OR_NEWER
+		[Test]
+		public void SaveCreateWithState_UnityRandom()
+		{
+			var random0 = UnityRandom.Create(seed);
+
+			for (int i = 0; i < 71; ++i)
+			{
+				random0.Next64();
+			}
+
+			var state = random0.SaveState();
+
+			ulong[] expected = new ulong[8];
+			for (int i = 0; i < expected.Length; ++i)
+			{
+				expected[i] = random0.Next64();
+			}
+
+			var random1 = UnityRandom.CreateWithState(state);
+
+			for (int i = 0; i < expected.Length; ++i)
+			{
+				Assert.AreEqual(expected[i], random1.Next64());
+			}
+		}
+
+		[Test]
+		public void SaveRestoreState_UnityRandom()
+		{
+			var random0 = UnityRandom.Create(seed);
+
+			for (int i = 0; i < 157; ++i)
+			{
+				random0.Next64();
+			}
+
+			var state = random0.SaveState();
+
+			ulong[] expected = new ulong[8];
+			for (int i = 0; i < expected.Length; ++i)
+			{
+				expected[i] = random0.Next64();
+			}
+
+			var random1 = UnityRandom.Create(secondarySeed);
+
+			for (int i = 0; i < 41; ++i)
+			{
+				random1.Next64();
+			}
+
+			random1.RestoreState(state);
+
+			for (int i = 0; i < expected.Length; ++i)
+			{
+				Assert.AreEqual(expected[i], random1.Next64());
+			}
+		}
+#endif
+
+		[Test]
+		public void SaveCreateWithState_SystemRandom()
+		{
+			SaveCreateWithState<SystemRandom>(SystemRandom.Create, SystemRandom.CreateWithState);
+		}
+
+		[Test]
+		public void SaveRestoreState_SystemRandom()
+		{
+			SaveRestoreState<SystemRandom>(SystemRandom.Create);
 		}
 	}
 }
