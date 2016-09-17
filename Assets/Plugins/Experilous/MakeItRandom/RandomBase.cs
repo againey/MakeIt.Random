@@ -127,13 +127,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
 		/// </summary>
-		public abstract void Step();
+		public virtual void Step()
+		{
+			Next64();
+		}
 
 		/// <summary>
 		/// Get the next 32 bits of pseudo-random generated data.
 		/// </summary>
 		/// <returns>A 32-bit unsigned integer representing the next 32 bits of pseudo-random generated data.</returns>
-		public abstract uint Next32();
+		public virtual uint Next32()
+		{
+			return (uint)Next64();
+		}
 
 		/// <summary>
 		/// Get the next 64 bits of pseudo-random generated data.
@@ -199,7 +205,10 @@ namespace Experilous.MakeItRandom
 		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
 		/// <seealso cref="System.Random"/>
 		/// <seealso cref="SystemRandomWrapper"/>
-		public abstract System.Random AsSystemRandom();
+		public virtual System.Random AsSystemRandom()
+		{
+			return new SystemRandomWrapper(this);
+		}
 
 		/// <summary>
 		/// A helper function for derived classes implementing <see cref="IRandom.SaveState()"/>, to write a byte of saved state data to a binary stream.

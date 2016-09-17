@@ -413,13 +413,19 @@
 					<list>
 						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.Seed(Experilous.MakeItRandom.IBitGenerator)</codeEntityReference></listItem>
 						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.MergeSeed(Experilous.MakeItRandom.IBitGenerator)</codeEntityReference></listItem>
-						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.Step</codeEntityReference></listItem>
-						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference></listItem>
 						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference></listItem>
 					</list>
+					And although it is not necessary, it is prudent to also provide
+					custom implementations for the following:
+					<list>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.SaveState</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.RestoreState(System.Byte[])</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Step</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference></listItem>
+					</list>
 					<alert class="caution">
-						Note that some methods not in the above list have a default
-						implementation that throws
+						Note that some methods not in the first list above have
+						a default implementation that throws
 						<codeEntityReference>T:System.NotSupportedException</codeEntityReference>
 						if you do not provide an implementation of your own.
 					</alert>
