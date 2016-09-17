@@ -149,6 +149,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the XorShift1024* engine's internal state as a byte array, which can be restored later.
 		/// </summary>
+		/// <returns>The internal state as a byte array.</returns>
 		public override byte[] SaveState()
 		{
 			var stateArray = new byte[sizeof(ulong) * 16 + sizeof(byte)];

@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// A static class of extension methods for generating random strings with various character sets and patterns.
+	/// </summary>
 	public static class RandomString
 	{
 		#region UsingCharacters
@@ -17,7 +20,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="length">The length of the string to be generated.</param>
 		/// <param name="characters">The allowable characters to select from when generating the string.</param>
 		/// <returns>A random string, with each character being a uniformly random selection from the provided character set.</returns>
-		/// <seealso cref="String(IRandom, int, char[], char, float)"/>
+		/// <seealso cref="String(IRandom, int, char[], char, float, bool, bool, bool)"/>
 		/// <seealso cref="Characters(IRandom, char[], int, int, char[])"/>
 		public static string String(this IRandom random, int length, char[] characters)
 		{
@@ -36,7 +39,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="separatorProbability">The probability of any specific index in the string being a separator character.  Must be in the range [0, 1].</param>
 		/// <param name="allowSeparatorAtEnd">Whether or not the last character to be generated is allowed to be a separator character.</param>
 		/// <param name="allowSeparatorAtBegin">Whether or not the first character to be generated is allowed to be a separator character.</param>
-		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorState"/> is false.</param>
+		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorAtBegin"/> is false.</param>
 		/// <returns>A random string, with each character being a uniformly random selection from the provided character set.</returns>
 		/// <remarks><para>It is guaranteed that two separator characters will never be generated one immediately after the other, regardless of the separator probability.</para>
 		/// <para>A separator probability of 0 will guarantee that there are no separators at all, while a probability of 1 will guarantee
@@ -44,7 +47,7 @@ namespace Experilous.MakeItRandom
 		/// same every-other character outcome, but will have a chance of generating longer sequences of non-separator characters, rather than
 		/// being strictly limited to one non-separator character at a time.</para></remarks>
 		/// <seealso cref="String(IRandom, int, char[])"/>
-		/// <seealso cref="Characters(IRandom, char[], int, int, char[], char, float, bool, bool)"/>
+		/// <seealso cref="Characters(IRandom, char[], int, int, char[], char, float, bool, bool, bool)"/>
 		public static string String(this IRandom random, int length, char[] characters, char separator, float separatorProbability, bool allowSeparatorAtEnd = false, bool allowSeparatorAtBegin = false, bool forceSeparatorAtBegin = false)
 		{
 			char[] buffer = new char[length];
@@ -60,7 +63,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="start">The start index of the character buffer where random character generation will begin.  Must be less than or equal to <paramref name="buffer"/>.Length - <paramref name="length"/>.</param>
 		/// <param name="length">The number of random characters to be generated.  Must be less than or equal to <c><paramref name="buffer"/>.Length - <paramref name="start"/></c>.</param>
 		/// <param name="characters">The allowable characters to select from when generating the string.</param>
-		/// <seealso cref="Characters(IRandom, char[], int, int, char[], char, float, bool, bool)"/>
+		/// <seealso cref="Characters(IRandom, char[], int, int, char[], char, float, bool, bool, bool)"/>
 		/// <seealso cref="String(IRandom, int, char[])"/>
 		public static void Characters(this IRandom random, char[] buffer, int start, int length, char[] characters)
 		{
@@ -86,7 +89,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="separatorProbability">The probability of any specific index in the string being a separator character.  Must be in the range [0, 1].</param>
 		/// <param name="allowSeparatorAtEnd">Whether or not the last character to be generated is allowed to be a separator character.</param>
 		/// <param name="allowSeparatorAtBegin">Whether or not the first character to be generated is allowed to be a separator character.</param>
-		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorState"/> is false.</param>
+		/// <param name="forceSeparatorAtBegin">Whether or not the first character to be generated must be a separator character.  Ignored if <paramref name="allowSeparatorAtBegin"/> is false.</param>
 		/// <remarks><para>It is guaranteed that two separator characters will never be generated one immediately after the other within the
 		/// character sequence, regardless of the separator probability.</para>
 		/// <para>A separator probability of 0 will guarantee that there are no separators at all, while a probability of 1 will guarantee
@@ -94,7 +97,7 @@ namespace Experilous.MakeItRandom
 		/// same every-other character outcome, but will have a chance of generating longer sequences of non-separator characters, rather than
 		/// being strictly limited to one non-separator character at a time.</para></remarks>
 		/// <seealso cref="Characters(IRandom, char[], int, int, char[])"/>
-		/// <seealso cref="String(IRandom, int, char[], char, float)"/>
+		/// <seealso cref="String(IRandom, int, char[], char, float, bool, bool, bool)"/>
 		public static void Characters(this IRandom random, char[] buffer, int start, int length, char[] characters, char separator, float separatorProbability, bool allowSeparatorAtEnd = false, bool allowSeparatorAtBegin = false, bool forceSeparatorAtBegin = false)
 		{
 			if (length <= 0) return;
@@ -414,7 +417,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="length">The length of the string to be generated.</param>
-		/// <param name="Base64CharacterPairs">The specific Base64 character set used to generate the random string.</param>
+		/// <param name="characterPairs">The specific Base64 character set used to generate the random string.</param>
 		/// <returns>A random string, with each character being a uniformly random selection from the Base64 character set specified.</returns>
 		/// <seealso cref="Base64String(IRandom, int)"/>
 		/// <seealso cref="Base64CharacterPairs"/>

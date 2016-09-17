@@ -40,7 +40,7 @@ namespace Experilous.MakeItRandom
 		/// Generates a random 2-dimensional unit vector, selected from a uniform distribution of all points on the perimeter of a unit circle.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="v">The out parameter which will hold random 2-dimensional vector with a magnitude equal to 1 upon completion of the function.</param>
+		/// <param name="vec">The out parameter which will hold random 2-dimensional vector with a magnitude equal to 1 upon completion of the function.</param>
 		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="UnitVector2(IRandom)"/> in some environments.</note></remarks>
 		/// <seealso cref="UnitVector2(IRandom)"/>
 		public static void UnitVector2(this IRandom random, out Vector2 vec)
@@ -205,6 +205,8 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random 3-dimensional unit vector.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="UnitVector3(IRandom, out Vector3)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector3(IRandom, out Vector3)"/>
 		public static Vector3 UnitVector3(this IRandom random)
 		{
 			Vector3 v;
@@ -212,6 +214,13 @@ namespace Experilous.MakeItRandom
 			return v;
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit sphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="vec">The out parameter which will hold random 3-dimensional vector with a magnitude equal to 1 upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="UnitVector3(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector3(IRandom)"/>
 		public static void UnitVector3(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -406,6 +415,8 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random 4-dimensional unit vector.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="UnitVector4(IRandom, out Vector4)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector4(IRandom, out Vector4)"/>
 		public static Vector4 UnitVector4(this IRandom random)
 		{
 			Vector4 vec;
@@ -417,7 +428,9 @@ namespace Experilous.MakeItRandom
 		/// Generates a random 4-dimensional unit vector, selected from a uniform distribution of all points on the surface of a unit hypersphere.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random 4-dimensional unit vector.</returns>
+		/// <param name="vec">The out parameter which will hold random 4-dimensional vector with a magnitude equal to 1 upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="UnitVector4(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="UnitVector4(IRandom)"/>
 		public static void UnitVector4(this IRandom random, out Vector4 vec)
 		{
 			// General formula from:  http://mathworld.wolfram.com/HyperspherePointPicking.html
@@ -927,6 +940,8 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random 3-dimensional vector with a magnitude less than or equal to 1.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="PointWithinSphere(IRandom, out Vector3)"/> in some environments.</note></remarks>
+		/// <seealso cref="PointWithinSphere(IRandom, out Vector3)"/>
 		public static Vector3 PointWithinSphere(this IRandom random)
 		{
 			Vector3 v;
@@ -934,6 +949,13 @@ namespace Experilous.MakeItRandom
 			return v;
 		}
 
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a unit sphere.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="vec">The out parameter which will hold random 3-dimensional vector with a magnitude less than or equal to 1 upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably faster than <see cref="PointWithinSphere(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="PointWithinSphere(IRandom)"/>
 		public static void PointWithinSphere(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACK_COMPAT_V0_1
@@ -1174,6 +1196,8 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random rotation quaternion.</returns>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="Rotation(IRandom, out Quaternion)"/> in some environments.</note></remarks>
+		/// <seealso cref="Rotation(IRandom, out Quaternion)"/>
 		public static Quaternion Rotation(this IRandom random)
 		{
 			Quaternion quat;
@@ -1191,7 +1215,9 @@ namespace Experilous.MakeItRandom
 		/// Generates a random quaternion, selected from a uniform distribution of all possible 3-dimensional rotations or orientations.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <returns>A random rotation quaternion.</returns>
+		/// <param name="quat">The out parameter which will hold random rotation quaternion upon completion of the function.</param>
+		/// <remarks><note type="note">This function variant can be noticeably slower than <see cref="Rotation(IRandom)"/> in some environments.</note></remarks>
+		/// <seealso cref="Rotation(IRandom)"/>
 		public static void Rotation(this IRandom random, out Quaternion quat)
 		{
 			// Overall algorithm is to generate a uniformly distributed axis (3D unit vector), generate a

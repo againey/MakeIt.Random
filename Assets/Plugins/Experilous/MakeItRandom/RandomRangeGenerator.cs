@@ -1942,7 +1942,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOO(IRandom, float, float)"/>
 		public static IFloatGenerator MakePreciseRangeOOGenerator(this IRandom random, float lowerExclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseOO(random, lowerExclusive, upperExclusive);
@@ -1955,7 +1955,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOO(IRandom, float)"/>
 		public static IFloatGenerator MakePreciseRangeOOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseOO(random, upperExclusive);
@@ -1969,7 +1969,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOO(IRandom, double, double)"/>
 		public static IDoubleGenerator MakePreciseRangeOOGenerator(this IRandom random, double lowerExclusive, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseOO(random, lowerExclusive, upperExclusive);
@@ -1982,7 +1982,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOO(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOO(IRandom, double)"/>
 		public static IDoubleGenerator MakePreciseRangeOOGenerator(this IRandom random, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseOO(random, upperExclusive);
@@ -2250,7 +2250,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCO(IRandom, float, float)"/>
 		public static IFloatGenerator MakePreciseRangeCOGenerator(this IRandom random, float lowerInclusive, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseCO(random, lowerInclusive, upperExclusive);
@@ -2263,7 +2263,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCO(IRandom, float)"/>
 		public static IFloatGenerator MakePreciseRangeCOGenerator(this IRandom random, float upperExclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseCO(random, upperExclusive);
@@ -2277,7 +2277,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCO(IRandom, double, double)"/>
 		public static IDoubleGenerator MakePreciseRangeCOGenerator(this IRandom random, double lowerInclusive, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseCO(random, lowerInclusive, upperExclusive);
@@ -2290,7 +2290,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  Generated numbers will be strictly less than this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperExclusive"/>).</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCO(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCO(IRandom, double)"/>
 		public static IDoubleGenerator MakePreciseRangeCOGenerator(this IRandom random, double upperExclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseCO(random, upperExclusive);
@@ -2558,7 +2558,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOC(IRandom, float, float)"/>
 		public static IFloatGenerator MakePreciseRangeOCGenerator(this IRandom random, float lowerExclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseOC(random, lowerExclusive, upperInclusive);
@@ -2571,7 +2571,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOC(IRandom, float)"/>
 		public static IFloatGenerator MakePreciseRangeOCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseOC(random, upperInclusive);
@@ -2585,7 +2585,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerExclusive">The exclusive lower bound of the custom range.  Generated numbers will be strictly greater than this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (<paramref name="lowerExclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakePreciseRangeOCGenerator(this IRandom random, double lowerExclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseOC(random, lowerExclusive, upperInclusive);
@@ -2598,7 +2598,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range (0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeOC(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeOC(IRandom, double)"/>
 		public static IDoubleGenerator MakePreciseRangeOCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseOC(random, upperInclusive);
@@ -2866,7 +2866,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, float, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCC(IRandom, float, float)"/>
 		public static IFloatGenerator MakePreciseRangeCCGenerator(this IRandom random, float lowerInclusive, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseCC(random, lowerInclusive, upperInclusive);
@@ -2879,7 +2879,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random floats in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, float)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCC(IRandom, float)"/>
 		public static IFloatGenerator MakePreciseRangeCCGenerator(this IRandom random, float upperInclusive)
 		{
 			return FloatRangeGenerator.CreatePreciseCC(random, upperInclusive);
@@ -2893,7 +2893,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="lowerInclusive">The inclusive lower bound of the custom range.  Generated numbers will be greater than or equal to this value.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [<paramref name="lowerInclusive"/>, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, double, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCC(IRandom, double, double)"/>
 		public static IDoubleGenerator MakePreciseRangeCCGenerator(this IRandom random, double lowerInclusive, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseCC(random, lowerInclusive, upperInclusive);
@@ -2906,7 +2906,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <param name="upperInclusive">The inclusive upper bound of the custom range.  Generated numbers will be less than or equal to this value.</param>
 		/// <returns>A range generator producing random doubles in the range [0, <paramref name="upperInclusive"/>].</returns>
-		/// <seealso cref="RandomInteger.PreciseRangeCC(IRandom, double)"/>
+		/// <seealso cref="RandomFloatingPoint.PreciseRangeCC(IRandom, double)"/>
 		public static IDoubleGenerator MakePreciseRangeCCGenerator(this IRandom random, double upperInclusive)
 		{
 			return DoubleRangeGenerator.CreatePreciseCC(random, upperInclusive);

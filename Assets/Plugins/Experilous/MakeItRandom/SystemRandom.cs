@@ -140,6 +140,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the .NET System.Random engine's internal state as a byte array, which can be restored later.
 		/// </summary>
+		/// <returns>The internal state as a byte array.</returns>
 		public override byte[] SaveState()
 		{
 			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();

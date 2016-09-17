@@ -65,6 +65,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Creates an instance of the standard random engine using the provided <paramref name="seed"/> to initialize the engine's state.
 		/// </summary>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static XorShift128Plus CreateStandard(int seed)
@@ -75,6 +76,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Creates an instance of the standard random engine using the provided <paramref name="seed"/> to initialize the engine's state.
 		/// </summary>
+		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static XorShift128Plus CreateStandard(params int[] seed)
@@ -85,6 +87,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Creates an instance of the standard random engine using the provided <paramref name="seed"/> to initialize the engine's state.
 		/// </summary>
+		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static XorShift128Plus CreateStandard(string seed)
@@ -95,6 +98,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Creates an instance of the standard random engine using the provided <paramref name="bitGenerator"/> to initialize the engine's state.
 		/// </summary>
+		/// <param name="bitGenerator">A supplier of bits used to directly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(IBitGenerator)"/>
 		/// <seealso cref="RandomStateGenerator"/>

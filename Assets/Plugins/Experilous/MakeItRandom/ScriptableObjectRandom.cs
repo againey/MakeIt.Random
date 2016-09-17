@@ -8,22 +8,19 @@ using UnityEngine;
 namespace Experilous.MakeItRandom
 {
 	/// <summary>
-	/// An abstract base class that eases the implementation of a random engine.
+	/// Wraps an implementation of <see cref="IRandom"/> in a derivation of <see cref="ScriptableObject"/>.
 	/// </summary>
-	/// <remarks>
-	/// <para>By implementing most random-producing functions in terms of a smaller core set of random-producing
-	/// functions, the final implementation becomes easier to write.  As a consequence, however, this is likely to be
-	/// less efficient due to potentially throwing away some random bits.  For random engines that generate random bits
-	/// very quickly but in specific chunk sizes, this is okay and probably even preferable for performance.  But for
-	/// random engines that are slow about generating random bits (such as a cryptographically secure PRNG), this base
-	/// class is not ideal.</para>
-	/// </remarks>
+	/// <seealso cref="ScriptableObject"/>
 	/// <seealso cref="IRandom"/>
 	public class ScriptableObjectRandom : ScriptableObject, IRandom, ISerializationCallbackReceiver
 	{
 		private IRandom _random;
 		[SerializeField] private byte[] _state;
 
+		/// <summary>
+		/// Provides access to the wrapped <see cref="IRandom"/> instance.
+		/// </summary>
+		/// <remarks>This property cannot be assigned null.</remarks>
 		public IRandom random
 		{
 			get
@@ -39,6 +36,11 @@ namespace Experilous.MakeItRandom
 
 		private ScriptableObjectRandom() { }
 
+		/// <summary>
+		/// Creates a wrapper instance around the provided <see cref="IRandom"/> instance.
+		/// </summary>
+		/// <param name="random">The random engine to be wrapped as a <see cref="ScriptableObject"/>.</param>
+		/// <returns>The wrapper around the provided random engine.</returns>
 		public static ScriptableObjectRandom CreateInstance(IRandom random)
 		{
 			ScriptableObjectRandom scriptableObject = CreateInstance<ScriptableObjectRandom>();

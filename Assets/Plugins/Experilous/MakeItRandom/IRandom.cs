@@ -12,6 +12,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the pseudo-random engine's internal state as a byte array, which can be restored later.
 		/// </summary>
+		/// <returns>The internal state as a byte array.</returns>
 		byte[] SaveState();
 
 		/// <summary>
@@ -132,8 +133,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
 		/// <seealso cref="System.Random"/>
-		/// <seealso cref="SystemRandomWrapper32"/>
-		/// <seealso cref="SystemRandomWrapper64"/>
+		/// <seealso cref="SystemRandomWrapper"/>
 		System.Random AsSystemRandom();
 	}
 }

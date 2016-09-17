@@ -23,6 +23,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the pseudo-random engine's internal state as a byte array, which can be restored later.
 		/// </summary>
+		/// <returns>The internal state as a byte array.</returns>
 		public virtual byte[] SaveState()
 		{
 			throw new System.NotSupportedException("This random engine is unable to save its state to a byte array.");
@@ -31,7 +32,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Restores the pseudo-random engine's internal state from a byte array which had been previously saved.
 		/// </summary>
-		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState">SaveState</see>() on a binary-compatible type of random engine.</param>
+		/// <param name="stateArray">State data generated from an earlier call to <see cref="SaveState()" /> on a binary-compatible type of random engine.</param>
 		public virtual void RestoreState(byte[] stateArray)
 		{
 			throw new System.NotSupportedException("This random engine is unable to restore its state from a byte array.");
@@ -135,7 +136,6 @@ namespace Experilous.MakeItRandom
 		public abstract uint Next32();
 
 		/// <summary>
-		/// <summary>
 		/// Get the next 64 bits of pseudo-random generated data.
 		/// </summary>
 		/// <returns>A 64-bit unsigned integer representing the next 64 bits of pseudo-random generated data.</returns>
@@ -198,8 +198,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>An adapting wrapper around this random engine which is derived from <see cref="System.Random"/>.</returns>
 		/// <seealso cref="System.Random"/>
-		/// <seealso cref="SystemRandomWrapper32"/>
-		/// <seealso cref="SystemRandomWrapper64"/>
+		/// <seealso cref="SystemRandomWrapper"/>
 		public abstract System.Random AsSystemRandom();
 
 		/// <summary>

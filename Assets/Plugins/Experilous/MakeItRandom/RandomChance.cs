@@ -111,7 +111,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^31.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="numerator">The average number of times out of the full non-negative range of <c>int</c> (2^31) that the result will be true.  Must be non-negative.</param>
 		/// <returns>A random bool weighted according to the probability set by the parameter and the non-negative range of an integer.</returns>
 		public static bool Probability(this IRandom random, int numerator)
 		{
@@ -122,7 +122,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^32.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="numerator">The average number of times out of the full range of <c>uint</c> (2^32) that the result will be true.</param>
 		/// <returns>A random bool weighted according to the probability set by the parameter and the full range of an unsigned integer.</returns>
 		public static bool Probability(this IRandom random, uint numerator)
 		{
@@ -133,7 +133,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^63.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="numerator">The average number of times out of the full non-negative range of <c>long</c> (2^63) that the result will be true.  Must be non-negative.</param>
 		/// <returns>A random bool weighted according to the probability set by the parameter and the non-negative range of a long integer.</returns>
 		public static bool Probability(this IRandom random, long numerator)
 		{
@@ -144,7 +144,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/2^64.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be true.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="numerator">The average number of times out of the full range of <c>ulong</c> (2^64) that the result will be true.</param>
 		/// <returns>A random bool weighted according to the probability set by the parameter and the full range of an unsigned long integer.</returns>
 		public static bool Probability(this IRandom random, ulong numerator)
 		{

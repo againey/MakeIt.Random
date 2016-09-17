@@ -182,6 +182,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Saves the XorShift128+ engine's internal state as a byte array, which can be restored later.
 		/// </summary>
+		/// <returns>The internal state as a byte array.</returns>
 		public override byte[] SaveState()
 		{
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
@@ -614,7 +615,7 @@ namespace Experilous.MakeItRandom
 
 #if !MAKEITRANDOM_BACK_COMPAT_V0_1
 		/// <summary>
-		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead"/>() skips over.
+		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead()"/> skips over.
 		/// </summary>
 		/// <remarks>
 		/// <para><see cref="SkipAhead()"/> will skip forward by exactly <code>2^64</code> steps each time it is called.</para>

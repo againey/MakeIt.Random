@@ -495,7 +495,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="numeratorPositive">The average number of times out of <paramref name="denominator"/> that the result will be +1.  Must be in the range [0, <paramref name="denominator"/>].</param>
 		/// <param name="numeratorNegative">The average number of times out of <paramref name="denominator"/> that the result will be -1.  Must be in the range [0, <paramref name="denominator"/>].</param>
-		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
 		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
 		public static int SignProbability(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
@@ -511,7 +511,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="numeratorPositive">The average number of times out of <paramref name="denominator"/> that the result will be +1.  Must be in the range [0, <paramref name="denominator"/>].</param>
 		/// <param name="numeratorNegative">The average number of times out of <paramref name="denominator"/> that the result will be -1.  Must be in the range [0, <paramref name="denominator"/>].</param>
-		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.</param>
 		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
 		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
 		public static int SignProbability(this IRandom random, uint numeratorPositive, uint numeratorNegative, uint denominator)
@@ -527,7 +527,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="numeratorPositive">The average number of times out of <paramref name="denominator"/> that the result will be +1.  Must be in the range [0, <paramref name="denominator"/>].</param>
 		/// <param name="numeratorNegative">The average number of times out of <paramref name="denominator"/> that the result will be -1.  Must be in the range [0, <paramref name="denominator"/>].</param>
-		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
 		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
 		public static int SignProbability(this IRandom random, float numeratorPositive, float numeratorNegative, float denominator)
@@ -543,7 +543,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="numeratorPositive">The average number of times out of <paramref name="denominator"/> that the result will be +1.  Must be in the range [0, <paramref name="denominator"/>].</param>
 		/// <param name="numeratorNegative">The average number of times out of <paramref name="denominator"/> that the result will be -1.  Must be in the range [0, <paramref name="denominator"/>].</param>
-		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
 		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
 		public static int SignProbability(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)

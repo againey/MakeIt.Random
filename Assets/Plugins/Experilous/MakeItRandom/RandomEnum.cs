@@ -6,10 +6,31 @@ using System.Collections.Generic;
 
 namespace Experilous.MakeItRandom
 {
+	/// <summary>
+	/// An interface for any generator of enumeration items.
+	/// </summary>
+	/// <typeparam name="T">The enumeration type which this generator selects from and returns.</typeparam>
 	public interface IEnumGenerator<T> where T : struct
 	{
+		/// <summary>
+		/// Get the next random enumeration item selected by the generator.
+		/// </summary>
+		/// <returns>The next random enumeration item randomly selected according to the generator implementation.</returns>
 		T Next();
+
+		/// <summary>
+		/// Get the name of the next random enumeration item selected by the generator.
+		/// </summary>
+		/// <returns>The name of the next random enumeration item randomly selected according to the generator implementation.</returns>
+		/// <remarks>This function is particularly useful when the enumeration contains multiple items with the same value.</remarks>
 		string NextName();
+
+		/// <summary>
+		/// Get the next random enumeration item selected by the generator.
+		/// </summary>
+		/// <param name="name">The name of the next random enumeration item randomly selected according to the generator implementation and returned by the function.</param>
+		/// <returns>The next random enumeration item randomly selected according to the generator implementation.</returns>
+		/// <remarks>This function is particularly useful when the enumeration contains multiple items with the same value.</remarks>
 		T Next(out string name);
 	}
 
@@ -402,8 +423,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, sbyte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, sbyte})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, sbyte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, sbyte})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, sbyte> weightsAccessor) where T : struct
 		{
 			return new ByValueSByteWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -418,8 +439,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, sbyte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, sbyte})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, sbyte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, sbyte})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, sbyte> weightsAccessor) where T : struct
 		{
 			return new ByNameSByteWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -434,8 +455,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, byte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, byte})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, byte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, byte})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, byte> weightsAccessor) where T : struct
 		{
 			return new ByValueByteWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -450,8 +471,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, byte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, byte})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, byte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, byte})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, byte> weightsAccessor) where T : struct
 		{
 			return new ByNameByteWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -466,8 +487,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, short})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, short})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, short})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, short})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, short> weightsAccessor) where T : struct
 		{
 			return new ByValueShortWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -482,8 +503,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, short})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, short})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, short})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, short})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, short> weightsAccessor) where T : struct
 		{
 			return new ByNameShortWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -498,8 +519,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, ushort})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, ushort})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ushort})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ushort})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, ushort> weightsAccessor) where T : struct
 		{
 			return new ByValueUShortWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -514,8 +535,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, ushort})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, ushort})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ushort})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ushort})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, ushort> weightsAccessor) where T : struct
 		{
 			return new ByNameUShortWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -530,8 +551,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, int})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, int})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, int})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, int})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, int> weightsAccessor) where T : struct
 		{
 			return new ByValueIntWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -546,8 +567,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, int})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, int})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, int})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, int})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, int> weightsAccessor) where T : struct
 		{
 			return new ByNameIntWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -562,8 +583,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, uint})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, uint})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, uint})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, uint})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, uint> weightsAccessor) where T : struct
 		{
 			return new ByValueUIntWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -578,8 +599,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, uint})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, uint})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, uint})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, uint})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, uint> weightsAccessor) where T : struct
 		{
 			return new ByNameUIntWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -594,8 +615,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, long})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, long})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, long})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, long})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, long> weightsAccessor) where T : struct
 		{
 			return new ByValueLongWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -610,8 +631,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, long})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, long})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, long})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, long})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, long> weightsAccessor) where T : struct
 		{
 			return new ByNameLongWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -626,8 +647,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, ulong})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, ulong})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ulong})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ulong})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, ulong> weightsAccessor) where T : struct
 		{
 			return new ByValueULongWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -642,8 +663,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, ulong})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, ulong})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ulong})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ulong})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, ulong> weightsAccessor) where T : struct
 		{
 			return new ByNameULongWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -658,8 +679,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, float})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, float})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, float})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, float})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, float> weightsAccessor) where T : struct
 		{
 			return new ByValueFloatWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -674,8 +695,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, float})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, float})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, float})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, float})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, float> weightsAccessor) where T : struct
 		{
 			return new ByNameFloatWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -690,8 +711,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, double})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{string, double})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, double})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, double})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, double> weightsAccessor) where T : struct
 		{
 			return new ByValueDoubleWeightedEnumGenerator<T>(random, weightsAccessor);
@@ -706,8 +727,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, double})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator`1{T}(IRandom, System.Func`2{T, double})"/>
+		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, double})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, double})"/>
 		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, double> weightsAccessor) where T : struct
 		{
 			return new ByNameDoubleWeightedEnumGenerator<T>(random, weightsAccessor);

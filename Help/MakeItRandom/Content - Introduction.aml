@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="cb0daf55-236d-4175-aedc-48751c1d0964" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<title>Replacement Title?</title>
+		<!--
+		<summary>
+			<para>Optional summary abstract</para>
+		</summary>
+		-->
+		<introduction>
+			<!-- Uncomment this to generate an outline of the section and sub-section
+			   titles.  Specify a numeric value as the inner text to limit it to
+			   a specific number of sub-topics when creating the outline.  Specify
+			   zero (0) to limit it to top-level sections only.  -->
+			<!-- <autoOutline /> -->
+			<para>
+				Welcome to the Make It Random User's Manual.  This document will
+				assist in integrating this collection of random number generation
+				utilities into your Unity project.
+			</para>
+		</introduction>
+		<!-- Add one or more top-level section elements.  These are collapsible.
+		     If using <autoOutline />, add an address attribute to identify it
+		     and specify a title so that it can be jumped to with a hyperlink. -->
+		<section address="Section1">
+			<title>What does Make It Random offer?</title>
+			<content>
+				<!-- Uncomment this to create a sub-section outline
+				<autoOutline /> -->
+				<para>
+					Make It Random provides classes and functions, accessible from your
+					scripts, for generating random data of various sorts, including:
+				</para>
+				<list class="bullet">
+					<listItem><para>integers</para></listItem>
+					<listItem><para>floating point numbers</para></listItem>
+					<listItem><para>vectors and quaternions</para></listItem>
+					<listItem><para>probabilities</para></listItem>
+					<listItem><para>strings</para></listItem>
+					<listItem><para>dice rolls</para></listItem>
+					<listItem><para>colors</para></listItem>
+				</list>
+				<para>
+					In addition to simply generating random data, it also includes
+					utilities for:
+				</para>
+				<list class="bullet">
+					<listItem><para>selecting elements from a list</para></listItem>
+					<listItem><para>selecting values from an enumeration</para></listItem>
+					<listItem><para>shuffling a list</para></listItem>
+				</list>
+			</content>
+		</section>
+		<section address="Section2">
+			<title>How is Make It Random organized?</title>
+			<content>
+				<para>
+					The foundation of Make It Random is the concept of a <newTerm>Random
+					Engine</newTerm>, an object providing the basic services of a pseudo-random
+					number generator (PRGN), responsible for generating a deterministic
+					sequence of seemingly random bits initialized by a seed value.
+					Unlike <codeInline>UnityEngine.Random</codeInline>,
+					Make It Random engines are standard non-static classes which can
+					be passed around, copied, and serialized.  Multiple instances can
+					also exist simultaneously and independently, making it easier to
+					control deterministic behavior when it is needed.
+				</para>
+				<para>
+					On top of random engines, a wide variety of extension methods
+					are available for using the random bits they generate to produce
+					all of the more structured and complex data typically required
+					by games.  Because they are extension methods which apply to the
+					<codeEntityReference qualifyHint="true">T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					interface which all Make It Random engines implement, it is easy
+					to add further extension methods that will immediately become
+					usable by any random engine type.  Similarly, if for some reason
+					none of the random engines supplied by Make It Random are suitable
+					and you need to create your own, just make sure it implements
+					<codeEntityReference qualifyHint="false">T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					and your new engine will automatically support all of the
+					already existing utilities.
+				</para>
+			</content>
+		</section>
+		<section address="Section3">
+			<title>Using Make It Random</title>
+			<content>
+				<para>
+					The first step in using Make It Random is to select a
+					<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#implementations">random engine</link>
+					and create an instance of it.  <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>
+					is recommended as an excellent default choice.  A simple call to
+					<codeInline>XorShift128Plus.Create</codeInline> will return
+					a fully initialized instance, already randomized based on the
+					system time and other dynamic factors.
+				</para>
+				<para>
+					Using that created instance, you can now call any of the numerous
+					extension methods, depending on your needs.  Here are some examples:
+				</para>
+				<code language="C#" title="Make It Random Usage Examples">
+					<![CDATA[
+						// Initialize random engine
+						var random = XorShift128Plus.Create();
+						
+						// Generate an integer where 1 <= n <= 10
+						int num1to10 = random.RangeCC(1, 10);
+						
+						// Generate a number where 0 <= n < 1
+						float num0to1 = random.FloatCO();
+						
+						// Flip a coin
+						bool heads = random.Chance();
+						
+						// Check a 3 in 10 probability
+						bool critical = random.Probability(3, 10);
+						
+						// Generate an angle in degrees where -90 < n < +90
+						float angleNeg90toPos90 = random.SignedHalfAngleDegOO();
+						
+						// Generate +1, -1, or 0 where +1 is twice as likely as -1, and 0 is rare
+						int numPNZ = random.SignOrZero(200, 100, 1);
+						
+						// Roll 43 20-sided dice
+						int[] diceRolls = random.RollDice(43, 20);
+						
+						// Roll 5 4-sided dice and just keep the sum
+						int diceRollSum = random.SumRollDice(5, 4);
+						
+						// Shuffle the array of earlier dice rolls
+						random.Shuffle(diceRolls);
+						
+						// Select a random die roll from the array
+						int dieRoll = random.Element(diceRolls);
+						
+						// Select index where higher die rolls are more likely to be picked
+						int dieRollIndex = random.WeightedIndex(diceRolls);
+						
+						// Generate a random 3D unit vector
+						Vector3 direction = random.UnitVector3();
+						
+						// Generate a position within a cirle of radius = 5
+						Vector2 point = random.PointWithinCircle(5f);
+						
+						// Generate a 32-character string with only alpha-numeric characters.
+						string str = random.AlphaNumericString(32);
+						
+						// Make a generator which will produce random font styles.
+						var fontStyleGen = random.MakeEnumGenerator<UnityEngine.FontStyles>();
+						// Generate a font style
+						var style = fontStyleGen.Next();
+						
+						// Pick a random color from the HCY color space
+						var color = random.HCY();
+						// Alter the color's hue randomly by no more than 1/10.
+						color = random.HueShift(color, 0.1f);
+					]]>
+				</code>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386" /> <!-- Random Engines -->
+			<link xlink:href="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" /> <!-- Numeric Ranges -->
+			<link xlink:href="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" /> <!-- Generators -->
+			<codeEntityReference linkText="API Reference">R:Project_API_Reference</codeEntityReference>
+			<!-- One or more of the following:
+			- A local link
+			- An external link
+			- A code entity reference
+			
+			<link xlink:href="Other Topic's ID"/>
+			<link xlink:href="Other Topic's ID">Link inner text</link>
+			
+			<externalLink>
+			<linkText>Link text</linkText>
+			<linkAlternateText>Optional alternate link text</linkAlternateText>
+			<linkUri>URI</linkUri>
+			</externalLink>
+			
+			<codeEntityReference>API member ID</codeEntityReference>
+			
+			Examples:
+			
+			<link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+			<link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+			
+			<externalLink>
+			<linkText>SHFB on GitHub</linkText>
+			<linkAlternateText>Go to GitHub</linkAlternateText>
+			<linkUri>https://GitHub.com/EWSoftware/SHFB</linkUri>
+			</externalLink>
+			
+			<codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+			<codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+			<codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+			<codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+			<codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+			<codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+			<codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+			-->
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>
