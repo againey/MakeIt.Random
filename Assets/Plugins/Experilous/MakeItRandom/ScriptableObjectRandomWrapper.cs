@@ -12,7 +12,7 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	/// <seealso cref="ScriptableObject"/>
 	/// <seealso cref="IRandom"/>
-	public class ScriptableObjectRandom : ScriptableObject, IRandom, ISerializationCallbackReceiver
+	public class ScriptableObjectRandomWrapper : ScriptableObject, IRandom, ISerializationCallbackReceiver
 	{
 		private IRandom _random;
 		[SerializeField] private byte[] _state;
@@ -34,16 +34,16 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private ScriptableObjectRandom() { }
+		private ScriptableObjectRandomWrapper() { }
 
 		/// <summary>
 		/// Creates a wrapper instance around the provided <see cref="IRandom"/> instance.
 		/// </summary>
 		/// <param name="random">The random engine to be wrapped as a <see cref="ScriptableObject"/>.</param>
 		/// <returns>The wrapper around the provided random engine.</returns>
-		public static ScriptableObjectRandom CreateInstance(IRandom random)
+		public static ScriptableObjectRandomWrapper CreateInstance(IRandom random)
 		{
-			ScriptableObjectRandom scriptableObject = CreateInstance<ScriptableObjectRandom>();
+			ScriptableObjectRandomWrapper scriptableObject = CreateInstance<ScriptableObjectRandomWrapper>();
 			scriptableObject.random = random;
 			return scriptableObject;
 		}
