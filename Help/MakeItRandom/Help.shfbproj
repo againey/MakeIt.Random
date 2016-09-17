@@ -67,7 +67,7 @@
           </ignoreIfUnresolved>
         </configuration>
       </PlugInConfig>
-<PlugInConfig id="Additional Reference Links" enabled="True"><configuration><targets><target htmlSdkLinkType="None" helpViewerSdkLinkType="Id" websiteSdkLinkType="Msdn" helpFileProject="..\UnityEngine.shfbproj" /></targets></configuration></PlugInConfig></PlugInConfigurations>
+<PlugInConfig id="Additional Reference Links" enabled="True"><configuration><targets><target htmlSdkLinkType="None" helpViewerSdkLinkType="Id" websiteSdkLinkType="None" helpFileProject="..\UnityEngine.shfbproj" /></targets></configuration></PlugInConfig></PlugInConfigurations>
     <RootNamespaceTitle>API Reference</RootNamespaceTitle>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
