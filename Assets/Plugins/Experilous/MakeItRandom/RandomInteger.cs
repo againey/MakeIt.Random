@@ -35,6 +35,90 @@ namespace Experilous.MakeItRandom
 		#endregion
 #endif
 
+		#region Full Range [T.MinValue, T.MaxValue]
+
+		/// <summary>
+		/// Returns a random signed byte greater than or equal to <see cref="sbyte.MinValue"/> and less than or equal to <see cref="sbyte.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random signed byte in the range [<see cref="sbyte.MinValue"/>, <see cref="sbyte.MaxValue"/>].</returns>
+		public static sbyte SByte(this IRandom random)
+		{
+			return (sbyte)(random.Next32() >> 24);
+		}
+
+		/// <summary>
+		/// Returns a random byte greater than or equal to <see cref="byte.MinValue"/> and less than or equal to <see cref="byte.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random byte in the range [<see cref="byte.MinValue"/>, <see cref="byte.MaxValue"/>].</returns>
+		public static byte Byte(this IRandom random)
+		{
+			return (byte)(random.Next32() >> 24);
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to <see cref="short.MinValue"/> and less than or equal to <see cref="short.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random short integer in the range [<see cref="short.MinValue"/>, <see cref="short.MaxValue"/>].</returns>
+		public static short Short(this IRandom random)
+		{
+			return (short)(random.Next32() >> 16);
+		}
+
+		/// <summary>
+		/// Returns a random unsigned short integer greater than or equal to <see cref="ushort.MinValue"/> and less than or equal to <see cref="ushort.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random unsigned short integer in the range [<see cref="ushort.MinValue"/>, <see cref="ushort.MaxValue"/>].</returns>
+		public static ushort UShort(this IRandom random)
+		{
+			return (ushort)(random.Next32() >> 16);
+		}
+
+		/// <summary>
+		/// Returns a random integer greater than or equal to <see cref="int.MinValue"/> and less than or equal to <see cref="int.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random integer in the range [<see cref="int.MinValue"/>, <see cref="int.MaxValue"/>].</returns>
+		public static int Int(this IRandom random)
+		{
+			return (int)random.Next32();
+		}
+
+		/// <summary>
+		/// Returns a random unsigned integer greater than or equal to <see cref="uint.MinValue"/> and less than or equal to <see cref="uint.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random unsigned integer in the range [<see cref="uint.MinValue"/>, <see cref="uint.MaxValue"/>].</returns>
+		public static uint UInt(this IRandom random)
+		{
+			return random.Next32();
+		}
+
+		/// <summary>
+		/// Returns a random long integer greater than or equal to <see cref="long.MinValue"/> and less than or equal to <see cref="long.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random long integer in the range [<see cref="long.MinValue"/>, <see cref="long.MaxValue"/>].</returns>
+		public static long Long(this IRandom random)
+		{
+			return (long)random.Next64();
+		}
+
+		/// <summary>
+		/// Returns a random unsigned long integer greater than or equal to <see cref="ulong.MinValue"/> and less than or equal to <see cref="ulong.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random unsigned long integer in the range [<see cref="ulong.MinValue"/>, <see cref="ulong.MaxValue"/>].</returns>
+		public static ulong ULong(this IRandom random)
+		{
+			return random.Next64();
+		}
+
+		#endregion
+
 		#region Range Open/Open (lowerExclusive, upperExclusive)
 
 		/// <summary>
@@ -433,13 +517,15 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 1;
 			mask |= mask >> 2;
 			mask |= mask >> 4;
+			mask = mask << 24;
+			uint upperLimit = (uint)upperExclusive << 24;
 			uint n;
 			do
 			{
-				n = random.Next32() & mask;
+				n = random.Next32();
 			}
-			while (n >= upperExclusive);
-			return (byte)n;
+			while (n >= upperLimit);
+			return (byte)(n >> 24);
 		}
 
 		/// <summary>
@@ -523,13 +609,15 @@ namespace Experilous.MakeItRandom
 			mask |= mask >> 2;
 			mask |= mask >> 4;
 			mask |= mask >> 8;
+			mask = mask << 16;
+			uint upperLimit = (uint)upperExclusive << 16;
 			uint n;
 			do
 			{
-				n = random.Next32() & mask;
+				n = random.Next32();
 			}
-			while (n >= upperExclusive);
-			return (ushort)n;
+			while (n >= upperLimit);
+			return (ushort)(n >> 16);
 		}
 
 		/// <summary>

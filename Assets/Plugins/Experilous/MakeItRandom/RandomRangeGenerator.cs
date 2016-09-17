@@ -1707,6 +1707,98 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
+		#region Full Range Int Generators
+
+		/// <summary>
+		/// Returns a range generator which will produce signed bytes greater than or equal to <see cref="sbyte.MinValue"/> and less than or equal to <see cref="sbyte.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random signed bytes in the range [<see cref="sbyte.MinValue"/>, <see cref="sbyte.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.SByte(IRandom)"/>
+		public static ISByteGenerator MakeSByteGenerator(this IRandom random)
+		{
+			return BufferedSByteRangeGenerator.Create(random, sbyte.MinValue, sbyte.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce bytes greater than or equal to <see cref="byte.MinValue"/> and less than or equal to <see cref="byte.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random bytes in the range [<see cref="byte.MinValue"/>, <see cref="byte.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.Byte(IRandom)"/>
+		public static IByteGenerator MakeByteGenerator(this IRandom random)
+		{
+			return BufferedByteRangeGenerator.Create(random, byte.MinValue, byte.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce short integers greater than or equal to <see cref="short.MinValue"/> and less than or equal to <see cref="short.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random short integers in the range [<see cref="short.MinValue"/>, <see cref="short.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.Short(IRandom)"/>
+		public static IShortGenerator MakeShortGenerator(this IRandom random)
+		{
+			return BufferedShortRangeGenerator.Create(random, short.MinValue, short.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce unsigned short integers greater than or equal to <see cref="ushort.MinValue"/> and less than or equal to <see cref="ushort.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random unsigned short integers in the range [<see cref="ushort.MinValue"/>, <see cref="ushort.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.UShort(IRandom)"/>
+		public static IUShortGenerator MakeUShortGenerator(this IRandom random)
+		{
+			return BufferedUShortRangeGenerator.Create(random, ushort.MinValue, ushort.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce integers greater than or equal to <see cref="int.MinValue"/> and less than or equal to <see cref="int.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random integers in the range [<see cref="int.MinValue"/>, <see cref="int.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.Int(IRandom)"/>
+		public static IIntGenerator MakeIntGenerator(this IRandom random)
+		{
+			return BufferedIntRangeGenerator.Create(random, int.MinValue, int.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce unsigned integers greater than or equal to <see cref="uint.MinValue"/> and less than or equal to <see cref="uint.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random unsigned integers in the range [<see cref="uint.MinValue"/>, <see cref="uint.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.UInt(IRandom)"/>
+		public static IUIntGenerator MakeUIntGenerator(this IRandom random)
+		{
+			return BufferedUIntRangeGenerator.Create(random, uint.MinValue, uint.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce long integers greater than or equal to <see cref="long.MinValue"/> and less than or equal to <see cref="long.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random long integers in the range [<see cref="long.MinValue"/>, <see cref="long.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.Long(IRandom)"/>
+		public static ILongGenerator MakeLongGenerator(this IRandom random)
+		{
+			return BufferedLongRangeGenerator.Create(random, long.MinValue, long.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns a range generator which will produce unsigned long integers greater than or equal to <see cref="ulong.MinValue"/> and less than or equal to <see cref="ulong.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <returns>A range generator producing random unsigned long integers in the range [<see cref="ulong.MinValue"/>, <see cref="ulong.MaxValue"/>].</returns>
+		/// <seealso cref="RandomInteger.ULong(IRandom)"/>
+		public static IULongGenerator MakeULongGenerator(this IRandom random)
+		{
+			return BufferedULongRangeGenerator.Create(random, ulong.MinValue, ulong.MaxValue);
+		}
+
+		#endregion
+
 		#region Make Range Open/Open Generator
 
 		/// <summary>
