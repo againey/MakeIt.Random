@@ -152,7 +152,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The internal state as a byte array.</returns>
 		public override byte[] SaveState()
 		{
-			var stateArray = new byte[sizeof(ulong) * 16 + sizeof(byte)];
+			var stateArray = new byte[sizeof(ulong) * _state.Length + sizeof(byte)];
 			using (var stream = new System.IO.MemoryStream(stateArray))
 			{
 				using (var writer = new System.IO.BinaryWriter(stream))
@@ -218,10 +218,10 @@ namespace Experilous.MakeItRandom
 					{
 						_state[i] = state[i];
 					}
+					_offset = offset;
 					return;
 				}
 			}
-			_offset = offset;
 			throw new System.ArgumentException("All 0 bits is an invalid state for the XorShift1024* random number generator.");
 		}
 
