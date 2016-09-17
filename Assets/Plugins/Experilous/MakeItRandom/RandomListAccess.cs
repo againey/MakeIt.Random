@@ -83,24 +83,12 @@ namespace Experilous.MakeItRandom
 	/// <typeparam name="T">The element type contained by the referenced list and returned by the generator.</typeparam>
 	/// <typeparam name="TWeight">The numeric type of the weights.</typeparam>
 	/// <typeparam name="TWeightSum">The numeric type of the summation of weights</typeparam>
-	public interface IWeightedElementGenerator<T, TWeight, TWeightSum>
+	public interface IWeightedElementGenerator<T, TWeight, TWeightSum> : IElementGenerator<T>
 	{
 		/// <summary>
 		/// The sum of all weights.
 		/// </summary>
 		TWeightSum weightSum { get; }
-
-		/// <summary>
-		/// Get the next random element selected by the generator.
-		/// </summary>
-		/// <returns>The next list element randomly selected according to the generator implementation.</returns>
-		T Next();
-
-		/// <summary>
-		/// Get the next random index selected by the generator.
-		/// </summary>
-		/// <returns>The next list element index randomly selected according to the generator implementation.</returns>
-		int NextIndex();
 
 		/// <summary>
 		/// Get the next random index selected by the generator.
@@ -621,6 +609,12 @@ namespace Experilous.MakeItRandom
 			{
 				int index = NextIndex();
 				weight = _weights[index];
+				return _list[index];
+			}
+
+			T IElementGenerator<T>.Next(out int index)
+			{
+				index = NextIndex();
 				return _list[index];
 			}
 
