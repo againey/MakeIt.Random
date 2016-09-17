@@ -1219,7 +1219,7 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
-		#region Weighted
+		#region Weighted Index
 
 		/// <summary>
 		/// Returns a random index in the range [0, <paramref name="weights"/>.Length), non-uniformly distributed according to <paramref name="weights"/>, suitable for indexing into a collection with a corresponding length.
@@ -1259,7 +1259,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, sbyte[] weights, int elementCount, int weightSum)
 		{
 			int index = 0;
@@ -1285,11 +1285,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,sbyte}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,sbyte})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, sbyte}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, sbyte})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,sbyte}, int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,sbyte})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, sbyte}, int)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, sbyte})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, sbyte> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1358,7 +1358,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, byte[] weights, int elementCount, uint weightSum)
 		{
 			int index = 0;
@@ -1384,11 +1384,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,byte}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,byte})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, byte}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, byte})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,byte}, uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,byte})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, byte}, uint)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, byte})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, byte> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1457,7 +1457,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, short[] weights, int elementCount, int weightSum)
 		{
 			int index = 0;
@@ -1483,11 +1483,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,short}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,short})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, short}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, short})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,short}, int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,short})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, short}, int)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, short})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, short> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1556,7 +1556,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, ushort[] weights, int elementCount, uint weightSum)
 		{
 			int index = 0;
@@ -1582,11 +1582,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,ushort}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,ushort})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, ushort}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ushort})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,ushort}, uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,ushort})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, ushort}, uint)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ushort})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ushort> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1655,7 +1655,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int[] weights, int elementCount, int weightSum)
 		{
 			int index = 0;
@@ -1681,11 +1681,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,int}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,int})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, int}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, int})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,int}, int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,int})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, int}, int)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, int})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, int> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1754,7 +1754,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, uint[] weights, int elementCount, uint weightSum)
 		{
 			int index = 0;
@@ -1780,11 +1780,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,uint}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,uint})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, uint}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, uint})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,uint}, uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,uint})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, uint}, uint)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, uint})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, uint> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1853,7 +1853,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, long[] weights, int elementCount, long weightSum)
 		{
 			int index = 0;
@@ -1879,11 +1879,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,long}, long)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,long})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, long}, long)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, long})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,long}, long)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,long})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, long}, long)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, long})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, long> weightsAccessor)
 		{
 			long weightSum = SumWeights(elementCount, weightsAccessor);
@@ -1952,7 +1952,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, ulong[] weights, int elementCount, ulong weightSum)
 		{
 			int index = 0;
@@ -1978,11 +1978,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,ulong}, ulong)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,ulong})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, ulong}, ulong)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ulong})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,ulong}, ulong)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,ulong})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, ulong}, ulong)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ulong})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ulong> weightsAccessor)
 		{
 			ulong weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2051,7 +2051,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, float[] weights, int elementCount, float weightSum)
 		{
 			int index = 0;
@@ -2077,11 +2077,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,float}, float)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,float})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, float}, float)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, float})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,float}, float)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,float})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, float}, float)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, float})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, float> weightsAccessor)
 		{
 			float weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2150,7 +2150,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> values in <paramref name="weights"/>.</param>
-		/// <returns>A random index in the range [0, <paramref name="weights"/>.Length).</returns>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, double[] weights, int elementCount, double weightSum)
 		{
 			int index = 0;
@@ -2176,11 +2176,11 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedIndex(IRandom, int, System.Func{int,double}, double)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,double})"/> to
+		/// <see cref="WeightedIndex(IRandom, int, System.Func{int, double}, double)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, double})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int,double}, double)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int,double})"/>
+		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, double}, double)"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, double})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, double> weightsAccessor)
 		{
 			double weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2210,6 +2210,782 @@ namespace Experilous.MakeItRandom
 			}
 			return index;
 		}
+
+		#endregion
+
+		#region Weighted Element
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, sbyte[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, sbyte[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, sbyte[] weights)
+		{
+			int weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, sbyte[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, sbyte[] weights, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor)
+		{
+			int weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, byte[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, byte[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, byte[] weights)
+		{
+			uint weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, byte[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, byte[] weights, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor)
+		{
+			uint weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, short[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, short[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, short[] weights)
+		{
+			int weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, short[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, short[] weights, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, short> weightsAccessor)
+		{
+			int weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, short> weightsAccessor, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, ushort[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ushort[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, ushort[] weights)
+		{
+			uint weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ushort[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, ushort[] weights, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor)
+		{
+			uint weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, int[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, int[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, int[] weights)
+		{
+			int weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, int[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, int[] weights, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, int> weightsAccessor)
+		{
+			int weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, int> weightsAccessor, int weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, uint[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, uint[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, uint[] weights)
+		{
+			uint weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, uint[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, uint[] weights, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor)
+		{
+			uint weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor, uint weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, long[], long)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, long[], long)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, long[] weights)
+		{
+			long weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, long[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, long[] weights, long weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long}, long)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long}, long)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, long> weightsAccessor)
+		{
+			long weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, long> weightsAccessor, long weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, ulong[], ulong)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ulong[], ulong)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, ulong[] weights)
+		{
+			ulong weightSum = SumWeights(weights, weights.Length);
+			return random.WeightedElement(list, weights, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
+		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ulong[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, ulong[] weights, ulong weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weights[index])
+				{
+					return list[index];
+				}
+
+				weightSum -= weights[index++];
+			}
+			return list[index];
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
+		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
+		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong}, ulong)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/> to
+		/// automate the process.</note></remarks>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong}, ulong)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor)
+		{
+			ulong weightSum = SumWeights(list.Count, weightsAccessor);
+			return random.WeightedElement(list, weightsAccessor, weightSum);
+		}
+
+		/// <summary>
+		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which a random element will be selected.</param>
+		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
+		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
+		/// <returns>A random element from <paramref name="list"/>.</returns>
+		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
+		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor, ulong weightSum)
+		{
+			int index = 0;
+			int lastIndex = list.Count - 1;
+			while (index < lastIndex)
+			{
+				if (random.RangeCO(weightSum) < weightsAccessor(index))
+				{
+					return list[index];
+				}
+
+				weightSum -= weightsAccessor(index++);
+			}
+			return list[index];
+		}
+
+		#endregion
+
+		#region Weighted Index and Element Generators
 
 		/// <summary>
 		/// Returns a weighted index generator which will produce random indices in the range [0, <paramref name="weights"/>.Length), non-uniformly distributed according to <paramref name="weights"/>, suitable for indexing into a collection with a corresponding length.
