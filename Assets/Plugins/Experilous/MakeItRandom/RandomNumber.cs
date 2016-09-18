@@ -1441,6 +1441,121 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int OneProbability(this IRandom random, uint numerator)
+		{
+			return random.UInt() < numerator ? 1 : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="OneProbability(IRandom, uint)"/>
+		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, uint numerator)
+		{
+			return new UIntWeightedOneProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int OneProbability(this IRandom random, long numerator)
+		{
+			return random.Long() < numerator ? 1 : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="OneProbability(IRandom, long)"/>
+		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, long numerator)
+		{
+			return new LongWeightedOneProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int OneProbability(this IRandom random, ulong numerator)
+		{
+			return random.ULong() < numerator ? 1 : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="OneProbability(IRandom, ulong)"/>
+		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, ulong numerator)
+		{
+			return new ULongWeightedOneProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int OneProbability(this IRandom random, float probability)
+		{
+			return random.FloatCO() < probability ? 1 : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="OneProbability(IRandom, float)"/>
+		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, float probability)
+		{
+			return new FloatWeightedOneProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int OneProbability(this IRandom random, double probability)
+		{
+			return random.DoubleCO() < probability ? 1 : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="OneProbability(IRandom, double)"/>
+		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, double probability)
+		{
+			return new DoubleWeightedOneProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
 		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -1463,29 +1578,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedOneProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int OneProbability(this IRandom random, uint numerator)
-		{
-			return random.UInt() < numerator ? 1 : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
-		/// <seealso cref="OneProbability(IRandom, uint)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, uint numerator)
-		{
-			return new UIntWeightedOneProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -1514,29 +1606,6 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int OneProbability(this IRandom random, long numerator)
-		{
-			return random.Long() < numerator ? 1 : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
-		/// <seealso cref="OneProbability(IRandom, long)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, long numerator)
-		{
-			return new LongWeightedOneProbabilityGenerator(random, numerator);
-		}
-
-		/// <summary>
 		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -1559,29 +1628,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedOneProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int OneProbability(this IRandom random, ulong numerator)
-		{
-			return random.ULong() < numerator ? 1 : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
-		/// <seealso cref="OneProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, ulong numerator)
-		{
-			return new ULongWeightedOneProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -1659,52 +1705,6 @@ namespace Experilous.MakeItRandom
 			return new DoubleWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
 
-		/// <summary>
-		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int OneProbability(this IRandom random, float probability)
-		{
-			return random.FloatCO() < probability ? 1 : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
-		/// <seealso cref="OneProbability(IRandom, float)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, float probability)
-		{
-			return new FloatWeightedOneProbabilityGenerator(random, probability);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int OneProbability(this IRandom random, double probability)
-		{
-			return random.DoubleCO() < probability ? 1 : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
-		/// <seealso cref="OneProbability(IRandom, double)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, double probability)
-		{
-			return new DoubleWeightedOneProbabilityGenerator(random, probability);
-		}
-
 		#endregion
 
 		#region Positive Probability
@@ -1733,6 +1733,121 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int PositiveProbability(this IRandom random, uint numerator)
+		{
+			return random.UInt() < numerator ? +1 : -1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="PositiveProbability(IRandom, uint)"/>
+		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, uint numerator)
+		{
+			return new UIntWeightedPositiveProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int PositiveProbability(this IRandom random, long numerator)
+		{
+			return random.IntNonNegative() < numerator ? +1 : -1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="PositiveProbability(IRandom, long)"/>
+		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, long numerator)
+		{
+			return new LongWeightedPositiveProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int PositiveProbability(this IRandom random, ulong numerator)
+		{
+			return random.ULong() < numerator ? +1 : -1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="PositiveProbability(IRandom, ulong)"/>
+		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, ulong numerator)
+		{
+			return new ULongWeightedPositiveProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int PositiveProbability(this IRandom random, float probability)
+		{
+			return random.FloatCO() < probability ? +1 : -1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="PositiveProbability(IRandom, float)"/>
+		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, float probability)
+		{
+			return new FloatWeightedPositiveProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int PositiveProbability(this IRandom random, double probability)
+		{
+			return random.DoubleCO() < probability ? +1 : -1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="PositiveProbability(IRandom, double)"/>
+		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, double probability)
+		{
+			return new DoubleWeightedPositiveProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
 		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -1755,29 +1870,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedPositiveProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int PositiveProbability(this IRandom random, uint numerator)
-		{
-			return random.UInt() < numerator ? +1 : -1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="PositiveProbability(IRandom, uint)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, uint numerator)
-		{
-			return new UIntWeightedPositiveProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -1806,29 +1898,6 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int PositiveProbability(this IRandom random, long numerator)
-		{
-			return random.IntNonNegative() < numerator ? +1 : -1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="PositiveProbability(IRandom, long)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, long numerator)
-		{
-			return new LongWeightedPositiveProbabilityGenerator(random, numerator);
-		}
-
-		/// <summary>
 		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -1851,29 +1920,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedPositiveProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int PositiveProbability(this IRandom random, ulong numerator)
-		{
-			return random.ULong() < numerator ? +1 : -1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="PositiveProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, ulong numerator)
-		{
-			return new ULongWeightedPositiveProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -1951,52 +1997,6 @@ namespace Experilous.MakeItRandom
 			return new DoubleWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
 
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int PositiveProbability(this IRandom random, float probability)
-		{
-			return random.FloatCO() < probability ? +1 : -1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="PositiveProbability(IRandom, float)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, float probability)
-		{
-			return new FloatWeightedPositiveProbabilityGenerator(random, probability);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int PositiveProbability(this IRandom random, double probability)
-		{
-			return random.DoubleCO() < probability ? +1 : -1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a positive one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="PositiveProbability(IRandom, double)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, double probability)
-		{
-			return new DoubleWeightedPositiveProbabilityGenerator(random, probability);
-		}
-
 		#endregion
 
 		#region Negative Probability
@@ -2025,6 +2025,121 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be -1.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int NegativeProbability(this IRandom random, uint numerator)
+		{
+			return random.UInt() < numerator ? -1 : +1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be -1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="NegativeProbability(IRandom, uint)"/>
+		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, uint numerator)
+		{
+			return new UIntWeightedNegativeProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int NegativeProbability(this IRandom random, long numerator)
+		{
+			return random.LongNonNegative() < numerator ? -1 : +1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="NegativeProbability(IRandom, long)"/>
+		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, long numerator)
+		{
+			return new LongWeightedNegativeProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be -1.</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int NegativeProbability(this IRandom random, ulong numerator)
+		{
+			return random.ULong() < numerator ? -1 : +1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be -1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="NegativeProbability(IRandom, ulong)"/>
+		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator)
+		{
+			return new ULongWeightedNegativeProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int NegativeProbability(this IRandom random, float probability)
+		{
+			return random.FloatCO() < probability ? -1 : +1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="NegativeProbability(IRandom, float)"/>
+		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, float probability)
+		{
+			return new FloatWeightedNegativeProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int NegativeProbability(this IRandom random, double probability)
+		{
+			return random.DoubleCO() < probability ? -1 : +1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
+		/// <seealso cref="NegativeProbability(IRandom, double)"/>
+		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, double probability)
+		{
+			return new DoubleWeightedNegativeProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
 		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -2047,29 +2162,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedNegativeProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be -1.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int NegativeProbability(this IRandom random, uint numerator)
-		{
-			return random.UInt() < numerator ? -1 : +1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^32.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^32 that the result will be -1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="NegativeProbability(IRandom, uint)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, uint numerator)
-		{
-			return new UIntWeightedNegativeProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -2098,29 +2190,6 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int NegativeProbability(this IRandom random, long numerator)
-		{
-			return random.LongNonNegative() < numerator ? -1 : +1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^63.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="NegativeProbability(IRandom, long)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, long numerator)
-		{
-			return new LongWeightedNegativeProbabilityGenerator(random, numerator);
-		}
-
-		/// <summary>
 		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -2143,29 +2212,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedNegativeProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be -1.</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int NegativeProbability(this IRandom random, ulong numerator)
-		{
-			return random.ULong() < numerator ? -1 : +1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is <paramref name="numerator"/>/2^64.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numerator">The average number of times out of 2^64 that the result will be -1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="NegativeProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator)
-		{
-			return new ULongWeightedNegativeProbabilityGenerator(random, numerator);
 		}
 
 		/// <summary>
@@ -2243,52 +2289,6 @@ namespace Experilous.MakeItRandom
 			return new DoubleWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
 
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int NegativeProbability(this IRandom random, float probability)
-		{
-			return random.FloatCO() < probability ? -1 : +1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="NegativeProbability(IRandom, float)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, float probability)
-		{
-			return new FloatWeightedNegativeProbabilityGenerator(random, probability);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
-		public static int NegativeProbability(this IRandom random, double probability)
-		{
-			return random.DoubleCO() < probability ? -1 : +1;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, +1 } where the probability of a negative one result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
-		/// <seealso cref="NegativeProbability(IRandom, double)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, double probability)
-		{
-			return new DoubleWeightedNegativeProbabilityGenerator(random, probability);
-		}
-
 		#endregion
 
 		#region Sign Probability
@@ -2322,6 +2322,146 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^32 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^32.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^32 that the result will be -1.</param>
+		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
+		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
+		public static int SignProbability(this IRandom random, uint numeratorPositive, uint numeratorNegative)
+		{
+			uint numeratorNonZero = numeratorPositive + numeratorNegative;
+			uint n = random.UInt();
+			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^32 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^32.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^32 that the result will be +1.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^32 that the result will be -1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
+		/// <seealso cref="SignProbability(IRandom, uint, uint)"/>
+		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative)
+		{
+			return new UIntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^63 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^63.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
+		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
+		public static int SignProbability(this IRandom random, long numeratorPositive, long numeratorNegative)
+		{
+			long numeratorNonZero = numeratorPositive + numeratorNegative;
+			long n = random.LongNonNegative();
+			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^63 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^63.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
+		/// <seealso cref="SignProbability(IRandom, long, long)"/>
+		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative)
+		{
+			return new LongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^64 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^64.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^64 that the result will be -1.</param>
+		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
+		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
+		public static int SignProbability(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
+		{
+			ulong numeratorNonZero = numeratorPositive + numeratorNegative;
+			ulong n = random.ULong();
+			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^64 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^64.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numeratorPositive">The average number of times out of 2^64 that the result will be +1.</param>
+		/// <param name="numeratorNegative">The average number of times out of 2^64 that the result will be -1.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
+		/// <seealso cref="SignProbability(IRandom, ulong, ulong)"/>
+		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
+		{
+			return new ULongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
+		/// <remarks>The sum of the the two numerator parameters must be less than or equal to 1.</remarks>
+		public static int SignProbability(this IRandom random, float probabilityPositive, float probabilityNegative)
+		{
+			float probabilityNonZero = probabilityPositive + probabilityNegative;
+			float n = random.FloatCO();
+			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
+		/// <seealso cref="SignProbability(IRandom, float, float)"/>
+		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, float probabilityPositive, float probabilityNegative)
+		{
+			return new FloatWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
+		/// <remarks>The sum of the the two numerator parameters must be less than or equal to 1.</remarks>
+		public static int SignProbability(this IRandom random, double probabilityPositive, double probabilityNegative)
+		{
+			double probabilityNonZero = probabilityPositive + probabilityNegative;
+			double n = random.DoubleCO();
+			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
+		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
+		/// <seealso cref="SignProbability(IRandom, double, double)"/>
+		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, double probabilityPositive, double probabilityNegative)
+		{
+			return new DoubleWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
+		}
+
+		/// <summary>
 		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/<paramref name="denominator"/> and the probability of a negative one result is <paramref name="numeratorNegative"/>/<paramref name="denominator"/>.  The probability of a zero result is whatever probability is left over.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -2349,34 +2489,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
 		{
 			return new IntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^32 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^32.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^32 that the result will be -1.</param>
-		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
-		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
-		public static int SignProbability(this IRandom random, uint numeratorPositive, uint numeratorNegative)
-		{
-			uint numeratorNonZero = numeratorPositive + numeratorNegative;
-			uint n = random.UInt();
-			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^32 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^32.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^32 that the result will be +1.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^32 that the result will be -1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
-		/// <seealso cref="SignProbability(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative)
-		{
-			return new UIntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
 
 		/// <summary>
@@ -2410,34 +2522,6 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^63 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^63.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
-		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
-		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
-		public static int SignProbability(this IRandom random, long numeratorPositive, long numeratorNegative)
-		{
-			long numeratorNonZero = numeratorPositive + numeratorNegative;
-			long n = random.LongNonNegative();
-			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^63 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^63.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
-		/// <seealso cref="SignProbability(IRandom, long, long)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative)
-		{
-			return new LongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
-		}
-
-		/// <summary>
 		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/<paramref name="denominator"/> and the probability of a negative one result is <paramref name="numeratorNegative"/>/<paramref name="denominator"/>.  The probability of a zero result is whatever probability is left over.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -2465,34 +2549,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative, long denominator)
 		{
 			return new LongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^64 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^64.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^64 that the result will be -1.</param>
-		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
-		/// <remarks>The sum of the the two numerator parameters must be less than or equal to the denominator.</remarks>
-		public static int SignProbability(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
-		{
-			ulong numeratorNonZero = numeratorPositive + numeratorNegative;
-			ulong n = random.ULong();
-			return n < numeratorNonZero ? (n < numeratorPositive ? +1 : -1) : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is <paramref name="numeratorPositive"/>/2^64 and the probability of a negative one result is <paramref name="numeratorNegative"/>/2^64.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="numeratorPositive">The average number of times out of 2^64 that the result will be +1.</param>
-		/// <param name="numeratorNegative">The average number of times out of 2^64 that the result will be -1.</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
-		/// <seealso cref="SignProbability(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
-		{
-			return new ULongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
 
 		/// <summary>
@@ -2583,62 +2639,6 @@ namespace Experilous.MakeItRandom
 		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)
 		{
 			return new DoubleWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
-		/// <remarks>The sum of the the two numerator parameters must be less than or equal to 1.</remarks>
-		public static int SignProbability(this IRandom random, float probabilityPositive, float probabilityNegative)
-		{
-			float probabilityNonZero = probabilityPositive + probabilityNegative;
-			float n = random.FloatCO();
-			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
-		/// <seealso cref="SignProbability(IRandom, float, float)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, float probabilityPositive, float probabilityNegative)
-		{
-			return new FloatWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
-		}
-
-		/// <summary>
-		/// Returns a random integer from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random integer from the set { -1, 0, +1 } weighted according to the probability set by the parameters.</returns>
-		/// <remarks>The sum of the the two numerator parameters must be less than or equal to 1.</remarks>
-		public static int SignProbability(this IRandom random, double probabilityPositive, double probabilityNegative)
-		{
-			double probabilityNonZero = probabilityPositive + probabilityNegative;
-			double n = random.DoubleCO();
-			return n < probabilityNonZero ? (n < probabilityPositive ? +1 : -1) : 0;
-		}
-
-		/// <summary>
-		/// Returns an integer generator which will produce random numbers from the set { -1, 0, +1 } where the probability of a positive one result is set by the parameter <paramref name="probabilityPositive"/> and the probability of a positive one result is set by the parameter <paramref name="probabilityNegative"/>.  The probability of a zero result is whatever probability is left over.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probabilityPositive">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
-		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
-		/// <seealso cref="SignProbability(IRandom, double, double)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, double probabilityPositive, double probabilityNegative)
-		{
-			return new DoubleWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
 		}
 
 		#endregion

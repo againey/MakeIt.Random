@@ -457,6 +457,52 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
+		public static bool Probability(this IRandom random, float probability)
+		{
+			return random.FloatCO() < probability;
+		}
+
+		/// <summary>
+		/// Returns a boolean generator which will produce random boolean values where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A boolean generator which will produce weighted random boolean values.</returns>
+		/// <seealso cref="Probability(IRandom, float)"/>
+		public static IBooleanGenerator MakeProbabilityGenerator(this IRandom random, float probability)
+		{
+			return new FloatWeightedProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
+		public static bool Probability(this IRandom random, double probability)
+		{
+			return random.DoubleCO() < probability;
+		}
+
+		/// <summary>
+		/// Returns a boolean generator which will produce random boolean values where the probability of a true result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A boolean generator which will produce weighted random boolean values.</returns>
+		/// <seealso cref="Probability(IRandom, double)"/>
+		public static IBooleanGenerator MakeProbabilityGenerator(this IRandom random, double probability)
+		{
+			return new DoubleWeightedProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
 		/// Returns a random bool where the probability of a true result is <paramref name="numerator"/>/<paramref name="denominator"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -604,52 +650,6 @@ namespace Experilous.MakeItRandom
 		public static IBooleanGenerator MakeProbabilityGenerator(this IRandom random, double numerator, double denominator)
 		{
 			return new DoubleWeightedProbabilityGenerator(random, numerator, denominator);
-		}
-
-		/// <summary>
-		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
-		public static bool Probability(this IRandom random, float probability)
-		{
-			return random.FloatCO() < probability;
-		}
-
-		/// <summary>
-		/// Returns a boolean generator which will produce random boolean values where the probability of a true result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A boolean generator which will produce weighted random boolean values.</returns>
-		/// <seealso cref="Probability(IRandom, float)"/>
-		public static IBooleanGenerator MakeProbabilityGenerator(this IRandom random, float probability)
-		{
-			return new FloatWeightedProbabilityGenerator(random, probability);
-		}
-
-		/// <summary>
-		/// Returns a random bool where the probability of a true result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A random bool weighted according to the probability set by the parameters.</returns>
-		public static bool Probability(this IRandom random, double probability)
-		{
-			return random.DoubleCO() < probability;
-		}
-
-		/// <summary>
-		/// Returns a boolean generator which will produce random boolean values where the probability of a true result is set by the parameter <paramref name="probability"/>.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="probability">The probability of a true result being generated.  Must be in the range [0, 1].</param>
-		/// <returns>A boolean generator which will produce weighted random boolean values.</returns>
-		/// <seealso cref="Probability(IRandom, double)"/>
-		public static IBooleanGenerator MakeProbabilityGenerator(this IRandom random, double probability)
-		{
-			return new DoubleWeightedProbabilityGenerator(random, probability);
 		}
 
 		#endregion
