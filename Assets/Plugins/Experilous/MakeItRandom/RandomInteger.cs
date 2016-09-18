@@ -48,6 +48,16 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random signed byte greater than or equal to 0 and less than or equal to <see cref="sbyte.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random signed byte in the range [0, <see cref="sbyte.MaxValue"/>].</returns>
+		public static sbyte SByteNonNegative(this IRandom random)
+		{
+			return (sbyte)(random.Next32() >> 25);
+		}
+
+		/// <summary>
 		/// Returns a random byte greater than or equal to <see cref="byte.MinValue"/> and less than or equal to <see cref="byte.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -65,6 +75,16 @@ namespace Experilous.MakeItRandom
 		public static short Short(this IRandom random)
 		{
 			return (short)(random.Next32() >> 16);
+		}
+
+		/// <summary>
+		/// Returns a random short integer greater than or equal to 0 and less than or equal to <see cref="short.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random short integer in the range [0, <see cref="short.MaxValue"/>].</returns>
+		public static short ShortNonNegative(this IRandom random)
+		{
+			return (short)(random.Next32() >> 17);
 		}
 
 		/// <summary>
@@ -88,6 +108,16 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a random integer greater than or equal to 0 and less than or equal to <see cref="int.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random integer in the range [0, <see cref="int.MaxValue"/>].</returns>
+		public static int IntNonNegative(this IRandom random)
+		{
+			return (int)(random.Next32() >> 1);
+		}
+
+		/// <summary>
 		/// Returns a random unsigned integer greater than or equal to <see cref="uint.MinValue"/> and less than or equal to <see cref="uint.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -105,6 +135,16 @@ namespace Experilous.MakeItRandom
 		public static long Long(this IRandom random)
 		{
 			return (long)random.Next64();
+		}
+
+		/// <summary>
+		/// Returns a random long integer greater than or equal to 0 and less than or equal to <see cref="long.MaxValue"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random long integer in the range [0, <see cref="long.MaxValue"/>].</returns>
+		public static long LongNonNegative(this IRandom random)
+		{
+			return (long)(random.Next64() >> 1);
 		}
 
 		/// <summary>

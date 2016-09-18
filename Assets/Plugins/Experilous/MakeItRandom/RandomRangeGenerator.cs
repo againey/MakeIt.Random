@@ -189,39 +189,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, ISByteGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, ISByteGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public sbyte Next() { return (sbyte)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, ISByteGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, ISByteGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public sbyte Next() { return (sbyte)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, ISByteGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, ISByteGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public sbyte Next() { return (sbyte)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, ISByteGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, ISByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, sbyte rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = (uint)rangeMin; }
 				public sbyte Next() { return (sbyte)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, ISByteGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, ISByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, sbyte rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
 				public sbyte Next() { return (sbyte)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, ISByteGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, ISByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, sbyte rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
@@ -280,39 +280,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IByteGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IByteGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public byte Next() { return (byte)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IByteGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IByteGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public byte Next() { return (byte)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IByteGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IByteGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public byte Next() { return (byte)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IByteGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, byte rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = rangeMin; }
 				public byte Next() { return (byte)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IByteGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, byte rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
 				public byte Next() { return (byte)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IByteGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IByteGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, byte rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
@@ -374,39 +374,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IShortGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IShortGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public short Next() { return (short)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IShortGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IShortGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public short Next() { return (short)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IShortGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IShortGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public short Next() { return (short)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IShortGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, short rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = (uint)rangeMin; }
 				public short Next() { return (short)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IShortGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, short rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
 				public short Next() { return (short)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IShortGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, short rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
@@ -465,39 +465,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IUShortGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IUShortGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public ushort Next() { return (ushort)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IUShortGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IUShortGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public ushort Next() { return (ushort)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IUShortGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IUShortGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public ushort Next() { return (ushort)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IUShortGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IUShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, ushort rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = rangeMin; }
 				public ushort Next() { return (ushort)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IUShortGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IUShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, ushort rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
 				public ushort Next() { return (ushort)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IUShortGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IUShortGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, ushort rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
@@ -559,39 +559,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IIntGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IIntGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public int Next() { return (int)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IIntGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IIntGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public int Next() { return (int)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IIntGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IIntGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
 				public int Next() { return (int)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IIntGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, int rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = (uint)rangeMin; }
 				public int Next() { return (int)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IIntGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, int rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
 				public int Next() { return (int)(Next32() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IIntGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, int rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = (uint)rangeMin; }
@@ -650,43 +650,43 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IUIntGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IUIntGenerator
 			{
 				public AnyRangeGenerator(IRandom random, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
-				public uint Next() { return Next32(); }
+				public uint Next() { return (uint)Next32(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IUIntGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IUIntGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
-				public uint Next() { return Next32(); }
+				public uint Next() { return (uint)Next32(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IUIntGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IUIntGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { }
-				public uint Next() { return Next32(); }
+				public uint Next() { return (uint)Next32(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase32, IUIntGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IUIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, uint rangeMin, uint rangeSizeMinusOne, uint bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = rangeMin; }
-				public uint Next() { return Next32() + _rangeMin; }
+				public uint Next() { return (uint)Next32() + _rangeMin; }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase32, IUIntGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IUIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, uint rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
-				public uint Next() { return Next32() + _rangeMin; }
+				public uint Next() { return (uint)Next32() + _rangeMin; }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase32, IUIntGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IUIntGenerator
 			{
 				private uint _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, uint rangeMin, int bitCount, uint bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
-				public uint Next() { return Next32() + _rangeMin; }
+				public uint Next() { return (uint)Next32() + _rangeMin; }
 			}
 		}
 
@@ -744,39 +744,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase64, ILongGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, ILongGenerator
 			{
 				public AnyRangeGenerator(IRandom random, ulong rangeSizeMinusOne, ulong bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public long Next() { return (long)Next64(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase64, ILongGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, ILongGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 				public long Next() { return (long)Next64(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase64, ILongGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, ILongGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 				public long Next() { return (long)Next64(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase64, ILongGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, ILongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, long rangeMin, ulong rangeSizeMinusOne, ulong bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = (ulong)rangeMin; }
 				public long Next() { return (long)(Next64() + _rangeMin); }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase64, ILongGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, ILongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, long rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = (ulong)rangeMin; }
 				public long Next() { return (long)(Next64() + _rangeMin); }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase64, ILongGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, ILongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, long rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = (ulong)rangeMin; }
@@ -835,39 +835,39 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase64, IULongGenerator
+			private class AnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IULongGenerator
 			{
 				public AnyRangeGenerator(IRandom random, ulong rangeSizeMinusOne, ulong bitMask) : base(random, rangeSizeMinusOne, bitMask) { }
 				public ulong Next() { return Next64(); }
 			}
 
-			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase64, IULongGenerator
+			private class Pow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IULongGenerator
 			{
 				public Pow2RangeGenerator(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 				public ulong Next() { return Next64(); }
 			}
 
-			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase64, IULongGenerator
+			private class PowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IULongGenerator
 			{
 				public PowPow2RangeGenerator(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 				public ulong Next() { return Next64(); }
 			}
 
-			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase64, IULongGenerator
+			private class OffsetAnyRangeGenerator : Detail.BufferedAnyRangeGeneratorBase, IULongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetAnyRangeGenerator(IRandom random, ulong rangeMin, ulong rangeSizeMinusOne, ulong bitMask) : base(random, rangeSizeMinusOne, bitMask) { _rangeMin = rangeMin; }
 				public ulong Next() { return Next64() + _rangeMin; }
 			}
 
-			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase64, IULongGenerator
+			private class OffsetPow2RangeGenerator : Detail.BufferedPow2RangeGeneratorBase, IULongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetPow2RangeGenerator(IRandom random, ulong rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
 				public ulong Next() { return Next64() + _rangeMin; }
 			}
 
-			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase64, IULongGenerator
+			private class OffsetPowPow2RangeGenerator : Detail.BufferedPowPow2RangeGeneratorBase, IULongGenerator
 			{
 				private ulong _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, ulong rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
@@ -1710,14 +1710,19 @@ namespace Experilous.MakeItRandom
 		#region Full Range Int Generators
 
 		/// <summary>
-		/// Returns a range generator which will produce signed bytes greater than or equal to <see cref="sbyte.MinValue"/> and less than or equal to <see cref="sbyte.MaxValue"/>.
+		/// Returns a range generator which will produce signed bytes greater than or equal to either 0 or <see cref="sbyte.MinValue"/> and less than or equal to <see cref="sbyte.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <returns>A range generator producing random signed bytes in the range [<see cref="sbyte.MinValue"/>, <see cref="sbyte.MaxValue"/>].</returns>
+		/// <param name="excludeNegative">Specifies if the range should be limited just non-negative values.  Defaults to false.</param>
+		/// <returns>A range generator producing random signed bytes in the range .</returns>
+		/// <remarks>If <paramref name="excludeNegative"/> is false, the return value will be in the range
+		/// [<see cref="sbyte.MinValue"/>, <see cref="sbyte.MaxValue"/>].  If <paramref name="excludeNegative"/>
+		/// is true, the return value will be in the range [0, <see cref="sbyte.MaxValue"/>].</remarks>
 		/// <seealso cref="RandomInteger.SByte(IRandom)"/>
-		public static ISByteGenerator MakeSByteGenerator(this IRandom random)
+		/// <seealso cref="RandomInteger.SByteNonNegative(IRandom)"/>
+		public static ISByteGenerator MakeSByteGenerator(this IRandom random, bool excludeNegative = false)
 		{
-			return BufferedSByteRangeGenerator.Create(random, sbyte.MinValue, sbyte.MaxValue);
+			return BufferedSByteRangeGenerator.Create(random, excludeNegative ? (sbyte)0 : sbyte.MinValue, sbyte.MaxValue);
 		}
 
 		/// <summary>
@@ -1732,14 +1737,19 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a range generator which will produce short integers greater than or equal to <see cref="short.MinValue"/> and less than or equal to <see cref="short.MaxValue"/>.
+		/// Returns a range generator which will produce short integers greater than or equal to either 0 or <see cref="short.MinValue"/> and less than or equal to <see cref="short.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <returns>A range generator producing random short integers in the range [<see cref="short.MinValue"/>, <see cref="short.MaxValue"/>].</returns>
+		/// <param name="excludeNegative">Specifies if the range should be limited just non-negative values.  Defaults to false.</param>
+		/// <returns>A range generator producing random short integers in the range .</returns>
+		/// <remarks>If <paramref name="excludeNegative"/> is false, the return value will be in the range
+		/// [<see cref="short.MinValue"/>, <see cref="short.MaxValue"/>].  If <paramref name="excludeNegative"/>
+		/// is true, the return value will be in the range [0, <see cref="short.MaxValue"/>].</remarks>
 		/// <seealso cref="RandomInteger.Short(IRandom)"/>
-		public static IShortGenerator MakeShortGenerator(this IRandom random)
+		/// <seealso cref="RandomInteger.ShortNonNegative(IRandom)"/>
+		public static IShortGenerator MakeShortGenerator(this IRandom random, bool excludeNegative = false)
 		{
-			return BufferedShortRangeGenerator.Create(random, short.MinValue, short.MaxValue);
+			return BufferedShortRangeGenerator.Create(random, excludeNegative ? (short)0 : short.MinValue, short.MaxValue);
 		}
 
 		/// <summary>
@@ -1754,14 +1764,19 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a range generator which will produce integers greater than or equal to <see cref="int.MinValue"/> and less than or equal to <see cref="int.MaxValue"/>.
+		/// Returns a range generator which will produce integers greater than or equal to either 0 or <see cref="int.MinValue"/> and less than or equal to <see cref="int.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <returns>A range generator producing random integers in the range [<see cref="int.MinValue"/>, <see cref="int.MaxValue"/>].</returns>
+		/// <param name="excludeNegative">Specifies if the range should be limited just non-negative values.  Defaults to false.</param>
+		/// <returns>A range generator producing random integers in the range .</returns>
+		/// <remarks>If <paramref name="excludeNegative"/> is false, the return value will be in the range
+		/// [<see cref="int.MinValue"/>, <see cref="int.MaxValue"/>].  If <paramref name="excludeNegative"/>
+		/// is true, the return value will be in the range [0, <see cref="int.MaxValue"/>].</remarks>
 		/// <seealso cref="RandomInteger.Int(IRandom)"/>
-		public static IIntGenerator MakeIntGenerator(this IRandom random)
+		/// <seealso cref="RandomInteger.IntNonNegative(IRandom)"/>
+		public static IIntGenerator MakeIntGenerator(this IRandom random, bool excludeNegative = false)
 		{
-			return BufferedIntRangeGenerator.Create(random, int.MinValue, int.MaxValue);
+			return BufferedIntRangeGenerator.Create(random, excludeNegative ? 0 : int.MinValue, int.MaxValue);
 		}
 
 		/// <summary>
@@ -1776,14 +1791,19 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a range generator which will produce long integers greater than or equal to <see cref="long.MinValue"/> and less than or equal to <see cref="long.MaxValue"/>.
+		/// Returns a range generator which will produce long integers greater than or equal to either 0 or <see cref="long.MinValue"/> and less than or equal to <see cref="long.MaxValue"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <returns>A range generator producing random long integers in the range [<see cref="long.MinValue"/>, <see cref="long.MaxValue"/>].</returns>
+		/// <param name="excludeNegative">Specifies if the range should be limited just non-negative values.  Defaults to false.</param>
+		/// <returns>A range generator producing random long integers in the range .</returns>
+		/// <remarks>If <paramref name="excludeNegative"/> is false, the return value will be in the range
+		/// [<see cref="long.MinValue"/>, <see cref="long.MaxValue"/>].  If <paramref name="excludeNegative"/>
+		/// is true, the return value will be in the range [0, <see cref="long.MaxValue"/>].</remarks>
 		/// <seealso cref="RandomInteger.Long(IRandom)"/>
-		public static ILongGenerator MakeLongGenerator(this IRandom random)
+		/// <seealso cref="RandomInteger.LongNonNegative(IRandom)"/>
+		public static ILongGenerator MakeLongGenerator(this IRandom random, bool excludeNegative = false)
 		{
-			return BufferedLongRangeGenerator.Create(random, long.MinValue, long.MaxValue);
+			return BufferedLongRangeGenerator.Create(random, excludeNegative ? 0L : long.MinValue, long.MaxValue);
 		}
 
 		/// <summary>
