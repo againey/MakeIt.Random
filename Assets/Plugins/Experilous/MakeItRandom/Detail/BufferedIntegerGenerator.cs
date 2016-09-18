@@ -20,7 +20,6 @@ namespace Experilous.MakeItRandom.Detail
 		int _excessBitsPer64Bits;
 		ulong _bitMask;
 
-		int _bitGroupCount = 0;
 		ulong _bits = 0UL;
 
 		public BufferedAnyRangeGeneratorBase(IRandom random, ulong rangeMax, ulong bitMask)
