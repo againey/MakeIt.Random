@@ -318,6 +318,11 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// The number of bits that the XorShift-Add engine naturally produces in a single step.
+		/// </summary>
+		public override int stepBitCount { get { return 32; } }
+
+		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
 		/// </summary>
 		/// <remarks>32 bits of data are generated and thrown away by this call.</remarks>

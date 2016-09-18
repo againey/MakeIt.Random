@@ -249,6 +249,11 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// The number of bits that the Unity Random engine naturally produces in a single step.
+		/// </summary>
+		public override int stepBitCount { get { return 30; } }
+
+		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
 		/// </summary>
 		/// <remarks>32 bits of data are generated and thrown away by this call.</remarks>
@@ -257,16 +262,6 @@ namespace Experilous.MakeItRandom
 #pragma warning disable 0219
 			float throwaway = UnityEngine.Random.value;
 #pragma warning restore 0219
-		}
-
-		private uint Next16()
-		{
-			return (uint)UnityEngine.Random.Range(0, 65536);
-		}
-
-		private uint Next24()
-		{
-			return (uint)UnityEngine.Random.Range(0, 16777216);
 		}
 
 		/// <summary>

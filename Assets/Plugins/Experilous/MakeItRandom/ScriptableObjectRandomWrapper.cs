@@ -137,6 +137,9 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <inheritdoc />
+		public int stepBitCount { get { return _random.stepBitCount; } }
+
+		/// <inheritdoc />
 		public void Step()
 		{
 			_random.Step();

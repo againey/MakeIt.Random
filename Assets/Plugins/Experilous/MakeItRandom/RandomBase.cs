@@ -125,6 +125,11 @@ namespace Experilous.MakeItRandom
 		public abstract void MergeSeed(IBitGenerator bitGenerator);
 
 		/// <summary>
+		/// The number of bits that the psuedo-random engine naturally produces in a single step.
+		/// </summary>
+		public abstract int stepBitCount { get; }
+
+		/// <summary>
 		/// Step the state ahead by a single iteration, and throw away the output.
 		/// </summary>
 		public virtual void Step()
