@@ -103,7 +103,6 @@ namespace Experilous.MakeItRandom.Detail
 		int _excessBitsPer64Bits;
 		ulong _bitMask;
 
-		int _bitGroupCount;
 		ulong _bits;
 
 		public BufferedPow2RangeGeneratorBase(IRandom random, int bitCount, ulong bitMask)
@@ -176,7 +175,6 @@ namespace Experilous.MakeItRandom.Detail
 		int _bitCountPerGroup;
 		ulong _bitMask;
 
-		int _bitGroupCount;
 		ulong _bits;
 
 		public BufferedPowPow2RangeGeneratorBase(IRandom random, int bitCount, ulong bitMask)
