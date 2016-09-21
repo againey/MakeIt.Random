@@ -109,42 +109,42 @@ namespace Experilous.Examples.MakeItRandom
 			}
 			else if (cmyToggle.isOn)
 			{
-				ColorCMY cmy = ColorCMY.FromRGB(rgb);
+				ColorCMY cmy = (ColorCMY)rgb;
 				UpdateSelectedColorFields(cmy.c, cmy.m, cmy.y);
 			}
 			else if (cmykToggle.isOn)
 			{
-				ColorCMYK cmyk = ColorCMYK.FromRGB(rgb);
+				ColorCMYK cmyk = (ColorCMYK)rgb;
 				UpdateSelectedColorFields(cmyk.c, cmyk.m, cmyk.y, cmyk.k);
 			}
 			else if (hsvToggle.isOn)
 			{
-				ColorHSV hsv = ColorHSV.FromRGB(rgb);
+				ColorHSV hsv = (ColorHSV)rgb;
 				UpdateSelectedColorFields(hsv.h, hsv.s, hsv.v);
 			}
 			else if (hslToggle.isOn)
 			{
-				ColorHSL hsl = ColorHSL.FromRGB(rgb);
+				ColorHSL hsl = (ColorHSL)rgb;
 				UpdateSelectedColorFields(hsl.h, hsl.s, hsl.l);
 			}
 			else if (hsyToggle.isOn)
 			{
-				ColorHSY hsy = ColorHSY.FromRGB(rgb);
+				ColorHSY hsy = (ColorHSY)rgb;
 				UpdateSelectedColorFields(hsy.h, hsy.s, hsy.y);
 			}
 			else if (hcvToggle.isOn)
 			{
-				ColorHCV hcv = ColorHCV.FromRGB(rgb);
+				ColorHCV hcv = (ColorHCV)rgb;
 				UpdateSelectedColorFields(hcv.h, hcv.c, hcv.v);
 			}
 			else if (hclToggle.isOn)
 			{
-				ColorHCL hcl = ColorHCL.FromRGB(rgb);
+				ColorHCL hcl = (ColorHCL)rgb;
 				UpdateSelectedColorFields(hcl.h, hcl.c, hcl.l);
 			}
 			else if (hcyToggle.isOn)
 			{
-				ColorHCY hcy = ColorHCY.FromRGB(rgb);
+				ColorHCY hcy = (ColorHCY)rgb;
 				UpdateSelectedColorFields(hcy.h, hcy.c, hcy.y);
 			}
 			else
@@ -280,39 +280,39 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (rgbToggle.isOn)
 			{
-				generator = () => _random.RGB();
+				generator = () => _random.ColorRGB();
 			}
 			else if (cmyToggle.isOn)
 			{
-				generator = () => (Color)_random.CMY();
+				generator = () => (Color)_random.ColorCMY();
 			}
 			else if (cmykToggle.isOn)
 			{
-				generator = () => (Color)_random.CMYK();
+				generator = () => (Color)_random.ColorCMYK();
 			}
 			else if (hsvToggle.isOn)
 			{
-				generator = () => (Color)_random.HSV();
+				generator = () => (Color)_random.ColorHSV();
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = () => (Color)_random.HSL();
+				generator = () => (Color)_random.ColorHSL();
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = () => (Color)_random.HSY();
+				generator = () => (Color)_random.ColorHSY();
 			}
 			else if (hcvToggle.isOn)
 			{
-				generator = () => (Color)_random.HCV();
+				generator = () => (Color)_random.ColorHCV();
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = () => (Color)_random.HCL();
+				generator = () => (Color)_random.ColorHCL();
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = () => (Color)_random.HCY();
+				generator = () => (Color)_random.ColorHCY();
 			}
 			else
 			{
@@ -331,7 +331,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.Red(_random);
+				colorButton.colorImage.color = _random.ColorRed();
 			}
 
 			UpdateSelectedColor();
@@ -341,7 +341,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.DarkRed(_random);
+				colorButton.colorImage.color = _random.ColorDarkRed();
 			}
 
 			UpdateSelectedColor();
@@ -351,7 +351,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.LightRed(_random);
+				colorButton.colorImage.color = _random.ColorLightRed();
 			}
 
 			UpdateSelectedColor();
@@ -361,7 +361,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.Green(_random);
+				colorButton.colorImage.color = _random.ColorGreen();
 			}
 
 			UpdateSelectedColor();
@@ -371,7 +371,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.DarkGreen(_random);
+				colorButton.colorImage.color = _random.ColorDarkGreen();
 			}
 
 			UpdateSelectedColor();
@@ -381,7 +381,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.LightGreen(_random);
+				colorButton.colorImage.color = _random.ColorLightGreen();
 			}
 
 			UpdateSelectedColor();
@@ -391,7 +391,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.Blue(_random);
+				colorButton.colorImage.color = _random.ColorBlue();
 			}
 
 			UpdateSelectedColor();
@@ -401,7 +401,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.DarkBlue(_random);
+				colorButton.colorImage.color = _random.ColorDarkBlue();
 			}
 
 			UpdateSelectedColor();
@@ -411,7 +411,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			foreach (ColorToggleButton colorButton in _colorButtons)
 			{
-				colorButton.colorImage.color = RandomColor.LightBlue(_random);
+				colorButton.colorImage.color = _random.ColorLightBlue();
 			}
 
 			UpdateSelectedColor();
@@ -428,39 +428,39 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (rgbToggle.isOn)
 			{
-				generator = (Color color) => _random.RGBShift(color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => _random.ColorRGBShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (cmyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.CMYShift((ColorCMY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorCMYShift((ColorCMY)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (cmykToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.CMYKShift((ColorCMYK)color, maxChange0, maxChange1, maxChange2, maxChange3);
+				generator = (Color color) => (Color)_random.ColorCMYKShift((ColorCMYK)color, maxChange0, maxChange1, maxChange2, maxChange3);
 			}
 			else if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HSVShift((ColorHSV)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSVShift((ColorHSV)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HSLShift((ColorHSL)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSLShift((ColorHSL)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HSYShift((ColorHSY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSYShift((ColorHSY)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HCVShift((ColorHCV)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCVShift((ColorHCV)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HCLShift((ColorHCL)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCLShift((ColorHCL)color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.HCYShift((ColorHCY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCYShift((ColorHCY)color, maxChange0, maxChange1, maxChange2);
 			}
 			else
 			{
@@ -486,39 +486,39 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (rgbToggle.isOn)
 			{
-				generator = (Color color) => _random.IntensitySpread(color, 0f, maxProportion);
+				generator = (Color color) => _random.ColorIntensitySpread(color, 0f, maxProportion);
 			}
 			else if (cmyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.IntensitySpread((ColorCMY)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorIntensitySpread((ColorCMY)color, 0f, maxProportion);
 			}
 			else if (cmykToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.KeySpread((ColorCMYK)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorKeySpread((ColorCMYK)color, -maxProportion, 0f);
 			}
 			else if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ValueSpread((ColorHSV)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorValueSpread((ColorHSV)color, 0f, maxProportion);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LightnessSpread((ColorHSL)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorLightnessSpread((ColorHSL)color, 0f, maxProportion);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LumaSpread((ColorHSY)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorLumaSpread((ColorHSY)color, 0f, maxProportion);
 			}
 			else if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ValueSpread((ColorHCV)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorValueSpread((ColorHCV)color, 0f, maxProportion);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LightnessSpread((ColorHCL)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorLightnessSpread((ColorHCL)color, 0f, maxProportion);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LumaSpread((ColorHCY)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorLumaSpread((ColorHCY)color, 0f, maxProportion);
 			}
 			else
 			{
@@ -544,39 +544,39 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (rgbToggle.isOn)
 			{
-				generator = (Color color) => _random.IntensitySpread(color, -maxProportion, 0f);
+				generator = (Color color) => _random.ColorIntensitySpread(color, -maxProportion, 0f);
 			}
 			else if (cmyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.IntensitySpread((ColorCMY)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorIntensitySpread((ColorCMY)color, -maxProportion, 0f);
 			}
 			else if (cmykToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.KeySpread((ColorCMYK)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorKeySpread((ColorCMYK)color, 0f, maxProportion);
 			}
 			else if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ValueSpread((ColorHSV)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorValueSpread((ColorHSV)color, -maxProportion, 0f);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LightnessSpread((ColorHSL)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorLightnessSpread((ColorHSL)color, -maxProportion, 0f);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LumaSpread((ColorHSY)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorLumaSpread((ColorHSY)color, -maxProportion, 0f);
 			}
 			else if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ValueSpread((ColorHCV)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorValueSpread((ColorHCV)color, -maxProportion, 0f);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LightnessSpread((ColorHCL)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorLightnessSpread((ColorHCL)color, -maxProportion, 0f);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.LumaSpread((ColorHCY)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorLumaSpread((ColorHCY)color, -maxProportion, 0f);
 			}
 			else
 			{
@@ -602,15 +602,15 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSV)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSV)color, 0f, maxProportion);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSL)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSL)color, 0f, maxProportion);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSY)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSY)color, 0f, maxProportion);
 			}
 			else
 			{
@@ -636,15 +636,15 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSV)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSV)color, -maxProportion, 0f);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSL)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSL)color, -maxProportion, 0f);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.SaturationSpread((ColorHSY)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorSaturationSpread((ColorHSY)color, -maxProportion, 0f);
 			}
 			else
 			{
@@ -670,15 +670,15 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCV)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCV)color, 0f, maxProportion);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCL)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCL)color, 0f, maxProportion);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCY)color, 0f, maxProportion);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCY)color, 0f, maxProportion);
 			}
 			else
 			{
@@ -704,15 +704,15 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCV)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCV)color, -maxProportion, 0f);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCL)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCL)color, -maxProportion, 0f);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ChromaSpread((ColorHCY)color, -maxProportion, 0f);
+				generator = (Color color) => (Color)_random.ColorChromaSpread((ColorHCY)color, -maxProportion, 0f);
 			}
 			else
 			{
