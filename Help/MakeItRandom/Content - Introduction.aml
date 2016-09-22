@@ -151,7 +151,7 @@
 						var style = fontStyleGen.Next();
 						
 						// Pick a random color from the HCY color space
-						var color = random.HCY();
+						var color = random.ColorHCY();
 						// Alter the color's hue randomly by no more than 1/10.
 						color = random.HueShift(color, 0.1f);
 					]]>
