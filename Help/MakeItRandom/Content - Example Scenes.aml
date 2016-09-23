@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8e0cd87c-2003-4da5-8d84-eaf85585778b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<summary>
+			<para>Optional summary abstract</para>
+		</summary>
+		<introduction>
+			<autoOutline />
+			<para>
+			</para>
+		</introduction>
+		<section address="implementations">
+			<title>Scenes</title>
+			<content>
+				<para>
+				</para>
+				<definitionTable>
+					<definedTerm>Geometry</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+
+					<definedTerm>Colors</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+
+					<definedTerm>Shuffle</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+
+					<definedTerm>Dice</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+
+					<definedTerm>Strings</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+
+					<definedTerm>Performance</definedTerm>
+					<definition>
+						<para>
+						</para>
+					</definition>
+				</definitionTable>
+			</content>
+		</section>
+	</developerConceptualDocument>
+</topic>
