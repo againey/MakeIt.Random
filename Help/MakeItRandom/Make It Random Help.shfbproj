@@ -43,7 +43,7 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>MemberName</NamingMethod>
-    <HelpTitle>Experilous Unity Assets API Reference</HelpTitle>
+    <HelpTitle>Make It Random User&amp;#39%3bs Manual</HelpTitle>
     <FeedbackEMailLinkText>againey%40experilous.com</FeedbackEMailLinkText>
     <FeedbackEMailAddress>againey%40experilous.com</FeedbackEMailAddress>
     <CopyrightText>Copyright Andy Gainey</CopyrightText>
@@ -67,45 +67,56 @@
           </ignoreIfUnresolved>
         </configuration>
       </PlugInConfig>
-<PlugInConfig id="Additional Reference Links" enabled="True"><configuration><targets><target htmlSdkLinkType="None" helpViewerSdkLinkType="Id" websiteSdkLinkType="None" helpFileProject="..\UnityEngine.shfbproj" /></targets></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Additional Reference Links" enabled="True">
+        <configuration>
+          <targets>
+            <target htmlSdkLinkType="None" helpViewerSdkLinkType="Id" websiteSdkLinkType="None" helpFileProject="..\UnityEngine.shfbproj" />
+          </targets>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <RootNamespaceTitle>API Reference</RootNamespaceTitle>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Containers" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Core" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItColorful" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItRandom" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItTile" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItWrap" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.Shared" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItGenerate" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItRandom.Detail" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItTile" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItWrap" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Numerics" isExposed="False" />
-<Filter entryType="Namespace" fullName="UnityEditor" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEditor.Editor" filterName="Editor" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEditor.EditorWindow" filterName="EditorWindow" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEditor.PropertyDrawer" filterName="PropertyDrawer" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="UnityEngine" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEngine.Behaviour" filterName="Behaviour" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Component" filterName="Component" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.MonoBehaviour" filterName="MonoBehaviour" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Object" filterName="Object" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="UnityEngine.Events" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEngine.Events.UnityEvent`2" filterName="UnityEvent`2" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Events.UnityEventBase" filterName="UnityEventBase" isExposed="False" />
-</Filter></ApiFilter>
+      <Filter entryType="Namespace" fullName="Experilous" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Containers" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Core" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItColorful" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItRandom" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItTile" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItWrap" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.Shared" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItColorful.Detail" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItGenerate" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItRandom.Detail" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItTile" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItWrap" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Numerics" isExposed="False" />
+      <Filter entryType="Namespace" fullName="UnityEditor" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEditor.Editor" filterName="Editor" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEditor.EditorWindow" filterName="EditorWindow" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEditor.PropertyDrawer" filterName="PropertyDrawer" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="UnityEngine" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEngine.Behaviour" filterName="Behaviour" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Component" filterName="Component" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.MonoBehaviour" filterName="MonoBehaviour" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Object" filterName="Object" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.ScriptableObject" filterName="ScriptableObject" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="UnityEngine.Events" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEngine.Events.UnityEvent`2" filterName="UnityEvent`2" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Events.UnityEventBase" filterName="UnityEventBase" isExposed="False" />
+      </Filter>
+    </ApiFilter>
     <ComponentPath>..\Temp\UnityVS_bin\Debug\</ComponentPath>
     <ProjectSummary>
     </ProjectSummary>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Experilous.MakeItColorful" isDocumented="True">In this namespace are a collection of color space structs used to work with colors in particular color spaces to achieve certain effects and avoid undesirable effects of the standard RGB color space.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Experilous.MakeItRandom" isDocumented="True">In this namespace are a variety of pseudo-random number generators (PRNGs) and numerous sets of extention methods that provide advance randomization utilities on top of them, along with a few miscellaneous helper classes.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="Experilous.MakeItRandom" isDocumented="True">In this namespace are a variety of pseudo-random number generators (PRNGs) and numerous sets of extention methods that provide advance randomization utilities on top of them, along with a few miscellaneous helper classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Experilous.MakeItColorful" isDocumented="True">In this namespace are a collection of color space structs used to work with colors in particular color spaces to achieve certain effects and avoid undesirable effects of the standard RGB color space.</NamespaceSummaryItem></NamespaceSummaries>
+    <ComponentConfigurations />
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
@@ -161,5 +172,6 @@
     <None Include="Content - Introduction.aml" />
     <None Include="Content - Numeric Ranges.aml" />
     <None Include="Content - Generators.aml" />
+    <None Include="Content - Example Scenes.aml" />
   </ItemGroup>
 </Project>
