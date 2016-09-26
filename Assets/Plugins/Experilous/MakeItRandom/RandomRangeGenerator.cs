@@ -402,7 +402,7 @@ namespace Experilous.MakeItRandom
 
 				uint rangeSizeMinusOne = (uint)(rangeMax - rangeMin);
 
-				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((byte)rangeSizeMinusOne);
+				uint bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeSizeMinusOne);
 
 				if (rangeSizeMinusOne != bitMask) // The range size is not a power of 2.
 				{
@@ -587,7 +587,7 @@ namespace Experilous.MakeItRandom
 
 				ulong rangeSizeMinusOne = (ulong)(rangeMax - rangeMin);
 
-				ulong bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax((byte)rangeSizeMinusOne);
+				ulong bitMask = Detail.DeBruijnLookup.GetBitMaskForRangeMax(rangeSizeMinusOne);
 
 				if (rangeSizeMinusOne != bitMask) // The range size is not a power of 2.
 				{
