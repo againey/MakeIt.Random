@@ -101,7 +101,7 @@ namespace Experilous.MakeItRandom
 
 		private class ByValueEnumGenerator<T> : ByValueEnumGeneratorBase<T>, IEnumGenerator<T> where T : struct
 		{
-			private IIntGenerator _indexGenerator;
+			private IRangeGenerator<int> _indexGenerator;
 
 			public ByValueEnumGenerator(IRandom random)
 			{
@@ -262,7 +262,7 @@ namespace Experilous.MakeItRandom
 
 		private class ByNameEnumGenerator<T> : ByNameEnumGeneratorBase<T> where T : struct
 		{
-			private IIntGenerator _indexGenerator;
+			private IRangeGenerator<int> _indexGenerator;
 
 			public ByNameEnumGenerator(IRandom random)
 			{

@@ -15,7 +15,7 @@ namespace Experilous.MakeItRandom
 
 		#region Bit Generators
 
-		private class SingleBitGenerator : Detail.BufferedBitGenerator, IUIntGenerator
+		private class SingleBitGenerator : Detail.BufferedBitGenerator, IRangeGenerator<uint>
 		{
 			public SingleBitGenerator(IRandom random) : base(random) { }
 
@@ -25,7 +25,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class MultiBitGenerator32 : Detail.BufferedPowPow2RangeGeneratorBase, IUIntGenerator
+		private class MultiBitGenerator32 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<uint>
 		{
 			public MultiBitGenerator32(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 
@@ -35,7 +35,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class MultiBitGenerator64 : Detail.BufferedPowPow2RangeGeneratorBase, IULongGenerator
+		private class MultiBitGenerator64 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<ulong>
 		{
 			public MultiBitGenerator64(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 
@@ -49,7 +49,7 @@ namespace Experilous.MakeItRandom
 
 		#region Uniform { -1, 0, +1 } Generators
 
-		private class OneOrZeroGenerator : Detail.BufferedBitGenerator, IIntGenerator
+		private class OneOrZeroGenerator : Detail.BufferedBitGenerator, IRangeGenerator<int>
 		{
 			public OneOrZeroGenerator(IRandom random) : base(random) { }
 
@@ -59,7 +59,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class SignGenerator : Detail.BufferedBitGenerator, IIntGenerator
+		private class SignGenerator : Detail.BufferedBitGenerator, IRangeGenerator<int>
 		{
 			public SignGenerator(IRandom random) : base(random) { }
 
@@ -69,7 +69,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class SignOrZeroGenerator : Detail.BufferedAnyRangeGeneratorBase, IIntGenerator
+		private class SignOrZeroGenerator : Detail.BufferedAnyRangeGeneratorBase, IRangeGenerator<int>
 		{
 			public SignOrZeroGenerator(IRandom random) : base(random, 2UL, 3UL) { }
 
@@ -83,9 +83,9 @@ namespace Experilous.MakeItRandom
 
 		#region Weighted { 0, +1 } Generators
 
-		private class IntWeightedOneProbabilityGenerator : IIntGenerator
+		private class IntWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IIntGenerator _rangeGenerator;
+			private IRangeGenerator<int> _rangeGenerator;
 			private int _numerator;
 
 			public IntWeightedOneProbabilityGenerator(IRandom random, int numerator)
@@ -106,9 +106,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UIntWeightedOneProbabilityGenerator : IIntGenerator
+		private class UIntWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IUIntGenerator _rangeGenerator;
+			private IRangeGenerator<uint> _rangeGenerator;
 			private uint _numerator;
 
 			public UIntWeightedOneProbabilityGenerator(IRandom random, uint numerator)
@@ -129,9 +129,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class LongWeightedOneProbabilityGenerator : IIntGenerator
+		private class LongWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private ILongGenerator _rangeGenerator;
+			private IRangeGenerator<long> _rangeGenerator;
 			private long _numerator;
 
 			public LongWeightedOneProbabilityGenerator(IRandom random, long numerator)
@@ -152,9 +152,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ULongWeightedOneProbabilityGenerator : IIntGenerator
+		private class ULongWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IULongGenerator _rangeGenerator;
+			private IRangeGenerator<ulong> _rangeGenerator;
 			private ulong _numerator;
 
 			public ULongWeightedOneProbabilityGenerator(IRandom random, ulong numerator)
@@ -175,9 +175,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FloatWeightedOneProbabilityGenerator : IIntGenerator
+		private class FloatWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _numerator;
 
 			public FloatWeightedOneProbabilityGenerator(IRandom random, float probability)
@@ -198,9 +198,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class DoubleWeightedOneProbabilityGenerator : IIntGenerator
+		private class DoubleWeightedOneProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IDoubleGenerator _rangeGenerator;
+			private IRangeGenerator<double> _rangeGenerator;
 			private double _numerator;
 
 			public DoubleWeightedOneProbabilityGenerator(IRandom random, double probability)
@@ -225,9 +225,9 @@ namespace Experilous.MakeItRandom
 
 		#region Weighted { -1, +1 } Generators
 
-		private class IntWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class IntWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IIntGenerator _rangeGenerator;
+			private IRangeGenerator<int> _rangeGenerator;
 			private int _numerator;
 
 			public IntWeightedPositiveProbabilityGenerator(IRandom random, int numerator)
@@ -248,9 +248,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UIntWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class UIntWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IUIntGenerator _rangeGenerator;
+			private IRangeGenerator<uint> _rangeGenerator;
 			private uint _numerator;
 
 			public UIntWeightedPositiveProbabilityGenerator(IRandom random, uint numerator)
@@ -271,9 +271,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class LongWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class LongWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private ILongGenerator _rangeGenerator;
+			private IRangeGenerator<long> _rangeGenerator;
 			private long _numerator;
 
 			public LongWeightedPositiveProbabilityGenerator(IRandom random, long numerator)
@@ -294,9 +294,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ULongWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class ULongWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IULongGenerator _rangeGenerator;
+			private IRangeGenerator<ulong> _rangeGenerator;
 			private ulong _numerator;
 
 			public ULongWeightedPositiveProbabilityGenerator(IRandom random, ulong numerator)
@@ -317,9 +317,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FloatWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class FloatWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _numerator;
 
 			public FloatWeightedPositiveProbabilityGenerator(IRandom random, float probability)
@@ -340,9 +340,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class DoubleWeightedPositiveProbabilityGenerator : IIntGenerator
+		private class DoubleWeightedPositiveProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IDoubleGenerator _rangeGenerator;
+			private IRangeGenerator<double> _rangeGenerator;
 			private double _numerator;
 
 			public DoubleWeightedPositiveProbabilityGenerator(IRandom random, double probability)
@@ -363,9 +363,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class IntWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class IntWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IIntGenerator _rangeGenerator;
+			private IRangeGenerator<int> _rangeGenerator;
 			private int _numerator;
 
 			public IntWeightedNegativeProbabilityGenerator(IRandom random, int numerator)
@@ -386,9 +386,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UIntWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class UIntWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IUIntGenerator _rangeGenerator;
+			private IRangeGenerator<uint> _rangeGenerator;
 			private uint _numerator;
 
 			public UIntWeightedNegativeProbabilityGenerator(IRandom random, uint numerator)
@@ -409,9 +409,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class LongWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class LongWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private ILongGenerator _rangeGenerator;
+			private IRangeGenerator<long> _rangeGenerator;
 			private long _numerator;
 
 			public LongWeightedNegativeProbabilityGenerator(IRandom random, long numerator)
@@ -432,9 +432,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ULongWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class ULongWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IULongGenerator _rangeGenerator;
+			private IRangeGenerator<ulong> _rangeGenerator;
 			private ulong _numerator;
 
 			public ULongWeightedNegativeProbabilityGenerator(IRandom random, ulong numerator)
@@ -455,9 +455,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FloatWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class FloatWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _numerator;
 
 			public FloatWeightedNegativeProbabilityGenerator(IRandom random, float probability)
@@ -478,9 +478,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class DoubleWeightedNegativeProbabilityGenerator : IIntGenerator
+		private class DoubleWeightedNegativeProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IDoubleGenerator _rangeGenerator;
+			private IRangeGenerator<double> _rangeGenerator;
 			private double _numerator;
 
 			public DoubleWeightedNegativeProbabilityGenerator(IRandom random, double probability)
@@ -505,9 +505,9 @@ namespace Experilous.MakeItRandom
 
 		#region Weighted { -1, 0, +1 } Generators
 
-		private class IntWeightedSignProbabilityGenerator : IIntGenerator
+		private class IntWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IIntGenerator _rangeGenerator;
+			private IRangeGenerator<int> _rangeGenerator;
 			private int _numeratorNonZero;
 			private int _numeratorPositive;
 
@@ -532,9 +532,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UIntWeightedSignProbabilityGenerator : IIntGenerator
+		private class UIntWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IUIntGenerator _rangeGenerator;
+			private IRangeGenerator<uint> _rangeGenerator;
 			private uint _numeratorNonZero;
 			private uint _numeratorPositive;
 
@@ -559,9 +559,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class LongWeightedSignProbabilityGenerator : IIntGenerator
+		private class LongWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private ILongGenerator _rangeGenerator;
+			private IRangeGenerator<long> _rangeGenerator;
 			private long _numeratorNonZero;
 			private long _numeratorPositive;
 
@@ -586,9 +586,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ULongWeightedSignProbabilityGenerator : IIntGenerator
+		private class ULongWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IULongGenerator _rangeGenerator;
+			private IRangeGenerator<ulong> _rangeGenerator;
 			private ulong _numeratorNonZero;
 			private ulong _numeratorPositive;
 
@@ -613,9 +613,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FloatWeightedSignProbabilityGenerator : IIntGenerator
+		private class FloatWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _numeratorNonZero;
 			private float _numeratorPositive;
 
@@ -640,9 +640,9 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class DoubleWeightedSignProbabilityGenerator : IIntGenerator
+		private class DoubleWeightedSignProbabilityGenerator : IRangeGenerator<int>
 		{
-			private IDoubleGenerator _rangeGenerator;
+			private IRangeGenerator<double> _rangeGenerator;
 			private double _numeratorNonZero;
 			private double _numeratorPositive;
 
@@ -671,12 +671,12 @@ namespace Experilous.MakeItRandom
 
 		#region Angle Generators
 
-		private class AngleGenerator : IFloatGenerator
+		private class AngleGenerator : IRangeGenerator<float>
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _scale;
 
-			private AngleGenerator(IFloatGenerator rangeGenerator, float scale)
+			private AngleGenerator(IRangeGenerator<float> rangeGenerator, float scale)
 			{
 				_rangeGenerator = rangeGenerator;
 				_scale = scale;
@@ -749,7 +749,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A bit generator which will produce a single bit per call to generator.Next().</returns>
 		/// <seealso cref="Bit(IRandom)"/>
-		public static IUIntGenerator MakeBitGenerator(this IRandom random)
+		public static IRangeGenerator<uint> MakeBitGenerator(this IRandom random)
 		{
 			return new SingleBitGenerator(random);
 		}
@@ -770,7 +770,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A bit generator which will produce 32 random bits per call to generator.Next().</returns>
 		/// <seealso cref="Bits32(IRandom)"/>
-		public static IUIntGenerator MakeBits32Generator(this IRandom random)
+		public static IRangeGenerator<uint> MakeBits32Generator(this IRandom random)
 		{
 			return new MultiBitGenerator32(random, 32, 0xFFFFFFFFUL);
 		}
@@ -793,7 +793,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="bitCount">The number of bits to generate.  Must be in the range [1, 32].</param>
 		/// <returns>A bit generator which will produce <paramref name="bitCount"/> random bits per call to generator.Next().</returns>
 		/// <seealso cref="Bits32(IRandom, int)"/>
-		public static IUIntGenerator MakeBits32Generator(this IRandom random, int bitCount)
+		public static IRangeGenerator<uint> MakeBits32Generator(this IRandom random, int bitCount)
 		{
 			return new MultiBitGenerator32(random, bitCount, 0xFFFFFFFFUL >> (32 - bitCount));
 		}
@@ -814,7 +814,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>A bit generator which will produce 64 random bits per call to generator.Next().</returns>
 		/// <seealso cref="Bits64(IRandom)"/>
-		public static IULongGenerator MakeBits64Generator(this IRandom random)
+		public static IRangeGenerator<ulong> MakeBits64Generator(this IRandom random)
 		{
 			return new MultiBitGenerator64(random, 64, 0xFFFFFFFFFFFFFFFFUL);
 		}
@@ -837,7 +837,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="bitCount">The number of bits to generate.  Must be in the range [1, 64].</param>
 		/// <returns>A bit generator which will produce <paramref name="bitCount"/> random bits per call to generator.Next().</returns>
 		/// <seealso cref="Bits64(IRandom, int)"/>
-		public static IULongGenerator MakeBits64Generator(this IRandom random, int bitCount)
+		public static IRangeGenerator<ulong> MakeBits64Generator(this IRandom random, int bitCount)
 		{
 			return new MultiBitGenerator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
 		}
@@ -862,7 +862,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>An integer generator which will produce numbers with exacty a half and half chance of being positive one or zero.</returns>
 		/// <seealso cref="OneOrZero(IRandom)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random)
 		{
 			return new OneOrZeroGenerator(random);
 		}
@@ -883,7 +883,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>An integer generator which will produce numbers with exacty a half and half chance of being positive one or negative one.</returns>
 		/// <seealso cref="Sign(IRandom)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random)
 		{
 			return new SignGenerator(random);
 		}
@@ -910,7 +910,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
 		/// <returns>An integer generator which will produce numbers with exacty a one third chance each of being positive one, zero, or negative one.</returns>
 		/// <seealso cref="SignOrZero(IRandom)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random)
 		{
 			return new SignOrZeroGenerator(random);
 		}
@@ -940,7 +940,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, int, int)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, int ratioOne, int ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, int ratioOne, int ratioZero)
 		{
 			return new IntWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -966,7 +966,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, uint ratioOne, uint ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, uint ratioOne, uint ratioZero)
 		{
 			return new UIntWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -992,7 +992,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, long, long)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, long ratioOne, long ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, long ratioOne, long ratioZero)
 		{
 			return new LongWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -1018,7 +1018,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, ulong ratioOne, ulong ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, ulong ratioOne, ulong ratioZero)
 		{
 			return new ULongWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -1044,7 +1044,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, float, float)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, float ratioOne, float ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, float ratioOne, float ratioZero)
 		{
 			return new FloatWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -1070,7 +1070,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneOrZero(IRandom, double, double)"/>
-		public static IIntGenerator MakeOneOrZeroGenerator(this IRandom random, double ratioOne, double ratioZero)
+		public static IRangeGenerator<int> MakeOneOrZeroGenerator(this IRandom random, double ratioOne, double ratioZero)
 		{
 			return new DoubleWeightedOneProbabilityGenerator(random, ratioOne, ratioOne + ratioZero);
 		}
@@ -1096,7 +1096,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, int, int)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, int ratioPositive, int ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, int ratioPositive, int ratioNegative)
 		{
 			return new IntWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1122,7 +1122,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, uint ratioPositive, uint ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, uint ratioPositive, uint ratioNegative)
 		{
 			return new UIntWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1148,7 +1148,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, long, long)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, long ratioPositive, long ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, long ratioPositive, long ratioNegative)
 		{
 			return new LongWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1174,7 +1174,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, ulong ratioPositive, ulong ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, ulong ratioPositive, ulong ratioNegative)
 		{
 			return new ULongWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1200,7 +1200,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, float, float)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, float ratioPositive, float ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, float ratioPositive, float ratioNegative)
 		{
 			return new FloatWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1226,7 +1226,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioNegative">The weight determining the probability of a result being -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="Sign(IRandom, double, double)"/>
-		public static IIntGenerator MakeSignGenerator(this IRandom random, double ratioPositive, double ratioNegative)
+		public static IRangeGenerator<int> MakeSignGenerator(this IRandom random, double ratioPositive, double ratioNegative)
 		{
 			return new DoubleWeightedPositiveProbabilityGenerator(random, ratioPositive, ratioPositive + ratioNegative);
 		}
@@ -1256,7 +1256,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, int, int, int)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, int ratioPositive, int ratioNegative, int ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, int ratioPositive, int ratioNegative, int ratioZero)
 		{
 			return new IntWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1286,7 +1286,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, uint, uint, uint)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, uint ratioPositive, uint ratioNegative, uint ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, uint ratioPositive, uint ratioNegative, uint ratioZero)
 		{
 			return new UIntWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1316,7 +1316,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, long, long, long)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, long ratioPositive, long ratioNegative, long ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, long ratioPositive, long ratioNegative, long ratioZero)
 		{
 			return new LongWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1346,7 +1346,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, ulong, ulong, ulong)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, ulong ratioPositive, ulong ratioNegative, ulong ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, ulong ratioPositive, ulong ratioNegative, ulong ratioZero)
 		{
 			return new ULongWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1376,7 +1376,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, float, float, float)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, float ratioPositive, float ratioNegative, float ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, float ratioPositive, float ratioNegative, float ratioZero)
 		{
 			return new FloatWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1406,7 +1406,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="ratioZero">The weight determining the probability of a result being 0.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignOrZero(IRandom, double, double, double)"/>
-		public static IIntGenerator MakeSignOrZeroGenerator(this IRandom random, double ratioPositive, double ratioNegative, double ratioZero)
+		public static IRangeGenerator<int> MakeSignOrZeroGenerator(this IRandom random, double ratioPositive, double ratioNegative, double ratioZero)
 		{
 			return new DoubleWeightedSignProbabilityGenerator(random, ratioPositive, ratioNegative, ratioPositive + ratioNegative + ratioZero);
 		}
@@ -1435,7 +1435,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^31 that the result will be +1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, int)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, int numerator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, int numerator)
 		{
 			return new IntWeightedOneProbabilityGenerator(random, numerator);
 		}
@@ -1458,7 +1458,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, uint)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, uint numerator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, uint numerator)
 		{
 			return new UIntWeightedOneProbabilityGenerator(random, numerator);
 		}
@@ -1481,7 +1481,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, long)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, long numerator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, long numerator)
 		{
 			return new LongWeightedOneProbabilityGenerator(random, numerator);
 		}
@@ -1504,7 +1504,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, ulong numerator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, ulong numerator)
 		{
 			return new ULongWeightedOneProbabilityGenerator(random, numerator);
 		}
@@ -1527,7 +1527,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, float)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, float probability)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, float probability)
 		{
 			return new FloatWeightedOneProbabilityGenerator(random, probability);
 		}
@@ -1550,7 +1550,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, double)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, double probability)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, double probability)
 		{
 			return new DoubleWeightedOneProbabilityGenerator(random, probability);
 		}
@@ -1575,7 +1575,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, int, int)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, int numerator, int denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1600,7 +1600,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
 		{
 			return new UIntWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1625,7 +1625,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, long, long)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, long numerator, long denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1650,7 +1650,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
 		{
 			return new ULongWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1675,7 +1675,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, float, float)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, float numerator, float denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, float numerator, float denominator)
 		{
 			return new FloatWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1700,7 +1700,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
 		/// <seealso cref="OneProbability(IRandom, double, double)"/>
-		public static IIntGenerator MakeOneProbabilityGenerator(this IRandom random, double numerator, double denominator)
+		public static IRangeGenerator<int> MakeOneProbabilityGenerator(this IRandom random, double numerator, double denominator)
 		{
 			return new DoubleWeightedOneProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1727,7 +1727,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^31 that the result will be +1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, int)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, int numerator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, int numerator)
 		{
 			return new IntWeightedPositiveProbabilityGenerator(random, numerator);
 		}
@@ -1750,7 +1750,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^32 that the result will be +1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, uint)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, uint numerator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, uint numerator)
 		{
 			return new UIntWeightedPositiveProbabilityGenerator(random, numerator);
 		}
@@ -1773,7 +1773,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^63 that the result will be +1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, long)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, long numerator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, long numerator)
 		{
 			return new LongWeightedPositiveProbabilityGenerator(random, numerator);
 		}
@@ -1796,7 +1796,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^64 that the result will be +1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, ulong numerator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, ulong numerator)
 		{
 			return new ULongWeightedPositiveProbabilityGenerator(random, numerator);
 		}
@@ -1819,7 +1819,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, float)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, float probability)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, float probability)
 		{
 			return new FloatWeightedPositiveProbabilityGenerator(random, probability);
 		}
@@ -1842,7 +1842,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a positive one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, double)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, double probability)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, double probability)
 		{
 			return new DoubleWeightedPositiveProbabilityGenerator(random, probability);
 		}
@@ -1867,7 +1867,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, int, int)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, int numerator, int denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1892,7 +1892,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, uint, uint)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
 		{
 			return new UIntWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1917,7 +1917,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, long, long)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, long numerator, long denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1942,7 +1942,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
 		{
 			return new ULongWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1967,7 +1967,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, float, float)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, float numerator, float denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, float numerator, float denominator)
 		{
 			return new FloatWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -1992,7 +1992,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="PositiveProbability(IRandom, double, double)"/>
-		public static IIntGenerator MakePositiveProbabilityGenerator(this IRandom random, double numerator, double denominator)
+		public static IRangeGenerator<int> MakePositiveProbabilityGenerator(this IRandom random, double numerator, double denominator)
 		{
 			return new DoubleWeightedPositiveProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2019,7 +2019,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^31 that the result will be -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, int)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, int numerator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, int numerator)
 		{
 			return new IntWeightedNegativeProbabilityGenerator(random, numerator);
 		}
@@ -2042,7 +2042,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^32 that the result will be -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, uint)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, uint numerator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, uint numerator)
 		{
 			return new UIntWeightedNegativeProbabilityGenerator(random, numerator);
 		}
@@ -2065,7 +2065,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, long)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, long numerator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, long numerator)
 		{
 			return new LongWeightedNegativeProbabilityGenerator(random, numerator);
 		}
@@ -2088,7 +2088,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numerator">The average number of times out of 2^64 that the result will be -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, ulong)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator)
 		{
 			return new ULongWeightedNegativeProbabilityGenerator(random, numerator);
 		}
@@ -2111,7 +2111,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, float)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, float probability)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, float probability)
 		{
 			return new FloatWeightedNegativeProbabilityGenerator(random, probability);
 		}
@@ -2134,7 +2134,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probability">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, double)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, double probability)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, double probability)
 		{
 			return new DoubleWeightedNegativeProbabilityGenerator(random, probability);
 		}
@@ -2159,7 +2159,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, int, int)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, int numerator, int denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, int numerator, int denominator)
 		{
 			return new IntWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2184,7 +2184,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
 		{
 			return new UIntWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2209,7 +2209,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, long, long)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, long numerator, long denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, long numerator, long denominator)
 		{
 			return new LongWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2234,7 +2234,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
 		{
 			return new ULongWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2259,7 +2259,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, float, float)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, float numerator, float denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, float numerator, float denominator)
 		{
 			return new FloatWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2284,7 +2284,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, +1 }.</returns>
 		/// <seealso cref="NegativeProbability(IRandom, double, double)"/>
-		public static IIntGenerator MakeNegativeProbabilityGenerator(this IRandom random, double numerator, double denominator)
+		public static IRangeGenerator<int> MakeNegativeProbabilityGenerator(this IRandom random, double numerator, double denominator)
 		{
 			return new DoubleWeightedNegativeProbabilityGenerator(random, numerator, denominator);
 		}
@@ -2316,7 +2316,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numeratorNegative">The average number of times out of 2^31 that the result will be -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, int, int)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, int numeratorPositive, int numeratorNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, int numeratorPositive, int numeratorNegative)
 		{
 			return new IntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
@@ -2344,7 +2344,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numeratorNegative">The average number of times out of 2^32 that the result will be -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, uint, uint)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative)
 		{
 			return new UIntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
@@ -2372,7 +2372,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numeratorNegative">The average number of times out of 2^63 that the result will be -1.  Must be non-negative.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, long, long)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative)
 		{
 			return new LongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
@@ -2400,7 +2400,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="numeratorNegative">The average number of times out of 2^64 that the result will be -1.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, ulong, ulong)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative)
 		{
 			return new ULongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative);
 		}
@@ -2428,7 +2428,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, float, float)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, float probabilityPositive, float probabilityNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, float probabilityPositive, float probabilityNegative)
 		{
 			return new FloatWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
 		}
@@ -2456,7 +2456,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="probabilityNegative">The probability of a negative one result being generated.  Must be in the range [0, 1].</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, double, double)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, double probabilityPositive, double probabilityNegative)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, double probabilityPositive, double probabilityNegative)
 		{
 			return new DoubleWeightedSignProbabilityGenerator(random, probabilityPositive, probabilityNegative);
 		}
@@ -2486,7 +2486,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, int, int, int)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, int numeratorPositive, int numeratorNegative, int denominator)
 		{
 			return new IntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2516,7 +2516,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, uint, uint, uint)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative, uint denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, uint numeratorPositive, uint numeratorNegative, uint denominator)
 		{
 			return new UIntWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2546,7 +2546,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, long, long, long)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative, long denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, long numeratorPositive, long numeratorNegative, long denominator)
 		{
 			return new LongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2576,7 +2576,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, ulong, ulong, ulong)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative, ulong denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, ulong numeratorPositive, ulong numeratorNegative, ulong denominator)
 		{
 			return new ULongWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2606,7 +2606,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, float, float, float)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, float numeratorPositive, float numeratorNegative, float denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, float numeratorPositive, float numeratorNegative, float denominator)
 		{
 			return new FloatWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2636,7 +2636,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="denominator">The scale by which <paramref name="numeratorPositive"/> and <paramref name="numeratorNegative"/> are assessed.  Must be positive.</param>
 		/// <returns>An integer generator which will produce weighted random numbers from the set { -1, 0, +1 }.</returns>
 		/// <seealso cref="SignProbability(IRandom, double, double, double)"/>
-		public static IIntGenerator MakeSignProbabilityGenerator(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)
+		public static IRangeGenerator<int> MakeSignProbabilityGenerator(this IRandom random, double numeratorPositive, double numeratorNegative, double denominator)
 		{
 			return new DoubleWeightedSignProbabilityGenerator(random, numeratorPositive, numeratorNegative, denominator);
 		}
@@ -2706,7 +2706,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleDegOO(IRandom)"/>
 		/// <seealso cref="HalfAngleDegOO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegOO(IRandom)"/>
-		public static IFloatGenerator MakeAngleDegOOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegOOGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -2769,7 +2769,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleRadOO(IRandom)"/>
 		/// <seealso cref="HalfAngleRadOO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadOO(IRandom)"/>
-		public static IFloatGenerator MakeAngleRadOOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadOOGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -2832,7 +2832,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleDegCO(IRandom)"/>
 		/// <seealso cref="HalfAngleDegCO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegCO(IRandom)"/>
-		public static IFloatGenerator MakeAngleDegCOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegCOGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -2895,7 +2895,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleRadCO(IRandom)"/>
 		/// <seealso cref="HalfAngleRadCO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadCO(IRandom)"/>
-		public static IFloatGenerator MakeAngleRadCOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadCOGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -2958,7 +2958,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleDegOC(IRandom)"/>
 		/// <seealso cref="HalfAngleDegOC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegOC(IRandom)"/>
-		public static IFloatGenerator MakeAngleDegOCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegOCGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -3021,7 +3021,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleRadOC(IRandom)"/>
 		/// <seealso cref="HalfAngleRadOC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadOC(IRandom)"/>
-		public static IFloatGenerator MakeAngleRadOCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadOCGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -3084,7 +3084,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleDegCC(IRandom)"/>
 		/// <seealso cref="HalfAngleDegCC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegCC(IRandom)"/>
-		public static IFloatGenerator MakeAngleDegCCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegCCGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{
@@ -3147,7 +3147,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="SignedAngleRadCC(IRandom)"/>
 		/// <seealso cref="HalfAngleRadCC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadCC(IRandom)"/>
-		public static IFloatGenerator MakeAngleRadCCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadCCGenerator(this IRandom random, bool half = false, bool signed = false)
 		{
 			if (signed)
 			{

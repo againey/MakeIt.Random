@@ -140,7 +140,7 @@ namespace Experilous.MakeItRandom
 
 		#region Uniform
 
-		private class VariableLengthArrayIndexGenerator<T> : IIntGenerator
+		private class VariableLengthArrayIndexGenerator<T> : IRangeGenerator<int>
 		{
 			private IRandom _random;
 			private T[] _array;
@@ -157,7 +157,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class VariableLengthListIndexGenerator<T> : IIntGenerator
+		private class VariableLengthListIndexGenerator<T> : IRangeGenerator<int>
 		{
 			private IRandom _random;
 			private IList<T> _list;
@@ -176,7 +176,7 @@ namespace Experilous.MakeItRandom
 
 		private class FixedLengthArrayElementGenerator<T> : IElementGenerator<T>
 		{
-			private IIntGenerator _indexGenerator;
+			private IRangeGenerator<int> _indexGenerator;
 			private T[] _array;
 
 			public FixedLengthArrayElementGenerator(IRandom random, T[] array)
@@ -204,7 +204,7 @@ namespace Experilous.MakeItRandom
 
 		private class FixedLengthListElementGenerator<T> : IElementGenerator<T>
 		{
-			private IIntGenerator _indexGenerator;
+			private IRangeGenerator<int> _indexGenerator;
 			private IList<T> _list;
 
 			public FixedLengthListElementGenerator(IRandom random, IList<T> list)
@@ -1080,7 +1080,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="length">The length of a suitable collection whose elements can be accessed using the generated index.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="length"/>).</returns>
-		public static IIntGenerator MakeIndexGenerator(this IRandom random, int length)
+		public static IRangeGenerator<int> MakeIndexGenerator(this IRandom random, int length)
 		{
 			return random.MakeRangeCOGenerator(length);
 		}
@@ -1091,7 +1091,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="length">The length of a suitable collection whose elements can be accessed using the generated index.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="length"/>).</returns>
-		public static IUIntGenerator MakeIndexGenerator(this IRandom random, uint length)
+		public static IRangeGenerator<uint> MakeIndexGenerator(this IRandom random, uint length)
 		{
 			return random.MakeRangeCOGenerator(length);
 		}
@@ -1102,7 +1102,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="length">The length of a suitable collection whose elements can be accessed using the generated index.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="length"/>).</returns>
-		public static ILongGenerator MakeIndexGenerator(this IRandom random, long length)
+		public static IRangeGenerator<long> MakeIndexGenerator(this IRandom random, long length)
 		{
 			return random.MakeRangeCOGenerator(length);
 		}
@@ -1113,7 +1113,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="length">The length of a suitable collection whose elements can be accessed using the generated index.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="length"/>).</returns>
-		public static IULongGenerator MakeIndexGenerator(this IRandom random, ulong length)
+		public static IRangeGenerator<ulong> MakeIndexGenerator(this IRandom random, ulong length)
 		{
 			return random.MakeRangeCOGenerator(length);
 		}
@@ -1129,7 +1129,7 @@ namespace Experilous.MakeItRandom
 		/// to be more efficient, because the generated indices will always come from the same range.  Otherwise, each index generated
 		/// will come from the range [0, <paramref name="list"/>.Count) according to the value of <paramref name="list"/>.Count at the
 		/// time the index is generated.</remarks>
-		public static IIntGenerator MakeIndexGenerator<T>(this IRandom random, IList<T> list)
+		public static IRangeGenerator<int> MakeIndexGenerator<T>(this IRandom random, IList<T> list)
 		{
 			IListNonGeneric nonGenericList = list as IListNonGeneric;
 			if (nonGenericList != null && nonGenericList.IsFixedSize)
@@ -1198,7 +1198,7 @@ namespace Experilous.MakeItRandom
 		/// to be more efficient, because the generated indices will always come from the same range.  Otherwise, each index generated
 		/// will come from the range [0, <paramref name="list"/>.Count) according to the value of <paramref name="list"/>.Count at the
 		/// time the index is generated.</remarks>
-		public static IIntGenerator MakeRandomIndexGenerator<T>(this IList<T> list, IRandom random)
+		public static IRangeGenerator<int> MakeRandomIndexGenerator<T>(this IList<T> list, IRandom random)
 		{
 			return random.MakeIndexGenerator(list);
 		}

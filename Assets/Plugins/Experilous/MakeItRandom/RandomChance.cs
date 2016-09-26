@@ -39,7 +39,7 @@ namespace Experilous.MakeItRandom
 
 		private class IntWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private IIntGenerator _rangeGenerator;
+			private IRangeGenerator<int> _rangeGenerator;
 			private int _numerator;
 
 			public IntWeightedProbabilityGenerator(IRandom random, int numerator)
@@ -62,7 +62,7 @@ namespace Experilous.MakeItRandom
 
 		private class UIntWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private IUIntGenerator _rangeGenerator;
+			private IRangeGenerator<uint> _rangeGenerator;
 			private uint _numerator;
 
 			public UIntWeightedProbabilityGenerator(IRandom random, uint numerator)
@@ -85,7 +85,7 @@ namespace Experilous.MakeItRandom
 
 		private class LongWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private ILongGenerator _rangeGenerator;
+			private IRangeGenerator<long> _rangeGenerator;
 			private long _numerator;
 
 			public LongWeightedProbabilityGenerator(IRandom random, long numerator)
@@ -108,7 +108,7 @@ namespace Experilous.MakeItRandom
 
 		private class ULongWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private IULongGenerator _rangeGenerator;
+			private IRangeGenerator<ulong> _rangeGenerator;
 			private ulong _numerator;
 
 			public ULongWeightedProbabilityGenerator(IRandom random, ulong numerator)
@@ -131,7 +131,7 @@ namespace Experilous.MakeItRandom
 
 		private class FloatWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private IFloatGenerator _rangeGenerator;
+			private IRangeGenerator<float> _rangeGenerator;
 			private float _numerator;
 
 			public FloatWeightedProbabilityGenerator(IRandom random, float numerator)
@@ -154,7 +154,7 @@ namespace Experilous.MakeItRandom
 
 		private class DoubleWeightedProbabilityGenerator : IBooleanGenerator
 		{
-			private IDoubleGenerator _rangeGenerator;
+			private IRangeGenerator<double> _rangeGenerator;
 			private double _numerator;
 
 			public DoubleWeightedProbabilityGenerator(IRandom random, double numerator)

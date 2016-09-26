@@ -1012,7 +1012,7 @@ namespace Experilous.Examples.MakeItRandom
 		private void MeasurePerformance_UIntLessThan6(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
-			IUIntGenerator sequence = random.MakeRangeCOGenerator(6U);
+			IRangeGenerator<uint> sequence = random.MakeRangeCOGenerator(6U);
 			for (int i = 0; i < unrolledIterations; ++i)
 			{
 				_generatedUInt = sequence.Next();

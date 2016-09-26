@@ -70,7 +70,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return;
 
 			int end = start + length;
-			IIntGenerator generator = random.MakeRangeCOGenerator(characters.Length);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(characters.Length);
 			for (int i = start; i < end; ++i)
 			{
 				buffer[i] = characters[generator.Next()];
@@ -106,7 +106,7 @@ namespace Experilous.MakeItRandom
 			bool forceSeparatorState = forceSeparatorAtBegin;
 
 			int end = start + length;
-			IIntGenerator generator = random.MakeRangeCOGenerator(characters.Length);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(characters.Length);
 			for (int i = start; i < end; ++i)
 			{
 				if (allowSeparatorState && (allowSeparatorAtEnd || i + 1 < end))
@@ -165,7 +165,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(2);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(2);
 
 			for (int i = 0; i < length; ++i)
 			{
@@ -190,7 +190,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(8);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(8);
 
 			for (int i = 0; i < length; ++i)
 			{
@@ -215,7 +215,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(10);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(10);
 
 			for (int i = 0; i < length; ++i)
 			{
@@ -265,7 +265,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(16);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(16);
 
 			for (int i = 0; i < length; ++i)
 			{
@@ -290,7 +290,7 @@ namespace Experilous.MakeItRandom
 
 			char[] characters = GetHexadecimalCharacters(casing);
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(characters.Length);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(characters.Length);
 
 			for (int i = 0; i < length; ++i)
 			{
@@ -442,7 +442,7 @@ namespace Experilous.MakeItRandom
 			if (length <= 0) return "";
 
 			char[] buffer = new char[length];
-			IIntGenerator generator = random.MakeRangeCOGenerator(64);
+			IRangeGenerator<int> generator = random.MakeRangeCOGenerator(64);
 
 			for (int i = 0; i < length; ++i)
 			{

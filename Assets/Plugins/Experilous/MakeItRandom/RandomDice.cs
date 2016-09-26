@@ -53,7 +53,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="dieGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
 		/// <returns>The numeric value of the simulated die roll, in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int RollDie(this IIntGenerator dieGenerator)
+		public static int RollDie(this IRangeGenerator<int> dieGenerator)
 		{
 			return dieGenerator.Next();
 		}
@@ -81,7 +81,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dieGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <returns>An array of the numeric values of the simulated dice rolls, each element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int[] RollDice(this IIntGenerator dieGenerator, int quantity)
+		public static int[] RollDice(this IRangeGenerator<int> dieGenerator, int quantity)
 		{
 			var dice = new int[quantity];
 			for (int i = 0; i < quantity; ++i)
@@ -116,7 +116,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="dice">A pre-allocated array into which the numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/>.</param>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDice(this IIntGenerator dieGenerator, int quantity, int[] dice)
+		public static void RollDice(this IRangeGenerator<int> dieGenerator, int quantity, int[] dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
@@ -151,7 +151,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="dice">A list into which the numeric values of the simulated dice rolls will be stored.</param>
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.  After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>, and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDice(this IIntGenerator dieGenerator, int quantity, List<int> dice)
+		public static void RollDice(this IRangeGenerator<int> dieGenerator, int quantity, List<int> dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			dice.Clear();
@@ -188,7 +188,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dieGenerator">The prepared range generator that will be used to simulate dice rolls using dice with an already specified number of sides.</param>
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int SumRollDice(this IIntGenerator dieGenerator, int quantity)
+		public static int SumRollDice(this IRangeGenerator<int> dieGenerator, int quantity)
 		{
 			int sum = 0;
 			for (int i = 0; i < quantity; ++i)
@@ -230,7 +230,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDice(this IIntGenerator dieGenerator, int quantity, out int[] dice)
+		public static int SumRollDice(this IRangeGenerator<int> dieGenerator, int quantity, out int[] dice)
 		{
 			dice = new int[quantity];
 			int sum = 0;
@@ -274,7 +274,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/>.</param>
 		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDice(this IIntGenerator dieGenerator, int quantity, int[] dice)
+		public static int SumRollDice(this IRangeGenerator<int> dieGenerator, int quantity, int[] dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			if (dice.Length != quantity) throw new System.ArgumentException("The dice parameter must be the same length as the number of dice requested to be rolled.", "dice");
@@ -319,7 +319,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A list into which the numeric values of the simulated dice rolls will be stored.</param>
 		/// <returns>The sum of all the numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.  After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/>, and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDice(this IIntGenerator dieGenerator, int quantity, List<int> dice)
+		public static int SumRollDice(this IRangeGenerator<int> dieGenerator, int quantity, List<int> dice)
 		{
 			if (dice == null) throw new System.ArgumentNullException("dice");
 			dice.Clear();
@@ -406,7 +406,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepHighest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice)
+		private static void RollAdditionalKeepHighest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice)
 		{
 			int i = 0;
 			while (i < additionalQuantity)
@@ -455,7 +455,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepHighest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
+		private static void RollAdditionalKeepHighest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
 		{
 			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
 			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
@@ -514,7 +514,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepHighest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
+		private static void RollAdditionalKeepHighest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
 		{
 			discardedDice.Clear();
 
@@ -562,7 +562,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice)
+		private static void RollAdditionalKeepLowest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice)
 		{
 			int i = 0;
 			while (i < additionalQuantity)
@@ -611,7 +611,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
+		private static void RollAdditionalKeepLowest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice, int[] discardedDice)
 		{
 			if (discardedDice == null) throw new System.ArgumentNullException("discardedDice");
 			if (discardedDice.Length != additionalQuantity) throw new System.ArgumentException("The discardedDice parameter must be the same length as the number of dice requested to be discarded.", "discardedDice");
@@ -670,7 +670,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private static void RollAdditionalKeepLowest(this IIntGenerator dieGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
+		private static void RollAdditionalKeepLowest(this IRangeGenerator<int> dieGenerator, int additionalQuantity, IList<int> dice, List<int> discardedDice)
 		{
 			discardedDice.Clear();
 
@@ -727,7 +727,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <returns>An array of the highest numeric values of the simulated dice rolls, each element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int[] RollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity)
+		public static int[] RollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity)
 		{
 			int[] dice = dieGenerator.RollDice(keepQuantity);
 			dieGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
@@ -759,7 +759,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice)
+		public static void RollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
@@ -792,7 +792,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice, discardedDice);
@@ -827,7 +827,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice)
+		public static void RollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice);
@@ -866,7 +866,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepHighest(quantity - keepQuantity, dice, discardedDice);
@@ -896,7 +896,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <returns>An array of the lowest numeric values of the simulated dice rolls, each element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int[] RollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity)
+		public static int[] RollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity)
 		{
 			int[] dice = dieGenerator.RollDice(keepQuantity);
 			dieGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
@@ -928,7 +928,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice)
+		public static void RollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
@@ -961,7 +961,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice, discardedDice);
@@ -996,7 +996,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice)
+		public static void RollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice);
@@ -1035,7 +1035,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static void RollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDice(keepQuantity, dice);
 			dieGenerator.RollAdditionalKeepLowest(quantity - keepQuantity, dice, discardedDice);
@@ -1065,7 +1065,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than <paramref name="quantity"/>.</param>
 		/// <returns>An array of the lowest numeric values of the simulated dice rolls, each element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int)"/>.</note></remarks>
-		public static int[] RollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity)
+		public static int[] RollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity)
 		{
 			return dieGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity);
 		}
@@ -1096,7 +1096,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, int[])"/>.</note></remarks>
-		public static void RollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice)
+		public static void RollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
 		}
@@ -1129,7 +1129,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
-		public static void RollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -1164,7 +1164,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, List{int})"/>.</note></remarks>
-		public static void RollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice)
+		public static void RollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
 		}
@@ -1203,7 +1203,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepLowest(IRandom, int, int, int, List{int}, List{int})"/>.</note></remarks>
-		public static void RollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -1232,7 +1232,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than <paramref name="quantity"/>.</param>
 		/// <returns>An array of the highest numeric values of the simulated dice rolls, each element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int)"/>.</note></remarks>
-		public static int[] RollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity)
+		public static int[] RollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity)
 		{
 			return dieGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity);
 		}
@@ -1263,7 +1263,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="dropQuantity"/>.</param>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, int[])"/>.</note></remarks>
-		public static void RollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice)
+		public static void RollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
 		}
@@ -1296,7 +1296,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="dropQuantity"/>.</param>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
-		public static void RollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		public static void RollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -1331,7 +1331,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, List{int})"/>.</note></remarks>
-		public static void RollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice)
+		public static void RollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
 		}
@@ -1370,7 +1370,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="RollDiceKeepHighest(IRandom, int, int, int, List{int}, List{int})"/>.</note></remarks>
-		public static void RollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static void RollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -1402,7 +1402,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity)
 		{
 			int[] dice = dieGenerator.RollDiceKeepHighest(quantity, keepQuantity);
 			return Sum(dice);
@@ -1437,7 +1437,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, out int[] dice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, out int[] dice)
 		{
 			dice = dieGenerator.RollDiceKeepHighest(quantity, keepQuantity);
 			return Sum(dice);
@@ -1478,7 +1478,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
 		{
 			dice = new int[keepQuantity];
 			discardedDice = new int[quantity - keepQuantity];
@@ -1513,7 +1513,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the highest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice);
 			return Sum(dice);
@@ -1548,7 +1548,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="discardedDice">A pre-allocated array into which the lowest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
@@ -1585,7 +1585,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice);
 			return Sum(dice);
@@ -1626,7 +1626,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepHighest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceKeepHighest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDiceKeepHighest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
@@ -1655,7 +1655,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="quantity">The number of dice to roll.  Must be positive.</param>
 		/// <param name="keepQuantity">The number of dice to keep.  Must be positive and less than or equal to <paramref name="quantity"/>.</param>
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity)
 		{
 			int[] dice = dieGenerator.RollDiceKeepLowest(quantity, keepQuantity);
 			return Sum(dice);
@@ -1690,7 +1690,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, out int[] dice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, out int[] dice)
 		{
 			dice = dieGenerator.RollDiceKeepLowest(quantity, keepQuantity);
 			return Sum(dice);
@@ -1731,7 +1731,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, out int[] dice, out int[] discardedDice)
 		{
 			dice = new int[keepQuantity];
 			discardedDice = new int[quantity - keepQuantity];
@@ -1766,7 +1766,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dice">A pre-allocated array into which the lowest numeric values of the simulated dice rolls will be stored.  Its length must be equal to <paramref name="keepQuantity"/>.</param>
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice);
 			return Sum(dice);
@@ -1801,7 +1801,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="discardedDice">A pre-allocated array into which the highest numeric values of the discarded simulated dice rolls will be stored.  Its length must be equal to <paramref name="quantity"/> - <paramref name="keepQuantity"/>.</param>
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, int[] dice, int[] discardedDice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
@@ -1838,7 +1838,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>All existing elements in <paramref name="dice"/> will be removed by this function.
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice);
 			return Sum(dice);
@@ -1879,7 +1879,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="keepQuantity"/>,
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="quantity"/> - <paramref name="keepQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</remarks>
-		public static int SumRollDiceKeepLowest(this IIntGenerator dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceKeepLowest(this IRangeGenerator<int> dieGenerator, int quantity, int keepQuantity, List<int> dice, List<int> discardedDice)
 		{
 			dieGenerator.RollDiceKeepLowest(quantity, keepQuantity, dice, discardedDice);
 			return Sum(dice);
@@ -1909,7 +1909,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than <paramref name="quantity"/>.</param>
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int)"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity);
 		}
@@ -1944,7 +1944,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, out int[])"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, out int[] dice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, out int[] dice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, out dice);
 		}
@@ -1983,7 +1983,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, out int[], out int[])"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, out dice, out discardedDice);
 		}
@@ -2016,7 +2016,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, int[])"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
 		}
@@ -2051,7 +2051,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the lowest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -2088,7 +2088,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, List{int})"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice);
 		}
@@ -2129,7 +2129,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepLowest(IRandom, int, int, int, List{int}, List{int})"/>.</note></remarks>
-		public static int SumRollDiceDropHighest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceDropHighest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepLowest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -2158,7 +2158,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="dropQuantity">The number of dice to drop.  Must be non-negative and less than <paramref name="quantity"/>.</param>
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int)"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity);
 		}
@@ -2193,7 +2193,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks><para>After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, out int[])"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, out int[] dice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, out int[] dice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, out dice);
 		}
@@ -2232,7 +2232,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, out int[], out int[])"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, out int[] dice, out int[] discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, out dice, out discardedDice);
 		}
@@ -2265,7 +2265,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, int[])"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
 		}
@@ -2300,7 +2300,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>The sum of all the highest numeric values of the simulated dice rolls, with each summed element being in the range determined by <paramref name="dieGenerator"/>.</returns>
 		/// <remarks><para>After the function is complete, each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, int[], int[])"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, int[] dice, int[] discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -2337,7 +2337,7 @@ namespace Experilous.MakeItRandom
 		/// After the function is complete, the length of <paramref name="dice"/> will be <paramref name="quantity"/> - <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, List{int})"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice);
 		}
@@ -2378,7 +2378,7 @@ namespace Experilous.MakeItRandom
 		/// the length of <paramref name="discardedDice"/> will be <paramref name="dropQuantity"/>,
 		/// and each element of <paramref name="dice"/> and <paramref name="discardedDice"/> will be in the range determined by <paramref name="dieGenerator"/>.</para>
 		/// <note type="note">This function is essentially identical to <see cref="SumRollDiceKeepHighest(IRandom, int, int, int, List{int}, List{int})"/>.</note></remarks>
-		public static int SumRollDiceDropLowest(this IIntGenerator dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
+		public static int SumRollDiceDropLowest(this IRangeGenerator<int> dieGenerator, int quantity, int dropQuantity, List<int> dice, List<int> discardedDice)
 		{
 			return dieGenerator.SumRollDiceKeepHighest(quantity, quantity - dropQuantity, dice, discardedDice);
 		}
@@ -2457,14 +2457,14 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generated values of the returned generator are derived.</param>
 		/// <param name="sides">The number of sides of the die to roll.  Must be positive, but does not need to correspond to physical die shape.</param>
 		/// <returns>A range generator which produces integers in the range [1, <paramref name="sides"/>].</returns>
-		public static IIntGenerator MakeDieGenerator(this IRandom random, int sides)
+		public static IRangeGenerator<int> MakeDieGenerator(this IRandom random, int sides)
 		{
 			return random.MakeRangeOCGenerator(sides);
 		}
 
 		private class DiceGeneratorBase
 		{
-			protected readonly IIntGenerator _dieGenerator;
+			protected readonly IRangeGenerator<int> _dieGenerator;
 			protected readonly int[] _dice;
 			protected readonly int[] _discardedDice;
 
