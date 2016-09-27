@@ -3206,18 +3206,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random degree values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random degree values within the specified range.</returns>
 		/// <seealso cref="AngleDegOO(IRandom)"/>
 		/// <seealso cref="SignedAngleDegOO(IRandom)"/>
 		/// <seealso cref="HalfAngleDegOO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegOO(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleDegOOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegOOGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedOO(random, half ? _floatDegreesPerHalfTurn : _floatDegreesPerTurn);
+				return AngleGenerator.CreateSignedOO(random, half ? _floatDegreesPerQuarterTurn : _floatDegreesPerHalfTurn);
 			}
 			else
 			{
@@ -3269,18 +3269,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random radian values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random radian values within the specified range.</returns>
 		/// <seealso cref="AngleRadOO(IRandom)"/>
 		/// <seealso cref="SignedAngleRadOO(IRandom)"/>
 		/// <seealso cref="HalfAngleRadOO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadOO(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleRadOOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadOOGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedOO(random, half ? _floatRadiansPerHalfTurn : _floatRadiansPerTurn);
+				return AngleGenerator.CreateSignedOO(random, half ? _floatRadiansPerQuarterTurn : _floatRadiansPerHalfTurn);
 			}
 			else
 			{
@@ -3332,18 +3332,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random degree values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random degree values within the specified range.</returns>
 		/// <seealso cref="AngleDegCO(IRandom)"/>
 		/// <seealso cref="SignedAngleDegCO(IRandom)"/>
 		/// <seealso cref="HalfAngleDegCO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegCO(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleDegCOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegCOGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedCO(random, half ? _floatDegreesPerHalfTurn : _floatDegreesPerTurn);
+				return AngleGenerator.CreateSignedCO(random, half ? _floatDegreesPerQuarterTurn : _floatDegreesPerHalfTurn);
 			}
 			else
 			{
@@ -3395,18 +3395,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random radian values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random radian values within the specified range.</returns>
 		/// <seealso cref="AngleRadCO(IRandom)"/>
 		/// <seealso cref="SignedAngleRadCO(IRandom)"/>
 		/// <seealso cref="HalfAngleRadCO(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadCO(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleRadCOGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadCOGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedCO(random, half ? _floatRadiansPerHalfTurn : _floatRadiansPerTurn);
+				return AngleGenerator.CreateSignedCO(random, half ? _floatRadiansPerQuarterTurn : _floatRadiansPerHalfTurn);
 			}
 			else
 			{
@@ -3458,18 +3458,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random degree values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random degree values within the specified range.</returns>
 		/// <seealso cref="AngleDegOC(IRandom)"/>
 		/// <seealso cref="SignedAngleDegOC(IRandom)"/>
 		/// <seealso cref="HalfAngleDegOC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegOC(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleDegOCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegOCGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedOC(random, half ? _floatDegreesPerHalfTurn : _floatDegreesPerTurn);
+				return AngleGenerator.CreateSignedOC(random, half ? _floatDegreesPerQuarterTurn : _floatDegreesPerHalfTurn);
 			}
 			else
 			{
@@ -3521,18 +3521,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random radian values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random radian values within the specified range.</returns>
 		/// <seealso cref="AngleRadOC(IRandom)"/>
 		/// <seealso cref="SignedAngleRadOC(IRandom)"/>
 		/// <seealso cref="HalfAngleRadOC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadOC(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleRadOCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadOCGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedOC(random, half ? _floatRadiansPerHalfTurn : _floatRadiansPerTurn);
+				return AngleGenerator.CreateSignedOC(random, half ? _floatRadiansPerQuarterTurn : _floatRadiansPerHalfTurn);
 			}
 			else
 			{
@@ -3584,18 +3584,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random degree values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random degree values within the specified range.</returns>
 		/// <seealso cref="AngleDegCC(IRandom)"/>
 		/// <seealso cref="SignedAngleDegCC(IRandom)"/>
 		/// <seealso cref="HalfAngleDegCC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleDegCC(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleDegCCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleDegCCGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedCC(random, half ? _floatDegreesPerHalfTurn : _floatDegreesPerTurn);
+				return AngleGenerator.CreateSignedCC(random, half ? _floatDegreesPerQuarterTurn : _floatDegreesPerHalfTurn);
 			}
 			else
 			{
@@ -3647,18 +3647,18 @@ namespace Experilous.MakeItRandom
 		/// Returns an angle generator which will produce random radian values within the specified range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
-		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <param name="signed">Indicates if the range of angles generated should be centered at 0 or have its lower bound be at zero.</param>
+		/// <param name="half">Indicates if the range of angles generated should cover only half of a revolution or a full revolution.</param>
 		/// <returns>An angle generator producing random radian values within the specified range.</returns>
 		/// <seealso cref="AngleRadCC(IRandom)"/>
 		/// <seealso cref="SignedAngleRadCC(IRandom)"/>
 		/// <seealso cref="HalfAngleRadCC(IRandom)"/>
 		/// <seealso cref="SignedHalfAngleRadCC(IRandom)"/>
-		public static IRangeGenerator<float> MakeAngleRadCCGenerator(this IRandom random, bool half = false, bool signed = false)
+		public static IRangeGenerator<float> MakeAngleRadCCGenerator(this IRandom random, bool signed = false, bool half = false)
 		{
 			if (signed)
 			{
-				return AngleGenerator.CreateSignedCC(random, half ? _floatRadiansPerHalfTurn : _floatRadiansPerTurn);
+				return AngleGenerator.CreateSignedCC(random, half ? _floatRadiansPerQuarterTurn : _floatRadiansPerHalfTurn);
 			}
 			else
 			{
