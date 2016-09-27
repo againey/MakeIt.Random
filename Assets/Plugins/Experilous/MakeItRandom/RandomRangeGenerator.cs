@@ -600,9 +600,13 @@ namespace Experilous.MakeItRandom
 					{
 						return new OffsetPow2RangeGenerator(random, rangeMin, bitCount, bitMask);
 					}
-					else
+					else if (bitCount < 64)
 					{
 						return new OffsetPowPow2RangeGenerator(random, rangeMin, bitCount, bitMask);
+					}
+					else
+					{
+						return new Int64RangeGenerator(random);
 					}
 				}
 			}
@@ -670,6 +674,13 @@ namespace Experilous.MakeItRandom
 				public OffsetPowPow2RangeGenerator(IRandom random, long rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = (ulong)rangeMin; }
 				public long Next() { return (long)(Next64() + _rangeMin); }
 			}
+
+			private class Int64RangeGenerator : IRangeGenerator<long>
+			{
+				private IRandom _random;
+				public Int64RangeGenerator(IRandom random) { _random = random; }
+				public long Next() { return (long)_random.Next64(); }
+			}
 		}
 
 		private static class BufferedULongRangeGenerator
@@ -693,9 +704,13 @@ namespace Experilous.MakeItRandom
 					{
 						return new OffsetPow2RangeGenerator(random, rangeMin, bitCount, bitMask);
 					}
-					else
+					else if (bitCount < 64)
 					{
 						return new OffsetPowPow2RangeGenerator(random, rangeMin, bitCount, bitMask);
+					}
+					else
+					{
+						return new UInt64RangeGenerator(random);
 					}
 				}
 			}
@@ -716,9 +731,13 @@ namespace Experilous.MakeItRandom
 					{
 						return new Pow2RangeGenerator(random, bitCount, bitMask);
 					}
-					else
+					else if (bitCount < 64)
 					{
 						return new PowPow2RangeGenerator(random, bitCount, bitMask);
+					}
+					else
+					{
+						return new UInt64RangeGenerator(random);
 					}
 				}
 			}
@@ -760,6 +779,13 @@ namespace Experilous.MakeItRandom
 				private ulong _rangeMin;
 				public OffsetPowPow2RangeGenerator(IRandom random, ulong rangeMin, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { _rangeMin = rangeMin; }
 				public ulong Next() { return Next64() + _rangeMin; }
+			}
+
+			private class UInt64RangeGenerator : IRangeGenerator<ulong>
+			{
+				private IRandom _random;
+				public UInt64RangeGenerator(IRandom random) { _random = random; }
+				public ulong Next() { return _random.Next64(); }
 			}
 		}
 

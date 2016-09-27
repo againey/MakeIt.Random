@@ -45,6 +45,18 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		private class MultiBitGeneratorUInt64 : IRangeGenerator<ulong>
+		{
+			private IRandom _random;
+
+			public MultiBitGeneratorUInt64(IRandom random) { _random = random; }
+
+			public ulong Next()
+			{
+				return _random.Next64();
+			}
+		}
+
 		#endregion
 
 		#region Uniform { -1, 0, +1 } Generators
@@ -816,7 +828,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bits64(IRandom)"/>
 		public static IRangeGenerator<ulong> MakeBits64Generator(this IRandom random)
 		{
-			return new MultiBitGenerator64(random, 64, 0xFFFFFFFFFFFFFFFFUL);
+			return new MultiBitGeneratorUInt64(random);
 		}
 
 		/// <summary>
@@ -839,7 +851,14 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bits64(IRandom, int)"/>
 		public static IRangeGenerator<ulong> MakeBits64Generator(this IRandom random, int bitCount)
 		{
-			return new MultiBitGenerator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
+			if (bitCount < 64)
+			{
+				return new MultiBitGenerator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
+			}
+			else
+			{
+				return new MultiBitGeneratorUInt64(random);
+			}
 		}
 
 		#endregion
