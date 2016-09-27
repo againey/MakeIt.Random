@@ -15,9 +15,9 @@ namespace Experilous.MakeItRandom
 
 		#region Bit Generators
 
-		private class SingleBitGenerator : Detail.BufferedBitGenerator, IRangeGenerator<uint>
+		private class SingleBitGenerator32 : Detail.BufferedBitGenerator, IRangeGenerator<uint>
 		{
-			public SingleBitGenerator(IRandom random) : base(random) { }
+			public SingleBitGenerator32(IRandom random) : base(random) { }
 
 			public uint Next()
 			{
@@ -25,9 +25,19 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class MultiBitGenerator32 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<uint>
+		private class SingleBitGenerator64 : Detail.BufferedBitGenerator, IRangeGenerator<ulong>
 		{
-			public MultiBitGenerator32(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
+			public SingleBitGenerator64(IRandom random) : base(random) { }
+
+			public ulong Next()
+			{
+				return Next64();
+			}
+		}
+
+		private class MultiBitPow2Generator32 : Detail.BufferedPow2RangeGeneratorBase, IRangeGenerator<uint>
+		{
+			public MultiBitPow2Generator32(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 
 			public uint Next()
 			{
@@ -35,9 +45,29 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class MultiBitGenerator64 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<ulong>
+		private class MultiBitPowPow2Generator32 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<uint>
 		{
-			public MultiBitGenerator64(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
+			public MultiBitPowPow2Generator32(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
+
+			public uint Next()
+			{
+				return (uint)Next32();
+			}
+		}
+
+		private class MultiBitPow2Generator64 : Detail.BufferedPow2RangeGeneratorBase, IRangeGenerator<ulong>
+		{
+			public MultiBitPow2Generator64(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
+
+			public ulong Next()
+			{
+				return Next64();
+			}
+		}
+
+		private class MultiBitPowPow2Generator64 : Detail.BufferedPowPow2RangeGeneratorBase, IRangeGenerator<ulong>
+		{
+			public MultiBitPowPow2Generator64(IRandom random, int bitCount, ulong bitMask) : base(random, bitCount, bitMask) { }
 
 			public ulong Next()
 			{
@@ -230,6 +260,144 @@ namespace Experilous.MakeItRandom
 			public int Next()
 			{
 				return _rangeGenerator.Next() < _numerator ? 1 : 0;
+			}
+		}
+
+		private class IntWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<int> _rangeGenerator;
+			private int _numerator;
+
+			public IntWeightedZeroProbabilityGenerator(IRandom random, int numerator)
+			{
+				_rangeGenerator = random.MakeIntGenerator(true);
+				_numerator = numerator;
+			}
+
+			public IntWeightedZeroProbabilityGenerator(IRandom random, int numerator, int denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
+			}
+		}
+
+		private class UIntWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<uint> _rangeGenerator;
+			private uint _numerator;
+
+			public UIntWeightedZeroProbabilityGenerator(IRandom random, uint numerator)
+			{
+				_rangeGenerator = random.MakeUIntGenerator();
+				_numerator = numerator;
+			}
+
+			public UIntWeightedZeroProbabilityGenerator(IRandom random, uint numerator, uint denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
+			}
+		}
+
+		private class LongWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<long> _rangeGenerator;
+			private long _numerator;
+
+			public LongWeightedZeroProbabilityGenerator(IRandom random, long numerator)
+			{
+				_rangeGenerator = random.MakeLongGenerator(true);
+				_numerator = numerator;
+			}
+
+			public LongWeightedZeroProbabilityGenerator(IRandom random, long numerator, long denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
+			}
+		}
+
+		private class ULongWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<ulong> _rangeGenerator;
+			private ulong _numerator;
+
+			public ULongWeightedZeroProbabilityGenerator(IRandom random, ulong numerator)
+			{
+				_rangeGenerator = random.MakeULongGenerator();
+				_numerator = numerator;
+			}
+
+			public ULongWeightedZeroProbabilityGenerator(IRandom random, ulong numerator, ulong denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
+			}
+		}
+
+		private class FloatWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<float> _rangeGenerator;
+			private float _numerator;
+
+			public FloatWeightedZeroProbabilityGenerator(IRandom random, float probability)
+			{
+				_rangeGenerator = random.MakeFloatCOGenerator();
+				_numerator = probability;
+			}
+
+			public FloatWeightedZeroProbabilityGenerator(IRandom random, float numerator, float denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
+			}
+		}
+
+		private class DoubleWeightedZeroProbabilityGenerator : IRangeGenerator<int>
+		{
+			private IRangeGenerator<double> _rangeGenerator;
+			private double _numerator;
+
+			public DoubleWeightedZeroProbabilityGenerator(IRandom random, double probability)
+			{
+				_rangeGenerator = random.MakeDoubleCOGenerator();
+				_numerator = probability;
+			}
+
+			public DoubleWeightedZeroProbabilityGenerator(IRandom random, double numerator, double denominator)
+			{
+				_rangeGenerator = random.MakeRangeCOGenerator(denominator);
+				_numerator = numerator;
+			}
+
+			public int Next()
+			{
+				return _rangeGenerator.Next() < _numerator ? 0 : 1;
 			}
 		}
 
@@ -763,7 +931,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bit(IRandom)"/>
 		public static IRangeGenerator<uint> MakeBitGenerator(this IRandom random)
 		{
-			return new SingleBitGenerator(random);
+			return new SingleBitGenerator32(random);
 		}
 
 		/// <summary>
@@ -784,7 +952,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bits32(IRandom)"/>
 		public static IRangeGenerator<uint> MakeBits32Generator(this IRandom random)
 		{
-			return new MultiBitGenerator32(random, 32, 0xFFFFFFFFUL);
+			return new MultiBitPowPow2Generator32(random, 32, 0xFFFFFFFFUL);
 		}
 
 		/// <summary>
@@ -807,7 +975,21 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bits32(IRandom, int)"/>
 		public static IRangeGenerator<uint> MakeBits32Generator(this IRandom random, int bitCount)
 		{
-			return new MultiBitGenerator32(random, bitCount, 0xFFFFFFFFUL >> (32 - bitCount));
+			if (bitCount != 1)
+			{
+				if (Detail.DeBruijnLookup.IsPowerOfTwo((byte)bitCount))
+				{
+					return new MultiBitPowPow2Generator32(random, bitCount, 0xFFFFFFFFUL >> (32 - bitCount));
+				}
+				else
+				{
+					return new MultiBitPow2Generator32(random, bitCount, 0xFFFFFFFFUL >> (32 - bitCount));
+				}
+			}
+			else
+			{
+				return new SingleBitGenerator32(random);
+			}
 		}
 
 		/// <summary>
@@ -851,13 +1033,27 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="Bits64(IRandom, int)"/>
 		public static IRangeGenerator<ulong> MakeBits64Generator(this IRandom random, int bitCount)
 		{
-			if (bitCount < 64)
+			if (bitCount != 1)
 			{
-				return new MultiBitGenerator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
+				if (bitCount < 64)
+				{
+					if (Detail.DeBruijnLookup.IsPowerOfTwo((byte)bitCount))
+					{
+						return new MultiBitPowPow2Generator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
+					}
+					else
+					{
+						return new MultiBitPow2Generator64(random, bitCount, 0xFFFFFFFFFFFFFFFFUL >> (64 - bitCount));
+					}
+				}
+				else
+				{
+					return new MultiBitGeneratorUInt64(random);
+				}
 			}
 			else
 			{
-				return new MultiBitGeneratorUInt64(random);
+				return new SingleBitGenerator64(random);
 			}
 		}
 
@@ -1490,7 +1686,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int OneProbability(this IRandom random, long numerator)
 		{
-			return random.Long() < numerator ? 1 : 0;
+			return random.LongNonNegative() < numerator ? 1 : 0;
 		}
 
 		/// <summary>
@@ -1726,6 +1922,298 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
+		#region Zero Probability
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^31.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^31 that the result will be 0.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, int numerator)
+		{
+			return random.IntNonNegative() < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^31.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^31 that the result will be 0.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, int)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, int numerator)
+		{
+			return new IntWeightedZeroProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be 0.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, uint numerator)
+		{
+			return random.UInt() < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^32.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^32 that the result will be 0.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, uint)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, uint numerator)
+		{
+			return new UIntWeightedZeroProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be 0.  Must be non-negative.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, long numerator)
+		{
+			return random.LongNonNegative() < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^63.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^63 that the result will be 0.  Must be non-negative.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, long)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, long numerator)
+		{
+			return new LongWeightedZeroProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be 0.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, ulong numerator)
+		{
+			return random.ULong() < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/2^64.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of 2^64 that the result will be 0.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, ulong)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, ulong numerator)
+		{
+			return new ULongWeightedZeroProbabilityGenerator(random, numerator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a zero result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, float probability)
+		{
+			return random.FloatCO() < probability ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a zero result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, float)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, float probability)
+		{
+			return new FloatWeightedZeroProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="probability">The probability of a zero result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, double probability)
+		{
+			return random.DoubleCO() < probability ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is set by the parameter <paramref name="probability"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="probability">The probability of a zero result being generated.  Must be in the range [0, 1].</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, double)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, double probability)
+		{
+			return new DoubleWeightedZeroProbabilityGenerator(random, probability);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, int numerator, int denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, int, int)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, int numerator, int denominator)
+		{
+			return new IntWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, uint numerator, uint denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, uint, uint)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, uint numerator, uint denominator)
+		{
+			return new UIntWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, long numerator, long denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, long, long)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, long numerator, long denominator)
+		{
+			return new LongWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, ulong numerator, ulong denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, ulong, ulong)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, ulong numerator, ulong denominator)
+		{
+			return new ULongWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, float numerator, float denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, float, float)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, float numerator, float denominator)
+		{
+			return new FloatWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		/// <summary>
+		/// Returns a random integer from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>A random integer from the set { 0, +1 } weighted according to the probability set by the parameters.</returns>
+		public static int ZeroProbability(this IRandom random, double numerator, double denominator)
+		{
+			return random.RangeCO(denominator) < numerator ? 0 : 1;
+		}
+
+		/// <summary>
+		/// Returns an integer generator which will produce random numbers from the set { 0, +1 } where the probability of a zero result is <paramref name="numerator"/>/<paramref name="denominator"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the generator's return values are derived.</param>
+		/// <param name="numerator">The average number of times out of <paramref name="denominator"/> that the result will be 0.  Must be in the range [0, <paramref name="denominator"/>].</param>
+		/// <param name="denominator">The scale by which <paramref name="numerator"/> is assessed.  Must be positive.</param>
+		/// <returns>An integer generator which will produce weighted random numbers from the set { 0, +1 }.</returns>
+		/// <seealso cref="ZeroProbability(IRandom, double, double)"/>
+		public static IRangeGenerator<int> MakeZeroProbabilityGenerator(this IRandom random, double numerator, double denominator)
+		{
+			return new DoubleWeightedZeroProbabilityGenerator(random, numerator, denominator);
+		}
+
+		#endregion
+
 		#region Positive Probability
 
 		/// <summary>
@@ -1782,7 +2270,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random integer from the set { -1, +1 } weighted according to the probability set by the parameters.</returns>
 		public static int PositiveProbability(this IRandom random, long numerator)
 		{
-			return random.IntNonNegative() < numerator ? +1 : -1;
+			return random.LongNonNegative() < numerator ? +1 : -1;
 		}
 
 		/// <summary>
