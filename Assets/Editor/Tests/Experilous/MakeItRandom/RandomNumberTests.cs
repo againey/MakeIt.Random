@@ -9,7 +9,7 @@ using System;
 
 namespace Experilous.MakeItRandom.Tests
 {
-	class RandomNumbersTests
+	class RandomNumberTests
 	{
 		private const string seed = "random seed";
 
