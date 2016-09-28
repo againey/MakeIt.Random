@@ -858,8 +858,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: .87843138, g: .87843138, b: .87843138, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f20243a981aabbd48bdf776ba4986a4b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1143,8 +1143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: .501960814, g: .501960814, b: .501960814, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f20243a981aabbd48bdf776ba4986a4b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1204,8 +1204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: .87843138, g: .87843138, b: .87843138, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f20243a981aabbd48bdf776ba4986a4b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6443,7 +6443,6 @@ GameObject:
   - 224: {fileID: 1052573469}
   - 222: {fileID: 1052573472}
   - 114: {fileID: 1052573471}
-  - 114: {fileID: 1052573470}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -6463,24 +6462,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1906267179}
   m_RootOrder: 0
-  m_AnchorMin: {x: .0526315793, y: 0}
-  m_AnchorMax: {x: .0526315793, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 30, y: 0}
   m_Pivot: {x: .5, y: .5}
---- !u!114 &1052573470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1052573468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: .75
 --- !u!114 &1052573471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6640,7 +6626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: f20243a981aabbd48bdf776ba4986a4b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7497,7 +7483,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -7636,9 +7622,9 @@ MonoBehaviour:
   unitVector2Toggle: {fileID: 742081602}
   unitVector3Toggle: {fileID: 1987031796}
   unitVector4Toggle: {fileID: 1289416833}
-  quaternionToggle: {fileID: 1520651468}
   vector2WithinCircleToggle: {fileID: 129578527}
   vector3WithinSphereToggle: {fileID: 911395431}
+  rotationToggle: {fileID: 1520651468}
   warmupDurationSlider: {fileID: 1589329532}
   warmupDurationText: {fileID: 2089353581}
   measurementDurationSlider: {fileID: 1953305137}
@@ -9903,7 +9889,6 @@ GameObject:
   - 224: {fileID: 1693701269}
   - 222: {fileID: 1693701272}
   - 114: {fileID: 1693701271}
-  - 114: {fileID: 1693701270}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -9923,24 +9908,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1171142847}
   m_RootOrder: 0
-  m_AnchorMin: {x: .0677966103, y: 0}
-  m_AnchorMax: {x: .0677966103, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 30, y: 0}
   m_Pivot: {x: .5, y: .5}
---- !u!114 &1693701270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1693701268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: .75
 --- !u!114 &1693701271
 MonoBehaviour:
   m_ObjectHideFlags: 0

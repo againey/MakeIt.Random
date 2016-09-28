@@ -48,9 +48,9 @@ namespace Experilous.Examples.MakeItRandom
 		public Toggle unitVector2Toggle;
 		public Toggle unitVector3Toggle;
 		public Toggle unitVector4Toggle;
-		public Toggle quaternionToggle;
 		public Toggle vector2WithinCircleToggle;
 		public Toggle vector3WithinSphereToggle;
+		public Toggle rotationToggle;
 
 		public Slider warmupDurationSlider;
 		public Text warmupDurationText;
@@ -151,9 +151,9 @@ namespace Experilous.Examples.MakeItRandom
 				unitVector2Toggle.isOn ||
 				unitVector3Toggle.isOn ||
 				unitVector4Toggle.isOn ||
-				quaternionToggle.isOn ||
 				vector2WithinCircleToggle.isOn ||
-				vector3WithinSphereToggle.isOn;
+				vector3WithinSphereToggle.isOn ||
+				rotationToggle.isOn;
 
 			measurePerformanceButton.interactable = _measurementCoroutine != null && _cancelPending == false || anyGeneratorSelected && anyOperationSelected;
 		}
@@ -208,9 +208,9 @@ namespace Experilous.Examples.MakeItRandom
 			if (unitVector2Toggle.isOn) operationToggles.Add(unitVector2Toggle);
 			if (unitVector3Toggle.isOn) operationToggles.Add(unitVector3Toggle);
 			if (unitVector4Toggle.isOn) operationToggles.Add(unitVector4Toggle);
-			if (quaternionToggle.isOn) operationToggles.Add(quaternionToggle);
 			if (vector2WithinCircleToggle.isOn) operationToggles.Add(vector2WithinCircleToggle);
 			if (vector3WithinSphereToggle.isOn) operationToggles.Add(vector3WithinSphereToggle);
+			if (rotationToggle.isOn) operationToggles.Add(rotationToggle);
 
 			int totalRunCount = generatorToggles.Count * operationToggles.Count;
 			float targetRunDuration = warmupDuration + measurementDuration;
@@ -317,7 +317,7 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				if (generatorToggle == unityRandomToggle)
 				{
-					_currentGeneratorName = "UnityEngine.Random (native)";
+					_currentGeneratorName = "UnityEngine.Random";
 
 					if (operationToggle == uintLessThan6Toggle)
 					{
@@ -334,11 +334,6 @@ namespace Experilous.Examples.MakeItRandom
 						_currentOperationName = "Unit Vector3 (Random.onUnitSphere)";
 						operation = MeasurePerformance_UnityRandomUnitVector3;
 					}
-					else if (operationToggle == quaternionToggle)
-					{
-						_currentOperationName = "Quaternion (Random.rotationUniform)";
-						operation = MeasurePerformance_UnityRandomQuaternion;
-					}
 					else if (operationToggle == vector2WithinCircleToggle)
 					{
 						_currentOperationName = "Within Circle (Random.insideUnitCircle)";
@@ -349,10 +344,15 @@ namespace Experilous.Examples.MakeItRandom
 						_currentOperationName = "Within Sphere (Random.insideUnitSphere)";
 						operation = MeasurePerformance_UnityRandomVector3WithinSphere;
 					}
+					else if (operationToggle == rotationToggle)
+					{
+						_currentOperationName = "Rotation (Random.rotationUniform)";
+						operation = MeasurePerformance_UnityRandomRotation;
+					}
 				}
 				else if (generatorToggle == systemRandomToggle)
 				{
-					_currentGeneratorName = "System.Random (native)";
+					_currentGeneratorName = "System.Random";
 
 					if (operationToggle == uint31bitToggle)
 					{
@@ -494,11 +494,6 @@ namespace Experilous.Examples.MakeItRandom
 					_currentOperationName = "Unit Vector4";
 					operation = (long iterations) => { MeasurePerformance_UnitVector4(random, iterations); };
 				}
-				else if (operationToggle == quaternionToggle)
-				{
-					_currentOperationName = "Quaternion";
-					operation = (long iterations) => { MeasurePerformance_Quaternion(random, iterations); };
-				}
 				else if (operationToggle == vector2WithinCircleToggle)
 				{
 					_currentOperationName = "Within Circle";
@@ -508,6 +503,11 @@ namespace Experilous.Examples.MakeItRandom
 				{
 					_currentOperationName = "Within Sphere";
 					operation = (long iterations) => { MeasurePerformance_Vector3WithinSphere(random, iterations); };
+				}
+				else if (operationToggle == rotationToggle)
+				{
+					_currentOperationName = "Rotation";
+					operation = (long iterations) => { MeasurePerformance_Rotation(random, iterations); };
 				}
 				else
 				{
@@ -740,7 +740,7 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		private void MeasurePerformance_UnityRandomQuaternion(long iterations)
+		private void MeasurePerformance_UnityRandomRotation(long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
@@ -1340,7 +1340,7 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		private void MeasurePerformance_Quaternion(IRandom random, long iterations)
+		private void MeasurePerformance_Rotation(IRandom random, long iterations)
 		{
 			long unrolledIterations = iterations >> 4;
 			for (int i = 0; i < unrolledIterations; ++i)
