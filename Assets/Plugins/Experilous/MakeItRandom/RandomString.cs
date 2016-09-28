@@ -11,7 +11,7 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class RandomString
 	{
-		#region UsingCharacters
+		#region Custom Character Sets
 
 		/// <summary>
 		/// Generates a random string using the provided character set.

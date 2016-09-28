@@ -9,14 +9,14 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// An interface for any generator of enumeration items.
 	/// </summary>
-	/// <typeparam name="T">The enumeration type which this generator selects from and returns.</typeparam>
-	public interface IEnumGenerator<T> where T : struct
+	/// <typeparam name="TEnum">The enumeration type which this generator selects from and returns.</typeparam>
+	public interface IEnumGenerator<TEnum> where TEnum : struct
 	{
 		/// <summary>
 		/// Get the next random enumeration item selected by the generator.
 		/// </summary>
 		/// <returns>The next random enumeration item randomly selected according to the generator implementation.</returns>
-		T Next();
+		TEnum Next();
 
 		/// <summary>
 		/// Get the name of the next random enumeration item selected by the generator.
@@ -31,7 +31,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="name">The name of the next random enumeration item randomly selected according to the generator implementation and returned by the function.</param>
 		/// <returns>The next random enumeration item randomly selected according to the generator implementation.</returns>
 		/// <remarks>This function is particularly useful when the enumeration contains multiple items with the same value.</remarks>
-		T Next(out string name);
+		TEnum Next(out string name);
 	}
 
 	/// <summary>
@@ -43,20 +43,20 @@ namespace Experilous.MakeItRandom
 
 		#region By Value
 
-		private abstract class ByValueEnumGeneratorBase<T> : IEnumGenerator<T> where T : struct
+		private abstract class ByValueEnumGeneratorBase<TEnum> : IEnumGenerator<TEnum> where TEnum : struct
 		{
-			protected T[] _values;
+			protected TEnum[] _values;
 
 			public ByValueEnumGeneratorBase()
 			{
-				System.Array values = System.Enum.GetValues(typeof(T));
-				if (values.Length == 0) throw new System.ArgumentException(string.Format("The generic type argument {0} must have at least one enumeration item.", typeof(T).Name), "T");
+				System.Array values = System.Enum.GetValues(typeof(TEnum));
+				if (values.Length == 0) throw new System.ArgumentException(string.Format("The generic type argument {0} must have at least one enumeration item.", typeof(TEnum).Name), "TEnum");
 
 				int distinctCount = 1;
-				T prevValue = (T)values.GetValue(0);
+				TEnum prevValue = (TEnum)values.GetValue(0);
 				for (int i = 1; i < values.Length; ++i)
 				{
-					T nextValue = (T)values.GetValue(i);
+					TEnum nextValue = (TEnum)values.GetValue(i);
 					if (!prevValue.Equals(nextValue))
 					{
 						++distinctCount;
@@ -66,25 +66,25 @@ namespace Experilous.MakeItRandom
 
 				if (distinctCount == values.Length)
 				{
-					_values = values as T[];
+					_values = values as TEnum[];
 					if (_values == null)
 					{
-						_values = new T[values.Length];
+						_values = new TEnum[values.Length];
 						for (int i = 0; i < values.Length; ++i)
 						{
-							_values[i] = (T)values.GetValue(i);
+							_values[i] = (TEnum)values.GetValue(i);
 						}
 					}
 				}
 				else
 				{
-					_values = new T[distinctCount];
+					_values = new TEnum[distinctCount];
 					int index = 0;
-					prevValue = (T)values.GetValue(0);
+					prevValue = (TEnum)values.GetValue(0);
 					_values[index] = prevValue;
 					for (int i = 1; i < values.Length; ++i)
 					{
-						T nextValue = (T)values.GetValue(i);
+						TEnum nextValue = (TEnum)values.GetValue(i);
 						if (!prevValue.Equals(nextValue))
 						{
 							_values[++index] = nextValue;
@@ -94,12 +94,12 @@ namespace Experilous.MakeItRandom
 				}
 			}
 
-			public abstract T Next();
+			public abstract TEnum Next();
 			public abstract string NextName();
-			public abstract T Next(out string name);
+			public abstract TEnum Next(out string name);
 		}
 
-		private class ByValueEnumGenerator<T> : ByValueEnumGeneratorBase<T>, IEnumGenerator<T> where T : struct
+		private class ByValueEnumGenerator<TEnum> : ByValueEnumGeneratorBase<TEnum>, IEnumGenerator<TEnum> where TEnum : struct
 		{
 			private IRangeGenerator<int> _indexGenerator;
 
@@ -108,7 +108,7 @@ namespace Experilous.MakeItRandom
 				_indexGenerator = random.MakeRangeCOGenerator(_values.Length);
 			}
 
-			public override T Next()
+			public override TEnum Next()
 			{
 				return _values[_indexGenerator.Next()];
 			}
@@ -118,19 +118,19 @@ namespace Experilous.MakeItRandom
 				return _values[_indexGenerator.Next()].ToString();
 			}
 
-			public override T Next(out string name)
+			public override TEnum Next(out string name)
 			{
-				T value = _values[_indexGenerator.Next()];
+				TEnum value = _values[_indexGenerator.Next()];
 				name = value.ToString();
 				return value;
 			}
 		}
 
-		private abstract class ByValueWeightedEnumGenerator<T, TWeight, TWeightSum> : ByValueEnumGeneratorBase<T> where T : struct
+		private abstract class ByValueWeightedEnumGenerator<TEnum, TWeight, TWeightSum> : ByValueEnumGeneratorBase<TEnum> where TEnum : struct
 		{
 			protected IWeightedIndexGenerator<TWeight, TWeightSum> _indexGenerator;
 
-			public override T Next()
+			public override TEnum Next()
 			{
 				return _values[_indexGenerator.Next()];
 			}
@@ -140,89 +140,89 @@ namespace Experilous.MakeItRandom
 				return _values[_indexGenerator.Next()].ToString();
 			}
 
-			public override T Next(out string name)
+			public override TEnum Next(out string name)
 			{
-				T value = _values[_indexGenerator.Next()];
+				TEnum value = _values[_indexGenerator.Next()];
 				name = value.ToString();
 				return value;
 			}
 		}
 
-		private class ByValueSByteWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, sbyte, int> where T : struct
+		private class ByValueSByteWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, sbyte, int> where TEnum : struct
 		{
-			public ByValueSByteWeightedEnumGenerator(IRandom random, System.Func<T, sbyte> weightsAccessor) : base()
+			public ByValueSByteWeightedEnumGenerator(IRandom random, System.Func<TEnum, sbyte> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueByteWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, byte, uint> where T : struct
+		private class ByValueByteWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, byte, uint> where TEnum : struct
 		{
-			public ByValueByteWeightedEnumGenerator(IRandom random, System.Func<T, byte> weightsAccessor) : base()
+			public ByValueByteWeightedEnumGenerator(IRandom random, System.Func<TEnum, byte> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueShortWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, short, int> where T : struct
+		private class ByValueShortWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, short, int> where TEnum : struct
 		{
-			public ByValueShortWeightedEnumGenerator(IRandom random, System.Func<T, short> weightsAccessor) : base()
+			public ByValueShortWeightedEnumGenerator(IRandom random, System.Func<TEnum, short> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueUShortWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, ushort, uint> where T : struct
+		private class ByValueUShortWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, ushort, uint> where TEnum : struct
 		{
-			public ByValueUShortWeightedEnumGenerator(IRandom random, System.Func<T, ushort> weightsAccessor) : base()
+			public ByValueUShortWeightedEnumGenerator(IRandom random, System.Func<TEnum, ushort> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueIntWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, int, int> where T : struct
+		private class ByValueIntWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, int, int> where TEnum : struct
 		{
-			public ByValueIntWeightedEnumGenerator(IRandom random, System.Func<T, int> weightsAccessor) : base()
+			public ByValueIntWeightedEnumGenerator(IRandom random, System.Func<TEnum, int> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueUIntWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, uint, uint> where T : struct
+		private class ByValueUIntWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, uint, uint> where TEnum : struct
 		{
-			public ByValueUIntWeightedEnumGenerator(IRandom random, System.Func<T, uint> weightsAccessor) : base()
+			public ByValueUIntWeightedEnumGenerator(IRandom random, System.Func<TEnum, uint> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueLongWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, long, long> where T : struct
+		private class ByValueLongWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, long, long> where TEnum : struct
 		{
-			public ByValueLongWeightedEnumGenerator(IRandom random, System.Func<T, long> weightsAccessor) : base()
+			public ByValueLongWeightedEnumGenerator(IRandom random, System.Func<TEnum, long> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueULongWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, ulong, ulong> where T : struct
+		private class ByValueULongWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, ulong, ulong> where TEnum : struct
 		{
-			public ByValueULongWeightedEnumGenerator(IRandom random, System.Func<T, ulong> weightsAccessor) : base()
+			public ByValueULongWeightedEnumGenerator(IRandom random, System.Func<TEnum, ulong> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueFloatWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, float, float> where T : struct
+		private class ByValueFloatWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, float, float> where TEnum : struct
 		{
-			public ByValueFloatWeightedEnumGenerator(IRandom random, System.Func<T, float> weightsAccessor) : base()
+			public ByValueFloatWeightedEnumGenerator(IRandom random, System.Func<TEnum, float> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
 		}
 
-		private class ByValueDoubleWeightedEnumGenerator<T> : ByValueWeightedEnumGenerator<T, double, double> where T : struct
+		private class ByValueDoubleWeightedEnumGenerator<TEnum> : ByValueWeightedEnumGenerator<TEnum, double, double> where TEnum : struct
 		{
-			public ByValueDoubleWeightedEnumGenerator(IRandom random, System.Func<T, double> weightsAccessor) : base()
+			public ByValueDoubleWeightedEnumGenerator(IRandom random, System.Func<TEnum, double> weightsAccessor) : base()
 			{
 				_indexGenerator = random.MakeWeightedIndexGenerator(_values.Length, (int index) => weightsAccessor(_values[index]));
 			}
@@ -232,35 +232,35 @@ namespace Experilous.MakeItRandom
 
 		#region By Name
 
-		private abstract class ByNameEnumGeneratorBase<T> : IEnumGenerator<T> where T : struct
+		private abstract class ByNameEnumGeneratorBase<TEnum> : IEnumGenerator<TEnum> where TEnum : struct
 		{
-			protected T[] _values;
+			protected TEnum[] _values;
 			protected string[] _names;
 
 			public ByNameEnumGeneratorBase()
 			{
-				System.Array values = System.Enum.GetValues(typeof(T));
-				if (values.Length == 0) throw new System.ArgumentException(string.Format("The generic type argument {0} must have at least one enumeration item.", typeof(T).Name), "T");
+				System.Array values = System.Enum.GetValues(typeof(TEnum));
+				if (values.Length == 0) throw new System.ArgumentException(string.Format("The generic type argument {0} must have at least one enumeration item.", typeof(TEnum).Name), "TEnum");
 
-				_values = values as T[];
+				_values = values as TEnum[];
 				if (_values == null)
 				{
-					_values = new T[values.Length];
+					_values = new TEnum[values.Length];
 					for (int i = 0; i < values.Length; ++i)
 					{
-						_values[i] = (T)values.GetValue(i);
+						_values[i] = (TEnum)values.GetValue(i);
 					}
 				}
 
-				_names = System.Enum.GetNames(typeof(T));
+				_names = System.Enum.GetNames(typeof(TEnum));
 			}
 
-			public abstract T Next();
+			public abstract TEnum Next();
 			public abstract string NextName();
-			public abstract T Next(out string name);
+			public abstract TEnum Next(out string name);
 		}
 
-		private class ByNameEnumGenerator<T> : ByNameEnumGeneratorBase<T> where T : struct
+		private class ByNameEnumGenerator<TEnum> : ByNameEnumGeneratorBase<TEnum> where TEnum : struct
 		{
 			private IRangeGenerator<int> _indexGenerator;
 
@@ -269,7 +269,7 @@ namespace Experilous.MakeItRandom
 				_indexGenerator = random.MakeRangeCOGenerator(_values.Length);
 			}
 
-			public override T Next()
+			public override TEnum Next()
 			{
 				return _values[_indexGenerator.Next()];
 			}
@@ -279,7 +279,7 @@ namespace Experilous.MakeItRandom
 				return _names[_indexGenerator.Next()];
 			}
 
-			public override T Next(out string name)
+			public override TEnum Next(out string name)
 			{
 				int index = _indexGenerator.Next();
 				name = _names[index];
@@ -287,11 +287,11 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private abstract class ByNameWeightedEnumGenerator<T, TWeight, TWeightSum> : ByNameEnumGeneratorBase<T> where T : struct
+		private abstract class ByNameWeightedEnumGenerator<TEnum, TWeight, TWeightSum> : ByNameEnumGeneratorBase<TEnum> where TEnum : struct
 		{
 			protected IWeightedIndexGenerator<TWeight, TWeightSum> _indexGenerator;
 
-			public override T Next()
+			public override TEnum Next()
 			{
 				return _values[_indexGenerator.Next()];
 			}
@@ -301,7 +301,7 @@ namespace Experilous.MakeItRandom
 				return _names[_indexGenerator.Next()];
 			}
 
-			public override T Next(out string name)
+			public override TEnum Next(out string name)
 			{
 				int index = _indexGenerator.Next();
 				name = _names[index];
@@ -309,7 +309,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameSByteWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, sbyte, int> where T : struct
+		private class ByNameSByteWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, sbyte, int> where TEnum : struct
 		{
 			public ByNameSByteWeightedEnumGenerator(IRandom random, System.Func<string, sbyte> weightsAccessor) : base()
 			{
@@ -317,7 +317,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameByteWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, byte, uint> where T : struct
+		private class ByNameByteWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, byte, uint> where TEnum : struct
 		{
 			public ByNameByteWeightedEnumGenerator(IRandom random, System.Func<string, byte> weightsAccessor) : base()
 			{
@@ -325,7 +325,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameShortWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, short, int> where T : struct
+		private class ByNameShortWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, short, int> where TEnum : struct
 		{
 			public ByNameShortWeightedEnumGenerator(IRandom random, System.Func<string, short> weightsAccessor) : base()
 			{
@@ -333,7 +333,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameUShortWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, ushort, uint> where T : struct
+		private class ByNameUShortWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, ushort, uint> where TEnum : struct
 		{
 			public ByNameUShortWeightedEnumGenerator(IRandom random, System.Func<string, ushort> weightsAccessor) : base()
 			{
@@ -341,7 +341,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameIntWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, int, int> where T : struct
+		private class ByNameIntWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, int, int> where TEnum : struct
 		{
 			public ByNameIntWeightedEnumGenerator(IRandom random, System.Func<string, int> weightsAccessor) : base()
 			{
@@ -349,7 +349,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameUIntWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, uint, uint> where T : struct
+		private class ByNameUIntWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, uint, uint> where TEnum : struct
 		{
 			public ByNameUIntWeightedEnumGenerator(IRandom random, System.Func<string, uint> weightsAccessor) : base()
 			{
@@ -357,7 +357,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameLongWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, long, long> where T : struct
+		private class ByNameLongWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, long, long> where TEnum : struct
 		{
 			public ByNameLongWeightedEnumGenerator(IRandom random, System.Func<string, long> weightsAccessor) : base()
 			{
@@ -365,7 +365,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameULongWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, ulong, ulong> where T : struct
+		private class ByNameULongWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, ulong, ulong> where TEnum : struct
 		{
 			public ByNameULongWeightedEnumGenerator(IRandom random, System.Func<string, ulong> weightsAccessor) : base()
 			{
@@ -373,7 +373,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameFloatWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, float, float> where T : struct
+		private class ByNameFloatWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, float, float> where TEnum : struct
 		{
 			public ByNameFloatWeightedEnumGenerator(IRandom random, System.Func<string, float> weightsAccessor) : base()
 			{
@@ -381,7 +381,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByNameDoubleWeightedEnumGenerator<T> : ByNameWeightedEnumGenerator<T, double, double> where T : struct
+		private class ByNameDoubleWeightedEnumGenerator<TEnum> : ByNameWeightedEnumGenerator<TEnum, double, double> where TEnum : struct
 		{
 			public ByNameDoubleWeightedEnumGenerator(IRandom random, System.Func<string, double> weightsAccessor) : base()
 			{
@@ -396,342 +396,342 @@ namespace Experilous.MakeItRandom
 		#region Public Extension Methods
 
 		/// <summary>
-		/// Returns an enum generator which will return random enumeration items from <paramref name="T"/>, uniformly distributed either by unique value or by name.
+		/// Returns an enum generator which will return random enumeration items from <paramref name="TEnum"/>, uniformly distributed either by unique value or by name.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="byName">If false, indicates that multiple enumeration items with identical values should be treated as a single item.  Otherwise, each item name will be treated as a distinct item.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
-		public static IEnumGenerator<T> MakeEnumGenerator<T>(this IRandom random, bool byName = false) where T : struct
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		public static IEnumGenerator<TEnum> MakeEnumGenerator<TEnum>(this IRandom random, bool byName = false) where TEnum : struct
 		{
 			if (byName == false)
 			{
-				return new ByValueEnumGenerator<T>(random);
+				return new ByValueEnumGenerator<TEnum>(random);
 			}
 			else
 			{
-				return new ByNameEnumGenerator<T>(random);
+				return new ByNameEnumGenerator<TEnum>(random);
 			}
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, sbyte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, sbyte})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, sbyte> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, sbyte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, sbyte})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, sbyte> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueSByteWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueSByteWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, sbyte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, sbyte})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, sbyte> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, sbyte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, sbyte})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, sbyte> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameSByteWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameSByteWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, byte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, byte})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, byte> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, byte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, byte})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, byte> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueByteWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueByteWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, byte})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, byte})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, byte> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, byte})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, byte})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, byte> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameByteWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameByteWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, short})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, short})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, short> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, short})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, short})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, short> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueShortWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueShortWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, short})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, short})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, short> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, short})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, short})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, short> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameShortWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameShortWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ushort})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ushort})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, ushort> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ushort})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ushort})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, ushort> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueUShortWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueUShortWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ushort})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ushort})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, ushort> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ushort})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ushort})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, ushort> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameUShortWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameUShortWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, int})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, int})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, int> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, int})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, int})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, int> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueIntWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueIntWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, int})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, int})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, int> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, int})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, int})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, int> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameIntWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameIntWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, uint})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, uint})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, uint> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, uint})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, uint})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, uint> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueUIntWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueUIntWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, uint})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, uint})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, uint> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, uint})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, uint})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, uint> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameUIntWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameUIntWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, long})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, long})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, long> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, long})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, long})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, long> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueLongWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueLongWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, long})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, long})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, long> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, long})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, long})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, long> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameLongWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameLongWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ulong})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, ulong})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, ulong> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ulong})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ulong})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, ulong> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueULongWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueULongWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ulong})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, ulong})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, ulong> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ulong})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ulong})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, ulong> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameULongWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameULongWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, float})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, float})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, float> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, float})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, float})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, float> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueFloatWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueFloatWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, float})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, float})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, float> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, float})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, float})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, float> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameFloatWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameFloatWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, double})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{string, double})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<T, double> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, double})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, double})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<TEnum, double> weightsAccessor) where TEnum : struct
 		{
-			return new ByValueDoubleWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByValueDoubleWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="T"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
+		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="T"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="T"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
-		/// item, then use <see cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, double})"/> instead.</remarks>
-		/// <seealso cref="MakeWeightedEnumGenerator{T}(IRandom, System.Func{T, double})"/>
-		public static IEnumGenerator<T> MakeWeightedEnumGenerator<T>(this IRandom random, System.Func<string, double> weightsAccessor) where T : struct
+		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, double})"/> instead.</remarks>
+		/// <seealso cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, double})"/>
+		public static IEnumGenerator<TEnum> MakeWeightedEnumGenerator<TEnum>(this IRandom random, System.Func<string, double> weightsAccessor) where TEnum : struct
 		{
-			return new ByNameDoubleWeightedEnumGenerator<T>(random, weightsAccessor);
+			return new ByNameDoubleWeightedEnumGenerator<TEnum>(random, weightsAccessor);
 		}
 
 		#endregion

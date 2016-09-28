@@ -174,4 +174,30 @@
     <None Include="Content - Generators.aml" />
     <None Include="Content - Example Scenes.aml" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="colors-demo-scene.png">
+      <ImageId>colors-demo-scene</ImageId>
+      <AlternateText>colors-demo-scene</AlternateText>
+    </Image>
+    <Image Include="dice-demo-scene.png">
+      <ImageId>dice-demo-scene</ImageId>
+      <AlternateText>dice-demo-scene</AlternateText>
+    </Image>
+    <Image Include="strings-demo-scene.png">
+      <ImageId>strings-demo-scene</ImageId>
+      <AlternateText>strings-demo-scene</AlternateText>
+    </Image>
+    <Image Include="shuffle-demo-scene.png">
+      <ImageId>shuffle-demo-scene</ImageId>
+      <AlternateText>shuffle-demo-scene</AlternateText>
+    </Image>
+    <Image Include="performance-demo-scene.png">
+      <ImageId>performance-demo-scene</ImageId>
+      <AlternateText>performance-demo-scene</AlternateText>
+    </Image>
+    <Image Include="geometry-demo-scene.png">
+      <ImageId>geometry-demo-scene</ImageId>
+      <AlternateText>geometry-demo-scene</AlternateText>
+    </Image>
+  </ItemGroup>
 </Project>

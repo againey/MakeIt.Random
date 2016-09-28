@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
-			<autoOutline />
+		<summary>
 			<para>
 				The most common use of random engines is of course the generation of
 				random numbers distributed uniformly within some desired range.
@@ -10,15 +9,18 @@
 				primitive types, offering a few different ways in which the desired
 				ranges can be specified.
 			</para>
+		</summary>
+		<introduction>
+			<autoOutline />
 		</introduction>
-		<section address="Section1">
+		<section address="open-closed-boundaries">
 			<title>Open and Closed Range Boundaries</title>
 			<content>
 				<para>
 					When specifying a numeric range, it is important to note whether the
 					lower and upper boundaries are included or excluded.  For example,
 					a roll of a standard six-sided die results in a number between 1 and
-					6, with both 1 and 6 included as possibilities, whereas selecting an
+					6, with both 1 and 6 included as possibilities, whereas selecting
 					a random element from a zero-indexed array requires generating a
 					number from 0 (inclusive) up to <legacyItalic>but not including</legacyItalic>
 					the length of the array.
@@ -49,14 +51,15 @@
 					Open/open ('OO') ranges sometimes occur when a value is needed that
 					is explicitly <legacyItalic>between</legacyItalic> two values (for
 					example, a volume that is <quoteInline>bigger than a breadbox but
-					smaller than a house</quoteInline>).  Open/closed ('OC') ranges when one wants a
-					range that includes a specific number of options and starts at an
-					implicit value of 1, such as when rolling a die with a particular
-					number of sides.
+					smaller than a house</quoteInline>).  Open/closed ('OC') ranges
+					are appropriate when one wants a range that includes a specific
+					number of options and starts at an implicit value of 1 instead of
+					0 (see <link xlink:href="#implicit-boundary">below</link>), such
+					as when rolling a die with a particular number of sides.
 				</para>
 			</content>
 		</section>
-		<section address="Section2">
+		<section address="implicit-boundary">
 			<title>Implicit Lower Boundaries</title>
 			<content>
 				<para>
@@ -73,33 +76,37 @@
 				</para>
 			</content>
 		</section>
-		<section address="Section3">
+		<section address="range-type">
 			<title>Specifying the Range Type</title>
 			<content>
 				<para>
 					If specifying the range boundaries explicitly, the type can be
 					automatically deduced by the type of the boundaries supplied.
-					In these cases, you may call <codeInline>random.RangeOO(...)</codeInline>,
-					<codeInline>random.RangeCO(...)</codeInline>,
-					<codeInline>random.RangeOC(...)</codeInline>, or
-					<codeInline>random.RangeCC(...)</codeInline> and simply supply
-					the lower and upper boundaries as the type you desire.  For example,
-					<codeInline>random.RangeCC(1, 6)</codeInline> will return a 32-bit
-					signed integer, whereas <codeInline>random.RangeCC(1UL, 6UL)</codeInline>
+					In these cases, you may call
+					<codeEntityReference linkText="random.RangeOO(...)" autoUpgrade="true">M:Experilous.MakeItRandom.RandomInteger.RangeOO(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference>,
+					<codeEntityReference linkText="random.RangeCO(...)" autoUpgrade="true">M:Experilous.MakeItRandom.RandomInteger.RangeCO(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference>,
+					<codeEntityReference linkText="random.RangeOC(...)" autoUpgrade="true">M:Experilous.MakeItRandom.RandomInteger.RangeOC(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference>, or
+					<codeEntityReference linkText="random.RangeCC(...)" autoUpgrade="true">M:Experilous.MakeItRandom.RandomInteger.RangeCC(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference>
+					and simply supply the lower and upper boundaries as the type you desire.  For example,
+					<codeEntityReference linkText="random.RangeCC(1, 6)">M:Experilous.MakeItRandom.RandomInteger.RangeCC(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference>
+					will return a 32-bit signed integer, whereas
+					<codeEntityReference linkText="random.RangeCC(1UL, 6UL)">M:Experilous.MakeItRandom.RandomInteger.RangeCC(Experilous.MakeItRandom.IRandom,System.UInt64,System.UInt64)</codeEntityReference>
 					will return a 64-bit unsigned integer and
-					<codeInline>random.RangeCC(1f, 6f)</codeInline> will return a
-					32-bit floating point number.
+					<codeEntityReference linkText="random.RangeCC(1f, 6f)">M:Experilous.MakeItRandom.RandomFloatingPoint.RangeCC(Experilous.MakeItRandom.IRandom,System.Single,System.Single)</codeEntityReference>
+					will return a 32-bit floating point number.
 				</para>
 				<para>
-					For common ranges that need no parameters, the name of the type
-					needs to be used instead of 'Range'.  For floating point numbers,
-					the standard range is from 0 to 1, so <codeInline>random.FloatCC()</codeInline>
-					will return a <codeInline>float</codeInline> that is greater than
-					or equal to 0 and less than or equal to 1, while
-					<codeInline>random.DoubleCC()</codeInline> returns that same
-					range as a <codeInline>double</codeInline> instead.
-					For the range -1 to +1, prefix the word 'Signed' to the function,
-					such as <codeInline>random.SignedFloatCC()</codeInline>.
+					For common ranges that need no parameters, the name of the type needs to be used
+					instead of 'Range'.  For floating point numbers, the standard range is from 0 to 1, so
+					<codeEntityReference linkText="random.FloatCC()">M:Experilous.MakeItRandom.RandomFloatingPoint.FloatCC(Experilous.MakeItRandom.IRandom)</codeEntityReference>
+					will return a
+					<codeEntityReference linkText="float">T:System.Single</codeEntityReference>
+					that is greater than or equal to 0 and less than or equal to 1, while
+					<codeEntityReference linkText="random.DoubleCC()">M:Experilous.MakeItRandom.RandomFloatingPoint.DoubleCC(Experilous.MakeItRandom.IRandom)</codeEntityReference>
+					returns that same range as a
+					<codeEntityReference linkText="double">T:System.Double</codeEntityReference>
+					instead. For the range -1 to +1, prefix the word 'Signed' to the function, such as
+					<codeEntityReference linkText="random.SignedFloatCC()">M:Experilous.MakeItRandom.RandomFloatingPoint.SignedFloatCC(Experilous.MakeItRandom.IRandom)</codeEntityReference>.
 				</para>
 			</content>
 		</section>
@@ -124,31 +131,32 @@
 					by exactly this amount.
 				</para>
 				<para>
-					If you explicitly want to have the increased precision near 0
-					that floating point numbers offer, you can prefix the function
-					name with 'Precise'.  Hence, <codeInline>random.PreciseSignedDoubleOO()</codeInline>
+					If you explicitly want to have the increased precision near 0 that floating
+					point numbers offer, you can prefix the function name with 'Precise'.  Hence,
+					<codeEntityReference linkText="random.PreciseSignedDoubleOO()">M:Experilous.MakeItRandom.RandomFloatingPoint.PreciseSignedDoubleOO(Experilous.MakeItRandom.IRandom)</codeEntityReference>
 					will produce numbers between -1 and +1 with ultra-high absolute
 					precision for numbers that are really close to 0.
 				</para>
 				<alert class="note">
 					<para>
-						Note that this <legacyItalic>doesn not change</legacyItalic>
+						Note that this <legacyItalic>does not change</legacyItalic>
 						the property of uniform distribution within the range.  Values
 						closer to 0 remain no more likely to occur than numbers further
 						away from 0.  It's just that the clustering that is inevitable
 						for numbers not near 0 is less severe for numbers near 0.
 					</para>
 					<para>
-						For example, if calling <codeInline>random.FloatCO()</codeInline>,
+						For example, if calling
+						<codeEntityReference linkText="random.FloatCO()">M:Experilous.MakeItRandom.RandomFloatingPoint.FloatCO(Experilous.MakeItRandom.IRandom)</codeEntityReference>,
 						there are around 4 million possible values that are between 0.5
 						and 1.0, and only half as many, around 2 million, that are between
 						the range 0.25 and 0.5.  This makes sense, because the second
 						range is half the size of the first.  If
-						<codeInline>random.PreciseFloatCO()</codeInline> is called instead,
-						there are still 4 million possible values in the first range,
-						but the second range <legacyItalic>also</legacyItalic> includes
-						4 million possible values, despite filling a range half the size.
-						This discrepancy is resolved by the fact that each of these
+						<codeEntityReference linkText="random.PreciseFloatCO()">M:Experilous.MakeItRandom.RandomFloatingPoint.PreciseFloatCO(Experilous.MakeItRandom.IRandom)</codeEntityReference>
+						is called instead, there are still 4 million possible values in the
+						first range, but the second range <legacyItalic>also</legacyItalic>
+						includes 4 million possible values, despite filling a range half the
+						size.  This discrepancy is resolved by the fact that each of these
 						4 million values in the second range have only half the chance
 						of occuring as each of the 4 million in the first.  Moving
 						down to the next range from 0.125 to 0.25, once again there are
@@ -156,16 +164,17 @@
 						the likelihood of occuring as those in the first range.
 					</para>
 					<para>
-						With <codeInline>random.FloatCO()</codeInline> in contrast,
-						each value has exactly the same chance of occuring as any other
-						regardless of which subrange it is in, and subranges contain a
-						number of possible values that is proportional to the size of
-						the subrange.
+						With
+						<codeEntityReference linkText="random.FloatCO()">M:Experilous.MakeItRandom.RandomFloatingPoint.FloatCO(Experilous.MakeItRandom.IRandom)</codeEntityReference>
+						in contrast, each value has exactly the same chance of occuring as
+						any other regardless of which subrange it is in, and subranges
+						contain a number of possible values that is proportional to the
+						size of the subrange.
 					</para>
 				</alert>
 			</content>
 		</section>
-		<section address="Section5">
+		<section address="perfect-distribution">
 			<title>Perfect Distribution</title>
 			<content>
 				<para>
@@ -237,7 +246,8 @@
 		<relatedTopics>
 			<codeEntityReference>T:Experilous.MakeItRandom.RandomInteger</codeEntityReference>
 			<codeEntityReference>T:Experilous.MakeItRandom.RandomFloatingPoint</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.RandomNumber</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.RandomRangeGenerator</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.RandomAngle</codeEntityReference>
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

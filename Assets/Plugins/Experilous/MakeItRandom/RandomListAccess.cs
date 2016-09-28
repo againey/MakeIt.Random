@@ -10,14 +10,14 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// An interface for any generator of list element access.
 	/// </summary>
-	/// <typeparam name="T">The element type contained by the referenced list and returned by the generator.</typeparam>
-	public interface IElementGenerator<T>
+	/// <typeparam name="TElement">The element type contained by the referenced list and returned by the generator.</typeparam>
+	public interface IElementGenerator<TElement>
 	{
 		/// <summary>
 		/// Get the next random element selected by the generator.
 		/// </summary>
 		/// <returns>The next list element randomly selected according to the generator implementation.</returns>
-		T Next();
+		TElement Next();
 
 		/// <summary>
 		/// Get the next random index selected by the generator.
@@ -30,7 +30,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="index">The index of the list element selected according to the generator implementation and returned by the function.</param>
 		/// <returns>The next list element randomly selected according to the generator implementation.</returns>
-		T Next(out int index);
+		TElement Next(out int index);
 	}
 
 	/// <summary>
@@ -80,10 +80,10 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// An interface for any generator of list element access with non-uniform distribution.
 	/// </summary>
-	/// <typeparam name="T">The element type contained by the referenced list and returned by the generator.</typeparam>
+	/// <typeparam name="TElement">The element type contained by the referenced list and returned by the generator.</typeparam>
 	/// <typeparam name="TWeight">The numeric type of the weights.</typeparam>
 	/// <typeparam name="TWeightSum">The numeric type of the summation of weights</typeparam>
-	public interface IWeightedElementGenerator<T, TWeight, TWeightSum> : IElementGenerator<T>
+	public interface IWeightedElementGenerator<TElement, TWeight, TWeightSum> : IElementGenerator<TElement>
 	{
 		/// <summary>
 		/// The sum of all weights.
@@ -95,7 +95,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="weight">The weight of the element selected according to the generator implementation and returned by the function.</param>
 		/// <returns>The next list element randomly selected according to the generator implementation.</returns>
-		T Next(out TWeight weight);
+		TElement Next(out TWeight weight);
 
 		/// <summary>
 		/// Get the next random index selected by the generator.
@@ -110,7 +110,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="index">The index of the list element selected according to the generator implementation and returned by the function.</param>
 		/// <param name="weight">The weight of the element selected according to the generator implementation and returned by the function.</param>
 		/// <returns>The next list element randomly selected according to the generator implementation.</returns>
-		T Next(out int index, out TWeight weight);
+		TElement Next(out int index, out TWeight weight);
 
 		/// <summary>
 		/// Informs the generator reread the weights and update any internal state accordingly.
@@ -140,12 +140,12 @@ namespace Experilous.MakeItRandom
 
 		#region Uniform
 
-		private class VariableLengthArrayIndexGenerator<T> : IRangeGenerator<int>
+		private class VariableLengthArrayIndexGenerator<TElement> : IRangeGenerator<int>
 		{
 			private IRandom _random;
-			private T[] _array;
+			private TElement[] _array;
 
-			public VariableLengthArrayIndexGenerator(IRandom random, T[] array)
+			public VariableLengthArrayIndexGenerator(IRandom random, TElement[] array)
 			{
 				_random = random;
 				_array = array;
@@ -157,12 +157,12 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class VariableLengthListIndexGenerator<T> : IRangeGenerator<int>
+		private class VariableLengthListIndexGenerator<TElement> : IRangeGenerator<int>
 		{
 			private IRandom _random;
-			private IList<T> _list;
+			private IList<TElement> _list;
 
-			public VariableLengthListIndexGenerator(IRandom random, IList<T> list)
+			public VariableLengthListIndexGenerator(IRandom random, IList<TElement> list)
 			{
 				_random = random;
 				_list = list;
@@ -174,18 +174,18 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FixedLengthArrayElementGenerator<T> : IElementGenerator<T>
+		private class FixedLengthArrayElementGenerator<TElement> : IElementGenerator<TElement>
 		{
 			private IRangeGenerator<int> _indexGenerator;
-			private T[] _array;
+			private TElement[] _array;
 
-			public FixedLengthArrayElementGenerator(IRandom random, T[] array)
+			public FixedLengthArrayElementGenerator(IRandom random, TElement[] array)
 			{
 				_indexGenerator = random.MakeIndexGenerator(array.Length);
 				_array = array;
 			}
 
-			public T Next()
+			public TElement Next()
 			{
 				return _array[_indexGenerator.Next()];
 			}
@@ -195,25 +195,25 @@ namespace Experilous.MakeItRandom
 				return _indexGenerator.Next();
 			}
 
-			public T Next(out int index)
+			public TElement Next(out int index)
 			{
 				index = _indexGenerator.Next();
 				return _array[index];
 			}
 		}
 
-		private class FixedLengthListElementGenerator<T> : IElementGenerator<T>
+		private class FixedLengthListElementGenerator<TElement> : IElementGenerator<TElement>
 		{
 			private IRangeGenerator<int> _indexGenerator;
-			private IList<T> _list;
+			private IList<TElement> _list;
 
-			public FixedLengthListElementGenerator(IRandom random, IList<T> list)
+			public FixedLengthListElementGenerator(IRandom random, IList<TElement> list)
 			{
 				_indexGenerator = random.MakeIndexGenerator(list.Count);
 				_list = list;
 			}
 
-			public T Next()
+			public TElement Next()
 			{
 				return _list[_indexGenerator.Next()];
 			}
@@ -223,25 +223,25 @@ namespace Experilous.MakeItRandom
 				return _indexGenerator.Next();
 			}
 
-			public T Next(out int index)
+			public TElement Next(out int index)
 			{
 				index = _indexGenerator.Next();
 				return _list[index];
 			}
 		}
 
-		private class VariableLengthArrayElementGenerator<T> : IElementGenerator<T>
+		private class VariableLengthArrayElementGenerator<TElement> : IElementGenerator<TElement>
 		{
 			private IRandom _random;
-			private T[] _array;
+			private TElement[] _array;
 
-			public VariableLengthArrayElementGenerator(IRandom random, T[] array)
+			public VariableLengthArrayElementGenerator(IRandom random, TElement[] array)
 			{
 				_random = random;
 				_array = array;
 			}
 
-			public T Next()
+			public TElement Next()
 			{
 				return _array[_random.RangeCO(_array.Length)];
 			}
@@ -251,25 +251,25 @@ namespace Experilous.MakeItRandom
 				return _random.RangeCO(_array.Length);
 			}
 
-			public T Next(out int index)
+			public TElement Next(out int index)
 			{
 				index = _random.RangeCO(_array.Length);
 				return _array[index];
 			}
 		}
 
-		private class VariableLengthListElementGenerator<T> : IElementGenerator<T>
+		private class VariableLengthListElementGenerator<TElement> : IElementGenerator<TElement>
 		{
 			private IRandom _random;
-			private IList<T> _list;
+			private IList<TElement> _list;
 
-			public VariableLengthListElementGenerator(IRandom random, IList<T> list)
+			public VariableLengthListElementGenerator(IRandom random, IList<TElement> list)
 			{
 				_random = random;
 				_list = list;
 			}
 
-			public T Next()
+			public TElement Next()
 			{
 				return _list[_random.RangeCO(_list.Count)];
 			}
@@ -279,7 +279,7 @@ namespace Experilous.MakeItRandom
 				return _random.RangeCO(_list.Count);
 			}
 
-			public T Next(out int index)
+			public TElement Next(out int index)
 			{
 				index = _random.RangeCO(_list.Count);
 				return _list[index];
@@ -586,33 +586,33 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private abstract class WeightedElementGenerator<T, TWeight, TWeightSum> : WeightedIndexGeneratorBase<TWeight, TWeightSum>, IWeightedElementGenerator<T, TWeight, TWeightSum>
+		private abstract class WeightedElementGenerator<TElement, TWeight, TWeightSum> : WeightedIndexGeneratorBase<TWeight, TWeightSum>, IWeightedElementGenerator<TElement, TWeight, TWeightSum>
 		{
-			private IList<T> _list;
+			private IList<TElement> _list;
 
-			public WeightedElementGenerator(IRandom random, IList<T> list, TWeight[] weights) : base(random, weights)
+			public WeightedElementGenerator(IRandom random, IList<TElement> list, TWeight[] weights) : base(random, weights)
 			{
 				_list = list;
 			}
 
-			public WeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, TWeight> weightsAccessor) : base(random, list.Count, weightsAccessor)
+			public WeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, TWeight> weightsAccessor) : base(random, list.Count, weightsAccessor)
 			{
 				_list = list;
 			}
 
-			public T Next()
+			public TElement Next()
 			{
 				return _list[NextIndex()];
 			}
 
-			public T Next(out TWeight weight)
+			public TElement Next(out TWeight weight)
 			{
 				int index = NextIndex();
 				weight = _weights[index];
 				return _list[index];
 			}
 
-			T IElementGenerator<T>.Next(out int index)
+			TElement IElementGenerator<TElement>.Next(out int index)
 			{
 				index = NextIndex();
 				return _list[index];
@@ -625,7 +625,7 @@ namespace Experilous.MakeItRandom
 				return index;
 			}
 
-			public T Next(out int index, out TWeight weight)
+			public TElement Next(out int index, out TWeight weight)
 			{
 				index = NextIndex();
 				weight = _weights[index];
@@ -672,10 +672,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class SByteWeightedElementGenerator<T> : WeightedElementGenerator<T, sbyte, int>
+		private class SByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, sbyte, int>
 		{
-			public SByteWeightedElementGenerator(IRandom random, IList<T> list, sbyte[] weights) : base(random, list, weights) { }
-			public SByteWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, sbyte[] weights) : base(random, list, weights) { }
+			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -704,10 +704,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ByteWeightedElementGenerator<T> : WeightedElementGenerator<T, byte, uint>
+		private class ByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, byte, uint>
 		{
-			public ByteWeightedElementGenerator(IRandom random, IList<T> list, byte[] weights) : base(random, list, weights) { }
-			public ByteWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, byte[] weights) : base(random, list, weights) { }
+			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -736,10 +736,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ShortWeightedElementGenerator<T> : WeightedElementGenerator<T, short, int>
+		private class ShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, short, int>
 		{
-			public ShortWeightedElementGenerator(IRandom random, IList<T> list, short[] weights) : base(random, list, weights) { }
-			public ShortWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, short> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, short[] weights) : base(random, list, weights) { }
+			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -768,10 +768,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UShortWeightedElementGenerator<T> : WeightedElementGenerator<T, ushort, uint>
+		private class UShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ushort, uint>
 		{
-			public UShortWeightedElementGenerator(IRandom random, IList<T> list, ushort[] weights) : base(random, list, weights) { }
-			public UShortWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, ushort[] weights) : base(random, list, weights) { }
+			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -800,10 +800,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class IntWeightedElementGenerator<T> : WeightedElementGenerator<T, int, int>
+		private class IntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, int, int>
 		{
-			public IntWeightedElementGenerator(IRandom random, IList<T> list, int[] weights) : base(random, list, weights) { }
-			public IntWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, int> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, int[] weights) : base(random, list, weights) { }
+			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -832,10 +832,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class UIntWeightedElementGenerator<T> : WeightedElementGenerator<T, uint, uint>
+		private class UIntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, uint, uint>
 		{
-			public UIntWeightedElementGenerator(IRandom random, IList<T> list, uint[] weights) : base(random, list, weights) { }
-			public UIntWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, uint[] weights) : base(random, list, weights) { }
+			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -864,10 +864,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class LongWeightedElementGenerator<T> : WeightedElementGenerator<T, long, long>
+		private class LongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, long, long>
 		{
-			public LongWeightedElementGenerator(IRandom random, IList<T> list, long[] weights) : base(random, list, weights) { }
-			public LongWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, long> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, long[] weights) : base(random, list, weights) { }
+			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -896,10 +896,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class ULongWeightedElementGenerator<T> : WeightedElementGenerator<T, ulong, ulong>
+		private class ULongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ulong, ulong>
 		{
-			public ULongWeightedElementGenerator(IRandom random, IList<T> list, ulong[] weights) : base(random, list, weights) { }
-			public ULongWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, ulong[] weights) : base(random, list, weights) { }
+			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -928,10 +928,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class FloatWeightedElementGenerator<T> : WeightedElementGenerator<T, float, float>
+		private class FloatWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, float, float>
 		{
-			public FloatWeightedElementGenerator(IRandom random, IList<T> list, float[] weights) : base(random, list, weights) { }
-			public FloatWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, float> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, float[] weights) : base(random, list, weights) { }
+			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -960,10 +960,10 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		private class DoubleWeightedElementGenerator<T> : WeightedElementGenerator<T, double, double>
+		private class DoubleWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, double, double>
 		{
-			public DoubleWeightedElementGenerator(IRandom random, IList<T> list, double[] weights) : base(random, list, weights) { }
-			public DoubleWeightedElementGenerator(IRandom random, IList<T> list, System.Func<int, double> weightsAccessor) : base(random, list, weightsAccessor) { }
+			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, double[] weights) : base(random, list, weights) { }
+			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
 			{
@@ -1029,11 +1029,11 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a uniformly distributed random index in the range [0, <paramref name="list"/>.Count), suitable for indexing into <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection for which a random index will be generated.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
-		public static int Index<T>(this IRandom random, IList<T> list)
+		public static int Index<TElement>(this IRandom random, IList<TElement> list)
 		{
 			return random.RangeCO(list.Count);
 		}
@@ -1041,11 +1041,11 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a uniformly selected random element from <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
-		public static int RandomIndex<T>(this IList<T> list, IRandom random)
+		public static int RandomIndex<TElement>(this IList<TElement> list, IRandom random)
 		{
 			return random.RangeCO(list.Count);
 		}
@@ -1053,11 +1053,11 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a uniformly selected random element from <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		public static T Element<T>(this IRandom random, IList<T> list)
+		public static TElement Element<TElement>(this IRandom random, IList<TElement> list)
 		{
 			return list[random.RangeCO(list.Count)];
 		}
@@ -1065,11 +1065,11 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a uniformly selected random element from <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		public static T RandomElement<T>(this IList<T> list, IRandom random)
+		public static TElement RandomElement<TElement>(this IList<TElement> list, IRandom random)
 		{
 			return list[random.RangeCO(list.Count)];
 		}
@@ -1121,7 +1121,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a range generator which will produce uniformly distributed random indices in the range [0, <paramref name="list"/>.Count), suitable for indexing into <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection for which the range generator will produce random indices.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="list"/>.Count).</returns>
@@ -1129,7 +1129,7 @@ namespace Experilous.MakeItRandom
 		/// to be more efficient, because the generated indices will always come from the same range.  Otherwise, each index generated
 		/// will come from the range [0, <paramref name="list"/>.Count) according to the value of <paramref name="list"/>.Count at the
 		/// time the index is generated.</remarks>
-		public static IRangeGenerator<int> MakeIndexGenerator<T>(this IRandom random, IList<T> list)
+		public static IRangeGenerator<int> MakeIndexGenerator<TElement>(this IRandom random, IList<TElement> list)
 		{
 			IListNonGeneric nonGenericList = list as IListNonGeneric;
 			if (nonGenericList != null && nonGenericList.IsFixedSize)
@@ -1138,14 +1138,14 @@ namespace Experilous.MakeItRandom
 			}
 			else
 			{
-				T[] array = list as T[];
+				TElement[] array = list as TElement[];
 				if (array != null)
 				{
-					return new VariableLengthArrayIndexGenerator<T>(random, array);
+					return new VariableLengthArrayIndexGenerator<TElement>(random, array);
 				}
 				else
 				{
-					return new VariableLengthListIndexGenerator<T>(random, list);
+					return new VariableLengthListIndexGenerator<TElement>(random, list);
 				}
 			}
 		}
@@ -1153,36 +1153,36 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns an element generator which will return elements from <paramref name="list"/> with an equally weighted distribution.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <returns>An element generator which returns random elements from <paramref name="list"/>.</returns>
 		/// <remarks>If <paramref name="list"/> is marked as having a fixed size, then the element generator returned has the opportunity
 		/// to be more efficient, because the internally generated indices will always come from the same range.</remarks>
-		public static IElementGenerator<T> MakeElementGenerator<T>(this IRandom random, IList<T> list)
+		public static IElementGenerator<TElement> MakeElementGenerator<TElement>(this IRandom random, IList<TElement> list)
 		{
 			IListNonGeneric nonGenericList = list as IListNonGeneric;
-			T[] array = list as T[];
+			TElement[] array = list as TElement[];
 			if (nonGenericList != null && nonGenericList.IsFixedSize)
 			{
 				if (array != null)
 				{
-					return new FixedLengthArrayElementGenerator<T>(random, array);
+					return new FixedLengthArrayElementGenerator<TElement>(random, array);
 				}
 				else
 				{
-					return new FixedLengthListElementGenerator<T>(random, list);
+					return new FixedLengthListElementGenerator<TElement>(random, list);
 				}
 			}
 			else
 			{
 				if (array != null)
 				{
-					return new VariableLengthArrayElementGenerator<T>(random, array);
+					return new VariableLengthArrayElementGenerator<TElement>(random, array);
 				}
 				else
 				{
-					return new VariableLengthListElementGenerator<T>(random, list);
+					return new VariableLengthListElementGenerator<TElement>(random, list);
 				}
 			}
 		}
@@ -1190,7 +1190,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a range generator which will produce uniformly distributed random indices in the range [0, <paramref name="list"/>.Count), suitable for indexing into <paramref name="list"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="list">The collection for which the range generator will produce random indices.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>A range generator which produces random indices in the range [0, <paramref name="list"/>.Count).</returns>
@@ -1198,7 +1198,7 @@ namespace Experilous.MakeItRandom
 		/// to be more efficient, because the generated indices will always come from the same range.  Otherwise, each index generated
 		/// will come from the range [0, <paramref name="list"/>.Count) according to the value of <paramref name="list"/>.Count at the
 		/// time the index is generated.</remarks>
-		public static IRangeGenerator<int> MakeRandomIndexGenerator<T>(this IList<T> list, IRandom random)
+		public static IRangeGenerator<int> MakeRandomIndexGenerator<TElement>(this IList<TElement> list, IRandom random)
 		{
 			return random.MakeIndexGenerator(list);
 		}
@@ -1206,13 +1206,13 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns an element generator which will return elements from <paramref name="list"/> with an equally weighted distribution.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <returns>An element generator which returns random elements from <paramref name="list"/>.</returns>
 		/// <remarks>If <paramref name="list"/> is marked as having a fixed size, then the element generator returned has the opportunity
 		/// to be more efficient, because the internally generated indices will always come from the same range.</remarks>
-		public static IElementGenerator<T> MakeRandomElementGenerator<T>(this IList<T> list, IRandom random)
+		public static IElementGenerator<TElement> MakeRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random)
 		{
 			return random.MakeElementGenerator(list);
 		}
@@ -2218,19 +2218,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, sbyte[], int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, sbyte[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, sbyte[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, sbyte[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, sbyte[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, sbyte[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, sbyte[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, sbyte[] weights)
 		{
 			int weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2239,15 +2239,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, sbyte[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, sbyte[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, sbyte[] weights, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, sbyte[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, sbyte[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, sbyte[] weights, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2266,19 +2266,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte}, int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2287,15 +2287,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, sbyte})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2314,19 +2314,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, byte[], uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, byte[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, byte[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, byte[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, byte[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, byte[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, byte[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, byte[] weights)
 		{
 			uint weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2335,15 +2335,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, byte[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, byte[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, byte[] weights, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, byte[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, byte[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, byte[] weights, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2362,19 +2362,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, byte}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte}, uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, byte}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2383,15 +2383,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, byte})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, byte})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2410,19 +2410,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, short[], int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, short[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, short[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, short[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, short[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, short[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, short[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, short[] weights)
 		{
 			int weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2431,15 +2431,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, short[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, short[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, short[] weights, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, short[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, short[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, short[] weights, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2458,19 +2458,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, short}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short}, int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, short> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, short}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2479,15 +2479,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, short})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, short})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, short> weightsAccessor, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2506,19 +2506,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, ushort[], uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, ushort[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ushort[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ushort[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, ushort[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, ushort[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ushort[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ushort[] weights)
 		{
 			uint weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2527,15 +2527,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ushort[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ushort[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, ushort[] weights, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, ushort[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ushort[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ushort[] weights, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2554,19 +2554,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ushort}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort}, uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ushort}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2575,15 +2575,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ushort})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2602,19 +2602,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, int[], int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, int[], int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, int[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, int[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, int[], int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, int[] weights)
 		{
 			int weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2623,15 +2623,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, int[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, int[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, int[] weights, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, int[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, int[] weights, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2650,19 +2650,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int}, int)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, int}, int)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int}, int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, int> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, int}, int)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2671,15 +2671,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, int})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, int})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, int> weightsAccessor, int weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor, int weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2698,19 +2698,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, uint[], uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, uint[], uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, uint[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, uint[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, uint[], uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, uint[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, uint[] weights)
 		{
 			uint weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2719,15 +2719,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, uint[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, uint[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, uint[] weights, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, uint[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, uint[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, uint[] weights, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2746,19 +2746,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint}, uint)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, uint}, uint)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint}, uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, uint}, uint)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2767,15 +2767,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, uint})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, uint})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor, uint weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor, uint weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2794,19 +2794,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, long[], long)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, long[], long)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, long[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, long[], long)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, long[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, long[], long)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, long[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, long[] weights)
 		{
 			long weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2815,15 +2815,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, long[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, long[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, long[] weights, long weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, long[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, long[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, long[] weights, long weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2842,19 +2842,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long}, long)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, long}, long)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long}, long)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, long> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, long}, long)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor)
 		{
 			long weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2863,15 +2863,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, long})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, long})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, long> weightsAccessor, long weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor, long weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2890,19 +2890,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, ulong[], ulong)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, ulong[], ulong)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ulong[])"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ulong[], ulong)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, ulong[] weights)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, ulong[], ulong)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ulong[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ulong[] weights)
 		{
 			ulong weightSum = SumWeights(weights, weights.Length);
 			return random.WeightedElement(list, weights, weightSum);
@@ -2911,15 +2911,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <param name="weightSum">The pre-calculated sum of all the values in <paramref name="weights"/>.</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, ulong[])"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, ulong[])"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, ulong[] weights, ulong weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, ulong[])"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ulong[])"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ulong[] weights, ulong weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -2938,19 +2938,19 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution">This function needs to sum all the weights each time it is called.
 		/// If called frequently, it is strongly recommended that the sum be first pre-computed and saved, and then the overload
-		/// <see cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong}, ulong)"/> can be used to avoid recomputing the sum.
-		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/> to
+		/// <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ulong}, ulong)"/> can be used to avoid recomputing the sum.
+		/// As an alternative, consider using <see cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/> to
 		/// automate the process.</note></remarks>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong}, ulong)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ulong}, ulong)"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor)
 		{
 			ulong weightSum = SumWeights(list.Count, weightsAccessor);
 			return random.WeightedElement(list, weightsAccessor, weightSum);
@@ -2959,15 +2959,15 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a randomly selected element from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The type of elements in the list.</typeparam>
+		/// <typeparam name="TElement">The type of elements in the list.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <param name="weightSum">The pre-calculated sum of all the weights returned by <paramref name="weightsAccessor"/> when called with indices in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A random element from <paramref name="list"/>.</returns>
-		/// <seealso cref="WeightedElement{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
-		/// <seealso cref="MakeWeightedElementGenerator{T}(IRandom, IList{T}, System.Func{int, ulong})"/>
-		public static T WeightedElement<T>(this IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor, ulong weightSum)
+		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/>
+		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor, ulong weightSum)
 		{
 			int index = 0;
 			int lastIndex = list.Count - 1;
@@ -3017,63 +3017,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, sbyte, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, sbyte[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, sbyte, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, sbyte[] weights)
 		{
-			return new SByteWeightedElementGenerator<T>(random, list, weights);
+			return new SByteWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, sbyte, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, sbyte> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, sbyte, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor)
 		{
-			return new SByteWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new SByteWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, sbyte, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, sbyte[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, sbyte, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, sbyte[] weights)
 		{
-			return new SByteWeightedElementGenerator<T>(random, list, weights);
+			return new SByteWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, sbyte, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, sbyte> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, sbyte, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, sbyte> weightsAccessor)
 		{
-			return new SByteWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new SByteWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3106,63 +3106,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, byte, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, byte[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, byte[] weights)
 		{
-			return new ByteWeightedElementGenerator<T>(random, list, weights);
+			return new ByteWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, byte, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, byte> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor)
 		{
-			return new ByteWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ByteWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, byte, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, byte[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, byte[] weights)
 		{
-			return new ByteWeightedElementGenerator<T>(random, list, weights);
+			return new ByteWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, byte, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, byte> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, byte> weightsAccessor)
 		{
-			return new ByteWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ByteWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3195,63 +3195,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, short, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, short[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, short, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, short[] weights)
 		{
-			return new ShortWeightedElementGenerator<T>(random, list, weights);
+			return new ShortWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, short, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, short> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, short, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor)
 		{
-			return new ShortWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ShortWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, short, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, short[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, short, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, short[] weights)
 		{
-			return new ShortWeightedElementGenerator<T>(random, list, weights);
+			return new ShortWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, short, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, short> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, short, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, short> weightsAccessor)
 		{
-			return new ShortWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ShortWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3284,63 +3284,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ushort, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, ushort[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, ushort[] weights)
 		{
-			return new UShortWeightedElementGenerator<T>(random, list, weights);
+			return new UShortWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ushort, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, ushort> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor)
 		{
-			return new UShortWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new UShortWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ushort, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, ushort[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, ushort[] weights)
 		{
-			return new UShortWeightedElementGenerator<T>(random, list, weights);
+			return new UShortWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ushort, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, ushort> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ushort> weightsAccessor)
 		{
-			return new UShortWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new UShortWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3373,63 +3373,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, int, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, int[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, int, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int[] weights)
 		{
-			return new IntWeightedElementGenerator<T>(random, list, weights);
+			return new IntWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, int, int> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, int> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, int, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor)
 		{
-			return new IntWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new IntWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, int, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, int[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, int, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, int[] weights)
 		{
-			return new IntWeightedElementGenerator<T>(random, list, weights);
+			return new IntWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, int, int> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, int> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, int, int> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, int> weightsAccessor)
 		{
-			return new IntWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new IntWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3462,63 +3462,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, uint, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, uint[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, uint[] weights)
 		{
-			return new UIntWeightedElementGenerator<T>(random, list, weights);
+			return new UIntWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, uint, uint> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, uint> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor)
 		{
-			return new UIntWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new UIntWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, uint, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, uint[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, uint[] weights)
 		{
-			return new UIntWeightedElementGenerator<T>(random, list, weights);
+			return new UIntWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, uint, uint> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, uint> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, uint> weightsAccessor)
 		{
-			return new UIntWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new UIntWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3551,63 +3551,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, long, long> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, long[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, long, long> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, long[] weights)
 		{
-			return new LongWeightedElementGenerator<T>(random, list, weights);
+			return new LongWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, long, long> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, long> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, long, long> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor)
 		{
-			return new LongWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new LongWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, long, long> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, long[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, long, long> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, long[] weights)
 		{
-			return new LongWeightedElementGenerator<T>(random, list, weights);
+			return new LongWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, long, long> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, long> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, long, long> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, long> weightsAccessor)
 		{
-			return new LongWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new LongWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3640,63 +3640,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ulong, ulong> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, ulong[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, ulong[] weights)
 		{
-			return new ULongWeightedElementGenerator<T>(random, list, weights);
+			return new ULongWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ulong, ulong> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, ulong> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor)
 		{
-			return new ULongWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ULongWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ulong, ulong> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, ulong[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, ulong[] weights)
 		{
-			return new ULongWeightedElementGenerator<T>(random, list, weights);
+			return new ULongWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, ulong, ulong> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, ulong> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ulong> weightsAccessor)
 		{
-			return new ULongWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new ULongWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3729,63 +3729,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, float, float> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, float[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, float, float> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, float[] weights)
 		{
-			return new FloatWeightedElementGenerator<T>(random, list, weights);
+			return new FloatWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, float, float> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, float> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, float, float> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor)
 		{
-			return new FloatWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new FloatWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, float, float> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, float[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, float, float> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, float[] weights)
 		{
-			return new FloatWeightedElementGenerator<T>(random, list, weights);
+			return new FloatWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, float, float> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, float> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, float, float> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, float> weightsAccessor)
 		{
-			return new FloatWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new FloatWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
@@ -3818,63 +3818,63 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, double, double> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, double[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, double[] weights)
 		{
-			return new DoubleWeightedElementGenerator<T>(random, list, weights);
+			return new DoubleWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, double, double> MakeWeightedElementGenerator<T>(this IRandom random, IList<T> list, System.Func<int, double> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor)
 		{
-			return new DoubleWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new DoubleWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must be the same length as <paramref name="list"/>.</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
-		/// call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, double, double> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, double[] weights)
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, double[] weights)
 		{
-			return new DoubleWeightedElementGenerator<T>(random, list, weights);
+			return new DoubleWeightedElementGenerator<TElement>(random, list, weights);
 		}
 
 		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
-		/// <typeparam name="T">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="list">The collection from which the element generator will select random elements.</param>
 		/// <param name="weightsAccessor">The delegate that maps collection indices to the weights that will determine the distribution by which indices are generated.  Must return valid weight values for all index inputs in the range [0, <paramref name="list"/>.Count).</param>
 		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
 		/// <remarks><note type="important">The size of <paramref name="list"/>, the indices mapped by <paramref name="weightsAccessor"/>,
-		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{T, TWeight, TWeightSum}.UpdateWeights()"/>
+		/// and the weight values that it returns must not change without a corresponding call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/>
 		/// to update the generator's internal state.</note></remarks>
-		public static IWeightedElementGenerator<T, double, double> MakeWeightedRandomElementGenerator<T>(this IList<T> list, IRandom random, System.Func<int, double> weightsAccessor)
+		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedRandomElementGenerator<TElement>(this IList<TElement> list, IRandom random, System.Func<int, double> weightsAccessor)
 		{
-			return new DoubleWeightedElementGenerator<T>(random, list, weightsAccessor);
+			return new DoubleWeightedElementGenerator<TElement>(random, list, weightsAccessor);
 		}
 
 		#endregion

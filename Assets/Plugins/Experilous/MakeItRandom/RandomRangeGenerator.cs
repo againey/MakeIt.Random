@@ -7,6 +7,7 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// An interface for any generator of numeric data within a range, with the pattern or distribution of values to be determined by the implementation.
 	/// </summary>
+	/// <typeparam name="TNumber">The numeric type returned by the range generator.</typeparam>
 	public interface IRangeGenerator<TNumber>
 	{
 		/// <summary>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
+		<summary>
 			<para>
 				Some types of content require some initial setup before random data
 				can be generated.  Other types of data benefit from some form of
@@ -10,25 +10,20 @@
 				the initial setup to only be performed once for a given set of parameters,
 				and enabling any buffering behavior that needs to be performed.
 			</para>
-		</introduction>
-		<section address="Section1">
-			<title>Creating Generators</title>
+		</summary>
+		<section address="creating-using">
+			<title>Creating and Using Generators</title>
 			<content>
 				<para>
 					For content that is likely to benefit from generators, there will
 					be extension functions following the naming convention
 					<codeInline>Make<replaceable>&lt;function&gt;</replaceable>Generator()</codeInline>.
-					For example, <codeInline>MakeRangeOCGenerator(6)</codeInline>
-					will return an <codeEntityReference>T:Experilous.MakeItRandom.IIntGenerator</codeEntityReference>
+					For example, <codeEntityReference linkText="MakeRangeOCGenerator(6)">M:Experilous.MakeItRandom.RandomRangeGenerator.MakeRangeOCGenerator(Experilous.MakeItRandom.IRandom,System.Int32)</codeEntityReference>
+					will return an <codeEntityReference linkText="IRangeGenerator&lt;int&gt;">T:Experilous.MakeItRandom.IRangeGenerator`1</codeEntityReference>
 					that will generate a number from 1 to 6 each time
-					<codeEntityReference>M:Experilous.MakeItRandom.IIntGenerator.Next</codeEntityReference>
+					<codeEntityReference>M:Experilous.MakeItRandom.IRangeGenerator`1.Next</codeEntityReference>
 					is called on the generator.
 				</para>
-			</content>
-		</section>
-		<section address="Section2">
-			<title>Generator Functionality</title>
-			<content>
 				<para>
 					In general, generators will support a <codeInline>Next()</codeInline>
 					method or similar method for generating random data.  Some might
@@ -44,36 +39,32 @@
 				</para>
 			</content>
 		</section>
-		<section address="Section3">
+		<section address="support">
 			<title>Support for Generators</title>
 			<content>
 				<para>
 					The following types of random data have support for generators:
 					<list class="bullet">
-						<listItem><para>numeric ranges</para></listItem>
-						<listItem><para>dice</para></listItem>
-						<listItem><para>enumerations</para></listItem>
-						<listItem><para>list access</para></listItem>
+						<listItem><codeEntityReference linkText="bits">T:Experilous.MakeItRandom.RandomBits</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="numeric ranges">T:Experilous.MakeItRandom.RandomRangeGenerator</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="angles">T:Experilous.MakeItRandom.RandomAngle</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="dice">T:Experilous.MakeItRandom.RandomDice</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="probabilities">T:Experilous.MakeItRandom.RandomChance</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="list element access">T:Experilous.MakeItRandom.RandomListAccess</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="enumerations">T:Experilous.MakeItRandom.RandomEnum</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="selection from {-1, 0, +1}">T:Experilous.MakeItRandom.RandomSignOrZero</codeEntityReference></listItem>
 					</list>
 				</para>
 			</content>
 		</section>
 		<relatedTopics>
-			<codeEntityReference>T:Experilous.MakeItRandom.ISByteGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IByteGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IShortGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IUShortGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IIntGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IUIntGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.ILongGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IULongGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IFloatGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IDoubleGenerator</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.IRangeGenerator`1</codeEntityReference>
 			<codeEntityReference>T:Experilous.MakeItRandom.IDiceGenerator</codeEntityReference>
-			<codeEntityReference>T:Experilous.MakeItRandom.IEnumGenerator`1</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.IBooleanGenerator</codeEntityReference>
 			<codeEntityReference>T:Experilous.MakeItRandom.IElementGenerator`1</codeEntityReference>
 			<codeEntityReference>T:Experilous.MakeItRandom.IWeightedIndexGenerator`2</codeEntityReference>
 			<codeEntityReference>T:Experilous.MakeItRandom.IWeightedElementGenerator`3</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.IEnumGenerator`1</codeEntityReference>
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>
