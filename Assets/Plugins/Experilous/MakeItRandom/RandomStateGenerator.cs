@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public RandomStateGenerator()
 		{
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN && UNITY_5_4_OR_NEWER
 			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3 + sizeof(long) * 4);
 #else
 			System.IO.MemoryStream stream = new System.IO.MemoryStream(sizeof(int) * 3 + sizeof(long) * 3);
@@ -40,7 +40,7 @@ namespace Experilous.MakeItRandom
 			writer.Write(process.Id);
 			writer.Write(process.UserProcessorTime.Ticks);
 			writer.Write(process.PrivilegedProcessorTime.Ticks);
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN && UNITY_5_4_OR_NEWER
 			writer.Write(process.MainModule.BaseAddress.ToInt64());
 #endif
 			writer.Write(System.Threading.Interlocked.Add(ref _unstableSeed, _internalSeedIncrement));
