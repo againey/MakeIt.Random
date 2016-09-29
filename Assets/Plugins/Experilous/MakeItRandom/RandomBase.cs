@@ -41,6 +41,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Reseed the pseudo-random engine with a transient value (such as system time).
 		/// </summary>
+		/// <seealso cref="RandomStateGenerator()"/>
 		public virtual void Seed()
 		{
 			Seed(new RandomStateGenerator());
@@ -50,6 +51,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with the supplied integer value.
 		/// </summary>
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(int)"/>
 		public virtual void Seed(int seed)
 		{
 			Seed(new RandomStateGenerator(seed));
@@ -59,6 +61,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with the supplied array of integer values.
 		/// </summary>
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(int[])"/>
 		public virtual void Seed(params int[] seed)
 		{
 			Seed(new RandomStateGenerator(seed));
@@ -68,6 +71,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with the supplied string.
 		/// </summary>
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(string)"/>
 		public virtual void Seed(string seed)
 		{
 			Seed(new RandomStateGenerator(seed));
@@ -84,6 +88,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Reseed the pseudo-random engine with a combination of its current state and a transient value (such as system time).
 		/// </summary>
+		/// <seealso cref="RandomStateGenerator()"/>
 		public virtual void MergeSeed()
 		{
 			MergeSeed(new RandomStateGenerator());
@@ -93,6 +98,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with a combination of its current state and the supplied integer value.
 		/// </summary>
 		/// <param name="seed">An integer value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(int)"/>
 		public virtual void MergeSeed(int seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));
@@ -102,6 +108,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with a combination of its current state and the supplied array of integer values.
 		/// </summary>
 		/// <param name="seed">An array of integer values used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(int[])"/>
 		public virtual void MergeSeed(params int[] seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));
@@ -111,6 +118,7 @@ namespace Experilous.MakeItRandom
 		/// Reseed the pseudo-random engine with a combination of its current state and the supplied string.
 		/// </summary>
 		/// <param name="seed">An string value used, in conjuction with the current state, to indirectly determine the new state of the random engine.</param>
+		/// <seealso cref="RandomStateGenerator(string)"/>
 		public virtual void MergeSeed(string seed)
 		{
 			MergeSeed(new RandomStateGenerator(seed));

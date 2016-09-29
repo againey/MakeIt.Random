@@ -35,6 +35,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		/// <seealso cref="IRandom.Seed()"/>
+		/// <seealso cref="RandomBase.Seed()"/>
 		public static SplitMix64 Create()
 		{
 			var instance = CreateUninitialized();
@@ -48,6 +49,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
+		/// <seealso cref="RandomBase.Seed(int)"/>
 		public static SplitMix64 Create(int seed)
 		{
 			var instance = CreateUninitialized();
@@ -61,6 +63,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
+		/// <seealso cref="RandomBase.Seed(int[])"/>
 		public static SplitMix64 Create(params int[] seed)
 		{
 			var instance = CreateUninitialized();
@@ -74,6 +77,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the SplitMix64 engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
+		/// <seealso cref="RandomBase.Seed(string)"/>
 		public static SplitMix64 Create(string seed)
 		{
 			var instance = CreateUninitialized();
@@ -192,7 +196,7 @@ namespace Experilous.MakeItRandom
 			_state = state;
 		}
 
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		private static ulong Hash(byte[] seed)
 		{
 			ulong h = 14695981039346656037UL;

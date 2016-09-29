@@ -24,7 +24,9 @@ namespace Experilous.MakeItRandom
 		/// Constructs a random state generator which is initialized with unstable data, appropriate for seeding a random engine with unpredictable data.
 		/// </summary>
 		/// <remarks>
-		/// This constructor uses a combination of various transient values to initialize the seed data.
+		/// This constructor uses a combination of various transient values to initialize the seed data, such
+		/// as the system time, the time since startup, process id and other process information, and a private,
+		/// global, and thread-safe numeric value which changes each time this constructor is called.
 		/// </remarks>
 		public RandomStateGenerator()
 		{

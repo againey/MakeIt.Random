@@ -7,6 +7,22 @@
 				assist in integrating this collection of random number generation
 				utilities into your Unity project.
 			</para>
+			<alert type="note">
+				<para>
+					An online version of this documentation is available
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Make It Random Online User's Manual at experilous.com</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/documentation/html/cb0daf55-236d-4175-aedc-48751c1d0964.htm</linkUri>
+					</externalLink>,
+					and a downloadable archive for offline use can be acquired
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Make It Random Downloadable User's Manual at experilous.com</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/documentation/archive</linkUri>
+					</externalLink>.
+				</para>
+			</alert>
 		</summary>
 		<introduction>
 			<autoOutline />
@@ -42,6 +58,23 @@
 					<listItem><codeEntityReference linkText="selecting values from the set {-1, 0, +1}">T:Experilous.MakeItRandom.RandomSignOrZero</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="shuffling a list">T:Experilous.MakeItRandom.RandomShuffle</codeEntityReference></listItem>
 				</list>
+				<alert type="note">
+					<para>
+						A basic version of Make It Random is available if you only need
+						the core generation features. Documentation can be found online
+						<externalLink>
+							<linkText>here</linkText>
+							<linkAlternateText>Make It Random Basic Online User's Manual at experilous.com</linkAlternateText>
+							<linkUri>http://experilous.com/1/product/make-it-random-basic/1.0/documentation/html/cb0daf55-236d-4175-aedc-48751c1d0964.htm</linkUri>
+						</externalLink>,
+						and the library can be acquired on the
+						<externalLink>
+							<linkText>Unity Asset Store</linkText>
+							<linkAlternateText>Make It Random Basic on the Unity Asset Store</linkAlternateText>
+							<linkUri>https://www.assetstore.unity3d.com/#!/content/72589</linkUri>
+						</externalLink>.
+					</para>
+				</alert>
 			</content>
 		</section>
 		<section address="organized">
@@ -108,7 +141,7 @@
 						bool heads = random.Chance();
 						
 						// Check a 3 in 10 probability
-						bool critical = random.Probability(3, 10);
+						bool criticalHit = random.Probability(3, 10);
 						
 						// Generate an angle in degrees where -90 < n < +90
 						float angleNeg90toPos90 = random.SignedHalfAngleDegOO();
@@ -158,6 +191,7 @@
 			<link xlink:href="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" /> <!-- Numeric Ranges -->
 			<link xlink:href="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" /> <!-- Generators -->
 			<link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b" /> <!-- Example Scenes -->
+			<link xlink:href="73032fa5-81e7-462d-94ae-8f5ccf1c1d72" /> <!-- Compile Options -->
 			<codeEntityReference linkText="API Reference">R:Project_API_Reference</codeEntityReference>
 		</relatedTopics>
 	</developerConceptualDocument>

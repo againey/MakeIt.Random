@@ -50,6 +50,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		/// <seealso cref="IRandom.Seed()"/>
+		/// <seealso cref="RandomBase.Seed()"/>
 		public static XorShift128Plus Create()
 		{
 			var instance = CreateUninitialized();
@@ -63,6 +64,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
+		/// <seealso cref="RandomBase.Seed(int)"/>
 		public static XorShift128Plus Create(int seed)
 		{
 			var instance = CreateUninitialized();
@@ -76,6 +78,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
+		/// <seealso cref="RandomBase.Seed(int[])"/>
 		public static XorShift128Plus Create(params int[] seed)
 		{
 			var instance = CreateUninitialized();
@@ -89,6 +92,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift128+ engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
+		/// <seealso cref="RandomBase.Seed(string)"/>
 		public static XorShift128Plus Create(string seed)
 		{
 			var instance = CreateUninitialized();
@@ -332,7 +336,7 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void Seed()
 		{
 			Seed(SplitMix64.Create());
@@ -394,7 +398,7 @@ namespace Experilous.MakeItRandom
 			throw new System.ArgumentException("The provided bit generator was unable to generate a non-zero state, which is required by this random engine.");
 		}
 
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void MergeSeed()
 		{
 			MergeSeed(SplitMix64.Create());
@@ -467,7 +471,7 @@ namespace Experilous.MakeItRandom
 		/// <remarks>64 bits of data are generated and thrown away by this call.</remarks>
 		public override void Step()
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -503,7 +507,7 @@ namespace Experilous.MakeItRandom
 		/// Thus, a single call to this method leaves the random engine in the same state as a single call to <see cref="Next64()"/>.</remarks>
 		public override uint Next32()
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -541,7 +545,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A 64-bit unsigned integer representing the next 64 bits of pseudo-random generated data.</returns>
 		public override ulong Next64()
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -582,7 +586,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="upper">The upper 32 bits of generated data.</param>
 		public override void Next64(out uint lower, out uint upper)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var x = _state0;
 			var y = _state1;
 			_state0 = y;
@@ -618,7 +622,7 @@ namespace Experilous.MakeItRandom
 #endif
 		}
 
-#if !MAKEITRANDOM_BACK_COMPAT_V0_1
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		/// <summary>
 		/// The binary order of magnitude size of the interveral that <see cref="SkipAhead()"/> skips over.
 		/// </summary>

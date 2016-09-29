@@ -115,7 +115,8 @@
     </ProjectSummary>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Experilous.MakeItRandom" isDocumented="True">In this namespace are a variety of pseudo-random number generators (PRNGs) and numerous sets of extention methods that provide advance randomization utilities on top of them, along with a few miscellaneous helper classes.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Experilous.MakeItColorful" isDocumented="True">In this namespace are a collection of color space structs used to work with colors in particular color spaces to achieve certain effects and avoid undesirable effects of the standard RGB color space.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="Experilous.MakeItColorful" isDocumented="True">In this namespace are a collection of color space structs used to work with colors in particular color spaces to achieve certain effects and avoid undesirable effects of the standard RGB color space.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <ComponentConfigurations />
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
@@ -143,8 +144,9 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>G:\Software\Applications\7-Zip\7z a Build\archive.7z -m0=lzma -mx=9 -aoa -t7z Build\* -x!archive.7z
+copy /Y /B "Build\archive.7z" "..\..\Assets\Experilous\Documentation\Make It Random - User's Manual.7z"
+copy /Y /B "archive.php" "Build\archive.php"</PostBuildEvent>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
@@ -173,6 +175,9 @@
     <None Include="Content - Numeric Ranges.aml" />
     <None Include="Content - Generators.aml" />
     <None Include="Content - Example Scenes.aml" />
+    <None Include="Compile Options.aml" />
+    <None Include="Content - Compile Options.aml" />
+    <None Include="Content - Third Party Licenses.aml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="colors-demo-scene.png">

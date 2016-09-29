@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="cb0daf55-236d-4175-aedc-48751c1d0964" visible="True" isDefault="true" isSelected="true" title="Introduction" linkText="User's Manual" />
+  <Topic id="cb0daf55-236d-4175-aedc-48751c1d0964" visible="True" isDefault="true" title="Introduction" />
   <Topic id="fd2aa55f-9f2f-4c52-bc28-69bf962dc386" visible="True" title="Random Engines" />
   <Topic id="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" visible="True" title="Numeric Ranges" />
   <Topic id="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" visible="True" title="Generators" />
-  <Topic id="8e0cd87c-2003-4da5-8d84-eaf85585778b" visible="True" apiParentMode="InsertAfter" title="Example Scenes" />
+  <Topic id="8e0cd87c-2003-4da5-8d84-eaf85585778b" visible="True" title="Example Scenes" />
+  <Topic id="73032fa5-81e7-462d-94ae-8f5ccf1c1d72" visible="True" title="Compile Options" />
+  <Topic id="c05b4dd0-4711-47d3-9fa2-774f00d2ce79" visible="True" isSelected="true" apiParentMode="InsertAfter" title="Third Party Licenses" />
 </Topics>

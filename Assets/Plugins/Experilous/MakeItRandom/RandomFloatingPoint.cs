@@ -120,7 +120,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float FloatCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
 #else
 			Detail.FloatingPoint.BitwiseFloat value;
@@ -142,7 +142,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double DoubleCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
@@ -230,7 +230,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float FloatCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var n = random.ClosedRange(0x00800000U);
 			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1df : 1df;
 #else
@@ -278,7 +278,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double DoubleCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var n = random.ClosedRange(0x0010000000000000UL);
 			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1d : 1d;
 #else
@@ -413,7 +413,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float SignedFloatCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
 #else
 			Detail.FloatingPoint.BitwiseFloat value;
@@ -435,7 +435,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
 #else
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
@@ -523,7 +523,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float SignedFloatCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var n = random.ClosedRange(0x00800000U);
 			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1df : 1df;
 #else
@@ -571,7 +571,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			var n = random.ClosedRange(0x0010000000000000UL);
 			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1d : 1d;
 #else

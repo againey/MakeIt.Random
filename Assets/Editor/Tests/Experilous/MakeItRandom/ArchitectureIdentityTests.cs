@@ -12,7 +12,6 @@
 using UnityEngine;
 using System.IO;
 using NUnit.Framework;
-using Experilous.Core;
 
 namespace Experilous.MakeItRandom.Tests
 {
@@ -39,7 +38,7 @@ namespace Experilous.MakeItRandom.Tests
 		private void CalculateTestValues(IRandom random, string operationName, System.Action<IRandom, BinaryWriter> writeTestValue, int testValueCount)
 		{
 			string dataFilePath = string.Format(dataFilePathTemplate, random.GetType().Name, operationName);
-			using (var file = File.Open(Path.Combine(Path.Combine(AssetUtility.canonicalProjectPath, dataFolderPath), dataFilePath), FileMode.Create, FileAccess.Write))
+			using (var file = File.Open(Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), dataFolderPath), dataFilePath), FileMode.Create, FileAccess.Write))
 			{
 				using (var writer = new BinaryWriter(file))
 				{
@@ -99,7 +98,7 @@ namespace Experilous.MakeItRandom.Tests
 			string dataFilePath = string.Format(crossPlatform ? dataFilePathTemplate_CrossPlatform : dataFilePathTemplate, typeof(TRandom).Name, operationName);
 			try
 			{
-				using (var file = File.Open(Path.Combine(Path.Combine(AssetUtility.canonicalProjectPath, dataFolderPath), dataFilePath), FileMode.Open, FileAccess.Read))
+				using (var file = File.Open(Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), dataFolderPath), dataFilePath), FileMode.Open, FileAccess.Read))
 				{
 					using (var reader = new BinaryReader(file))
 					{
@@ -116,7 +115,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 			catch (FileNotFoundException)
 			{
-				Assert.Inconclusive();
+				Assert.Inconclusive(
+					crossPlatform == false
+						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
+						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
 			}
 		}
 

@@ -21,7 +21,7 @@ namespace Experilous.MakeItRandom
 	{
 		[SerializeField] private System.Random _random;
 
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		[SerializeField] private byte[] _buffer = new byte[4];
 #endif
 
@@ -65,6 +65,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the .NET System.Random engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
+		/// <seealso cref="RandomBase.Seed(int[])"/>
 		public static SystemRandom Create(params int[] seed)
 		{
 			var instance = CreateUninitialized();
@@ -78,6 +79,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the .NET System.Random engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
+		/// <seealso cref="RandomBase.Seed(string)"/>
 		public static SystemRandom Create(string seed)
 		{
 			var instance = CreateUninitialized();
@@ -164,7 +166,7 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		private static uint Hash(byte[] seed)
 		{
 			uint h = 2166136261U;
@@ -312,7 +314,7 @@ namespace Experilous.MakeItRandom
 		/// so instead, two calls to <see cref="System.Random.Next(int)"/> are required to get a total of 32 bits.</remarks>
 		public override uint Next32()
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			_random.NextBytes(_buffer);
 			return BitConverter.ToUInt32(_buffer, 0);
 #else
@@ -331,7 +333,7 @@ namespace Experilous.MakeItRandom
 		/// so instead, three calls to <see cref="System.Random.Next(int)"/> are required to get a total of 64 bits.</remarks>
 		public override ulong Next64()
 		{
-#if MAKEITRANDOM_BACK_COMPAT_V0_1
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			return ((ulong)Next32() << 32) | Next32();
 #else
 			// System.Random.Next() cannot quite provide 31 uniform bits, so we use Next(0x40000000) to get 30 bits at a time.

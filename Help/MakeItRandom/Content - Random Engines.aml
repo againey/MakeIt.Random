@@ -194,8 +194,6 @@
 		<section address="implementations">
 			<title>Implementations</title>
 			<content>
-				<para>
-				</para>
 				<definitionTable>
 					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference></definedTerm>
 					<definition>
@@ -410,7 +408,7 @@
 				<para>
 					To make things even easier, it is usually possible to derive from
 					<codeEntityReference>T:Experilous.MakeItRandom.RandomBase</codeEntityReference>,
-					which most of <codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					which implements most of <codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
 					for you.  The remaining methods that must be implemented by you are:
 				</para>
 				<para>

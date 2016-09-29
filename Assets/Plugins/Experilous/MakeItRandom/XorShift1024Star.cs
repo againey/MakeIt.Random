@@ -36,6 +36,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		/// <seealso cref="IRandom.Seed()"/>
+		/// <seealso cref="RandomBase.Seed()"/>
 		public static XorShift1024Star Create()
 		{
 			var instance = CreateUninitialized();
@@ -49,6 +50,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
+		/// <seealso cref="RandomBase.Seed(int)"/>
 		public static XorShift1024Star Create(int seed)
 		{
 			var instance = CreateUninitialized();
@@ -62,6 +64,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
+		/// <seealso cref="RandomBase.Seed(int[])"/>
 		public static XorShift1024Star Create(params int[] seed)
 		{
 			var instance = CreateUninitialized();
@@ -75,6 +78,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the XorShift1024* engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
+		/// <seealso cref="RandomBase.Seed(string)"/>
 		public static XorShift1024Star Create(string seed)
 		{
 			var instance = CreateUninitialized();

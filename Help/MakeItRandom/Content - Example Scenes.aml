@@ -13,6 +13,14 @@
 		<section address="geometry">
 			<title>Geometry</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Geometry Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/geometry/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Geometry.unity" demo scene.</caption>
 					<image placement="center" xlink:href="geometry-demo-scene"/>
@@ -29,6 +37,14 @@
 		<section address="colors">
 			<title>Colors</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Colors Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/colors/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Colors.unity" demo scene.</caption>
 					<image placement="center" xlink:href="colors-demo-scene"/>
@@ -76,6 +92,14 @@
 		<section address="shuffle">
 			<title>Shuffle</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Shuffle Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/shuffle/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Shuffle.unity" demo scene.</caption>
 					<image placement="center" xlink:href="shuffle-demo-scene"/>
@@ -112,6 +136,14 @@
 		<section address="dice">
 			<title>Dice</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Dice Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/dice/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Dice.unity" demo scene.</caption>
 					<image placement="center" xlink:href="dice-demo-scene"/>
@@ -139,6 +171,14 @@
 		<section address="strings">
 			<title>Strings</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Strings Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/strings/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Strings.unity" demo scene.</caption>
 					<image placement="center" xlink:href="strings-demo-scene"/>
@@ -170,6 +210,14 @@
 		<section address="performance">
 			<title>Performance</title>
 			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Random Performance Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/performance/</linkUri>
+					</externalLink>.
+				</para>
 				<mediaLink>
 					<caption placement="after">The "Performance.unity" demo scene.</caption>
 					<image placement="center" xlink:href="performance-demo-scene"/>

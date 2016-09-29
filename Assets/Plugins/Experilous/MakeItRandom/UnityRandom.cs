@@ -38,6 +38,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A newly created instance of a wrapper around the <c>UnityEngine.Random</c> engine.</returns>
 		/// <seealso cref="IRandom.Seed()"/>
+		/// <seealso cref="RandomBase.Seed()"/>
 		public static UnityRandom Create()
 		{
 			var instance = CreateUninitialized();
@@ -45,18 +46,37 @@ namespace Experilous.MakeItRandom
 			return instance;
 		}
 
+#if UNITY_5_4_OR_NEWER
 		/// <summary>
 		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using the provided <paramref name="seed"/> to initialize the engine's state.
 		/// </summary>
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of a wrapper around the <c>UnityEngine.Random</c> engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
+		/// <seealso cref="UnityRandom.Seed(int)"/>
+		/// <seealso cref="UnityEngine.Random.InitState(int)"/>
 		public static UnityRandom Create(int seed)
 		{
 			var instance = CreateUninitialized();
 			instance.Seed(seed);
 			return instance;
 		}
+#else
+		/// <summary>
+		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using the provided <paramref name="seed"/> to initialize the engine's state.
+		/// </summary>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
+		/// <returns>A newly created instance of a wrapper around the <c>UnityEngine.Random</c> engine.</returns>
+		/// <seealso cref="IRandom.Seed(int)"/>
+		/// <seealso cref="UnityRandom.Seed(int)"/>
+		/// <seealso cref="UnityEngine.Random.seed"/>
+		public static UnityRandom Create(int seed)
+		{
+			var instance = CreateUninitialized();
+			instance.Seed(seed);
+			return instance;
+		}
+#endif
 
 		/// <summary>
 		/// Creates an instance of a wrapper around the <c>UnityEngine.Random</c> engine using the provided <paramref name="seed"/> to initialize the engine's state.
@@ -64,6 +84,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of a wrapper around the <c>UnityEngine.Random</c> engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
+		/// <seealso cref="RandomBase.Seed(int[])"/>
 		public static UnityRandom Create(params int[] seed)
 		{
 			var instance = CreateUninitialized();
@@ -77,6 +98,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of a wrapper around the <c>UnityEngine.Random</c> engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
+		/// <seealso cref="RandomBase.Seed(string)"/>
 		public static UnityRandom Create(string seed)
 		{
 			var instance = CreateUninitialized();
@@ -202,6 +224,18 @@ namespace Experilous.MakeItRandom
 		}
 #endif
 
+#if UNITY_5_4_OR_NEWER
+		/// <summary>
+		/// Reseed the Unity Random engine with the supplied integer value.
+		/// </summary>
+		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
+		/// <remarks>This function will seed the engine state in exactly the same way as calling <see cref="UnityEngine.Random.InitState(int)"/> would.</remarks>
+		/// <seealso cref="UnityEngine.Random.InitState(int)"/>
+		public override void Seed(int seed)
+		{
+			UnityEngine.Random.InitState(seed);
+		}
+#else
 		/// <summary>
 		/// Reseed the Unity Random engine with the supplied integer value.
 		/// </summary>
@@ -210,12 +244,9 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="UnityEngine.Random.seed"/>
 		public override void Seed(int seed)
 		{
-#if UNITY_5_4_OR_NEWER
-			UnityEngine.Random.InitState(seed);
-#else
 			UnityEngine.Random.seed = seed;
-#endif
 		}
+#endif
 
 		/// <summary>
 		/// Reseed the Unity Random engine with the supplied bit generator.
