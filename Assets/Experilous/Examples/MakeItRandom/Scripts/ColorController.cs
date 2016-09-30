@@ -109,42 +109,42 @@ namespace Experilous.Examples.MakeItRandom
 			}
 			else if (cmyToggle.isOn)
 			{
-				ColorCMY cmy = (ColorCMY)rgb;
+				var cmy = (ColorCMY)rgb;
 				UpdateSelectedColorFields(cmy.c, cmy.m, cmy.y);
 			}
 			else if (cmykToggle.isOn)
 			{
-				ColorCMYK cmyk = (ColorCMYK)rgb;
+				var cmyk = (ColorCMYK)rgb;
 				UpdateSelectedColorFields(cmyk.c, cmyk.m, cmyk.y, cmyk.k);
 			}
 			else if (hsvToggle.isOn)
 			{
-				ColorHSV hsv = (ColorHSV)rgb;
+				var hsv = (ColorHSV)rgb;
 				UpdateSelectedColorFields(hsv.h, hsv.s, hsv.v);
 			}
 			else if (hslToggle.isOn)
 			{
-				ColorHSL hsl = (ColorHSL)rgb;
+				var hsl = (ColorHSL)rgb;
 				UpdateSelectedColorFields(hsl.h, hsl.s, hsl.l);
 			}
 			else if (hsyToggle.isOn)
 			{
-				ColorHSY hsy = (ColorHSY)rgb;
+				var hsy = (ColorHSY)rgb;
 				UpdateSelectedColorFields(hsy.h, hsy.s, hsy.y);
 			}
 			else if (hcvToggle.isOn)
 			{
-				ColorHCV hcv = (ColorHCV)rgb;
+				var hcv = (ColorHCV)rgb;
 				UpdateSelectedColorFields(hcv.h, hcv.c, hcv.v);
 			}
 			else if (hclToggle.isOn)
 			{
-				ColorHCL hcl = (ColorHCL)rgb;
+				var hcl = (ColorHCL)rgb;
 				UpdateSelectedColorFields(hcl.h, hcl.c, hcl.l);
 			}
 			else if (hcyToggle.isOn)
 			{
-				ColorHCY hcy = (ColorHCY)rgb;
+				var hcy = (ColorHCY)rgb;
 				UpdateSelectedColorFields(hcy.h, hcy.c, hcy.y);
 			}
 			else
@@ -432,35 +432,35 @@ namespace Experilous.Examples.MakeItRandom
 			}
 			else if (cmyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorCMYShift((ColorCMY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorCMYShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (cmykToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorCMYKShift((ColorCMYK)color, maxChange0, maxChange1, maxChange2, maxChange3);
+				generator = (Color color) => (Color)_random.ColorCMYKShift(color, maxChange0, maxChange1, maxChange2, maxChange3);
 			}
 			else if (hsvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHSVShift((ColorHSV)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSVShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hslToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHSLShift((ColorHSL)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSLShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hsyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHSYShift((ColorHSY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHSYShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hcvToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHCVShift((ColorHCV)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCVShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hclToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHCLShift((ColorHCL)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCLShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else if (hcyToggle.isOn)
 			{
-				generator = (Color color) => (Color)_random.ColorHCYShift((ColorHCY)color, maxChange0, maxChange1, maxChange2);
+				generator = (Color color) => (Color)_random.ColorHCYShift(color, maxChange0, maxChange1, maxChange2);
 			}
 			else
 			{
