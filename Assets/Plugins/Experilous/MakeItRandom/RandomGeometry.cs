@@ -1118,6 +1118,44 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a parallelogram with corners at <paramref name="root"/>, <paramref name="side0"/>, <paramref name="side1"/>, and an implicit corner opposite from <paramref name="root"/> located at <paramref name="side0"/> + <paramref name="side1"/> - <paramref name="root"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="root">The root point defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="side0">The first side point defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="side1">The second side point defining the parallelogram from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a parallelogram.</returns>
+		public static Vector2 PointWithinParallelogram(this IRandom random, Vector2 root, Vector2 side0, Vector2 side1)
+		{
+			return random.PointWithinParallelogram(side0 - root, side1 - root) + root;
+		}
+
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a parallelogram with corners at (0, 0, 0), <paramref name="axis0"/>, <paramref name="axis1"/>, and <paramref name="axis0"/> + <paramref name="axis1"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="axis0">The first axis defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="axis1">The second axis defining the parallelogram from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a parallelogram.</returns>
+		public static Vector3 PointWithinParallelogram(this IRandom random, Vector3 axis0, Vector3 axis1)
+		{
+			return random.FloatCC() * axis0 + random.FloatCC() * axis1;
+		}
+
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a parallelogram with corners at <paramref name="root"/>, <paramref name="side0"/>, <paramref name="side1"/>, and an implicit corner opposite from <paramref name="root"/> located at <paramref name="side0"/> + <paramref name="side1"/> - <paramref name="root"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="root">The root point defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="side0">The first side point defining the parallelogram from within which the vector will be selected.</param>
+		/// <param name="side1">The second side point defining the parallelogram from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a parallelogram.</returns>
+		public static Vector3 PointWithinParallelogram(this IRandom random, Vector3 root, Vector3 side0, Vector3 side1)
+		{
+			return random.PointWithinParallelogram(side0 - root, side1 - root) + root;
+		}
+
+		/// <summary>
 		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a triangle with corners at (0, 0), <paramref name="axis0"/>, and <paramref name="axis1"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
@@ -1129,6 +1167,46 @@ namespace Experilous.MakeItRandom
 			float u = Mathf.Sqrt(random.FloatCC());
 			float v = random.RangeCC(u);
 			return (1f - u) * axis0 + v * axis1;
+		}
+
+		/// <summary>
+		/// Generates a random 2-dimensional vector selected from a uniform distribution of all points within a triangle with corners at <paramref name="point0"/>, <paramref name="point1"/>, and <paramref name="point2"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="point0">The first point defining the triangle from within which the vector will be selected.</param>
+		/// <param name="point1">The second point defining the triangle from within which the vector will be selected.</param>
+		/// <param name="point2">The third point defining the triangle from within which the vector will be selected.</param>
+		/// <returns>A random 2-dimensional vector from within a triangle.</returns>
+		public static Vector2 PointWithinTriangle(this IRandom random, Vector2 point0, Vector2 point1, Vector2 point2)
+		{
+			return random.PointWithinTriangle(point1 - point0, point2 - point0) + point0;
+		}
+
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a triangle with corners at (0, 0, 0), <paramref name="axis0"/>, and <paramref name="axis1"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="axis0">The first axis defining the triangle from within which the vector will be selected.</param>
+		/// <param name="axis1">The second axis defining the triangle from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a triangle.</returns>
+		public static Vector3 PointWithinTriangle(this IRandom random, Vector3 axis0, Vector3 axis1)
+		{
+			float u = Mathf.Sqrt(random.FloatCC());
+			float v = random.RangeCC(u);
+			return (1f - u) * axis0 + v * axis1;
+		}
+
+		/// <summary>
+		/// Generates a random 3-dimensional vector selected from a uniform distribution of all points within a triangle with corners at <paramref name="point0"/>, <paramref name="point1"/>, and <paramref name="point2"/>.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="point0">The first point defining the triangle from within which the vector will be selected.</param>
+		/// <param name="point1">The second point defining the triangle from within which the vector will be selected.</param>
+		/// <param name="point2">The third point defining the triangle from within which the vector will be selected.</param>
+		/// <returns>A random 3-dimensional vector from within a triangle.</returns>
+		public static Vector3 PointWithinTriangle(this IRandom random, Vector3 point0, Vector3 point1, Vector3 point2)
+		{
+			return random.PointWithinTriangle(point1 - point0, point2 - point0) + point0;
 		}
 
 		/// <summary>
