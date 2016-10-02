@@ -391,8 +391,8 @@ namespace Experilous.Examples.MakeItRandom
 				}
 				else if (generatorToggle == xoroShiro128PlusToggle)
 				{
-					_currentGeneratorName = "XoroShiro128+";
-					random = XoroShiro128Plus.Create();
+					_currentGeneratorName = "PCG32";
+					random = PCG32.Create();
 				}
 				else if (generatorToggle == splitMix64Toggle)
 				{
