@@ -108,6 +108,14 @@
 					and your new engine will automatically support all of the already existing utilities.
 					(See <link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#making-your-own">Making Your Own Random Engine</link> for more information.)
 				</para>
+				<alert type="note">
+					<para>
+						The Make It Random library is located within the
+						<codeEntityReference qualifyHint="true">N:Experilous.MakeItRandom</codeEntityReference>
+						namespace.  Be sure to put the appropriate <codeInline>using</codeInline> directive at
+						the top of your scripts, or explicitly qualify type names within your code.
+					</para>
+				</alert>
 			</content>
 		</section>
 		<section address="using">
