@@ -44,7 +44,12 @@
 					<listItem><codeEntityReference linkText="vectors and quaternions">T:Experilous.MakeItRandom.RandomGeometry</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="strings">T:Experilous.MakeItRandom.RandomString</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="dice rolls">T:Experilous.MakeItRandom.RandomDice</codeEntityReference></listItem>
-					<listItem><codeEntityReference linkText="colors">T:Experilous.MakeItRandom.RandomColor</codeEntityReference> (includes the full Make It Colorful library!)</listItem>
+					<listItem><codeEntityReference linkText="colors">T:Experilous.MakeItRandom.RandomColor</codeEntityReference> (includes the full
+						<externalLink>
+							<linkText>Make It Colorful</linkText>
+							<linkAlternateText>Make It Colorful Online User's Manual at experilous.com</linkAlternateText>
+							<linkUri>http://experilous.com/1/product/make-it-colorful/1.0/documentation/html/1c2a6866-2869-4203-a950-4beed65c23c3.htm</linkUri>
+						</externalLink> library!)</listItem>
 				</list>
 				<para>
 					In addition to simply generating random data, it also includes
