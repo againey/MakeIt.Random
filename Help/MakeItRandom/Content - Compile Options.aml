@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="73032fa5-81e7-462d-94ae-8f5ccf1c1d72" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<summary>
+			<para>
+				Some types of content require some initial setup before random data
+				can be generated.  Other types of data benefit from some form of
+				buffering when generating multiple instances of random data.  In both
+				of these cases, <newTerm>Generators</newTerm> can be useful, allowing
+				the initial setup to only be performed once for a given set of parameters,
+				and enabling any buffering behavior that needs to be performed.
+			</para>
+		</summary>
+		<section address="force-platform-optimizations">
+			<title>Force Platform Optimizations</title>
+			<content>
+				<para>
+					The preprocessor defines of the form
+					<codeInline>MAKEITRANDOM_OPTIMIZED_FOR_<replaceable><legacyItalic>platform</legacyItalic></replaceable></codeInline>
+					are used to force optimizations for the specified platform or architecture.
+					Ordinarily, this should not be necessary, as the proper platform optimizations
+					will be enabled automatically during a build.  But if for any particular
+					reason the default behavior needs to be overridden, this set of defines will
+					help.
+				</para>
+				<alert type="note">
+					<para>
+						These optimizations should not affect generated data in any way.
+						All generation should produce exactly the same output, given the
+						same inputs, no matter the platform on which it is run.  If this
+						is not the case, then this is an error, and a bug report to
+						support@experilous.com would be greatly appreciated.
+					</para>
+				</alert>
+				<para>
+					The following preprocessor defines are available:
+					<list class="bullet">
+						<listItem><codeInline>MAKEITRANDOM_OPTIMIZED_FOR_32BIT</codeInline></listItem>
+						<listItem><codeInline>MAKEITRANDOM_OPTIMIZED_FOR_64BIT</codeInline></listItem>
+					</list>
+				</para>
+			</content>
+		</section>
+		<section address="backward-compatibility">
+			<title>Backward Compatibility</title>
+			<content>
+				<para>
+					Sometimes, updates in the Make It Random library will cause functions
+					to generate different data than they used to.  This may be due to
+					things like optimizations or bug fixes in the new version, or simply
+					architectural changes that improve the overall quality of the library
+					at the expense of making some determinism-breaking changes.
+				</para>
+				<para>
+					If your application depends on the determinism of a past version of
+					Make It Random, you may use one of the preprocessor defines of the form
+					<codeInline>MAKEITRANDOM_BACKWARD_COMPATIBLE_</codeInline><replaceable>version</replaceable>
+					to force data generation to match what it was in the specified
+					version.  The following versions are available:
+					<list class="bullet">
+						<listItem><codeInline>MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1</codeInline> (shipped as part of Tile-Based Worlds v1.0)</listItem>
+					</list>
+				</para>
+			</content>
+		</section>
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fd2aa55f-9f2f-4c52-bc28-69bf962dc386" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<summary>
+			<para>
+				The foundation of Make It Random is the concept of a random
+				engine, an object providing the basic services of a pseudo-random
+				number generator (PRNG), responsible for generating a deterministic
+				sequence of seemingly random bits initialized by a seed value.
+			</para>
+		</summary>
+		<introduction>
+			<autoOutline />
+		</introduction>
+		<section address="random-bits">
+			<title>Generating Random Bits</title>
+			<content>
+				<para>
+					All random engine classes implement
+					<codeEntityReference>T:Experilous.MakeItRandom.IBitGenerator</codeEntityReference> and
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>.
+					The core of every random engine is the pair of functions
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference> and
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference>.
+					These two functions will generate 32 or 64 bits of random data,
+					based on the engine's current state, and will update that state
+					so that the next call to either of these functions will generate
+					a new collection of 32 or 64 bits.
+				</para>
+				<para>
+					Aside from the caveats that PRNGs are entirely deterministic, and
+					that some PRNGs are better at hiding the dependence of later values
+					on earlier values, all bits should seem to be entirely independent
+					of all other bits, either bits from earliers calls or the same call to 
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference> or
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference>.
+					True and false bit values should occur with exactly equal probability.
+				</para>
+				<para>
+					All other random data produced by the extension methods of Make It
+					Random are generated entirely through the data returned by these
+					two methods.
+				</para>
+			</content>
+		</section>
+		<section address="initialization-seeds">
+			<title>Initialization and Seeds</title>
+			<content>
+				<para>
+					PRNGs typically support the concept of a <newTerm>Seed</newTerm>,
+					a value that is used to initialize the state of the random engine.
+					If a particular type of PRNG is initialized with a particular seed
+					value, it is guaranteed to produce exactly the same sequence of
+					bits every time.  Seeds can thus be incredibly valuable when game
+					behavior is needed that appears random, but can reproduced on
+					demand (such as in a replay).
+				</para>
+				<para>
+					Random engines in Make It Random all share a uniform interface
+					for specifying seeds, despite often having substantially different
+					internal state structures.  This is accomplished through the help
+					of the <codeEntityReference>T:Experilous.MakeItRandom.RandomStateGenerator</codeEntityReference>
+					class.  This class can accept seed data input in a variety of
+					formats, and will then hash that data to produce a sequence of
+					bits, similar to random engines themselves, which can be used
+					to initialized the internal state of a random engine.
+				</para>
+				<para>
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					provides a few different overloads of the
+					<codeEntityReference autoUpgrade="true">M:Experilous.MakeItRandom.IRandom.Seed</codeEntityReference>
+					function to reseed a random engine, taking a few common values as input.
+					And in case none of those types are sufficient, an already-initialized instance of
+					<codeEntityReference>T:Experilous.MakeItRandom.RandomStateGenerator</codeEntityReference>,
+					another instance of 
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>,
+					or any other object implementing 
+					<codeEntityReference>T:Experilous.MakeItRandom.IBitGenerator</codeEntityReference>
+					can be supplied as input to reseed the engine.
+					Concrete random engine types such as 
+					<codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>
+					provide a similar set of static <codeInline>Create(...)</codeInline> functions
+					to specify the seed value directly when creating a new instance
+					of a random engine.
+				</para>
+				<para>
+					The <codeEntityReference autoUpgrade="true">M:Experilous.MakeItRandom.IRandom.Seed</codeEntityReference>
+					functions completely replace the prior state of the random engine.
+					If instead you want the new state to be influenced by both the
+					current state and the value of a new seed, you can use one of the
+					<codeEntityReference autoUpgrade="true">M:Experilous.MakeItRandom.IRandom.MergeSeed</codeEntityReference>
+					functions instead.
+				</para>
+				<alert class="note">
+					<para>
+						Whenever a parameterless seed-related or creation function is called,
+						unpredictable seed data is generated by the default constructor
+						<codeEntityReference>M:Experilous.MakeItRandom.RandomStateGenerator.#ctor</codeEntityReference>.
+						This data includes variable inputs such as the current time, the
+						amount of time that has passed since the system was started, and
+						the process id, as well as a global value which is altered every
+						time this constructor is called.  This helps to ensure that a
+						random engine does not by default produce the exact same sequence
+						of values every time the program is run, and likewise that multiple
+						independent random engines created in quick succession of each other
+						do not all produce the same sequence of values.  If you instead
+						want such cases to always produce the same sequence, be sure to
+						use an explicit seed value, even if it is nothing more than an
+						arbitrarily chosen hard-coded integer.
+					</para>
+				</alert>
+			</content>
+		</section>
+		<section address="state">
+			<title>State</title>
+			<content>
+				<para>
+					At any given moment, an instance of a random engine will have
+					an internal state value which entirely determines what values
+					the following calls to
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference> or
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference>
+					will produce.  Different types of random engines will have different
+					internal structures for this state, but at the very least, this
+					state can always be represented as an opaque byte array.
+				</para>
+				<para>
+					As such, <codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					provides the methods
+					<codeEntityReference>M:Experilous.MakeItRandom.IRandom.SaveState</codeEntityReference> and
+					<codeEntityReference>M:Experilous.MakeItRandom.IRandom.RestoreState(System.Byte[])</codeEntityReference>,
+					allowing you to easily serialize and deserialize random engines.
+					This is similar to using seeds, but is more powerful in that it
+					can capture and restore a random engine's state at any point in
+					a random engine's deterministic sequence, whereas seeds can only
+					be used to restore a random engine's state at the beginning of
+					some particular sequence.
+				</para>
+				<para>
+					Concrete implementations of
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					may also include overloads of <codeInline>SaveState(...)</codeInline> and
+					<codeInline>RestoreState(...)</codeInline>, as well as
+					<codeInline>CreateWithState(...)</codeInline> functions,
+					that expose the internal data structure of the random engine,
+					avoiding the need to work with opaque byte arrays when the specific
+					type of the random engine is known and fixed.
+				</para>
+				<alert class="important">
+					<para>
+						Do not mistake any concrete implementation's of <codeInline>Create(...)</codeInline>
+						that takes a <codeEntityReference linkText="byte">T:System.Byte</codeEntityReference> array or a parameter
+						that matches the implementations internal state data structure as
+						a creation function that will restore that state.  These functions
+						always take seed values, and are free to do any deterministic
+						hashing that they want on the seeds before assigning the results
+						to the internal state.  If you have explicit state data, always
+						ensure that you use <codeInline>CreateWithState(...)</codeInline>
+						to create and initialize a random engine with that state.
+					</para>
+				</alert>
+			</content>
+		</section>
+		<section address="jumping-forward">
+			<title>Jumping Forward in the Sequence</title>
+			<content>
+				<para>
+					Some random engines are mathematically structured such that there is an
+					efficient way to skip over a vast number of values in the deterministic
+					sequence without having to make that same number of explicitly calls to
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference> or
+					<codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference>
+					(or the related function
+					<codeEntityReference>M:Experilous.MakeItRandom.IRandom.Step</codeEntityReference>
+					which updates the internal state but returns no value).
+					Instead, they update the step in a way that is equivalent to making
+					all those calls, but typically has a time complexity of <math>O(log n)</math>
+					where <math>n</math> is the number of skipped values.
+				</para>
+				<para>
+					A common use case is in parallel computation, where one wishes to
+					use just a single seed to initialize a random engine, and then
+					to split the usage of that random engine across multiple threads,
+					processes, or machines.  In this case, each parallel execution
+					can take a copy of the originally seeded engine and jump ahead
+					a different number of intervals from any other parallel execution.
+					If the intervals are large enough, this guarantees that each
+					parallel execution will be pulling from an entirely different
+					section of the overall sequence of random bits, and will never
+					run long enough to overlap with any other parallel execution.
+				</para>
+			</content>
+		</section>
+		<section address="implementations">
+			<title>Implementations</title>
+			<content>
+				<definitionTable>
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							The XorShift128+ engine is both fast and small while still exhibiting high quality
+							randomness, and is the recommended engine to use in most cases.
+						</para>
+						<para>
+							Designed by
+							<externalLink>
+								<linkText>Sebastiano Vigna</linkText>
+								<linkUri>http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf</linkUri>
+							</externalLink>, extending designs by
+							<externalLink>
+								<linkText>George Marsaglia</linkText>
+								<linkUri>https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf</linkUri>
+							</externalLink>,
+							this engine uses a 16-byte (128-bit) state, has
+							a period of <math>2<superscript>128</superscript> - 1</math>,
+							and performs very well on randomness tests such as BigCrush.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.XorShift1024Star</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							Similar to XorShift128+, the XorShift1024* engine trades a little
+							bit of performance and a notable increase in state size in order
+							to obtain a much larger period.
+						</para>
+						<para>
+							Also designed by
+							<externalLink>
+								<linkText>Sebastiano Vigna</linkText>
+								<linkUri>http://vigna.di.unimi.it/ftp/papers/xorshift.pdf</linkUri>
+							</externalLink>,
+							this engine uses a 128-byte (1024-bit) state, has
+							a period of <math>2<superscript>1024</superscript> - 1</math>,
+							and performs very well on randomness tests such as BigCrush.
+						</para>
+						<para>
+							Because of its large period, XorShift1024* is recommended over
+							XorShift128+ in situations where a vast possibility space is required.
+							For example, shuffling a standard deck of 52 cards requires
+							a period at least as large as 2<superscript>226</superscript>
+							if you wish to allow all possible permutations.  Engines
+							with a smaller period such as XorShift128+ are simply
+							incapable of generating the vast majority of possible
+							permutations in such cases.  For most games this is
+							unnecessary, but some types of games might legitimately
+							call for this extra detail, such as gambling games.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.XoroShiro128Plus</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							Similar to XorShift128+, the XoroShiro128+ engine utilizes
+							operations that are potentially faster on certain CPU architectures.
+						</para>
+						<para>
+							Designed by
+							<externalLink>
+								<linkText>David Blackman and Sebastiano Vigna</linkText>
+								<linkUri>http://xorshift.di.unimi.it/xoroshiro128plus.c</linkUri>
+							</externalLink>,
+							this engine uses a 16-byte (128-bit) state, has
+							a period of <math>2<superscript>128</superscript> - 1</math>,
+							and performs very well on randomness tests such as BigCrush.
+						</para>
+						<para>
+							XoroShiro128+ is based on the bitwise rotation operation.
+							On CPUs that support this operation natively, this engine
+							can have a measurable speed impovement over XorShift128+.
+							Unfortunately, my tests have shown that limitations of
+							either C# itself or the compiler technology used by Unity
+							prevents such optimizations from being realized.  But if
+							PRNG speed is a critical factor for your game, you may wish
+							to revisit this generator as Unity Technologies updates
+							their compiler.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.XorShiftAdd</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							The XSAdd engine is both fast and small while still exhibiting decent quality
+							randomness, and is optimized for 32-bit CPU architectures.
+						</para>
+						<para>
+							Designed by
+							<externalLink>
+								<linkText>Mutsuo Saito and Makoto Matsumoto</linkText>
+								<linkUri>http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/XSADD/</linkUri>
+							</externalLink>, extending designs by
+							<externalLink>
+								<linkText>George Marsaglia</linkText>
+								<linkUri>https://www.jstatsoft.org/article/view/v008i14/xorshift.pdf</linkUri>
+							</externalLink>,
+							this engine uses an 16-byte (128-bit) state, has
+							a period of <math>2<superscript>128</superscript> - 1</math>,
+							and performs moderately well on randomness tests such as BigCrush.
+						</para>
+						<para>
+							Because it is implemented entirely in terms of 32-bit operations,
+							it can often outperform other engines that are otherwise faster
+							on 64-bit CPUs.  Consider using this engine if PRNG speed or power
+							consumption are critical and you're targeting a 32-bit architecture.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.SplitMix64</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							The SplitMix64 engine is fairly fast and very small while still exhibiting high quality
+							randomness.
+						</para>
+						<para>
+							Implemented by
+							<externalLink>
+								<linkText>Sebastiano Vigna</linkText>
+								<linkUri>http://xorshift.di.unimi.it/splitmix64.c</linkUri>
+							</externalLink>, based on the design of
+							<externalLink>
+								<linkText>java.util.SplittableRandom</linkText>
+								<linkUri>http://dl.acm.org/citation.cfm?doid=2714064.2660195</linkUri>
+							</externalLink>,
+							this engine uses an 8-byte (64-bit) state, has
+							a period of <math>2<superscript>64</superscript></math>,
+							and performs very well on randomness tests such as BigCrush.
+						</para>
+						<para>
+							SplitMix64's smaller state size makes it ideal in situations
+							where a large number of engines need to exist simultaneously
+							or be stored, and space is at a premium.  For cases in which
+							L1 cache usage needs to be optimized, this could occur at
+							numbers as low as a thousand random engine instances.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.UnityRandom</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							This is a wrapper around Unity's built-in random number generator,
+							<codeInline>UnityEngine.Random</codeInline>
+						</para>
+						<para>
+							If for some reason you wish to use Unity's PRNG but want
+							to have access to the extension methods of Make It Random,
+							you can use this wrapper.
+						</para>
+						<para>
+							Note that because <codeEntityReference qualifyHint="true">T:UnityEngine.Random</codeEntityReference>
+							is inherently a single-instance global, all instances of
+							<codeEntityReference qualifyHint="true">T:Experilous.MakeItRandom.UnityRandom</codeEntityReference>
+							will share the same state, and pulling a random number
+							from one instance or from <codeInline>UnityEngine.Random</codeInline>
+							itself will alter the next number that will be generated
+							by every other instance.
+						</para>
+					</definition>
+					
+					<definedTerm><codeEntityReference>T:Experilous.MakeItRandom.SystemRandom</codeEntityReference></definedTerm>
+					<definition>
+						<para>
+							This is a wrapper around .NET's built-in random number generator,
+							<codeEntityReference qualifyHint="true">T:System.Random</codeEntityReference>
+						</para>
+						<para>
+							If for some reason you wish to use .NET's PRNG but want
+							to have access to the extension methods of Make It Random,
+							you can use this wrapper.
+						</para>
+					</definition>
+				</definitionTable>
+			</content>
+		</section>
+		<section address="global-instance">
+			<title>Static Global Instance</title>
+			<content>
+				<para>
+					Although a static interface or a singleton instance of a random
+					engine is a less flexible design than the instantiable model used
+					by Make It Random, it can nonetheless be convenient at times,
+					especially for quick experiments and prototypes.  Make It Random
+					therefore provides such a global instance through the static property
+					<codeEntityReference>P:Experilous.MakeItRandom.MIRandom.shared</codeEntityReference>.
+				</para>
+				<para>
+					This instance is guaranteed to be created upon use, and unless
+					explicitly changed, will be an instance returned by a call to
+					<codeEntityReference>M:Experilous.MakeItRandom.MIRandom.CreateStandard</codeEntityReference>,
+					which will currently produce an instance of 
+					<codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>,
+					seeded with unpredictable data from a default-initialized instance of
+					<codeEntityReference>T:Experilous.MakeItRandom.RandomStateGenerator</codeEntityReference>.
+				</para>
+			</content>
+		</section>
+		<section address="making-your-own">
+			<title>Making Your Own Random Engine</title>
+			<content>
+				<para>
+					The above selection of random engines should offer more than enough
+					variety for most cases.  But there's always the possibility that you
+					have a reason to use a different implementation than one provided by
+					Make It Random.  If that's the case, simply implement
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					and all the advanced functionality provided by Make It Random
+					extension methods will immediately apply.
+				</para>
+				<para>
+					To make things even easier, it is usually possible to derive from
+					<codeEntityReference>T:Experilous.MakeItRandom.RandomBase</codeEntityReference>,
+					which implements most of <codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					for you.  The remaining methods that must be implemented by you are:
+				</para>
+				<para>
+					<list>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.Seed(Experilous.MakeItRandom.IBitGenerator)</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.MergeSeed(Experilous.MakeItRandom.IBitGenerator)</codeEntityReference></listItem>
+						<listItem><codeEntityReference>P:Experilous.MakeItRandom.IRandom.stepBitCount</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next64</codeEntityReference></listItem>
+					</list>
+				</para>
+				<para>
+					And although it is not necessary, it is prudent to also provide
+					custom implementations for the following:
+				</para>
+				<para>
+					<list>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.SaveState</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.RestoreState(System.Byte[])</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IRandom.Step</codeEntityReference></listItem>
+						<listItem><codeEntityReference>M:Experilous.MakeItRandom.IBitGenerator.Next32</codeEntityReference></listItem>
+					</list>
+				</para>
+				<alert class="caution">
+					<para>
+						Note that some methods not in the first list above have
+						a default implementation that throws
+						<codeEntityReference>T:System.NotSupportedException</codeEntityReference>
+						if you do not provide an implementation of your own.
+					</para>
+				</alert>
+			</content>
+		</section>
+		<relatedTopics>
+			<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.XorShift1024Star</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.XoroShiro128Plus</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.XorShiftAdd</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.SplitMix64</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.UnityRandom</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.SystemRandom</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.IBitGenerator</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.RandomStateGenerator</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.RandomBase</codeEntityReference>
+			<codeEntityReference>T:Experilous.MakeItRandom.MIRandom</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>
