@@ -602,13 +602,13 @@ namespace Experilous.Examples.MakeItRandom
 					// Also clamp the next batch duration to be no larger than the remaining time for the warmup phase.
 					nextBatchDurationTickCount = Math.Min(nextBatchDurationTickCount, warmupDurationTickCount - timer.ElapsedTicks);
 					// Convert the estimated clamped batch duration back into an iteration count for the next batch.
-					batchIterationCount = (int)(nextBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks);
+					batchIterationCount = nextBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks;
 					// Make the batch iteration count a multiple of 16.
 					batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 				}
 
 				// Use the warmup phase performance and the target measurement batch duration to estimate the iteration count of the first measurement batch.
-				batchIterationCount = (int)(targetMeasurementBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks);
+				batchIterationCount = targetMeasurementBatchDurationTickCount * warmupIterationCount / timer.ElapsedTicks;
 				// Make the batch iteration count a multiple of 16.
 				batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 
@@ -638,7 +638,7 @@ namespace Experilous.Examples.MakeItRandom
 					// Also clamp the next batch duration to be no larger than the remaining time for the measurement phase.
 					nextBatchDurationTickCount = Math.Min(nextBatchDurationTickCount, measurementDurationTickCount - timer.ElapsedTicks);
 					// Convert the estimated clamped batch duration back into an iteration count for the next batch.
-					batchIterationCount = (int)(nextBatchDurationTickCount * measurementIterationCount / timer.ElapsedTicks);
+					batchIterationCount = nextBatchDurationTickCount * measurementIterationCount / timer.ElapsedTicks;
 					// Make the batch iteration count a multiple of 16.
 					batchIterationCount = (batchIterationCount + 15L) & ~0xFL;
 				}
