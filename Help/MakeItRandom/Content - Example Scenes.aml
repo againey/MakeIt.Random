@@ -210,14 +210,6 @@
 		<section address="performance">
 			<title>Performance</title>
 			<content>
-				<para>
-					A web demo of this example can be found
-					<externalLink>
-						<linkText>here</linkText>
-						<linkAlternateText>Random Performance Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/performance/</linkUri>
-					</externalLink>.
-				</para>
 				<mediaLink>
 					<caption placement="after">The "Performance.unity" demo scene.</caption>
 					<image placement="center" xlink:href="performance-demo-scene"/>

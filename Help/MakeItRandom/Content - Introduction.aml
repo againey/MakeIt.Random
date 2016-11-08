@@ -127,23 +127,55 @@
 			<title>Using Make It Random</title>
 			<content>
 				<para>
-					The first step in using Make It Random is to select a
-					<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#implementations">random engine</link>
-					and create an instance of it.  <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>
-					is recommended as an excellent default choice.  A simple call to
-					<codeEntityReference>M:Experilous.MakeItRandom.XorShift128Plus.Create</codeEntityReference> will return
-					a fully initialized instance, already randomized based on the
-					system time and other dynamic factors.
+					The first step in using Make It Random is to pull in the namespace
+					<codeEntityReference qualifyHint="true">N:Experilous.MakeItRandom</codeEntityReference>
+					near the top of any script file in which you plan to use it.
+					Without doing so, none of the extension functions for
+					<codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference>
+					will not be available, making usage syntax far more verbose.
 				</para>
+				<code language="C#" title="Pulling in the Make It Random namespace.">
+					<![CDATA[
+						using Experilous.MakeItRandom;
+					]]>
+				</code>
+				<para>
+					The next step is to create an instance of a
+					<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#implementations">random engine</link>,
+					probably within an <codeInline>Awake()</codeInline> or <codeInline>Start()</codeInline> function.
+					The easiest way to do that is by using <codeEntityReference linkText="MIRandom.CreateStandard()" autoUpgrade="true">M:Experilous.MakeItRandom.MIRandom.CreateStandard</codeEntityReference>.
+					This selects a random engine type that is suitable for general use
+					and constructs an instance of that type.  If you pass no parameters,
+					the engine will be set to a reasonably unpredictable state.  You
+					may instead pass a seed, such as an <codeEntityReference linkText="int">T:System.Int32</codeEntityReference>
+					or a <codeEntityReference linkText="string">T:System.String</codeEntityReference>,
+					to generate the same sequence each time the program is executed.
+				</para>
+				<code language="C#" title="Creating a standard random engine instance.">
+					<![CDATA[
+						// Create a random engine with an unpredictable state.
+						var random = MIRandom.CreateStandard();
+					]]>
+				</code>
+				<para>
+					If you know which random engine type you wish to use
+					(<codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>
+					is a good choice for most circumstances), then you may use a
+					<codeInline>Create()</codeInline> function on that type to do so,
+					just as with <codeEntityReference linkText="MIRandom.CreateStandard()" autoUpgrade="true">M:Experilous.MakeItRandom.MIRandom.CreateStandard</codeEntityReference>.
+				</para>
+				<code language="C#" title="Creating an explicitly typed random engine instance.">
+					<![CDATA[
+						// Create a random engine, initializing its state with a string seed.
+						var random = XorShift128Plus.CreateStandard("My random seed!!1!11!~!");
+					]]>
+				</code>
 				<para>
 					Using that created instance, you can now call any of the numerous
 					extension methods, depending on your needs.  Here are some examples:
 				</para>
 				<code language="C#" title="Make It Random Usage Examples">
 					<![CDATA[
-						// Initialize random engine
-						var random = XorShift128Plus.Create();
-						
 						// Generate an integer where 1 <= n <= 10
 						int num1to10 = random.RangeCC(1, 10);
 						
