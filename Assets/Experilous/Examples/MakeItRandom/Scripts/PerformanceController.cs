@@ -515,6 +515,7 @@ namespace Experilous.Examples.MakeItRandom
 				}
 			}
 
+#if !UNITY_WEBGL
 			if (generatorToggle == unityRandomToggle)
 			{
 				MeasurePerformance(operation);
@@ -528,8 +529,13 @@ namespace Experilous.Examples.MakeItRandom
 				ThreadPool.QueueUserWorkItem(ExecuteWaitableAction, action);
 				return _concurrentWaitHandle;
 			}
+#else
+			MeasurePerformance(operation);
+			return null;
+#endif
 		}
 
+#if !UNITY_WEBGL
 		private void ExecuteWaitableAction(object action)
 		{
 			try
@@ -545,20 +551,25 @@ namespace Experilous.Examples.MakeItRandom
 				_concurrentWaitHandle.Set();
 			}
 		}
+#endif
 
 		private void MeasurePerformance(Action<long> operationLoop)
 		{
+#if !UNITY_WEBGL
 			System.Diagnostics.Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
 			IntPtr originalProcessorAffinity = currentProcess.ProcessorAffinity;
 			System.Diagnostics.ProcessPriorityClass originalPriorityClass = currentProcess.PriorityClass;
 			System.Threading.ThreadPriority originalThreadPriority = Thread.CurrentThread.Priority;
+#endif
 			GCLatencyMode originalGCLatencyMode = GCSettings.LatencyMode;
 
 			try
 			{
+#if !UNITY_WEBGL
 				currentProcess.ProcessorAffinity = new IntPtr(2);
 				currentProcess.PriorityClass = System.Diagnostics.ProcessPriorityClass.AboveNormal;
 				Thread.CurrentThread.Priority = System.Threading.ThreadPriority.AboveNormal;
+#endif
 
 				GCSettings.LatencyMode = GCLatencyMode.LowLatency;
 
@@ -649,9 +660,11 @@ namespace Experilous.Examples.MakeItRandom
 			{
 				GCSettings.LatencyMode = originalGCLatencyMode;
 
+#if !UNITY_WEBGL
 				Thread.CurrentThread.Priority = originalThreadPriority;
 				currentProcess.PriorityClass = originalPriorityClass;
 				currentProcess.ProcessorAffinity = originalProcessorAffinity;
+#endif
 			}
 		}
 
