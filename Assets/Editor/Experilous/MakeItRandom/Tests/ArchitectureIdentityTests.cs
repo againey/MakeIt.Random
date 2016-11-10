@@ -113,6 +113,13 @@ namespace Experilous.MakeItRandom.Tests
 					}
 				}
 			}
+			catch (DirectoryNotFoundException)
+			{
+				Assert.Inconclusive(
+					crossPlatform == false
+						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
+						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
+			}
 			catch (FileNotFoundException)
 			{
 				Assert.Inconclusive(

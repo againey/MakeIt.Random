@@ -121,7 +121,7 @@ namespace Experilous.MakeItRandom
 		public static float FloatCO(this IRandom random)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
+			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1f;
 #else
 			Detail.FloatingPoint.BitwiseFloat value;
 			value.number = 0f;
@@ -231,8 +231,8 @@ namespace Experilous.MakeItRandom
 		public static float FloatCC(this IRandom random)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var n = random.ClosedRange(0x00800000U);
-			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1df : 1df;
+			var n = random.RangeCC(0x00800000U);
+			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1f : 1f;
 #else
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
 			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
@@ -279,7 +279,7 @@ namespace Experilous.MakeItRandom
 		public static double DoubleCC(this IRandom random)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var n = random.ClosedRange(0x0010000000000000UL);
+			var n = random.RangeCC(0x0010000000000000UL);
 			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1d : 1d;
 #else
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
@@ -413,14 +413,10 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float SignedFloatCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			return (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)random.Next32() << 29))) - 1df;
-#else
 			Detail.FloatingPoint.BitwiseFloat value;
 			value.number = 0f;
 			value.bits = Detail.FloatingPoint.floatTwo | Detail.FloatingPoint.floatMantissaMask & (random.Next32());
 			return value.number - 3f;
-#endif
 		}
 
 		/// <summary>
@@ -435,9 +431,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleCO(this IRandom random)
 		{
-#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			return System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFFFFFFFFFUL & random.Next64())) - 1d;
-#else
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			uint lower, upper;
 			random.Next64(out lower, out upper);
@@ -451,7 +444,6 @@ namespace Experilous.MakeItRandom
 			value.number = 0d;
 			value.bits = Detail.FloatingPoint.doubleTwo | Detail.FloatingPoint.doubleMantissaMask & random.Next64();
 			return value.number - 3d;
-#endif
 #endif
 		}
 
@@ -523,10 +515,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float SignedFloatCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var n = random.ClosedRange(0x00800000U);
-			return (n != 0x00800000U) ? (float)System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & ((ulong)n << 29))) - 1df : 1df;
-#else
 			// With a closed float, there are 2^23 + 1 possibilities.  A half open range contains only 2^23 possibilities,
 			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
 			// that only had a 1 in 2^23 + 1 chance of passing, and on passing resulted in a value of 1d being returned
@@ -554,7 +542,6 @@ namespace Experilous.MakeItRandom
 				value.bits = Detail.FloatingPoint.floatTwo | Detail.FloatingPoint.floatMantissaMask & (n);
 				return value.number - 3f;
 			}
-#endif
 		}
 
 		/// <summary>
@@ -571,10 +558,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double SignedDoubleCC(this IRandom random)
 		{
-#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var n = random.ClosedRange(0x0010000000000000UL);
-			return (n != 0x0010000000000000UL) ? System.BitConverter.Int64BitsToDouble((long)(0x3FF0000000000000UL | 0x000FFFFFE0000000UL & n)) - 1d : 1d;
-#else
 			// With a closed double, there are 2^52 + 1 possibilities.  A half open range contains only 2^52 possibilities,
 			// with 1d having a 0 probability, and is very efficient to generate.  If a second random check were performed
 			// that only had a 1 in 2^52 + 1 chance of passing, and on passing resulted in a value of 1d being returned
@@ -618,7 +601,6 @@ namespace Experilous.MakeItRandom
 				value.bits = Detail.FloatingPoint.doubleTwo | Detail.FloatingPoint.doubleMantissaMask & n;
 				return value.number - 3d;
 			}
-#endif
 #endif
 		}
 

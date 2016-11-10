@@ -46,8 +46,8 @@ namespace Experilous.MakeItRandom
 		public static void UnitVector2(this IRandom random, out Vector2 vec)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
-			v = random.UnitVector2() * distance;
+			var distance = Mathf.Sqrt(random.FloatCC());
+			vec = random.UnitVector2() * distance;
 #else
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			// Inline of RandomVector.PointWithinCircle()
@@ -224,10 +224,10 @@ namespace Experilous.MakeItRandom
 		public static void UnitVector3(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var longitude = random.HalfOpenRange(0f, Mathf.PI * 2f);
-			var z = random.ClosedRange(-1f, +1f);
+			var longitude = random.RangeCO(0f, Mathf.PI * 2f);
+			var z = random.RangeCC(-1f, +1f);
 			var invertedZ = Mathf.Sqrt(1f - z * z);
-			return new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
+			vec = new Vector3(invertedZ * Mathf.Cos(longitude), invertedZ * Mathf.Sin(longitude), z);
 #else
 			// The overall method used is that derived by Marsaglia, and described in his paper found at
 			//   http://projecteuclid.org/download/pdf_1/euclid.aoms/1177692644
@@ -848,8 +848,8 @@ namespace Experilous.MakeItRandom
 		public static void PointWithinCircle(this IRandom random, out Vector2 vec)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Sqrt(random.ClosedFloatUnit());
-			v = random.UnitVector2() * distance;
+			var distance = Mathf.Sqrt(random.FloatCC());
+			vec = random.UnitVector2() * distance;
 #else
 			Start:
 
@@ -908,7 +908,7 @@ namespace Experilous.MakeItRandom
 		public static Vector2 PointWithinCircle(this IRandom random, float radius)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Sqrt(random.ClosedFloatUnit()) * radius;
+			var distance = Mathf.Sqrt(random.FloatCC()) * radius;
 			return random.UnitVector2() * distance;
 #else
 			return random.PointWithinCircle() * radius;
@@ -959,8 +959,8 @@ namespace Experilous.MakeItRandom
 		public static void PointWithinSphere(this IRandom random, out Vector3 vec)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f);
-			return random.UnitVector3() * distance;
+			var distance = Mathf.Pow(random.FloatCC(), 1f / 3f);
+			vec = random.UnitVector3() * distance;
 #else
 			Start:
 
@@ -1042,7 +1042,7 @@ namespace Experilous.MakeItRandom
 		public static Vector3 PointWithinSphere(this IRandom random, float radius)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Pow(random.ClosedFloatUnit(), 1f / 3f) * radius;
+			var distance = Mathf.Pow(random.FloatCC(), 1f / 3f) * radius;
 			return random.UnitVector3() * distance;
 #else
 			return random.PointWithinSphere() * radius;
