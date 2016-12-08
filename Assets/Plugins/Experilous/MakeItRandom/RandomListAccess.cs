@@ -1262,6 +1262,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, sbyte[] weights, int elementCount, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1274,6 +1275,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1306,6 +1317,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, sbyte> weightsAccessor, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1318,6 +1330,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1361,6 +1383,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, byte[] weights, int elementCount, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1373,6 +1396,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1405,6 +1438,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, byte> weightsAccessor, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1417,6 +1451,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1460,6 +1504,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, short[] weights, int elementCount, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1472,6 +1517,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1504,6 +1559,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, short> weightsAccessor, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1516,6 +1572,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1559,6 +1625,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, ushort[] weights, int elementCount, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1571,6 +1638,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1603,6 +1680,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ushort> weightsAccessor, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1615,6 +1693,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1658,6 +1746,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int[] weights, int elementCount, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1670,6 +1759,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1702,6 +1801,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, int> weightsAccessor, int weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1714,6 +1814,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			int n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1757,6 +1867,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, uint[] weights, int elementCount, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1769,6 +1880,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1801,6 +1922,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, uint> weightsAccessor, uint weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1813,6 +1935,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			uint n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1856,6 +1988,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, long[] weights, int elementCount, long weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1868,6 +2001,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			long n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1900,6 +2043,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, long> weightsAccessor, long weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1912,6 +2056,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			long n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1955,6 +2109,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, ulong[] weights, int elementCount, ulong weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -1967,6 +2122,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			ulong n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -1999,6 +2164,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ulong> weightsAccessor, ulong weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -2011,6 +2177,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			ulong n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -2054,6 +2230,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, float[] weights, int elementCount, float weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -2066,6 +2243,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			float n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -2098,6 +2285,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, float> weightsAccessor, float weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -2110,6 +2298,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			float n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -2153,6 +2351,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, double[] weights, int elementCount, double weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -2165,6 +2364,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weights[index++];
 			}
 			return index;
+#else
+			double n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weights[i];
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		/// <summary>
@@ -2197,6 +2406,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, double> weightsAccessor, double weightSum)
 		{
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			int index = 0;
 			int lastIndex = elementCount - 1;
 			while (index < lastIndex)
@@ -2209,6 +2419,16 @@ namespace Experilous.MakeItRandom
 				weightSum -= weightsAccessor(index++);
 			}
 			return index;
+#else
+			double n = random.RangeCO(weightSum);
+			int lastIndex = elementCount - 1;
+			for (int i = 0; i < lastIndex; ++i)
+			{
+				weightSum -= weightsAccessor(i);
+				if (weightSum <= n) return i;
+			}
+			return lastIndex;
+#endif
 		}
 
 		#endregion
@@ -2249,18 +2469,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, sbyte[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, sbyte[] weights, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2297,18 +2506,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2345,18 +2543,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, byte[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, byte[] weights, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2393,18 +2580,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2441,18 +2617,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, short[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, short[] weights, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2489,18 +2654,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2537,18 +2691,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ushort[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ushort[] weights, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2585,18 +2728,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2633,18 +2765,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, int[] weights, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2681,18 +2802,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor, int weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2729,18 +2839,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, uint[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, uint[] weights, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2777,18 +2876,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor, uint weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2825,18 +2913,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, long[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, long[] weights, long weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2873,18 +2950,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor, long weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -2921,18 +2987,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, ulong[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, ulong[] weights, ulong weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -2969,18 +3024,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor, ulong weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -3017,18 +3061,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, float[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, float[] weights, float weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -3065,18 +3098,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, float})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor, float weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		/// <summary>
@@ -3113,18 +3135,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, double[])"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, double[] weights, double weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weights[index])
-				{
-					return list[index];
-				}
-
-				weightSum -= weights[index++];
-			}
-			return list[index];
+			return list[random.WeightedIndex(weights, list.Count, weightSum)];
 		}
 
 		/// <summary>
@@ -3161,18 +3172,7 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, double})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor, double weightSum)
 		{
-			int index = 0;
-			int lastIndex = list.Count - 1;
-			while (index < lastIndex)
-			{
-				if (random.RangeCO(weightSum) < weightsAccessor(index))
-				{
-					return list[index];
-				}
-
-				weightSum -= weightsAccessor(index++);
-			}
-			return list[index];
+			return list[random.WeightedIndex(list.Count, weightsAccessor, weightSum)];
 		}
 
 		#endregion

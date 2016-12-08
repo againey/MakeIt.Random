@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using Experilous.MakeItRandom;
 
@@ -16,12 +17,20 @@ namespace Experilous.Examples.MakeItRandom
 		public Slider quantityOfItemsSlider;
 		public Text quantityOfItemsText;
 
+		public Slider selectionFrequencySlider;
+
 		public RectTransform itemsPanel;
+
+		public GameObject selectRandomButton;
+		public GameObject stopSelectingRandomButton;
+		public GameObject selectWeightedRandomButton;
+		public GameObject stopSelectingWeightedRandomButton;
 
 		private IRandom _random;
 
 		private readonly List<WeightedShuffleItemPanel> _itemPanels = new List<WeightedShuffleItemPanel>();
 		private WeightedShuffleItemPanel _selectedItemPanel;
+		private Coroutine _selectionCoroutine = null;
 
 		private struct WeightedValue
 		{
@@ -148,32 +157,87 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		public void OnSelectRandomItem()
+		public void StopSelectingRandomItems()
 		{
-			WeightedShuffleItemPanel itemPanel = _itemPanels.RandomElement(_random);
-			if (itemPanel != _selectedItemPanel)
+			if (_selectionCoroutine != null)
 			{
-				if (_selectedItemPanel != null)
-				{
-					_selectedItemPanel.selected = false;
-				}
-				_selectedItemPanel = itemPanel;
-				_selectedItemPanel.selected = true;
+				StopCoroutine(_selectionCoroutine);
+				_selectionCoroutine = null;
+
+				selectRandomButton.SetActive(true);
+				selectWeightedRandomButton.SetActive(true);
+				stopSelectingRandomButton.SetActive(false);
+				stopSelectingWeightedRandomButton.SetActive(false);
 			}
 		}
 
-		public void OnSelectWeightedRandomItem()
+		public void OnSelectRandomItems()
 		{
-			int index = _random.WeightedIndex(_items.Count, (int i) => _items[i].weight);
-			WeightedShuffleItemPanel itemPanel = _itemPanels[index];
-			if (itemPanel != _selectedItemPanel)
+			StopSelectingRandomItems();
+
+			_selectionCoroutine = StartCoroutine(SelectRandomItem());
+			selectRandomButton.SetActive(false);
+			stopSelectingRandomButton.SetActive(true);
+		}
+
+		public void OnSelectWeightedRandomItems()
+		{
+			StopSelectingRandomItems();
+
+			_selectionCoroutine = StartCoroutine(SelectWeightedRandomItem());
+			selectWeightedRandomButton.SetActive(false);
+			stopSelectingWeightedRandomButton.SetActive(true);
+		}
+
+		private YieldInstruction Delay()
+		{
+			float delay = 1f / Mathf.Pow(120f, selectionFrequencySlider.value);
+			if (delay > Time.smoothDeltaTime)
 			{
-				if (_selectedItemPanel != null)
+				return new WaitForSeconds(delay);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private IEnumerator SelectRandomItem()
+		{
+			while (true)
+			{
+				WeightedShuffleItemPanel itemPanel = _itemPanels.RandomElement(_random);
+				if (itemPanel != _selectedItemPanel)
 				{
-					_selectedItemPanel.selected = false;
+					if (_selectedItemPanel != null)
+					{
+						_selectedItemPanel.selected = false;
+					}
+					_selectedItemPanel = itemPanel;
+					_selectedItemPanel.selected = true;
 				}
-				_selectedItemPanel = itemPanel;
-				_selectedItemPanel.selected = true;
+
+				yield return Delay();
+			}
+		}
+
+		private IEnumerator SelectWeightedRandomItem()
+		{
+			while (true)
+			{
+				int index = _random.WeightedIndex(_items.Count, (int i) => _items[i].weight);
+				WeightedShuffleItemPanel itemPanel = _itemPanels[index];
+				if (itemPanel != _selectedItemPanel)
+				{
+					if (_selectedItemPanel != null)
+					{
+						_selectedItemPanel.selected = false;
+					}
+					_selectedItemPanel = itemPanel;
+					_selectedItemPanel.selected = true;
+				}
+
+				yield return Delay();
 			}
 		}
 	}
