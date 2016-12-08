@@ -2,6 +2,12 @@
 * Copyright Andy Gainey                                                        *
 \******************************************************************************/
 
+#if UNITY_64 && !MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#elif !MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+#define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
+#endif
+
 namespace Experilous.MakeItRandom
 {
 	/// <summary>
@@ -57,9 +63,13 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed()"/>
-		public static XorShift128Plus CreateStandard()
+		public static IRandom CreateStandard()
 		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT
 			return XorShift128Plus.Create();
+#else
+			return XorShiftAdd.Create();
+#endif
 		}
 
 		/// <summary>
@@ -68,9 +78,13 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An integer value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(int)"/>
-		public static XorShift128Plus CreateStandard(int seed)
+		public static IRandom CreateStandard(int seed)
 		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			return XorShift128Plus.Create(seed);
+#else
+			return XorShiftAdd.Create(seed);
+#endif
 		}
 
 		/// <summary>
@@ -79,9 +93,13 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">An array of integer values used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(int[])"/>
-		public static XorShift128Plus CreateStandard(params int[] seed)
+		public static IRandom CreateStandard(params int[] seed)
 		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			return XorShift128Plus.Create(seed);
+#else
+			return XorShiftAdd.Create(seed);
+#endif
 		}
 
 		/// <summary>
@@ -90,9 +108,13 @@ namespace Experilous.MakeItRandom
 		/// <param name="seed">A string value used to indirectly determine the new state of the random engine.</param>
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(string)"/>
-		public static XorShift128Plus CreateStandard(string seed)
+		public static IRandom CreateStandard(string seed)
 		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			return XorShift128Plus.Create(seed);
+#else
+			return XorShiftAdd.Create(seed);
+#endif
 		}
 
 		/// <summary>
@@ -102,9 +124,13 @@ namespace Experilous.MakeItRandom
 		/// <returns>A newly created instance of the standard random engine.</returns>
 		/// <seealso cref="IRandom.Seed(IBitGenerator)"/>
 		/// <seealso cref="RandomStateGenerator"/>
-		public static XorShift128Plus CreateStandard(IBitGenerator bitGenerator)
+		public static IRandom CreateStandard(IBitGenerator bitGenerator)
 		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
 			return XorShift128Plus.Create(bitGenerator);
+#else
+			return XorShiftAdd.Create(bitGenerator);
+#endif
 		}
 	}
 }
