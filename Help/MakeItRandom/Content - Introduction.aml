@@ -167,7 +167,7 @@
 				<code language="C#" title="Creating an explicitly typed random engine instance.">
 					<![CDATA[
 						// Create a random engine, initializing its state with a string seed.
-						var random = XorShift128Plus.CreateStandard("My random seed!!1!11!~!");
+						var random = XorShift128Plus.Create("My random seed!!1!11!~!");
 					]]>
 				</code>
 				<para>
