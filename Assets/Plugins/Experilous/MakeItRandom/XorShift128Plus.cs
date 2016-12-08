@@ -26,7 +26,7 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	[System.Serializable]
-	public sealed class XorShift128Plus : RandomBase
+	public sealed class XorShift128Plus : RandomBase, System.IEquatable<XorShift128Plus>
 	{
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		[SerializeField] private uint _state0 = 0U;
@@ -706,6 +706,60 @@ namespace Experilous.MakeItRandom
 		public override System.Random AsSystemRandom()
 		{
 			return new SystemRandomWrapper(this);
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns true if neither random engine is null and both have the same state, or if both are null, false otherwise.</returns>
+		public static bool operator ==(XorShift128Plus lhs, XorShift128Plus rhs)
+		{
+			return lhs != null && lhs.Equals(rhs) || lhs == null && rhs == null;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns false if neither random engine is null and both have the same state, or if both are null, true otherwise.</returns>
+		public static bool operator !=(XorShift128Plus lhs, XorShift128Plus rhs)
+		{
+			return lhs != null && !lhs.Equals(rhs) || lhs == null && rhs != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		public bool Equals(XorShift128Plus other)
+		{
+			return other != null && _state0 == other._state0 && _state1 == other._state1;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as XorShift128Plus);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			return _state0.GetHashCode() ^ _state1.GetHashCode();
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return string.Format("XorShift128Plus {{ 0x{0:X16}, 0x{1:X16} }}", _state0, _state1);
 		}
 	}
 }
