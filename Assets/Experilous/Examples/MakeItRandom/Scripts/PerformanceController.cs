@@ -66,7 +66,9 @@ namespace Experilous.Examples.MakeItRandom
 		public VerticalLayoutGroup performanceResultItemsLayoutGroup;
 		public ScrollRect performanceResultItemsScrollRect;
 
+#if !UNITY_WEBGL
 		private EventWaitHandle _concurrentWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+#endif
 		private Exception _measurementException;
 
 		private Coroutine _measurementCoroutine;
@@ -158,7 +160,7 @@ namespace Experilous.Examples.MakeItRandom
 			measurePerformanceButton.interactable = _measurementCoroutine != null && _cancelPending == false || anyGeneratorSelected && anyOperationSelected;
 		}
 
-		#region Measurement
+#region Measurement
 
 		public void MeasurePerformance()
 		{
@@ -668,9 +670,9 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Native Operations
+#region Native Operations
 
 		private void MeasurePerformance_UnityRandomUIntLessThan6(long iterations)
 		{
@@ -915,9 +917,9 @@ namespace Experilous.Examples.MakeItRandom
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Generic Operations
+#region Generic Operations
 
 		private void MeasurePerformance_UInt31bit(IRandom random, long iterations)
 		{
