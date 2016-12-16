@@ -66,7 +66,7 @@ namespace Experilous.MakeItRandom
 				table._intShift = sizeMagnitude;
 				table._indexMask = segmentCount - 1;
 				table._f = Normal;
-				table._fallback = FromNormalFallback;
+				table._fallback = NormalSampleFallback;
 				table.BuildTables(Normal, NormalInverse, NormalCDF, 2.506628274631d, 0.00000001d);
 				return table;
 			}
@@ -132,9 +132,9 @@ namespace Experilous.MakeItRandom
 				return 2.506628274631d - Normal(x) * ((((1.330274429d * t - 1.821255978d) * t + 1.781477937d) * t - 0.356563782d) * t + 0.319381530d) * t;
 			}
 
-			private static float FromNormalFallback(IRandom random, float xMin)
+			private static float NormalSampleFallback(IRandom random, float xMin)
 			{
-				var loop = new StopInfiniteLoop(100);
+				var loop = new StopInfiniteLoop(1000);
 				// https://en.wikipedia.org/wiki/Ziggurat_algorithm#Fallback_algorithms_for_the_tail
 				float x, y;
 				do
@@ -142,7 +142,7 @@ namespace Experilous.MakeItRandom
 					x = -Mathf.Log(random.PreciseFloatOO()) / xMin;
 					y = -Mathf.Log(random.PreciseFloatOO());
 					loop.Iterate();
-				} while (y * -2f < x * x);
+				} while (y * 2f <= x * x);
 				return xMin + x;
 			}
 
@@ -206,7 +206,7 @@ namespace Experilous.MakeItRandom
 			}
 
 #if UNITY_EDITOR
-			[UnityEditor.Callbacks.DidReloadScripts]
+			//[UnityEditor.Callbacks.DidReloadScripts]
 			private static void TestZiggurat()
 			{
 				var table = CreateNormal(8);
@@ -218,10 +218,28 @@ namespace Experilous.MakeItRandom
 				PrintSegment(64);
 				PrintSegment(254);
 				PrintSegment(255);
+
+				var random = MIRandom.CreateStandard(234239);
+				for (int i = 0; i < 20; ++i)
+				{
+					Debug.Log(table.Sample(random).ToString("F7"));
+				}
 			}
 #endif
 		}
 
 		#endregion
+
+		private static ZigguratFloatTable _normalFloatTable;
+
+		public static float NormalDistribution(this IRandom random, float mean, float standardDeviation)
+		{
+			if (_normalFloatTable == null)
+			{
+				_normalFloatTable = ZigguratFloatTable.CreateNormal(8);
+			}
+
+			return _normalFloatTable.Sample(random) * standardDeviation + mean;
+		}
 	}
 }
