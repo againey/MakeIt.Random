@@ -16,6 +16,8 @@ namespace Experilous.Examples.MakeItRandom
 		public int textureWidth = 1024;
 		public int textureHeight = 1024;
 		public float range = 12f;
+		public float mean = 0f;
+		public float standardDeviation = 1f;
 
 		private Texture2D _texture;
 		private Color32[] _pixels;
@@ -48,9 +50,12 @@ namespace Experilous.Examples.MakeItRandom
 			float offset = textureWidth / 2f;
 			for (int i = 0; i < samplesPerUpdate; ++i)
 			{
-				var sample = _random.NormalDistribution(0f, 1f);
-				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), 0, _samples.Length - 1);
-				_samples[index] += 1;
+				var sample = _random.NormalDistribution(mean, standardDeviation);
+				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
+				if (index >=  0 && index < _samples.Length)
+				{
+					_samples[index] += 1;
+				}
 			}
 
 			int maxSampleCount = 0;

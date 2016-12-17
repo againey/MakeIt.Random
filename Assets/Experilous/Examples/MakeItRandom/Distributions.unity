@@ -558,6 +558,8 @@ MonoBehaviour:
   textureWidth: 1024
   textureHeight: 512
   range: 8
+  mean: 0
+  standardDeviation: 1
 --- !u!4 &116957291
 Transform:
   m_ObjectHideFlags: 0
