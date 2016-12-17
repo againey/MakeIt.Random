@@ -21,5 +21,15 @@ namespace Experilous.MakeItRandom
 
 			return sample * standardDeviation + mean;
 		}
+
+		public static float ExponentialDistribution(this IRandom random, float eventRate)
+		{
+			float sample = Detail.Distributions.SampleZiggurat(random,
+				Detail.Distributions.ExponentialFloat.zigguratTable,
+				Detail.Distributions.ExponentialFloat.F,
+				Detail.Distributions.ExponentialFloat.SampleFallback);
+
+			return sample / eventRate;
+		}
 	}
 }

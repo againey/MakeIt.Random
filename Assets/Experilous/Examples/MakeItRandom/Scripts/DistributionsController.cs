@@ -57,11 +57,11 @@ namespace Experilous.Examples.MakeItRandom
 			int sampleCount = Mathf.CeilToInt(Mathf.Min(Mathf.Exp(speedupRate * (Time.fixedTime - _startTime)), maxSamplesPerUpdate));
 
 			float scale = textureWidth / range;
-			float offset = textureWidth / 2f;
+			float offset = 0f;//textureWidth / 2f;
 			for (int i = 0; i < sampleCount; ++i)
 			{
-				var sample = _random.NormalDistribution(mean, standardDeviation);
-				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
+				var sample = _random.ExponentialDistribution(0.5f);
+				var index = Mathf.Clamp(Mathf.FloorToInt(sample * scale + offset), -1, _samples.Length);
 				if (index >=  0 && index < _samples.Length)
 				{
 					_samples[index] += 1;

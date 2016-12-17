@@ -26,24 +26,6 @@ namespace Experilous.MakeItRandom.Detail
 			}
 		}
 
-		public class TwoSidedSymmetricFloatZigguratTable
-		{
-			public FloatZigguratSegment[] segments;
-			public float[] segmentUpperBounds;
-			public int threshold;
-			public int shift;
-			public int mask;
-
-			public TwoSidedSymmetricFloatZigguratTable(FloatZigguratSegment[] segments, float[] segmentUpperBounds, int threshold, int shift, int mask)
-			{
-				this.segments = segments;
-				this.segmentUpperBounds = segmentUpperBounds;
-				this.threshold = threshold;
-				this.shift = shift;
-				this.mask = mask;
-			}
-		}
-
 		public struct DoubleZigguratSegment
 		{
 			public ulong n;
@@ -56,67 +38,117 @@ namespace Experilous.MakeItRandom.Detail
 			}
 		}
 
+		public class OneSidedFloatZigguratTable
+		{
+			public FloatZigguratSegment[] segments;
+			public float[] segmentUpperBounds;
+			public uint mask;
+			public int shift;
+
+			public OneSidedFloatZigguratTable(FloatZigguratSegment[] segments, float[] segmentUpperBounds, uint mask, int shift)
+			{
+				this.segments = segments;
+				this.segmentUpperBounds = segmentUpperBounds;
+				this.mask = mask;
+				this.shift = shift;
+			}
+		}
+
+		public class OneSidedDoubleZigguratTable
+		{
+			public DoubleZigguratSegment[] segments;
+			public double[] segmentUpperBounds;
+			public ulong mask;
+			public int shift;
+
+			public OneSidedDoubleZigguratTable(DoubleZigguratSegment[] segments, double[] segmentUpperBounds, ulong mask, int shift)
+			{
+				this.segments = segments;
+				this.segmentUpperBounds = segmentUpperBounds;
+				this.mask = mask;
+				this.shift = shift;
+			}
+		}
+
+		public class TwoSidedSymmetricFloatZigguratTable
+		{
+			public FloatZigguratSegment[] segments;
+			public float[] segmentUpperBounds;
+			public int threshold;
+			public int mask;
+			public int shift;
+
+			public TwoSidedSymmetricFloatZigguratTable(FloatZigguratSegment[] segments, float[] segmentUpperBounds, int threshold, int mask, int shift)
+			{
+				this.segments = segments;
+				this.segmentUpperBounds = segmentUpperBounds;
+				this.threshold = threshold;
+				this.mask = mask;
+				this.shift = shift;
+			}
+		}
+
 		public class TwoSidedSymmetricDoubleZigguratTable
 		{
 			public DoubleZigguratSegment[] segments;
 			public double[] segmentUpperBounds;
 			public long threshold;
-			public long shift;
 			public long mask;
+			public int shift;
 
-			public TwoSidedSymmetricDoubleZigguratTable(DoubleZigguratSegment[] segments, double[] segmentUpperBounds, long threshold, long shift, long mask)
+			public TwoSidedSymmetricDoubleZigguratTable(DoubleZigguratSegment[] segments, double[] segmentUpperBounds, long threshold, long mask, int shift)
 			{
 				this.segments = segments;
 				this.segmentUpperBounds = segmentUpperBounds;
 				this.threshold = threshold;
-				this.shift = shift;
 				this.mask = mask;
+				this.shift = shift;
 			}
 		}
 
 		#region Sampling
 
-		public static float SampleZigguratOneSided(IRandom random, FloatZigguratSegment[] segments, float[] segmentUpperBounds, uint threshold, uint mask, int shift, Func<float, float> f, Func<IRandom, float, float> tailSampleFallback)
+		public static float SampleZiggurat(IRandom random, OneSidedFloatZigguratTable ziggurat, Func<float, float> f, Func<IRandom, float, float> sampleTailFallback)
 		{
 			do
 			{
 				// Select a random segment, and a random n/x within the segment.
 				uint n = random.Next32();
-				int i = (int)(n & mask);
-				n = n >> shift;
-				var segment = segments[i];
+				int i = (int)(n & ziggurat.mask);
+				n = n >> ziggurat.shift;
+				var segment = ziggurat.segments[i];
 				float x = n * segment.s;
 
 				// Dominant quick check within fully-contained segment rectangle.
 				if (n < segment.n) return x;
 
 				// Rare case within tail.
-				if (i == 0) return tailSampleFallback(random, (1 << (32 - shift)) * segments[1].s);
+				if (i == 0) return sampleTailFallback(random, (1 << (32 - ziggurat.shift)) * ziggurat.segments[1].s);
 
 				// Slow check within the partially-contained segment rectangle.
-				if (random.RangeCO(segmentUpperBounds[i - 1], segmentUpperBounds[i]) < f(x)) return x;
+				if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < f(x)) return x;
 			} while (true);
 		}
 
-		public static double SampleZigguratOneSided(IRandom random, DoubleZigguratSegment[] segments, double[] segmentUpperBounds, ulong threshold, ulong mask, int shift, Func<double, double> f, Func<IRandom, double, double> tailSampleFallback)
+		public static double SampleZiggurat(IRandom random, OneSidedDoubleZigguratTable ziggurat, Func<double, double> f, Func<IRandom, double, double> sampleTailFallback)
 		{
 			do
 			{
 				// Select a random segment, and a random n/x within the segment.
 				ulong n = random.Next64();
-				int i = (int)(n & mask);
-				n = n >> shift;
-				var segment = segments[i];
+				int i = (int)(n & ziggurat.mask);
+				n = n >> ziggurat.shift;
+				var segment = ziggurat.segments[i];
 				double x = n * segment.s;
 
 				// Dominant quick check within fully-contained segment rectangle.
 				if (n < segment.n) return x;
 
 				// Rare case within tail.
-				if (i == 0) return tailSampleFallback(random, (1L << (64 - shift)) * segments[1].s);
+				if (i == 0) return sampleTailFallback(random, (1L << (64 - ziggurat.shift)) * ziggurat.segments[1].s);
 
 				// Slow check within the partially-contained segment rectangle.
-				if (random.RangeCO(segmentUpperBounds[i - 1], segmentUpperBounds[i]) < f(x)) return x;
+				if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < f(x)) return x;
 			} while (true);
 		}
 
@@ -175,9 +207,64 @@ namespace Experilous.MakeItRandom.Detail
 
 		#endregion
 
-		#region Table Construction
+		#region Table Generation
 
-		public static TwoSidedSymmetricFloatZigguratTable BuildTwoSidedSymmetricFloatZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
+		public static OneSidedFloatZigguratTable GenerateOneSidedFloatZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
+		{
+			var loopGuard = new Core.InfiniteLoopGuard();
+
+			int segmentCount = 1 << tableSizeMagnitidue;
+
+			var segments = new FloatZigguratSegment[segmentCount];
+			var segmentUpperBounds = new float[segmentCount];
+
+			var x = new double[segmentCount];
+			double a = totalArea / segmentCount;
+			double rMin = fInv(f(0d) / segmentCount);
+			double rMax = rMin;
+			loopGuard.Reset(20);
+			do
+			{
+				rMax = fInv(f(rMax) * 0.5d);
+				loopGuard.Iterate();
+			} while (rMax * f(rMax) + totalArea - fCDF(rMax) > a);
+			double tableError;
+			loopGuard.Reset(100);
+			do
+			{
+				double rAvg = (rMin + rMax) * 0.5d;
+				tableError = CalculateZigguratTableErrorTwoSidedSymmetric(rAvg, segmentCount, f, fInv, fCDF, totalArea, x);
+				if (double.IsNaN(tableError) || tableError > 0d)
+				{
+					rMin = rAvg;
+				}
+				else
+				{
+					rMax = rAvg;
+				}
+				loopGuard.Iterate();
+			} while (double.IsNaN(tableError) || Math.Abs(tableError) > acceptableError);
+
+			double intToFloatScale = 1 << (32 - tableSizeMagnitidue);
+
+			double y0 = f(x[0]);
+			double a0 = x[0] * y0;
+			double v = a0 + totalArea - fCDF(x[0]);
+			uint n0 = (uint)Math.Floor(a0 / v * intToFloatScale);
+			segments[0] = new FloatZigguratSegment(n0, (float)(v / y0 / intToFloatScale));
+			segmentUpperBounds[0] = (float)f(x[0]);
+
+			for (int i = 1; i < segmentCount; ++i)
+			{
+				uint n = (uint)Math.Floor(x[i] / x[i - 1] * intToFloatScale);
+				segments[i] = new FloatZigguratSegment(n, (float)(x[i - 1] / intToFloatScale));
+				segmentUpperBounds[i] = (float)f(x[i]);
+			}
+
+			return new OneSidedFloatZigguratTable(segments, segmentUpperBounds, ~((~0U) << tableSizeMagnitidue), tableSizeMagnitidue);
+		}
+
+		public static TwoSidedSymmetricFloatZigguratTable GenerateTwoSidedSymmetricFloatZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
 		{
 			int segmentCount = 1 << tableSizeMagnitidue;
 
@@ -185,7 +272,7 @@ namespace Experilous.MakeItRandom.Detail
 			var segmentUpperBounds = new float[segmentCount];
 
 			var x = new double[segmentCount];
-			double a = fCDF(0d) / segmentCount;
+			double a = totalArea / segmentCount;
 			double rMin = fInv(f(0d) / segmentCount);
 			double rMax = rMin;
 			do
@@ -223,10 +310,10 @@ namespace Experilous.MakeItRandom.Detail
 				segmentUpperBounds[i] = (float)f(x[i]);
 			}
 
-			return new TwoSidedSymmetricFloatZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, tableSizeMagnitidue, (int)(~((~0U) << tableSizeMagnitidue)));
+			return new TwoSidedSymmetricFloatZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, (int)(~((~0U) << tableSizeMagnitidue)), tableSizeMagnitidue);
 		}
 
-		public static TwoSidedSymmetricDoubleZigguratTable BuildTwoSidedSymmetricDoubleZiggurat(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
+		public static TwoSidedSymmetricDoubleZigguratTable GenerateTwoSidedSymmetricDoubleZiggurat(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
 		{
 			int segmentCount = 1 << tableSizeMagnitidue;
 
@@ -234,7 +321,7 @@ namespace Experilous.MakeItRandom.Detail
 			var segmentUpperBounds = new double[segmentCount];
 
 			var x = new double[segmentCount];
-			double a = fCDF(0d) / segmentCount;
+			double a = totalArea / segmentCount;
 			double rMin = fInv(f(0d) / segmentCount);
 			double rMax = rMin;
 			do
@@ -272,10 +359,10 @@ namespace Experilous.MakeItRandom.Detail
 				segmentUpperBounds[i] = f(x[i]);
 			}
 
-			return new TwoSidedSymmetricDoubleZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, tableSizeMagnitidue, (long)(~((~0UL) << tableSizeMagnitidue)));
+			return new TwoSidedSymmetricDoubleZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, (int)(~((~0UL) << tableSizeMagnitidue)), tableSizeMagnitidue);
 		}
 
-		public static double CalculateZigguratTableErrorTwoSidedSymmetric(double r, int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double[] x)
+		private static double CalculateZigguratTableErrorTwoSidedSymmetric(double r, int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double[] x)
 		{
 			x[0] = r;
 			x[segmentCount - 1] = 0d;
@@ -284,7 +371,14 @@ namespace Experilous.MakeItRandom.Detail
 			for (int i = 1; i < segmentCount - 1; ++i)
 			{
 				x[i] = xPrev = fInv(v / xPrev + f(xPrev));
+
+				// Not-a-number or negative means that the bottom segment was far too big and blew out the top of the domain, and so r should be increased.
+				if (double.IsNaN(xPrev) || xPrev < 0d) return double.NaN;
 			}
+
+			// Return the area of the bottom segment minus the area of the top segment.
+			// Positive means that the bottom segment was larger than the top segment, needs to be smaller, and so r should be increased.
+			// Negative means that the bottom segment was smaller than the top segment, needs to be larger, and so r should be decreased.
 			return v - xPrev * (f(0d) - f(xPrev));
 		}
 
@@ -292,15 +386,16 @@ namespace Experilous.MakeItRandom.Detail
 
 		#region Lookup Table Generation
 
-		private static void GenerateZigguratLookupTable(TwoSidedSymmetricFloatZigguratTable table, string distributionName)
+		private static void GenerateZigguratLookupTable(OneSidedFloatZigguratTable table, string distributionName)
 		{
 			using (var file = System.IO.File.Open("Experilous/MakeItRandom/Generated/" + distributionName + "DistributionFloatZigguratTable.txt", System.IO.FileMode.Create, System.IO.FileAccess.Write))
 			{
 				using (var writer = new System.IO.StreamWriter(file))
 				{
-					writer.Write("\t\t\tpublic static readonly TwoSidedSymmetricFloatZigguratTable zigguratTable = new TwoSidedSymmetricFloatZigguratTable(\n", distributionName);
+					writer.WriteLine("\t\t\tpublic static readonly OneSidedFloatZigguratTable zigguratTable = new OneSidedFloatZigguratTable(", distributionName);
 
-					writer.Write("\t\t\t\tnew FloatZigguratSegment[]\n\t\t\t{\n");
+					writer.WriteLine("\t\t\t\tnew FloatZigguratSegment[]");
+					writer.WriteLine("\t\t\t\t{");
 					int itemsInRow = 0;
 					foreach (var segment in table.segments)
 					{
@@ -313,14 +408,14 @@ namespace Experilous.MakeItRandom.Detail
 						}
 						else
 						{
-							writer.Write(",\n");
+							writer.WriteLine(",");
 							itemsInRow = 0;
 						}
-
 					}
-					writer.Write("\t\t\t\t},\n");
+					writer.WriteLine("\t\t\t\t},");
 
-					writer.Write("\t\t\t\tnew float[]\n\t\t\t{\n");
+					writer.WriteLine("\t\t\t\tnew float[]");
+					writer.WriteLine("\t\t\t\t{");
 					itemsInRow = 0;
 					foreach (var segmentUpperBound in table.segmentUpperBounds)
 					{
@@ -333,13 +428,64 @@ namespace Experilous.MakeItRandom.Detail
 						}
 						else
 						{
-							writer.Write("f,\n");
+							writer.WriteLine("f,");
 							itemsInRow = 0;
 						}
-
 					}
-					writer.Write("\t\t\t\t},\n");
-					writer.Write("\t\t\t\t{0:D}, {1:D}, {2:D});\n\n", table.threshold, table.shift, table.mask);
+					writer.WriteLine("\t\t\t\t},");
+					writer.WriteLine("\t\t\t\t{0:D}U, {1:D});", table.mask, table.shift);
+				}
+			}
+		}
+
+		private static void GenerateZigguratLookupTable(TwoSidedSymmetricFloatZigguratTable table, string distributionName)
+		{
+			using (var file = System.IO.File.Open("Experilous/MakeItRandom/Generated/" + distributionName + "DistributionFloatZigguratTable.txt", System.IO.FileMode.Create, System.IO.FileAccess.Write))
+			{
+				using (var writer = new System.IO.StreamWriter(file))
+				{
+					writer.WriteLine("\t\t\tpublic static readonly TwoSidedSymmetricFloatZigguratTable zigguratTable = new TwoSidedSymmetricFloatZigguratTable(", distributionName);
+
+					writer.WriteLine("\t\t\t\tnew FloatZigguratSegment[]");
+					writer.WriteLine("\t\t\t\t{");
+					int itemsInRow = 0;
+					foreach (var segment in table.segments)
+					{
+						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
+						writer.Write("new FloatZigguratSegment({0:D}U, {1:R}f)", segment.n, segment.s);
+						if (itemsInRow < 3)
+						{
+							writer.Write(", ");
+							++itemsInRow;
+						}
+						else
+						{
+							writer.WriteLine(",");
+							itemsInRow = 0;
+						}
+					}
+					writer.WriteLine("\t\t\t\t},");
+
+					writer.WriteLine("\t\t\t\tnew float[]");
+					writer.WriteLine("\t\t\t\t{");
+					itemsInRow = 0;
+					foreach (var segmentUpperBound in table.segmentUpperBounds)
+					{
+						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
+						writer.Write(segmentUpperBound.ToString("R"));
+						if (itemsInRow < 3)
+						{
+							writer.Write("f, ");
+							++itemsInRow;
+						}
+						else
+						{
+							writer.WriteLine("f,");
+							itemsInRow = 0;
+						}
+					}
+					writer.WriteLine("\t\t\t\t},");
+					writer.WriteLine("\t\t\t\t{0:D}, {1:D}, {2:D});", table.threshold, table.mask, table.shift);
 				}
 			}
 		}
@@ -371,7 +517,7 @@ namespace Experilous.MakeItRandom.Detail
 			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
 			private static void GenerateZigguratLookupTable()
 			{
-				var table = BuildTwoSidedSymmetricFloatZigguratTable(8,
+				var table = GenerateTwoSidedSymmetricFloatZigguratTable(8,
 					NormalDouble.F,
 					NormalDouble.Inv,
 					NormalDouble.CDF,
@@ -381,6 +527,8 @@ namespace Experilous.MakeItRandom.Detail
 				Distributions.GenerateZigguratLookupTable(table, "normal");
 			}
 #endif
+
+			#region Lookup Table
 
 			public static readonly TwoSidedSymmetricFloatZigguratTable zigguratTable = new TwoSidedSymmetricFloatZigguratTable(
 				new FloatZigguratSegment[]
@@ -517,7 +665,9 @@ namespace Experilous.MakeItRandom.Detail
 					0.8980959f, 0.908726454f, 0.9199915f, 0.932060063f,
 					0.945198953f, 0.9598791f, 0.9771017f, 1f,
 				},
-				-2147483392, 8, 255);
+				-2147483392, 255, 8);
+
+			#endregion
 		}
 
 		public static class NormalDouble
@@ -551,6 +701,201 @@ namespace Experilous.MakeItRandom.Detail
 					y = -Math.Log(random.PreciseDoubleOO());
 				} while (y * 2d <= x * x);
 				return xMin + x;
+			}
+		}
+
+		public static class ExponentialFloat
+		{
+			public static float F(float x)
+			{
+				return Mathf.Exp(-x);
+			}
+
+			public static float SampleFallback(IRandom random, float xMin)
+			{
+				return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
+			}
+
+#if UNITY_EDITOR
+			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
+			private static void GenerateZigguratLookupTable()
+			{
+				var table = GenerateOneSidedFloatZigguratTable(8,
+					ExponentialDouble.F,
+					ExponentialDouble.Inv,
+					ExponentialDouble.CDF,
+					ExponentialDouble.totalArea,
+					0.0000000001d);
+
+				Distributions.GenerateZigguratLookupTable(table, "exponential");
+			}
+#endif
+
+			#region Lookup Table
+
+			public static readonly OneSidedFloatZigguratTable zigguratTable = new OneSidedFloatZigguratTable(
+				new FloatZigguratSegment[]
+				{
+					new FloatZigguratSegment(14848161U, 5.183886E-07f), new FloatZigguratSegment(15129198U, 4.58783944E-07f), new FloatZigguratSegment(15658929U, 4.13717856E-07f), new FloatZigguratSegment(15911694U, 3.86141437E-07f),
+					new FloatZigguratSegment(16061744U, 3.66220746E-07f), new FloatZigguratSegment(16161893U, 3.50603131E-07f), new FloatZigguratSegment(16233847U, 3.37744353E-07f), new FloatZigguratSegment(16288240U, 3.26805747E-07f),
+					new FloatZigguratSegment(16330913U, 3.17280922E-07f), new FloatZigguratSegment(16365357U, 3.088407E-07f), new FloatZigguratSegment(16393787U, 3.01259064E-07f), new FloatZigguratSegment(16417682U, 2.94374047E-07f),
+					new FloatZigguratSegment(16438068U, 2.8806565E-07f), new FloatZigguratSegment(16455680U, 2.82242468E-07f), new FloatZigguratSegment(16471057U, 2.76833276E-07f), new FloatZigguratSegment(16484608U, 2.71781516E-07f),
+					new FloatZigguratSegment(16496645U, 2.67041429E-07f), new FloatZigguratSegment(16507411U, 2.625756E-07f), new FloatZigguratSegment(16517102U, 2.58352969E-07f), new FloatZigguratSegment(16525871U, 2.54347469E-07f),
+					new FloatZigguratSegment(16533847U, 2.50537028E-07f), new FloatZigguratSegment(16541132U, 2.46902744E-07f), new FloatZigguratSegment(16547814U, 2.43428417E-07f), new FloatZigguratSegment(16553965U, 2.40099951E-07f),
+					new FloatZigguratSegment(16559645U, 2.36904981E-07f), new FloatZigguratSegment(16564906U, 2.3383275E-07f), new FloatZigguratSegment(16569794U, 2.30873681E-07f), new FloatZigguratSegment(16574345U, 2.28019317E-07f),
+					new FloatZigguratSegment(16578593U, 2.252621E-07f), new FloatZigguratSegment(16582567U, 2.22595261E-07f), new FloatZigguratSegment(16586292U, 2.20012723E-07f), new FloatZigguratSegment(16589790U, 2.17509E-07f),
+					new FloatZigguratSegment(16593081U, 2.15079112E-07f), new FloatZigguratSegment(16596181U, 2.12718561E-07f), new FloatZigguratSegment(16599107U, 2.10423224E-07f), new FloatZigguratSegment(16601871U, 2.08189348E-07f),
+					new FloatZigguratSegment(16604487U, 2.060135E-07f), new FloatZigguratSegment(16606964U, 2.038925E-07f), new FloatZigguratSegment(16609314U, 2.0182344E-07f), new FloatZigguratSegment(16611545U, 1.99803651E-07f),
+					new FloatZigguratSegment(16613665U, 1.97830644E-07f), new FloatZigguratSegment(16615681U, 1.95902118E-07f), new FloatZigguratSegment(16617601U, 1.94015939E-07f), new FloatZigguratSegment(16619430U, 1.9217012E-07f),
+					new FloatZigguratSegment(16621174U, 1.90362812E-07f), new FloatZigguratSegment(16622837U, 1.88592281E-07f), new FloatZigguratSegment(16624426U, 1.86856923E-07f), new FloatZigguratSegment(16625943U, 1.85155216E-07f),
+					new FloatZigguratSegment(16627394U, 1.83485753E-07f), new FloatZigguratSegment(16628780U, 1.81847213E-07f), new FloatZigguratSegment(16630107U, 1.80238331E-07f), new FloatZigguratSegment(16631377U, 1.78657942E-07f),
+					new FloatZigguratSegment(16632593U, 1.77104937E-07f), new FloatZigguratSegment(16633757U, 1.75578265E-07f), new FloatZigguratSegment(16634873U, 1.74076931E-07f), new FloatZigguratSegment(16635942U, 1.72600011E-07f),
+					new FloatZigguratSegment(16636967U, 1.71146638E-07f), new FloatZigguratSegment(16637949U, 1.69715932E-07f), new FloatZigguratSegment(16638891U, 1.68307139E-07f), new FloatZigguratSegment(16639795U, 1.66919492E-07f),
+					new FloatZigguratSegment(16640661U, 1.65552265E-07f), new FloatZigguratSegment(16641491U, 1.64204792E-07f), new FloatZigguratSegment(16642288U, 1.628764E-07f), new FloatZigguratSegment(16643052U, 1.615665E-07f),
+					new FloatZigguratSegment(16643784U, 1.60274482E-07f), new FloatZigguratSegment(16644486U, 1.589998E-07f), new FloatZigguratSegment(16645158U, 1.57741908E-07f), new FloatZigguratSegment(16645803U, 1.56500278E-07f),
+					new FloatZigguratSegment(16646421U, 1.55274449E-07f), new FloatZigguratSegment(16647012U, 1.54063926E-07f), new FloatZigguratSegment(16647578U, 1.52868282E-07f), new FloatZigguratSegment(16648119U, 1.51687061E-07f),
+					new FloatZigguratSegment(16648637U, 1.50519867E-07f), new FloatZigguratSegment(16649132U, 1.493663E-07f), new FloatZigguratSegment(16649604U, 1.48225979E-07f), new FloatZigguratSegment(16650055U, 1.47098547E-07f),
+					new FloatZigguratSegment(16650485U, 1.45983634E-07f), new FloatZigguratSegment(16650894U, 1.44880914E-07f), new FloatZigguratSegment(16651284U, 1.43790061E-07f), new FloatZigguratSegment(16651654U, 1.42710746E-07f),
+					new FloatZigguratSegment(16652005U, 1.416427E-07f), new FloatZigguratSegment(16652338U, 1.405856E-07f), new FloatZigguratSegment(16652654U, 1.395392E-07f), new FloatZigguratSegment(16652951U, 1.38503182E-07f),
+					new FloatZigguratSegment(16653232U, 1.37477329E-07f), new FloatZigguratSegment(16653495U, 1.36461367E-07f), new FloatZigguratSegment(16653742U, 1.35455068E-07f), new FloatZigguratSegment(16653974U, 1.34458176E-07f),
+					new FloatZigguratSegment(16654189U, 1.33470465E-07f), new FloatZigguratSegment(16654389U, 1.32491735E-07f), new FloatZigguratSegment(16654574U, 1.31521759E-07f), new FloatZigguratSegment(16654744U, 1.30560338E-07f),
+					new FloatZigguratSegment(16654899U, 1.29607258E-07f), new FloatZigguratSegment(16655040U, 1.28662336E-07f), new FloatZigguratSegment(16655166U, 1.27725386E-07f), new FloatZigguratSegment(16655279U, 1.26796223E-07f),
+					new FloatZigguratSegment(16655377U, 1.25874678E-07f), new FloatZigguratSegment(16655462U, 1.2496055E-07f), new FloatZigguratSegment(16655534U, 1.24053713E-07f), new FloatZigguratSegment(16655592U, 1.23153967E-07f),
+					new FloatZigguratSegment(16655637U, 1.22261184E-07f), new FloatZigguratSegment(16655669U, 1.21375209E-07f), new FloatZigguratSegment(16655688U, 1.20495869E-07f), new FloatZigguratSegment(16655694U, 1.19623053E-07f),
+					new FloatZigguratSegment(16655687U, 1.18756589E-07f), new FloatZigguratSegment(16655668U, 1.17896363E-07f), new FloatZigguratSegment(16655636U, 1.17042227E-07f), new FloatZigguratSegment(16655592U, 1.16194052E-07f),
+					new FloatZigguratSegment(16655535U, 1.15351725E-07f), new FloatZigguratSegment(16655465U, 1.1451511E-07f), new FloatZigguratSegment(16655384U, 1.13684088E-07f), new FloatZigguratSegment(16655290U, 1.12858544E-07f),
+					new FloatZigguratSegment(16655183U, 1.12038364E-07f), new FloatZigguratSegment(16655065U, 1.11223429E-07f), new FloatZigguratSegment(16654934U, 1.10413644E-07f), new FloatZigguratSegment(16654791U, 1.09608884E-07f),
+					new FloatZigguratSegment(16654635U, 1.08809061E-07f), new FloatZigguratSegment(16654467U, 1.08014063E-07f), new FloatZigguratSegment(16654287U, 1.072238E-07f), new FloatZigguratSegment(16654095U, 1.06438158E-07f),
+					new FloatZigguratSegment(16653890U, 1.05657051E-07f), new FloatZigguratSegment(16653672U, 1.04880385E-07f), new FloatZigguratSegment(16653442U, 1.04108075E-07f), new FloatZigguratSegment(16653199U, 1.03340021E-07f),
+					new FloatZigguratSegment(16652944U, 1.02576138E-07f), new FloatZigguratSegment(16652676U, 1.0181634E-07f), new FloatZigguratSegment(16652395U, 1.01060543E-07f), new FloatZigguratSegment(16652101U, 1.00308661E-07f),
+					new FloatZigguratSegment(16651793U, 9.95606158E-08f), new FloatZigguratSegment(16651473U, 9.881633E-08f), new FloatZigguratSegment(16651139U, 9.80757164E-08f), new FloatZigguratSegment(16650792U, 9.73387E-08f),
+					new FloatZigguratSegment(16650431U, 9.660521E-08f), new FloatZigguratSegment(16650056U, 9.587517E-08f), new FloatZigguratSegment(16649667U, 9.514851E-08f), new FloatZigguratSegment(16649264U, 9.442515E-08f),
+					new FloatZigguratSegment(16648847U, 9.370501E-08f), new FloatZigguratSegment(16648415U, 9.29880457E-08f), new FloatZigguratSegment(16647969U, 9.227416E-08f), new FloatZigguratSegment(16647507U, 9.156331E-08f),
+					new FloatZigguratSegment(16647030U, 9.08554156E-08f), new FloatZigguratSegment(16646538U, 9.015041E-08f), new FloatZigguratSegment(16646029U, 8.944822E-08f), new FloatZigguratSegment(16645505U, 8.87488E-08f),
+					new FloatZigguratSegment(16644964U, 8.80520759E-08f), new FloatZigguratSegment(16644407U, 8.735798E-08f), new FloatZigguratSegment(16643833U, 8.66664536E-08f), new FloatZigguratSegment(16643242U, 8.597744E-08f),
+					new FloatZigguratSegment(16642632U, 8.52908641E-08f), new FloatZigguratSegment(16642005U, 8.460668E-08f), new FloatZigguratSegment(16641360U, 8.39248244E-08f), new FloatZigguratSegment(16640695U, 8.324523E-08f),
+					new FloatZigguratSegment(16640012U, 8.25678441E-08f), new FloatZigguratSegment(16639309U, 8.189261E-08f), new FloatZigguratSegment(16638585U, 8.121946E-08f), new FloatZigguratSegment(16637841U, 8.054834E-08f),
+					new FloatZigguratSegment(16637076U, 7.98792E-08f), new FloatZigguratSegment(16636290U, 7.921197E-08f), new FloatZigguratSegment(16635481U, 7.85466057E-08f), new FloatZigguratSegment(16634649U, 7.7883044E-08f),
+					new FloatZigguratSegment(16633795U, 7.722122E-08f), new FloatZigguratSegment(16632916U, 7.656109E-08f), new FloatZigguratSegment(16632012U, 7.59026E-08f), new FloatZigguratSegment(16631083U, 7.524567E-08f),
+					new FloatZigguratSegment(16630128U, 7.45902753E-08f), new FloatZigguratSegment(16629147U, 7.39363344E-08f), new FloatZigguratSegment(16628137U, 7.32838E-08f), new FloatZigguratSegment(16627100U, 7.263262E-08f),
+					new FloatZigguratSegment(16626033U, 7.198273E-08f), new FloatZigguratSegment(16624936U, 7.13340853E-08f), new FloatZigguratSegment(16623807U, 7.068662E-08f), new FloatZigguratSegment(16622647U, 7.00402651E-08f),
+					new FloatZigguratSegment(16621453U, 6.93949858E-08f), new FloatZigguratSegment(16620225U, 6.875071E-08f), new FloatZigguratSegment(16618961U, 6.810738E-08f), new FloatZigguratSegment(16617660U, 6.74649456E-08f),
+					new FloatZigguratSegment(16616322U, 6.682334E-08f), new FloatZigguratSegment(16614944U, 6.61825E-08f), new FloatZigguratSegment(16613526U, 6.554237E-08f), new FloatZigguratSegment(16612065U, 6.49029E-08f),
+					new FloatZigguratSegment(16610560U, 6.426401E-08f), new FloatZigguratSegment(16609009U, 6.362565E-08f), new FloatZigguratSegment(16607412U, 6.29877448E-08f), new FloatZigguratSegment(16605765U, 6.235024E-08f),
+					new FloatZigguratSegment(16604066U, 6.171307E-08f), new FloatZigguratSegment(16602315U, 6.107616E-08f), new FloatZigguratSegment(16600508U, 6.043945E-08f), new FloatZigguratSegment(16598643U, 5.98028649E-08f),
+					new FloatZigguratSegment(16596718U, 5.91663358E-08f), new FloatZigguratSegment(16594730U, 5.85297961E-08f), new FloatZigguratSegment(16592677U, 5.789317E-08f), new FloatZigguratSegment(16590554U, 5.72563827E-08f),
+					new FloatZigguratSegment(16588360U, 5.66193563E-08f), new FloatZigguratSegment(16586091U, 5.59820137E-08f), new FloatZigguratSegment(16583743U, 5.534427E-08f), new FloatZigguratSegment(16581312U, 5.470605E-08f),
+					new FloatZigguratSegment(16578795U, 5.40672573E-08f), new FloatZigguratSegment(16576186U, 5.34278151E-08f), new FloatZigguratSegment(16573482U, 5.278763E-08f), new FloatZigguratSegment(16570677U, 5.2146607E-08f),
+					new FloatZigguratSegment(16567767U, 5.150465E-08f), new FloatZigguratSegment(16564744U, 5.0861658E-08f), new FloatZigguratSegment(16561603U, 5.021753E-08f), new FloatZigguratSegment(16558338U, 4.957216E-08f),
+					new FloatZigguratSegment(16554941U, 4.89254361E-08f), new FloatZigguratSegment(16551404U, 4.82772435E-08f), new FloatZigguratSegment(16547720U, 4.762746E-08f), new FloatZigguratSegment(16543878U, 4.69759627E-08f),
+					new FloatZigguratSegment(16539869U, 4.63226222E-08f), new FloatZigguratSegment(16535683U, 4.56672957E-08f), new FloatZigguratSegment(16531308U, 4.50098518E-08f), new FloatZigguratSegment(16526731U, 4.435013E-08f),
+					new FloatZigguratSegment(16521937U, 4.368798E-08f), new FloatZigguratSegment(16516913U, 4.30232348E-08f), new FloatZigguratSegment(16511642U, 4.235572E-08f), new FloatZigguratSegment(16506104U, 4.168525E-08f),
+					new FloatZigguratSegment(16500280U, 4.101164E-08f), new FloatZigguratSegment(16494148U, 4.0334676E-08f), new FloatZigguratSegment(16487683U, 3.96541431E-08f), new FloatZigguratSegment(16480857U, 3.89698123E-08f),
+					new FloatZigguratSegment(16473641U, 3.828144E-08f), new FloatZigguratSegment(16465999U, 3.75887552E-08f), new FloatZigguratSegment(16457894U, 3.689149E-08f), new FloatZigguratSegment(16449284U, 3.618933E-08f),
+					new FloatZigguratSegment(16440118U, 3.5481964E-08f), new FloatZigguratSegment(16430344U, 3.476904E-08f), new FloatZigguratSegment(16419898U, 3.40501849E-08f), new FloatZigguratSegment(16408709U, 3.332499E-08f),
+					new FloatZigguratSegment(16396697U, 3.25930181E-08f), new FloatZigguratSegment(16383767U, 3.18537872E-08f), new FloatZigguratSegment(16369810U, 3.11067723E-08f), new FloatZigguratSegment(16354700U, 3.03513978E-08f),
+					new FloatZigguratSegment(16338288U, 2.95870333E-08f), new FloatZigguratSegment(16320400U, 2.88129733E-08f), new FloatZigguratSegment(16300827U, 2.80284453E-08f), new FloatZigguratSegment(16279320U, 2.72325771E-08f),
+					new FloatZigguratSegment(16255579U, 2.64244E-08f), new FloatZigguratSegment(16229238U, 2.56028141E-08f), new FloatZigguratSegment(16199845U, 2.47665746E-08f), new FloatZigguratSegment(16166839U, 2.3914259E-08f),
+					new FloatZigguratSegment(16129512U, 2.30442279E-08f), new FloatZigguratSegment(16086957U, 2.21545786E-08f), new FloatZigguratSegment(16037997U, 2.1243082E-08f), new FloatZigguratSegment(15981072U, 2.03070929E-08f),
+					new FloatZigguratSegment(15914072U, 1.93434424E-08f), new FloatZigguratSegment(15834075U, 1.8348274E-08f), new FloatZigguratSegment(15736910U, 1.73168164E-08f), new FloatZigguratSegment(15616422U, 1.62430513E-08f),
+					new FloatZigguratSegment(15463134U, 1.51192161E-08f), new FloatZigguratSegment(15261681U, 1.39349989E-08f), new FloatZigguratSegment(14985448U, 1.267621E-08f), new FloatZigguratSegment(14584127U, 1.132242E-08f),
+					new FloatZigguratSegment(13950393U, 9.842373E-09f), new FloatZigguratSegment(12810156U, 8.184014E-09f), new FloatZigguratSegment(10218206U, 6.248862E-09f), new FloatZigguratSegment(0U, 3.80588538E-09f),
+				},
+				new float[]
+				{
+					0.000454134366f, 0.0009672693f, 0.00153629982f, 0.00214596768f,
+					0.00278879888f, 0.00346026476f, 0.004157295f, 0.00487765577f,
+					0.00561964232f, 0.006381906f, 0.00716335326f, 0.007963077f,
+					0.008780315f, 0.009614414f, 0.01046481f, 0.0113310134f,
+					0.0122125922f, 0.0131091652f, 0.0140203917f, 0.0149459681f,
+					0.0158856213f, 0.0168391075f, 0.0178062f, 0.0187867f,
+					0.0197804235f, 0.0207872037f, 0.0218068883f, 0.0228393357f,
+					0.0238844212f, 0.0249420255f, 0.0260120463f, 0.0270943847f,
+					0.02818895f, 0.02929566f, 0.0304144435f, 0.031545233f,
+					0.0326879621f, 0.0338425823f, 0.0350090377f, 0.0361872837f,
+					0.037377283f, 0.0385789946f, 0.0397923924f, 0.0410174429f,
+					0.0422541238f, 0.0435024127f, 0.0447623f, 0.0460337624f,
+					0.0473167934f, 0.0486113839f, 0.049917534f, 0.0512352362f,
+					0.0525644943f, 0.053905312f, 0.05525769f, 0.05662164f,
+					0.0579971746f, 0.059384305f, 0.0607830472f, 0.0621934161f,
+					0.0636154339f, 0.06504912f, 0.0664944947f, 0.06795159f,
+					0.0694204345f, 0.07090106f, 0.0723934844f, 0.07389775f,
+					0.07541389f, 0.0769419447f, 0.07848195f, 0.08003395f,
+					0.0815979838f, 0.0831740946f, 0.08476233f, 0.08636274f,
+					0.0879753754f, 0.08960028f, 0.0912375152f, 0.09288713f,
+					0.09454919f, 0.09622374f, 0.09791085f, 0.09961058f,
+					0.101323f, 0.103048161f, 0.104786143f, 0.106537007f,
+					0.108300827f, 0.110077679f, 0.111867629f, 0.113670766f,
+					0.115487166f, 0.1173169f, 0.119160056f, 0.121016718f,
+					0.122886978f, 0.124770917f, 0.126668632f, 0.1285802f,
+					0.130505741f, 0.13244532f, 0.134399071f, 0.136367068f,
+					0.138349429f, 0.140346244f, 0.142357647f, 0.144383729f,
+					0.146424592f, 0.148480371f, 0.150551185f, 0.152637139f,
+					0.154738367f, 0.156854987f, 0.158987135f, 0.161134943f,
+					0.163298532f, 0.165478036f, 0.167673618f, 0.1698854f,
+					0.172113538f, 0.174358174f, 0.176619455f, 0.178897545f,
+					0.1811926f, 0.18350479f, 0.185834259f, 0.1881812f,
+					0.190545768f, 0.19292815f, 0.195328519f, 0.197747067f,
+					0.200183973f, 0.202639446f, 0.205113649f, 0.207606822f,
+					0.210119158f, 0.212650865f, 0.215202153f, 0.217773244f,
+					0.220364377f, 0.222975761f, 0.225607663f, 0.2282603f,
+					0.23093392f, 0.23362878f, 0.236345157f, 0.23908329f,
+					0.241843462f, 0.244625971f, 0.24743107f, 0.250259072f,
+					0.2531103f, 0.255985022f, 0.258883536f, 0.26180625f,
+					0.264753431f, 0.2677254f, 0.2707226f, 0.2737453f,
+					0.276793927f, 0.279868841f, 0.282970428f, 0.286099076f,
+					0.289255232f, 0.292439282f, 0.2956517f, 0.298892915f,
+					0.3021634f, 0.3054636f, 0.308794081f, 0.312155247f,
+					0.315547675f, 0.3189719f, 0.3224285f, 0.325917959f,
+					0.329440951f, 0.332998067f, 0.3365899f, 0.340217143f,
+					0.343880445f, 0.3475805f, 0.351318f, 0.355093747f,
+					0.358908474f, 0.362763f, 0.3666581f, 0.370594651f,
+					0.374573559f, 0.378595769f, 0.382662177f, 0.386773825f,
+					0.390931726f, 0.395136982f, 0.3993907f, 0.403694f,
+					0.408048183f, 0.412454456f, 0.4169142f, 0.42142874f,
+					0.425999552f, 0.430628151f, 0.435316116f, 0.4400651f,
+					0.444876879f, 0.449753255f, 0.454696149f, 0.459707618f,
+					0.464789748f, 0.469944835f, 0.4751752f, 0.480483353f,
+					0.485872f, 0.491343856f, 0.496902f, 0.5025495f,
+					0.508289754f, 0.5141264f, 0.520063162f, 0.5261042f,
+					0.532253861f, 0.5385169f, 0.5448982f, 0.5514034f,
+					0.5580383f, 0.5648092f, 0.571723044f, 0.5787874f,
+					0.586010337f, 0.5934009f, 0.600968957f, 0.608725369f,
+					0.6166822f, 0.6248527f, 0.633251965f, 0.6418967f,
+					0.650805831f, 0.660000861f, 0.6695063f, 0.679350555f,
+					0.6895665f, 0.70019263f, 0.711274743f, 0.722867668f,
+					0.7350381f, 0.7478686f, 0.7614634f, 0.775956869f,
+					0.7915276f, 0.8084217f, 0.8269933f, 0.8477855f,
+					0.87170434f, 0.900469959f, 0.9381437f, 1f,
+				},
+				255U, 8);
+
+			#endregion
+		}
+
+		public static class ExponentialDouble
+		{
+			public const double totalArea = 1d;
+
+			public static double F(double x)
+			{
+				return Math.Exp(-x);
+			}
+
+			public static double Inv(double y)
+			{
+				return -Math.Log(y);
+			}
+
+			public static double CDF(double x)
+			{
+				return 1f - Math.Exp(-x);
+			}
+
+			public static double SampleFallback(IRandom random, double xMin)
+			{
+				//return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
+				throw new NotImplementedException();
 			}
 		}
 	}
