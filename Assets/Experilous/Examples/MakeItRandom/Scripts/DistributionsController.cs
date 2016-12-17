@@ -12,7 +12,9 @@ namespace Experilous.Examples.MakeItRandom
 	{
 		public RawImage image;
 
-		public int samplesPerUpdate = 1000;
+		public int maxSamplesPerUpdate = 10000;
+		public float speedupRate = 2f;
+		public float delayTime = 1f;
 		public int textureWidth = 1024;
 		public int textureHeight = 1024;
 		public float range = 12f;
@@ -25,12 +27,16 @@ namespace Experilous.Examples.MakeItRandom
 		private int[] _samples;
 		private IRandom _random;
 
+		private float _startTime;
+
 		protected void Start()
 		{
+			_startTime = Time.time + delayTime;
 			_random = MIRandom.CreateStandard();
 
 			_samples = new int[textureWidth];
 			_texture = new Texture2D(textureWidth, textureHeight, TextureFormat.RGBA32, false);
+			_texture.filterMode = FilterMode.Point;
 			_pixels = new Color32[textureWidth * textureHeight];
 			for (int i = 0; i < _pixels.Length; ++i)
 			{
@@ -44,11 +50,15 @@ namespace Experilous.Examples.MakeItRandom
 			image.GetComponent<AspectRatioFitter>().aspectRatio = (float)textureWidth / textureHeight;
 		}
 
-		protected void Update()
+		protected void FixedUpdate()
 		{
+			if (Time.fixedTime < _startTime) return;
+
+			int sampleCount = Mathf.CeilToInt(Mathf.Min(Mathf.Exp(speedupRate * (Time.fixedTime - _startTime)), maxSamplesPerUpdate));
+
 			float scale = textureWidth / range;
 			float offset = textureWidth / 2f;
-			for (int i = 0; i < samplesPerUpdate; ++i)
+			for (int i = 0; i < sampleCount; ++i)
 			{
 				var sample = _random.NormalDistribution(mean, standardDeviation);
 				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
@@ -73,7 +83,10 @@ namespace Experilous.Examples.MakeItRandom
 					_pixels[rowStart + x] = new Color32(intensity, intensity, intensity, 255);
 				}
 			}
+		}
 
+		protected void Update()
+		{
 			_texture.SetPixels32(_pixels);
 			_texture.Apply(false, false);
 		}

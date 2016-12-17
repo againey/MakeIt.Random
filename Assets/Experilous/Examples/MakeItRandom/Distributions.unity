@@ -554,9 +554,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 291218380}
-  samplesPerUpdate: 20000
-  textureWidth: 1024
-  textureHeight: 512
+  maxSamplesPerUpdate: 20000
+  speedupRate: 2
+  delayTime: 1
+  textureWidth: 512
+  textureHeight: 256
   range: 8
   mean: 0
   standardDeviation: 1
