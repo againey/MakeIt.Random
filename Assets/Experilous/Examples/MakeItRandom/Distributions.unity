@@ -559,9 +559,24 @@ MonoBehaviour:
   delayTime: 1
   textureWidth: 512
   textureHeight: 256
-  range: 8
+  range: 4
   mean: 0
   standardDeviation: 1
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - time: -2.00065422
+      value: 2.00062776
+      inSlope: 0
+      outSlope: .487606585
+      tangentMode: 1
+    - time: 1.99691296
+      value: 1.99609303
+      inSlope: .484759063
+      outSlope: 0
+      tangentMode: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!4 &116957291
 Transform:
   m_ObjectHideFlags: 0

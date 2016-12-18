@@ -21,6 +21,8 @@ namespace Experilous.Examples.MakeItRandom
 		public float mean = 0f;
 		public float standardDeviation = 1f;
 
+		public AnimationCurve curve;
+
 		private Texture2D _texture;
 		private Color32[] _pixels;
 
@@ -29,8 +31,56 @@ namespace Experilous.Examples.MakeItRandom
 
 		private float _startTime;
 
+		private static float Hermite(Vector2 p0, Vector2 p1, float m0, float m1, float x)
+		{
+			/*
+			float dx = (p1.x - p0.x);
+			float t = (x - p0.x) / dx;
+			float t2 = t * t;
+			float t3 = t2 * t;
+			float h00 = 2f * t3 - 3f * t2 + 1f;
+			float h10 = t3 - 2f * t2 + t;
+			float h01 = -2f * t3 + 3f * t2;
+			float h11 = t3 - t2;
+			return h00 * p0.y + h10 * dx * m0 + h01 * p1.y + h11 * dx * m1;
+			*/
+
+			float xDelta = (p1.x - p0.x);
+			float yDelta = (p1.y - p0.y);
+			float t = (x - p0.x) / xDelta;
+			float a = -2f * yDelta + (m0 + m1) * xDelta;
+			float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
+			float c = m0 * xDelta;
+			float d = p0.y;
+
+			return ((a * t + b) * t + c) * t + d;
+		}
+
 		protected void Start()
 		{
+			/*for (int i = 0; i < curve.length; ++i)
+			{
+				var keyframe = curve[i];
+
+				if (i > 0)
+				{
+					var prevKeyframe = curve[i - 1];
+
+					Vector2 p0 = new Vector2(prevKeyframe.time, prevKeyframe.value);
+					Vector2 p1 = new Vector2(keyframe.time, keyframe.value);
+					float m0 = prevKeyframe.outTangent;
+					float m1 = keyframe.inTangent;
+					float t = Mathf.Lerp(prevKeyframe.time, keyframe.time, 0.25f);
+					Debug.LogFormat("Compare at time t = {0:F6}; Unity:  {1:F6}  Hermite:  {2:F6}", t, curve.Evaluate(t), Hermite(p0, p1, m0, m1, t));
+					t = Mathf.Lerp(prevKeyframe.time, keyframe.time, 0.5f);
+					Debug.LogFormat("Compare at time t = {0:F6}; Unity:  {1:F6}  Hermite:  {2:F6}", t, curve.Evaluate(t), Hermite(p0, p1, m0, m1, t));
+					t = Mathf.Lerp(prevKeyframe.time, keyframe.time, 0.75f);
+					Debug.LogFormat("Compare at time t = {0:F6}; Unity:  {1:F6}  Hermite:  {2:F6}", t, curve.Evaluate(t), Hermite(p0, p1, m0, m1, t));
+				}
+
+				Debug.LogFormat("Keyframe[{0}] at ({1:F4}, {2:F4}), / {3:F4} > {4:F4} /", i, keyframe.time, keyframe.value, keyframe.inTangent, keyframe.outTangent);
+			}*/
+
 			_startTime = Time.time + delayTime;
 			_random = MIRandom.CreateStandard();
 
@@ -60,7 +110,8 @@ namespace Experilous.Examples.MakeItRandom
 			float offset = textureWidth / 2f;
 			for (int i = 0; i < sampleCount; ++i)
 			{
-				var sample = _random.LinearSample(-3f, 2f, 2f, 5f);
+				var sample = _random.HermiteSample(new Vector2(-2f, 2f), new Vector2(+2f, 1f), 0.5f, 2f);
+				if (float.IsNaN(sample)) continue;
 				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
 				if (index >=  0 && index < _samples.Length)
 				{
