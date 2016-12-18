@@ -57,11 +57,11 @@ namespace Experilous.Examples.MakeItRandom
 			int sampleCount = Mathf.CeilToInt(Mathf.Min(Mathf.Exp(speedupRate * (Time.fixedTime - _startTime)), maxSamplesPerUpdate));
 
 			float scale = textureWidth / range;
-			float offset = 0f;//textureWidth / 2f;
+			float offset = textureWidth / 2f;
 			for (int i = 0; i < sampleCount; ++i)
 			{
-				var sample = _random.ExponentialDistribution(0.5f);
-				var index = Mathf.Clamp(Mathf.FloorToInt(sample * scale + offset), -1, _samples.Length);
+				var sample = _random.LinearSample(-3f, 2f, 2f, 5f);
+				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
 				if (index >=  0 && index < _samples.Length)
 				{
 					_samples[index] += 1;
@@ -79,7 +79,7 @@ namespace Experilous.Examples.MakeItRandom
 				int rowStart = y * textureWidth;
 				for (int x = 0; x < textureWidth; ++x)
 				{
-					byte intensity = y * maxSampleCount <= _samples[x] * textureHeight ? (byte)255 : (byte)0;
+					byte intensity = y * maxSampleCount < _samples[x] * textureHeight ? (byte)255 : (byte)0;
 					_pixels[rowStart + x] = new Color32(intensity, intensity, intensity, 255);
 				}
 			}
