@@ -110,7 +110,15 @@ namespace Experilous.Examples.MakeItRandom
 			float offset = textureWidth / 2f;
 			for (int i = 0; i < sampleCount; ++i)
 			{
-				var sample = _random.HermiteSample(new Vector2(-2f, 2f), new Vector2(+2f, 1f), 0.5f, 2f);
+				//var sample = _random.NormalSample(0f, 1f);
+				//var sample = _random.ExponentialSample(1f) - 2f;
+				//var sample = _random.TriangularSample(-2f, 1f, 2f);
+				//var sample = _random.TrapezoidalSample(-2f, 0.5f, 1.5f, 2f);
+				//var sample = _random.LinearSample(-2f, 2f, +2f, 2f);
+				//var sample = _random.PiecewiseLinearSample(new float[] { -3f, -1f, 0.5f, 2.5f, 3f }, new float[] { 1f, 1f, 1.5f, 0f, 1f });
+				//var sample = _random.PiecewiseConstantSample(new float[] { -3f, -1f, 0.5f, 2.5f, 3f }, new float[] { 1f, 0f, 1.5f, 0.5f });
+				//var sample = _random.HermiteSample(-2f, 2f, 0.5f, +2f, 1f, 2f);
+				var sample = _random.PiecewiseCurveSample(curve);
 				if (float.IsNaN(sample)) continue;
 				var index = Mathf.Clamp(Mathf.RoundToInt(sample * scale + offset), -1, _samples.Length);
 				if (index >=  0 && index < _samples.Length)

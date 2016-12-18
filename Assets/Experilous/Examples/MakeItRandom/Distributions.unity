@@ -554,27 +554,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 291218380}
-  maxSamplesPerUpdate: 10000
-  speedupRate: 2
+  maxSamplesPerUpdate: 1000
+  speedupRate: 4
   delayTime: 1
   textureWidth: 512
   textureHeight: 256
-  range: 4
+  range: 8
   mean: 0
   standardDeviation: 1
   curve:
     serializedVersion: 2
     m_Curve:
-    - time: -2.00065422
-      value: 2.00062776
-      inSlope: 0
-      outSlope: .487606585
-      tangentMode: 1
-    - time: 1.99691296
-      value: 1.99609303
-      inSlope: .484759063
+    - time: -.932489693
+      value: .827779472
+      inSlope: -2.41498208
+      outSlope: -1.28978896
+      tangentMode: 17
+    - time: -.682210565
+      value: .504972219
+      inSlope: -1.28978896
       outSlope: 0
+      tangentMode: 29
+    - time: -.385572702
+      value: .12146017
+      inSlope: Infinity
+      outSlope: .348678797
+      tangentMode: 7
+    - time: .0113574639
+      value: .769646406
+      inSlope: .482750863
+      outSlope: -5.88597679
       tangentMode: 1
+    - time: .435745418
+      value: .271964312
+      inSlope: -3.31534171
+      outSlope: .224273056
+      tangentMode: 1
+    - time: .923258543
+      value: .990576386
+      inSlope: -1.93299997
+      outSlope: -1.93299997
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
 --- !u!4 &116957291
