@@ -857,6 +857,23 @@ namespace Experilous.MakeItRandom
 
 		#region Hermite Curve Distribution
 
+		private static void CalculateHermiteCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
+		{
+			float xDelta = x1 - x0;
+			float yDelta = y1 - y0;
+
+			float a = -2f * yDelta + (m0 + m1) * xDelta;
+			float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
+			float c = m0 * xDelta;
+			float d = y0;
+
+			k4 = a / 4f;
+			k3 = b / 3f;
+			k2 = c / 2f;
+			k1 = d;
+			area = k4 + k3 + k2 + k1;
+		}
+
 		private static float FindRoot(float k4, float k3, float k2, float k1, float area, float t)
 		{
 			float x = t;
@@ -901,25 +918,10 @@ namespace Experilous.MakeItRandom
 
 		private static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
 		{
-			float xDelta = x1 - x0;
-			float yDelta = y1 - y0;
+			float k4, k3, k2, k1, area;
+			CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
-			// Hermite curve formula:  f(x) = ax^3 + bx^2 + cx + d
-			float a = -2f * yDelta + (m0 + m1) * xDelta;
-			float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
-			float c = m0 * xDelta;
-			float d = y0;
-
-			// Coefficients from taking the integral of f(x), also the coefficients of the quartic to be solved.
-			float k4 = a / 4f;
-			float k3 = b / 3f;
-			float k2 = c / 2f;
-			float k1 = d;
-
-			// Area under curve = Integral of f(x) = ax^3 + bx^2 + cx + d from 0 to 1.
-			float area = k4 + k3 + k2 + k1;
-
-			return FindRoot(k4, k3, k2, k1, area, t) * xDelta + x0;
+			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
 		}
 
 		private class FloatHermiteSampleGenerator : ISampleGenerator<float>
@@ -939,28 +941,15 @@ namespace Experilous.MakeItRandom
 				if (y0 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y0");
 				if (y1 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y1");
 
-				float xDelta = x1 - x0;
-				float yDelta = y1 - y0;
+				float k4, k3, k2, k1, area;
+				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
-				// Hermite curve formula:  f(x) = ax^3 + bx^2 + cx + d
-				float a = -2f * yDelta + (m0 + m1) * xDelta;
-				float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
-
-				if (a == 0f && b == 0f) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
-
-				float c = m0 * xDelta;
-				float d = y0;
-
-				// Coefficients from taking the integral of f(x), also the coefficients of the quartic to be solved.
-				float k4 = a / 4f;
-				float k3 = b / 3f;
-				float k2 = c / 2f;
-				float k1 = d;
+				if (k4 == 0f && k3 == 0f) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
 
 				var generator = new FloatHermiteSampleGenerator();
 				generator._random = random;
 				generator._x0 = x0;
-				generator._xDelta = xDelta;
+				generator._xDelta = x1 - x0;
 				generator._k4 = k4;
 				generator._k3 = k3;
 				generator._k2 = k2;
@@ -984,6 +973,23 @@ namespace Experilous.MakeItRandom
 		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
 			return FloatHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+		}
+
+		private static void CalculateHermiteCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
+		{
+			double xDelta = x1 - x0;
+			double yDelta = y1 - y0;
+
+			double a = -2d * yDelta + (m0 + m1) * xDelta;
+			double b = 3d * yDelta - (2d * m0 + m1) * xDelta;
+			double c = m0 * xDelta;
+			double d = y0;
+
+			k4 = a / 4d;
+			k3 = b / 3d;
+			k2 = c / 2d;
+			k1 = d;
+			area = k4 + k3 + k2 + k1;
 		}
 
 		private static double FindRoot(double k4, double k3, double k2, double k1, double area, double t)
@@ -1025,25 +1031,10 @@ namespace Experilous.MakeItRandom
 
 		private static double HermiteSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1, double t)
 		{
-			double xDelta = x1 - x0;
-			double yDelta = y1 - y0;
+			double k4, k3, k2, k1, area;
+			CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
-			// Hermite curve formula:  f(x) = ax^3 + bx^2 + cx + d
-			double a = -2d * yDelta + (m0 + m1) * xDelta;
-			double b = 3d * yDelta - (2d * m0 + m1) * xDelta;
-			double c = m0 * xDelta;
-			double d = y0;
-
-			// Coefficients from taking the integral of f(x), also the coefficients of the quartic to be solved.
-			double k4 = a / 4d;
-			double k3 = b / 3d;
-			double k2 = c / 2d;
-			double k1 = d;
-
-			// Area under curve = Integral of f(x) = ax^3 + bx^2 + cx + d from 0 to 1.
-			double area = k4 + k3 + k2 + k1;
-
-			return FindRoot(k4, k3, k2, k1, area, t) * xDelta + x0;
+			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
 		}
 
 		private class DoubleHermiteSampleGenerator : ISampleGenerator<double>
@@ -1063,28 +1054,15 @@ namespace Experilous.MakeItRandom
 				if (y0 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y0");
 				if (y1 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y1");
 
-				double xDelta = x1 - x0;
-				double yDelta = y1 - y0;
+				double k4, k3, k2, k1, area;
+				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
-				// Hermite curve formula:  f(x) = ax^3 + bx^2 + cx + d
-				double a = -2d * yDelta + (m0 + m1) * xDelta;
-				double b = 3d * yDelta - (2d * m0 + m1) * xDelta;
-
-				if (a == 0d && b == 0d) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
-
-				double c = m0 * xDelta;
-				double d = y0;
-
-				// Coefficients from taking the integral of f(x), also the coefficients of the quartic to be solved.
-				double k4 = a / 4d;
-				double k3 = b / 3d;
-				double k2 = c / 2d;
-				double k1 = d;
+				if (k4 == 0d && k3 == 0d) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
 
 				var generator = new DoubleHermiteSampleGenerator();
 				generator._random = random;
 				generator._x0 = x0;
-				generator._xDelta = xDelta;
+				generator._xDelta = x1 - x0;
 				generator._k4 = k4;
 				generator._k3 = k3;
 				generator._k2 = k2;
@@ -1103,6 +1081,52 @@ namespace Experilous.MakeItRandom
 		public static ISampleGenerator<double> MakeHermiteSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
 			return DoubleHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+		}
+
+		#endregion
+
+		#region Piecewise Utilities
+
+		private static int BinarySearch(uint n, uint[] cdf)
+		{
+			int iLower = 0;
+			int iUpper = cdf.Length;
+
+			do
+			{
+				int iMid = (iLower + iUpper) >> 1;
+				if (n < cdf[iMid])
+				{
+					iUpper = iMid;
+				}
+				else
+				{
+					iLower = iMid + 1;
+				}
+			} while (iLower < iUpper);
+
+			return iLower;
+		}
+
+		private static int BinarySearch(ulong n, ulong[] cdf)
+		{
+			int iLower = 0;
+			int iUpper = cdf.Length;
+
+			do
+			{
+				int iMid = (iLower + iUpper) >> 1;
+				if (n < cdf[iMid])
+				{
+					iUpper = iMid;
+				}
+				else
+				{
+					iLower = iMid + 1;
+				}
+			} while (iLower < iUpper);
+
+			return iLower;
 		}
 
 		#endregion
@@ -1296,27 +1320,11 @@ namespace Experilous.MakeItRandom
 
 			public float Next()
 			{
-				uint n = _random.Next32();
+				int i = BinarySearch(_random.Next32(), _cdf);
 
-				int iLower = 0;
-				int iUpper = _cdf.Length;
-
-				do
+				if (i < _cdf.Length)
 				{
-					int iMid = (iLower + iUpper) >> 1;
-					if (n < _cdf[iMid])
-					{
-						iUpper = iMid;
-					}
-					else
-					{
-						iLower = iMid + 1;
-					}
-				} while (iLower < iUpper);
-
-				if (iLower < _cdf.Length)
-				{
-					return _random.RangeCO(_x[iLower], _x[iLower + 1]);
+					return _random.RangeCO(_x[i], _x[i + 1]);
 				}
 				else
 				{
@@ -1427,7 +1435,7 @@ namespace Experilous.MakeItRandom
 				for (int i = 0; i < y.Length; ++i)
 				{
 					weightSum += (x[i + 1] - x[i]) * y[i];
-					generator._cdf[i] = (uint)Math.Floor(weightSum / totalWeight * weightToIntScale);
+					generator._cdf[i] = (ulong)Math.Floor(weightSum / totalWeight * weightToIntScale);
 				}
 
 				return generator;
@@ -1458,7 +1466,7 @@ namespace Experilous.MakeItRandom
 				for (int i = 0; i < weights.Length; ++i)
 				{
 					weightSum += weights[i];
-					generator._cdf[i] = (uint)Math.Floor(weightSum / totalWeight * weightToIntScale);
+					generator._cdf[i] = (ulong)Math.Floor(weightSum / totalWeight * weightToIntScale);
 				}
 
 				return generator;
@@ -1466,27 +1474,11 @@ namespace Experilous.MakeItRandom
 
 			public double Next()
 			{
-				ulong n = _random.Next64();
+				int i = BinarySearch(_random.Next64(), _cdf);
 
-				int iLower = 0;
-				int iUpper = _cdf.Length;
-
-				do
+				if (i < _cdf.Length)
 				{
-					int iMid = (iLower + iUpper) >> 1;
-					if (n < _cdf[iMid])
-					{
-						iUpper = iMid;
-					}
-					else
-					{
-						iLower = iMid + 1;
-					}
-				} while (iLower < iUpper);
-
-				if (iLower < _cdf.Length)
-				{
-					return _random.RangeCO(_x[iLower], _x[iLower + 1]);
+					return _random.RangeCO(_x[i], _x[i + 1]);
 				}
 				else
 				{
@@ -1684,27 +1676,11 @@ namespace Experilous.MakeItRandom
 
 			public float Next()
 			{
-				uint n = _random.Next32();
+				int i = BinarySearch(_random.Next32(), _cdf);
 
-				int iLower = 0;
-				int iUpper = _cdf.Length;
-
-				do
+				if (i < _cdf.Length)
 				{
-					int iMid = (iLower + iUpper) >> 1;
-					if (n < _cdf[iMid])
-					{
-						iUpper = iMid;
-					}
-					else
-					{
-						iLower = iMid + 1;
-					}
-				} while (iLower < iUpper);
-
-				if (iLower < _cdf.Length)
-				{
-					var segment = _segments[iLower];
+					var segment = _segments[i];
 
 					if (segment.a != 0f)
 					{
@@ -1826,7 +1802,7 @@ namespace Experilous.MakeItRandom
 
 			private IRandom _random;
 			private SegmentData[] _segments;
-			private uint[] _cdf;
+			private ulong[] _cdf;
 
 			public DoublePiecewiseLinearSampleGenerator(IRandom random, double[] x, double[] y)
 			{
@@ -1849,11 +1825,11 @@ namespace Experilous.MakeItRandom
 					++segmentCount;
 				}
 
-				double areaToIntScale = uint.MaxValue + 1d;
+				double areaToIntScale = ulong.MaxValue + 1d;
 				doubleTotalArea += 1d / areaToIntScale;
 
 				_segments = new SegmentData[segmentCount];
-				_cdf = new uint[segmentCount];
+				_cdf = new ulong[segmentCount];
 
 				double doubleAreaSum = 0d;
 				for (int i = 1, j = 0; i < x.Length; ++i)
@@ -1865,7 +1841,7 @@ namespace Experilous.MakeItRandom
 					double area = (x1 - x0) * (y0 + y1);
 					if (area == 0f) continue;
 					doubleAreaSum += area;
-					_cdf[j] = (uint)Math.Floor(doubleAreaSum / doubleTotalArea * areaToIntScale);
+					_cdf[j] = (ulong)Math.Floor(doubleAreaSum / doubleTotalArea * areaToIntScale);
 					_segments[j] = new SegmentData(x0, y0, x1, y1);
 					++j;
 				}
@@ -1873,27 +1849,11 @@ namespace Experilous.MakeItRandom
 
 			public double Next()
 			{
-				uint n = _random.Next32();
+				int i = BinarySearch(_random.Next64(), _cdf);
 
-				int iLower = 0;
-				int iUpper = _cdf.Length;
-
-				do
+				if (i < _cdf.Length)
 				{
-					int iMid = (iLower + iUpper) >> 1;
-					if (n < _cdf[iMid])
-					{
-						iUpper = iMid;
-					}
-					else
-					{
-						iLower = iMid + 1;
-					}
-				} while (iLower < iUpper);
-
-				if (iLower < _cdf.Length)
-				{
-					var segment = _segments[iLower];
+					var segment = _segments[i];
 
 					if (segment.a != 0f)
 					{
@@ -1951,7 +1911,130 @@ namespace Experilous.MakeItRandom
 
 		#region Piecewise Hermite Curve Distribution
 
-		//TODO overloads
+		public static float PiecewiseHermiteSample(this IRandom random, float[] x, float[] y, float[] m)
+		{
+#if UNITY_EDITOR
+			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
+			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
+			if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
+#endif
+
+			float totalArea = 0f;
+			float x0 = x[0];
+			float y0 = y[0];
+			float m0 = m[0];
+			for (int i = 1, j = 1; i < x.Length; ++i)
+			{
+				float x1 = x[i];
+				float y1 = y[i];
+				float m1 = m[j++];
+				float xDelta = x1 - x0;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea += area * xDelta;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea += y0 * xDelta;
+				}
+				x0 = x1;
+				y0 = y1;
+				m0 = m[j++];
+			}
+
+			float n = random.RangeCC(totalArea);
+			x0 = x[0];
+			y0 = y[0];
+			m0 = m[0];
+			for (int i = 1, j = 1; i < x.Length; ++i)
+			{
+				float x1 = x[i];
+				float y1 = y[i];
+				float m1 = m[j++];
+				float xDelta = x1 - x0;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea -= area * xDelta;
+					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + x0;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea -= y0 * xDelta;
+					if (totalArea < n) return random.RangeCO(x0, x1);
+				}
+				x0 = x1;
+				y0 = y1;
+				m0 = m[j++];
+			}
+			return x0;
+		}
+
+		public static float PiecewiseHermiteSample(this IRandom random, Vector2[] p, float[] m)
+		{
+#if UNITY_EDITOR
+			if (p.Length < 2) throw new ArgumentException("The array of positions must have at least two elements.", "p");
+			if (m.Length != (p.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of positions.", "m");
+#endif
+
+			float totalArea = 0f;
+			Vector2 p0 = p[0];
+			float m0 = m[0];
+			for (int i = 1, j = 1; i < p.Length; ++i)
+			{
+				Vector2 p1 = p[i];
+				float m1 = m[j++];
+				float xDelta = p1.x - p0.x;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea += area * xDelta;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea += p0.y * xDelta;
+				}
+				p0 = p1;
+				m0 = m[j++];
+			}
+
+			float n = random.RangeCC(totalArea);
+			p0 = p[0];
+			m0 = m[0];
+			for (int i = 1, j = 1; i < p.Length; ++i)
+			{
+				Vector2 p1 = p[i];
+				float m1 = m[j++];
+				float xDelta = p1.x - p0.x;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea -= area * xDelta;
+					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + p0.x;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea -= p0.y * xDelta;
+					if (totalArea < n) return random.RangeCO(p0.x, p1.x);
+				}
+				p0 = p1;
+				m0 = m[j++];
+			}
+			return p0.x;
+		}
 
 		public static float PiecewiseHermiteSample(this IRandom random, AnimationCurve curve)
 		{
@@ -1967,33 +2050,15 @@ namespace Experilous.MakeItRandom
 				float xDelta = kf1.time - kf0.time;
 				if (!float.IsInfinity(kf0.outTangent) && !float.IsInfinity(kf1.inTangent))
 				{
-					float yDelta = kf1.value - kf0.value;
-					if (kf0.outTangent == kf1.inTangent && Mathf.Abs(xDelta * kf0.outTangent - yDelta) < 0.000001f)
-					{
-						// Linear Segment
-						totalArea += 0.5f * (kf0.value + kf1.value) * xDelta;
-					}
-					else
-					{
-						// Hermite Segment
-						float a = -2f * yDelta + (kf0.outTangent + kf1.inTangent) * xDelta;
-						float b = 3f * yDelta - (2f * kf0.outTangent + kf1.inTangent) * xDelta;
-						float c = kf0.outTangent * xDelta;
-						float d = kf0.value;
-
-						float k4 = a / 4f;
-						float k3 = b / 3f;
-						float k2 = c / 2f;
-						float k1 = d;
-
-						// Area under curve = Integral of f(x) = ax^3 + bx^2 + cx + d from x0 to x1.
-						totalArea += (k4 + k3 + k2 + k1) * xDelta;
-					}
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					totalArea += area * xDelta;
 				}
 				else
 				{
 					// Uniform Segment
-					totalArea += xDelta * kf0.value;
+					totalArea += kf0.value * xDelta;
 				}
 				kf0 = kf1;
 			}
@@ -2003,41 +2068,19 @@ namespace Experilous.MakeItRandom
 			for (int i = 1; i < curve.length; ++i)
 			{
 				Keyframe kf1 = curve[i];
-
 				float xDelta = kf1.time - kf0.time;
 				if (!float.IsInfinity(kf0.outTangent) && !float.IsInfinity(kf1.inTangent))
 				{
-					float yDelta = kf1.value - kf0.value;
-					if (kf0.outTangent == kf1.inTangent && Mathf.Abs(xDelta * kf0.outTangent - yDelta) < 0.000001f)
-					{
-						// Linear Segment
-						totalArea -= 0.5f * (kf0.value + kf1.value) * xDelta;
-						if (totalArea < n) return random.LinearSample(kf0.time, kf0.value, kf1.time, kf1.value, random.FloatCO());
-					}
-					else
-					{
-						// Hermite Segment
-						float a = -2f * yDelta + (kf0.outTangent + kf1.inTangent) * xDelta;
-						float b = 3f * yDelta - (2f * kf0.outTangent + kf1.inTangent) * xDelta;
-						float c = kf0.outTangent * xDelta;
-						float d = kf0.value;
-
-						float k4 = a / 4f;
-						float k3 = b / 3f;
-						float k2 = c / 2f;
-						float k1 = d;
-
-						float area = k4 + k3 + k2 + k1;
-
-						// Area under curve = Integral of f(x) = ax^3 + bx^2 + cx + d from x0 to x1.
-						totalArea -= area * xDelta;
-						if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + kf0.time;
-					}
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					totalArea -= area * xDelta;
+					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + kf0.time;
 				}
 				else
 				{
 					// Uniform Segment
-					totalArea -= xDelta * kf0.value;
+					totalArea -= kf0.value * xDelta;
 					if (totalArea < n) return random.RangeCO(kf0.time, kf1.time);
 				}
 				kf0 = kf1;
@@ -2061,21 +2104,8 @@ namespace Experilous.MakeItRandom
 				{
 					xDelta = x1 - x0;
 					this.x0 = x0;
-					float yDelta = y1 - y0;
 
-					// Hermite curve formula:  f(x) = ax^3 + bx^2 + cx + d
-					float a = -2f * yDelta + (m0 + m1) * xDelta;
-					float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
-					float c = m0 * xDelta;
-					float d = y0;
-
-					// Coefficients from taking the integral of f(x), also the coefficients of the quartic to be solved.
-					k4 = a / 4f;
-					k3 = b / 3f;
-					k2 = c / 2f;
-					k1 = d;
-
-					area = k4 + k3 + k2 + k1;
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 				}
 			}
 
@@ -2083,11 +2113,11 @@ namespace Experilous.MakeItRandom
 			private SegmentData[] _segments;
 			private uint[] _cdf;
 
-			public FloatPiecewiseHermiteSampleGenerator(IRandom random, float[] x, float[] y, float[] slopes)
+			public FloatPiecewiseHermiteSampleGenerator(IRandom random, float[] x, float[] y, float[] m)
 			{
 				if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 				if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
-				if (slopes.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "slopes");
+				if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
 
 				_random = random;
 
@@ -2096,20 +2126,20 @@ namespace Experilous.MakeItRandom
 					{
 						x0 = x[index];
 						y0 = y[index];
-						m0 = slopes[index * 2];
+						m0 = m[index * 2];
 					},
 					(int index, out float x1, out float y1, out float m1) =>
 					{
 						x1 = x[index];
 						y1 = y[index];
-						m1 = slopes[index * 2 - 1];
+						m1 = m[index * 2 - 1];
 					});
 			}
 
-			public FloatPiecewiseHermiteSampleGenerator(IRandom random, Vector2[] p, float[] slopes)
+			public FloatPiecewiseHermiteSampleGenerator(IRandom random, Vector2[] p, float[] m)
 			{
 				if (p.Length < 2) throw new ArgumentException("The array of positions must have at least two elements.", "p");
-				if (slopes.Length != (p.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of positions.", "slopes");
+				if (m.Length != (p.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of positions.", "m");
 
 				_random = random;
 
@@ -2118,13 +2148,13 @@ namespace Experilous.MakeItRandom
 					{
 						x0 = p[index].x;
 						y0 = p[index].y;
-						m0 = slopes[index * 2];
+						m0 = m[index * 2];
 					},
 					(int index, out float x1, out float y1, out float m1) =>
 					{
 						x1 = p[index].x;
 						y1 = p[index].y;
-						m1 = slopes[index * 2 - 1];
+						m1 = m[index * 2 - 1];
 					});
 			}
 
@@ -2165,37 +2195,19 @@ namespace Experilous.MakeItRandom
 					float xDelta = x1 - x0;
 					if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
 					{
+						// Hermite Segment
 						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
 
-						float yDelta = y1 - y0;
-						if (m0 != m1 || Mathf.Abs(xDelta * m0 - yDelta) >= 0.000001f)
-						{
-							// Hermite Segment
-							float a = -2f * yDelta + (m0 + m1) * xDelta;
-							float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
-							float c = m0 * xDelta;
-							float d = y0;
-
-							float k4 = a / 4f;
-							float k3 = b / 3f;
-							float k2 = c / 2f;
-							float k1 = d;
-
-							// Area under curve = Integral of f(x) = ax^3 + bx^2 + cx + d from x0 to x1.
-							totalArea += (k4 + k3 + k2 + k1) * xDelta;
-						}
-						else
-						{
-							// Linear Segment
-							totalArea += 0.5f * (y0 + y1) * xDelta;
-						}
+						float k4, k3, k2, k1, area;
+						CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+						totalArea += area * xDelta;
 					}
 					else
 					{
 						// Uniform Segment
 						if (y0 <= 0f) continue;
 
-						totalArea += xDelta * y0;
+						totalArea += y0 * xDelta;
 					}
 					++segmentCount;
 				}
@@ -2238,27 +2250,11 @@ namespace Experilous.MakeItRandom
 
 			public float Next()
 			{
-				uint n = _random.Next32();
+				int i = BinarySearch(_random.Next32(), _cdf);
 
-				int iLower = 0;
-				int iUpper = _cdf.Length;
-
-				do
+				if (i < _cdf.Length)
 				{
-					int iMid = (iLower + iUpper) >> 1;
-					if (n < _cdf[iMid])
-					{
-						iUpper = iMid;
-					}
-					else
-					{
-						iLower = iMid + 1;
-					}
-				} while (iLower < iUpper);
-
-				if (iLower < _cdf.Length)
-				{
-					var segment = _segments[iLower];
+					var segment = _segments[i];
 					return FindRoot(segment.k4, segment.k3, segment.k2, segment.k1, segment.area, _random.FloatCO()) * segment.xDelta + segment.x0;
 				}
 				else
@@ -2284,7 +2280,208 @@ namespace Experilous.MakeItRandom
 			return new FloatPiecewiseHermiteSampleGenerator(random, curve);
 		}
 
-		//TODO double
+		public static double PiecewiseHermiteSample(this IRandom random, double[] x, double[] y, double[] m)
+		{
+#if UNITY_EDITOR
+			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
+			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
+			if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
+#endif
+
+			double totalArea = 0d;
+			double x0 = x[0];
+			double y0 = y[0];
+			double m0 = m[0];
+			for (int i = 1, j = 1; i < x.Length; ++i)
+			{
+				double x1 = x[i];
+				double y1 = y[i];
+				double m1 = m[j++];
+				double xDelta = x1 - x0;
+				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+				{
+					// Hermite Segment
+					double k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea += area * xDelta;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea += y0 * xDelta;
+				}
+				x0 = x1;
+				y0 = y1;
+				m0 = m[j++];
+			}
+
+			double n = random.RangeCC(totalArea);
+			x0 = x[0];
+			y0 = y[0];
+			m0 = m[0];
+			for (int i = 1, j = 1; i < x.Length; ++i)
+			{
+				double x1 = x[i];
+				double y1 = y[i];
+				double m1 = m[j++];
+				double xDelta = x1 - x0;
+				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+				{
+					// Hermite Segment
+					double k4, k3, k2, k1, area;
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					totalArea -= area * xDelta;
+					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.DoubleCO()) * xDelta + x0;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea -= y0 * xDelta;
+					if (totalArea < n) return random.RangeCO(x0, x1);
+				}
+				x0 = x1;
+				y0 = y1;
+				m0 = m[j++];
+			}
+			return x0;
+		}
+
+		private class DoublePiecewiseHermiteSampleGenerator : ISampleGenerator<double>
+		{
+			private struct SegmentData
+			{
+				public double xDelta;
+				public double x0;
+				public double k4;
+				public double k3;
+				public double k2;
+				public double k1;
+				public double area;
+
+				public SegmentData(double x0, double y0, double m0, double x1, double y1, double m1)
+				{
+					xDelta = x1 - x0;
+					this.x0 = x0;
+
+					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+				}
+			}
+
+			private IRandom _random;
+			private SegmentData[] _segments;
+			private ulong[] _cdf;
+
+			public DoublePiecewiseHermiteSampleGenerator(IRandom random, double[] x, double[] y, double[] m)
+			{
+				if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
+				if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
+				if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
+
+				_random = random;
+
+				Initialize(x.Length,
+					(int index, out double x0, out double y0, out double m0) =>
+					{
+						x0 = x[index];
+						y0 = y[index];
+						m0 = m[index * 2];
+					},
+					(int index, out double x1, out double y1, out double m1) =>
+					{
+						x1 = x[index];
+						y1 = y[index];
+						m1 = m[index * 2 - 1];
+					});
+			}
+
+			private delegate void GetFrameDelegate(int index, out double x, out double y, out double m);
+
+			private void Initialize(int frameCount, GetFrameDelegate getFront, GetFrameDelegate getBack)
+			{
+				double totalArea = 0d;
+				int segmentCount = 0;
+				for (int i = 1; i < frameCount; ++i)
+				{
+					double x0, y0, m0, x1, y1, m1;
+					getFront(i - 1, out x0, out y0, out m0);
+					getBack(i, out x1, out y1, out m1);
+					double xDelta = x1 - x0;
+					if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+					{
+						// Hermite Segment
+						if (y0 <= 0d && y1 <= 0d && m0 <= 0d && m1 >= 0d) continue;
+
+						double k4, k3, k2, k1, area;
+						CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+						totalArea += area * xDelta;
+					}
+					else
+					{
+						// Uniform Segment
+						if (y0 <= 0d) continue;
+
+						totalArea += y0 * xDelta;
+					}
+					++segmentCount;
+				}
+
+				double areaToIntScale = ulong.MaxValue + 1d;
+				totalArea += 1d / areaToIntScale;
+
+				_segments = new SegmentData[segmentCount];
+				_cdf = new ulong[segmentCount];
+
+				double areaSum = 0d;
+				for (int i = 1, j = 0; i < frameCount; ++i)
+				{
+					double x0, y0, m0, x1, y1, m1;
+					getFront(i - 1, out x0, out y0, out m0);
+					getBack(i, out x1, out y1, out m1);
+					if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+					{
+						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
+
+						var segmentData = new SegmentData(x0, y0, m0, x1, y1, m1);
+
+						areaSum += segmentData.area * segmentData.xDelta;
+						_segments[j] = segmentData;
+						_cdf[j] = (uint)Math.Floor(areaSum / totalArea * areaToIntScale);
+					}
+					else
+					{
+						// Uniform Segment
+						if (y0 <= 0f) continue;
+
+						var segmentData = new SegmentData(x0, y0, 0f, x1, y0, 0f);
+						areaSum += segmentData.area * segmentData.xDelta;
+						_segments[j] = segmentData;
+						_cdf[j] = (ulong)Math.Floor(areaSum / totalArea * areaToIntScale);
+					}
+					++j;
+				}
+			}
+
+			public double Next()
+			{
+				int i = BinarySearch(_random.Next32(), _cdf);
+
+				if (i < _cdf.Length)
+				{
+					var segment = _segments[i];
+					return FindRoot(segment.k4, segment.k3, segment.k2, segment.k1, segment.area, _random.DoubleCO()) * segment.xDelta + segment.x0;
+				}
+				else
+				{
+					var segment = _segments[_cdf.Length - 1];
+					return segment.x0 + segment.xDelta;
+				}
+			}
+		}
+
+		public static ISampleGenerator<double> MakePiecewiseHermiteSampleGenerator(this IRandom random, double[] x, double[] y, double[] slopes)
+		{
+			return new DoublePiecewiseHermiteSampleGenerator(random, x, y, slopes);
+		}
 
 		#endregion
 	}
