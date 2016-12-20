@@ -23,10 +23,8 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// A static class of extension methods for generating random numbers according to non-uniform distributions.
 	/// </summary>
-	public static class RandomNonUniform
+	public static class RandomSample
 	{
-		//TODO:  Rename this class to RandomSample?  Add UniformSample(), even though it's just a duplicate of RandomFloatingPoint.Range()?
-
 		#region Uniform Distribution
 
 		public static float UniformSample(this IRandom random, float x0, float x1)
