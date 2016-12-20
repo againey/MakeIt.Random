@@ -31,9 +31,15 @@ namespace Experilous.MakeItRandom
 		/// Returns a random value sampled from a uniform probability distribution with the given range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
-		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.  Must be strictly greater than <paramref name="x0"/>.</param>
 		/// <returns>A random value from within the given range.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a small amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeUniformSampleGenerator(IRandom, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float UniformSample(this IRandom random, float x0, float x1)
 		{
 #if UNITY_EDITOR
@@ -68,8 +74,8 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a uniform probability distribution with the given range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
-		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.  Must be strictly greater than <paramref name="x0"/>.</param>
 		/// <returns>A sample generator producing random values from within the given range.</returns>
 		public static ISampleGenerator<float> MakeUniformSampleGenerator(this IRandom random, float x0, float x1)
 		{
@@ -80,9 +86,15 @@ namespace Experilous.MakeItRandom
 		/// Returns a random value sampled from a uniform probability distribution with the given range.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
-		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.  Must be strictly greater than <paramref name="x0"/>.</param>
 		/// <returns>A random value from within the given range.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a small amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeUniformSampleGenerator(IRandom, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double UniformSample(this IRandom random, double x0, double x1)
 		{
 #if UNITY_EDITOR
@@ -117,8 +129,8 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a uniform probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
-		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.  Must be strictly greater than <paramref name="x0"/>.</param>
 		/// <returns>A sample generator producing random values from within the given range.</returns>
 		public static ISampleGenerator<double> MakeUniformSampleGenerator(this IRandom random, double x0, double x1)
 		{
@@ -134,7 +146,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static float NormalSample(this IRandom random, float mean, float standardDeviation)
 		{
@@ -178,7 +190,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation)
 		{
@@ -190,7 +202,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable lookupTable)
@@ -203,9 +215,9 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
-		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2..</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
@@ -228,7 +240,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static double NormalSample(this IRandom random, double mean, double standardDeviation)
 		{
@@ -272,7 +284,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation)
 		{
@@ -284,7 +296,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable lookupTable)
@@ -297,9 +309,9 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
-		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
-		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
@@ -325,7 +337,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random value sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static float ExponentialSample(this IRandom random, float eventRate)
 		{
@@ -366,8 +378,8 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate)
 		{
 			return new FloatExponentialSampleGenerator(random, eventRate, Detail.Distributions.ExponentialFloat.zigguratTable);
@@ -377,9 +389,9 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, Detail.Distributions.OneSidedFloatZigguratTable lookupTable)
 		{
 			return new FloatExponentialSampleGenerator(random, eventRate, lookupTable);
@@ -389,10 +401,10 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
-		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
@@ -413,7 +425,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random value sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static double ExponentialSample(this IRandom random, double eventRate)
 		{
@@ -454,8 +466,8 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate)
 		{
 			return new DoubleExponentialSampleGenerator(random, eventRate, Detail.Distributions.ExponentialDouble.zigguratTable);
@@ -465,9 +477,9 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, Detail.Distributions.OneSidedDoubleZigguratTable lookupTable)
 		{
 			return new DoubleExponentialSampleGenerator(random, eventRate, lookupTable);
@@ -477,10 +489,10 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="eventRate">The event rate of the probability distribution.</param>
-		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
-		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
-		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
@@ -501,6 +513,20 @@ namespace Experilous.MakeItRandom
 
 		#region Triangular Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
+		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <returns>A random value from within the given triangular distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTriangularSampleGenerator(IRandom, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float TriangularSample(this IRandom random, float lower, float mode, float upper)
 		{
 #if UNITY_EDITOR
@@ -549,11 +575,33 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
+		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
 		public static ISampleGenerator<float> MakeTriangularSampleGenerator(this IRandom random, float lower, float mode, float upper)
 		{
 			return new FloatTriangularSampleGenerator(random, lower, mode, upper);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
+		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <returns>A random value from within the given triangular distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTriangularSampleGenerator(IRandom, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double TriangularSample(this IRandom random, double lower, double mode, double upper)
 		{
 #if UNITY_EDITOR
@@ -602,6 +650,14 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
+		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
 		public static ISampleGenerator<double> MakeTriangularSampleGenerator(this IRandom random, double lower, double mode, double upper)
 		{
 			return new DoubleTriangularSampleGenerator(random, lower, mode, upper);
@@ -611,6 +667,21 @@ namespace Experilous.MakeItRandom
 
 		#region Trapezoidal Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
+		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
+		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <returns>A random value from within the given trapezoidal distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float TrapezoidalSample(this IRandom random, float lower, float lowerMode, float upperMode, float upper)
 		{
 #if UNITY_EDITOR
@@ -678,11 +749,35 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
+		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
+		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
 		public static ISampleGenerator<float> MakeTrapezoidalSampleGenerator(this IRandom random, float lower, float lowerMode, float upperMode, float upper)
 		{
 			return new FloatTrapezoidalSampleGenerator(random, lower, lowerMode, upperMode, upper);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
+		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
+		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <returns>A random value from within the given trapezoidal distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double TrapezoidalSample(this IRandom random, double lower, double lowerMode, double upperMode, double upper)
 		{
 #if UNITY_EDITOR
@@ -750,6 +845,15 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
+		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
+		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
+		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
 		public static ISampleGenerator<double> MakeTrapezoidalSampleGenerator(this IRandom random, double lower, double lowerMode, double upperMode, double upper)
 		{
 			return new DoubleTrapezoidalSampleGenerator(random, lower, lowerMode, upperMode, upper);
@@ -759,11 +863,25 @@ namespace Experilous.MakeItRandom
 
 		#region Linear Distribution
 
-		public static float LinearSample(this IRandom random, Vector2 p0, Vector2 p1)
-		{
-			return random.LinearSample(p0.x, p0.y, p1.x, p1.y);
-		}
-
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1)
 		{
 #if UNITY_EDITOR
@@ -774,6 +892,28 @@ namespace Experilous.MakeItRandom
 #endif
 
 			return random.LinearSample(x0, y0, x1, y1, random.FloatCC());
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, Vector2, Vector2)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float LinearSample(this IRandom random, Vector2 p0, Vector2 p1)
+		{
+			return random.LinearSample(p0.x, p0.y, p1.x, p1.y);
 		}
 
 		private static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1, float n)
@@ -872,16 +1012,63 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, float x0, float y0, float x1, float y1)
 		{
 			return FloatLinearSampleGenerator.Create(random, x0, y0, x1, y1);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, Vector2 p0, Vector2 p1)
 		{
 			return FloatLinearSampleGenerator.Create(random, p0.x, p0.y, p1.x, p1.y);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1)
 		{
 #if UNITY_EDITOR
@@ -990,6 +1177,21 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
 		public static ISampleGenerator<double> MakeLinearSampleGenerator(this IRandom random, double x0, double y0, double x1, double y1)
 		{
 			return DoubleLinearSampleGenerator.Create(random, x0, y0, x1, y1);
@@ -1042,11 +1244,27 @@ namespace Experilous.MakeItRandom
 			return x;
 		}
 
-		public static float HermiteSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
-		{
-			return random.HermiteSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
-		}
-
+		/// <summary>
+		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSampleGenerator(IRandom, float, float, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
 #if UNITY_EDITOR
@@ -1056,6 +1274,30 @@ namespace Experilous.MakeItRandom
 #endif
 
 			return random.HermiteSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSampleGenerator(IRandom, Vector2, float, Vector2, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float HermiteSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		{
+			return random.HermiteSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
 		}
 
 		private static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
@@ -1107,14 +1349,46 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
-		{
-			return FloatHermiteSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
-		}
-
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
 			return FloatHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		{
+			return FloatHermiteSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
 		}
 
 		private static void CalculateHermiteCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
@@ -1160,6 +1434,27 @@ namespace Experilous.MakeItRandom
 			return x;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSampleGenerator(IRandom, double, double, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double HermiteSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
 #if UNITY_EDITOR
@@ -1220,6 +1515,23 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
 		public static ISampleGenerator<double> MakeHermiteSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
 			return DoubleHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
@@ -1275,6 +1587,25 @@ namespace Experilous.MakeItRandom
 
 		#region Piecewise Uniform Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The relative weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="y"/>.  For any piece i, it will be bounded by x[i] and x[i + 1].</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseUniformSampleGenerator(IRandom, float[], float[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseUniformSample(this IRandom random, float[] x, float[] y)
 		{
 #if UNITY_EDITOR
@@ -1309,6 +1640,24 @@ namespace Experilous.MakeItRandom
 			return x0;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The lower range bounds (x) and relative weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <param name="xLast">The upper range bound of the very last piece.  Must be strictly greater than the lower bound of the last piece.</param>
+		/// <returns>A random value from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>The lower range bound of each piece serves as the upper bound of the next piece.</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseUniformSampleGenerator(IRandom, Vector2[], float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseUniformSample(this IRandom random, Vector2[] p, float xLast)
 		{
 #if UNITY_EDITOR
@@ -1339,6 +1688,26 @@ namespace Experilous.MakeItRandom
 			return xLast;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="weights">The absolute weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total weights of all the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="weights"/>.  For any piece i, it will be bounded by x[i] and
+		/// x[i + 1].</para>
+		/// <para>The weights provided are used directly, and are not adjusted by the width of
+		/// width of piece ranges.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseWeightedUniformSampleGenerator(IRandom, float[], float[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseWeightedUniformSample(this IRandom random, float[] x, float[] weights)
 		{
 #if UNITY_EDITOR
@@ -1475,21 +1844,85 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The relative weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="y"/>.  For any piece i, it will be bounded by x[i] and x[i + 1].</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseUniformSampleGenerator(this IRandom random, float[] x, float[] y)
 		{
 			return FloatPiecewiseUniformSampleGenerator.FromPositions(random, x, y);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The lower range bounds (x) and relative weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <param name="xLast">The upper range bound of the very last piece.  Must be strictly greater than the lower bound of the last piece.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>The lower range bound of each piece serves as the upper bound of the next piece.</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseUniformSampleGenerator(this IRandom random, Vector2[] p, float xLast)
 		{
 			return FloatPiecewiseUniformSampleGenerator.FromPositions(random, p, xLast);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="weights">The absolute weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total weights of all the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="weights"/>.  For any piece i, it will be bounded by x[i] and
+		/// x[i + 1].</para>
+		/// <para>The weights provided are used directly, and are not adjusted by the width of
+		/// width of piece ranges.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseWeightedUniformSampleGenerator(this IRandom random, float[] x, float[] weights)
 		{
 			return FloatPiecewiseUniformSampleGenerator.FromWeights(random, x, weights);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The relative weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="y"/>.  For any piece i, it will be bounded by x[i] and x[i + 1].</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseUniformSampleGenerator(IRandom, double[], double[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double PiecewiseUniformSample(this IRandom random, double[] x, double[] y)
 		{
 #if UNITY_EDITOR
@@ -1524,6 +1957,26 @@ namespace Experilous.MakeItRandom
 			return x0;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="weights">The absolute weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total weights of all the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="weights"/>.  For any piece i, it will be bounded by x[i] and
+		/// x[i + 1].</para>
+		/// <para>The weights provided are used directly, and are not adjusted by the width of
+		/// width of piece ranges.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseWeightedUniformSampleGenerator(IRandom, double[], double[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double PiecewiseWeightedUniformSample(this IRandom random, double[] x, double[] weights)
 		{
 #if UNITY_EDITOR
@@ -1629,11 +2082,42 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The relative weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="y"/>.  For any piece i, it will be bounded by x[i] and x[i + 1].</para>
+		/// <para>The actual weight of each piece is determined by multiplying the relative weight
+		/// of that piece by the width of that piece's range, producing an area for that piece.</para>
+		/// </remarks>
 		public static ISampleGenerator<double> MakePiecewiseUniformSampleGenerator(this IRandom random, double[] x, double[] y)
 		{
 			return DoublePiecewiseUniformSampleGenerator.FromPositions(random, x, y);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="weights">The absolute weights of the probability distribution pieces.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise uniform distribution.</returns>
+		/// <remarks>
+		/// <para>The total weights of all the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly one more element in <paramref name="x"/> than in
+		/// <paramref name="weights"/>.  For any piece i, it will be bounded by x[i] and
+		/// x[i + 1].</para>
+		/// <para>The weights provided are used directly, and are not adjusted by the width of
+		/// width of piece ranges.</para>
+		/// </remarks>
 		public static ISampleGenerator<double> MakePiecewiseWeightedUniformSampleGenerator(this IRandom random, double[] x, double[] weights)
 		{
 			return DoublePiecewiseUniformSampleGenerator.FromWeights(random, x, weights);
@@ -1643,6 +2127,23 @@ namespace Experilous.MakeItRandom
 
 		#region Piecewise Linear Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseLinearSampleGenerator(IRandom, float[], float[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseLinearSample(this IRandom random, float[] x, float[] y)
 		{
 #if UNITY_EDITOR
@@ -1677,6 +2178,20 @@ namespace Experilous.MakeItRandom
 			return x0;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseLinearSampleGenerator(IRandom, Vector2[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseLinearSample(this IRandom random, Vector2[] p)
 		{
 #if UNITY_EDITOR
@@ -1871,16 +2386,56 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseLinearSampleGenerator(this IRandom random, float[] x, float[] y)
 		{
 			return new FloatPiecewiseLinearSampleGenerator(random, x, y);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseLinearSampleGenerator(this IRandom random, Vector2[] p)
 		{
 			return new FloatPiecewiseLinearSampleGenerator(random, p);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A random value from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseLinearSampleGenerator(IRandom, double[], double[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double PiecewiseLinearSample(this IRandom random, double[] x, double[] y)
 		{
 #if UNITY_EDITOR
@@ -2044,6 +2599,16 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise linear distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// </remarks>
 		public static ISampleGenerator<double> MakePiecewiseLinearSampleGenerator(this IRandom random, double[] x, double[] y)
 		{
 			return new DoublePiecewiseLinearSampleGenerator(random, x, y);
@@ -2053,6 +2618,29 @@ namespace Experilous.MakeItRandom
 
 		#region Piecewise Hermite Curve Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>, and exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="x"/> and <paramref name="y"/>.
+		/// For any piece i, it will be bounded by x[i] and x[i + 1], will have weights y[i] and
+		/// y[i + 1] at those bounds, and slopes m[2i] and m[2i + 1] also at those bounds.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseHermiteSampleGenerator(IRandom, float[], float[], float[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, float[] x, float[] y, float[] m)
 		{
 #if UNITY_EDITOR
@@ -2119,6 +2707,27 @@ namespace Experilous.MakeItRandom
 			return x0;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <para>There should be exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="p"/>.  For any piece i, it will
+		/// be bounded by and have the weights of p[i] and p[i + 1], and will have slopes m[2i]
+		/// and m[2i + 1] at those bounds.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseHermiteSampleGenerator(IRandom, Vector2[], float[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, Vector2[] p, float[] m)
 		{
 #if UNITY_EDITOR
@@ -2178,6 +2787,22 @@ namespace Experilous.MakeItRandom
 			return p0.x;
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite curve segments that define the probability distribution function.</param>
+		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseHermiteSampleGenerator(IRandom, AnimationCurve)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, AnimationCurve curve)
 		{
 #if UNITY_EDITOR
@@ -2407,21 +3032,83 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, float[] x, float[] y, float[] slopes)
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, float[] x, float[] y, float[] m)
 		{
-			return new FloatPiecewiseHermiteSampleGenerator(random, x, y, slopes);
+			return new FloatPiecewiseHermiteSampleGenerator(random, x, y, m);
 		}
 
-		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, Vector2[] p, float[] slopes)
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, Vector2[] p, float[] m)
 		{
-			return new FloatPiecewiseHermiteSampleGenerator(random, p, slopes);
+			return new FloatPiecewiseHermiteSampleGenerator(random, p, m);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite curve segments that define the probability distribution function.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, AnimationCurve curve)
 		{
 			return new FloatPiecewiseHermiteSampleGenerator(random, curve);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>, and exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="x"/> and <paramref name="y"/>.
+		/// For any piece i, it will be bounded by x[i] and x[i + 1], will have weights y[i] and
+		/// y[i + 1] at those bounds, and slopes m[2i] and m[2i + 1] also at those bounds.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseHermiteSampleGenerator(IRandom, double[], double[], double[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
 		public static double PiecewiseHermiteSample(this IRandom random, double[] x, double[] y, double[] m)
 		{
 #if UNITY_EDITOR
@@ -2620,9 +3307,23 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-		public static ISampleGenerator<double> MakePiecewiseHermiteSampleGenerator(this IRandom random, double[] x, double[] y, double[] slopes)
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
+		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
+		/// <paramref name="y"/>.</para>
+		/// </remarks>
+		public static ISampleGenerator<double> MakePiecewiseHermiteSampleGenerator(this IRandom random, double[] x, double[] y, double[] m)
 		{
-			return new DoublePiecewiseHermiteSampleGenerator(random, x, y, slopes);
+			return new DoublePiecewiseHermiteSampleGenerator(random, x, y, m);
 		}
 
 		#endregion
