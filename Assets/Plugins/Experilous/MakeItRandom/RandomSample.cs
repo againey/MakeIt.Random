@@ -169,7 +169,7 @@ namespace Experilous.MakeItRandom
 
 			public float Next()
 			{
-				return Detail.Distributions.SampleZiggurat(_random, _zigguratTable, Detail.Distributions.NormalFloat.F, Detail.Distributions.NormalFloat.SampleFallback) * _standardDeviation + _mean;
+				return Detail.Distributions.NormalFloat.Sample(_random, _zigguratTable) * _standardDeviation + _mean;
 			}
 		}
 
@@ -263,7 +263,7 @@ namespace Experilous.MakeItRandom
 
 			public double Next()
 			{
-				return Detail.Distributions.SampleZiggurat(_random, _zigguratTable, Detail.Distributions.NormalDouble.F, Detail.Distributions.NormalDouble.SampleFallback) * _standardDeviation + _mean;
+				return Detail.Distributions.NormalDouble.Sample(_random, _zigguratTable) * _standardDeviation + _mean;
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace Experilous.MakeItRandom
 
 			public float Next()
 			{
-				return Detail.Distributions.SampleZiggurat(_random, _zigguratTable, Detail.Distributions.ExponentialFloat.F, Detail.Distributions.ExponentialFloat.SampleFallback) / _eventRate;
+				return Detail.Distributions.ExponentialFloat.Sample(_random, _zigguratTable) / _eventRate;
 			}
 		}
 
@@ -446,7 +446,7 @@ namespace Experilous.MakeItRandom
 
 			public double Next()
 			{
-				return Detail.Distributions.SampleZiggurat(_random, _zigguratTable, Detail.Distributions.ExponentialDouble.F, Detail.Distributions.ExponentialDouble.SampleFallback) / _eventRate;
+				return Detail.Distributions.ExponentialDouble.Sample(_random, _zigguratTable) / _eventRate;
 			}
 		}
 

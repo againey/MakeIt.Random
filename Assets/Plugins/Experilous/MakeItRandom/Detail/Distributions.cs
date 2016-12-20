@@ -14,6 +14,8 @@ namespace Experilous.MakeItRandom.Detail
 	{
 		#region Ziggurat Algorithm
 
+		#region Ziggurat Table Types
+
 		public struct FloatZigguratSegment
 		{
 			public uint n;
@@ -105,6 +107,8 @@ namespace Experilous.MakeItRandom.Detail
 				this.shift = shift;
 			}
 		}
+
+		#endregion
 
 		#region Sampling
 
@@ -499,6 +503,32 @@ namespace Experilous.MakeItRandom.Detail
 				return xMin + x;
 			}
 
+			public static float Sample(IRandom random, TwoSidedSymmetricFloatZigguratTable ziggurat)
+			{
+				do
+				{
+					// Select a random segment, and a random n/x within the segment.
+					int n;
+					do
+					{
+						n = (int)random.Next32();
+					} while (n < ziggurat.threshold);
+					int i = n & ziggurat.mask;
+					n = n >> ziggurat.shift;
+					var segment = ziggurat.segments[i];
+					float x = n * segment.s;
+
+					// Dominant quick check within fully-contained segment rectangle.
+					if ((uint)Math.Abs(n) < segment.n) return x;
+
+					// Rare case within tail.
+					if (i == 0) return SampleFallback(random, (1 << (31 - ziggurat.shift)) * ziggurat.segments[1].s * (n > 0 ? +1f : -1f));
+
+					// Slow check within the partially-contained segment rectangle.
+					if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < F(x)) return x;
+				} while (true);
+			}
+
 #if UNITY_EDITOR
 			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
 			private static void GenerateZigguratLookupTable()
@@ -689,6 +719,33 @@ namespace Experilous.MakeItRandom.Detail
 				return xMin + x;
 			}
 
+			public static double Sample(IRandom random, TwoSidedSymmetricDoubleZigguratTable ziggurat)
+			{
+				do
+				{
+					// Select a random segment, and a random n/x within the segment.
+					long n;
+					do
+					{
+						n = (long)random.Next64();
+					} while (n < ziggurat.threshold);
+					int i = (int)(n & ziggurat.mask);
+					n = n >> ziggurat.shift;
+					var segment = ziggurat.segments[i];
+					double x = n * segment.s;
+
+
+					// Dominant quick check within fully-contained segment rectangle.
+					if ((ulong)Math.Abs(n) < segment.n) return x;
+
+					// Rare case within tail.
+					if (i == 0) return SampleFallback(random, (1L << (63 - ziggurat.shift)) * ziggurat.segments[1].s * (n > 0L ? +1d : -1d));
+
+					// Slow check within the partially-contained segment rectangle.
+					if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < F(x)) return x;
+				} while (true);
+			}
+
 #if UNITY_EDITOR
 			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
 			private static void GenerateZigguratLookupTable()
@@ -856,6 +913,28 @@ namespace Experilous.MakeItRandom.Detail
 			public static float SampleFallback(IRandom random, float xMin)
 			{
 				return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
+			}
+
+			public static float Sample(IRandom random, OneSidedFloatZigguratTable ziggurat)
+			{
+				do
+				{
+					// Select a random segment, and a random n/x within the segment.
+					uint n = random.Next32();
+					int i = (int)(n & ziggurat.mask);
+					n = n >> ziggurat.shift;
+					var segment = ziggurat.segments[i];
+					float x = n * segment.s;
+
+					// Dominant quick check within fully-contained segment rectangle.
+					if (n < segment.n) return x;
+
+					// Rare case within tail.
+					if (i == 0) return SampleFallback(random, (1 << (32 - ziggurat.shift)) * ziggurat.segments[1].s);
+
+					// Slow check within the partially-contained segment rectangle.
+					if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < F(x)) return x;
+				} while (true);
 			}
 
 #if UNITY_EDITOR
@@ -1038,6 +1117,28 @@ namespace Experilous.MakeItRandom.Detail
 			{
 				//return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
 				throw new NotImplementedException();
+			}
+
+			public static double Sample(IRandom random, OneSidedDoubleZigguratTable ziggurat)
+			{
+				do
+				{
+					// Select a random segment, and a random n/x within the segment.
+					ulong n = random.Next64();
+					int i = (int)(n & ziggurat.mask);
+					n = n >> ziggurat.shift;
+					var segment = ziggurat.segments[i];
+					double x = n * segment.s;
+
+					// Dominant quick check within fully-contained segment rectangle.
+					if (n < segment.n) return x;
+
+					// Rare case within tail.
+					if (i == 0) return SampleFallback(random, (1L << (64 - ziggurat.shift)) * ziggurat.segments[1].s);
+
+					// Slow check within the partially-contained segment rectangle.
+					if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < F(x)) return x;
+				} while (true);
 			}
 
 #if UNITY_EDITOR
