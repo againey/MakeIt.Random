@@ -178,7 +178,7 @@ namespace Experilous.MakeItRandom.Detail
 			} while (true);
 		}
 
-		public static double SampleZigguratTwoSidedSymmetric(IRandom random, DoubleZigguratSegment[] segments, double[] segmentUpperBounds, long threshold, long mask, int shift, Func<double, double> f, Func<IRandom, double, double> tailSampleFallback)
+		public static double SampleZiggurat(IRandom random, TwoSidedSymmetricDoubleZigguratTable ziggurat, Func<double, double> f, Func<IRandom, double, double> sampleTailFallback)
 		{
 			do
 			{
@@ -187,10 +187,10 @@ namespace Experilous.MakeItRandom.Detail
 				do
 				{
 					n = (long)random.Next64();
-				} while (n < threshold);
-				int i = (int)(n & mask);
-				n = n >> shift;
-				var segment = segments[i];
+				} while (n < ziggurat.threshold);
+				int i = (int)(n & ziggurat.mask);
+				n = n >> ziggurat.shift;
+				var segment = ziggurat.segments[i];
 				double x = n * segment.s;
 
 
@@ -198,10 +198,10 @@ namespace Experilous.MakeItRandom.Detail
 				if ((ulong)Math.Abs(n) < segment.n) return x;
 
 				// Rare case within tail.
-				if (i == 0) return tailSampleFallback(random, (1L << (63 - shift)) * segments[1].s * (n > 0L ? +1d : -1d));
+				if (i == 0) return sampleTailFallback(random, (1L << (63 - ziggurat.shift)) * ziggurat.segments[1].s * (n > 0L ? +1d : -1d));
 
 				// Slow check within the partially-contained segment rectangle.
-				if (random.RangeCO(segmentUpperBounds[i - 1], segmentUpperBounds[i]) < f(x)) return x;
+				if (random.RangeCO(ziggurat.segmentUpperBounds[i - 1], ziggurat.segmentUpperBounds[i]) < f(x)) return x;
 			} while (true);
 		}
 
@@ -211,39 +211,12 @@ namespace Experilous.MakeItRandom.Detail
 
 		public static OneSidedFloatZigguratTable GenerateOneSidedFloatZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
 		{
-			var loopGuard = new Core.InfiniteLoopGuard();
-
 			int segmentCount = 1 << tableSizeMagnitidue;
 
 			var segments = new FloatZigguratSegment[segmentCount];
 			var segmentUpperBounds = new float[segmentCount];
 
-			var x = new double[segmentCount];
-			double a = totalArea / segmentCount;
-			double rMin = fInv(f(0d) / segmentCount);
-			double rMax = rMin;
-			loopGuard.Reset(20);
-			do
-			{
-				rMax = fInv(f(rMax) * 0.5d);
-				loopGuard.Iterate();
-			} while (rMax * f(rMax) + totalArea - fCDF(rMax) > a);
-			double tableError;
-			loopGuard.Reset(100);
-			do
-			{
-				double rAvg = (rMin + rMax) * 0.5d;
-				tableError = CalculateZigguratTableErrorTwoSidedSymmetric(rAvg, segmentCount, f, fInv, fCDF, totalArea, x);
-				if (double.IsNaN(tableError) || tableError > 0d)
-				{
-					rMin = rAvg;
-				}
-				else
-				{
-					rMax = rAvg;
-				}
-				loopGuard.Iterate();
-			} while (double.IsNaN(tableError) || Math.Abs(tableError) > acceptableError);
+			var x = GenerateZigguratTableXValues(segmentCount, f, fInv, fCDF, totalArea, totalArea, acceptableError);
 
 			double intToFloatScale = 1 << (32 - tableSizeMagnitidue);
 
@@ -264,6 +237,34 @@ namespace Experilous.MakeItRandom.Detail
 			return new OneSidedFloatZigguratTable(segments, segmentUpperBounds, ~((~0U) << tableSizeMagnitidue), tableSizeMagnitidue);
 		}
 
+		public static OneSidedDoubleZigguratTable GenerateOneSidedDoubleZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
+		{
+			int segmentCount = 1 << tableSizeMagnitidue;
+
+			var segments = new DoubleZigguratSegment[segmentCount];
+			var segmentUpperBounds = new double[segmentCount];
+
+			var x = GenerateZigguratTableXValues(segmentCount, f, fInv, fCDF, totalArea, totalArea, acceptableError);
+
+			double intToFloatScale = 1L << (64 - tableSizeMagnitidue);
+
+			double y0 = f(x[0]);
+			double a0 = x[0] * y0;
+			double v = a0 + totalArea - fCDF(x[0]);
+			ulong n0 = (ulong)Math.Floor(a0 / v * intToFloatScale);
+			segments[0] = new DoubleZigguratSegment(n0, v / y0 / intToFloatScale);
+			segmentUpperBounds[0] = (float)f(x[0]);
+
+			for (int i = 1; i < segmentCount; ++i)
+			{
+				ulong n = (ulong)Math.Floor(x[i] / x[i - 1] * intToFloatScale);
+				segments[i] = new DoubleZigguratSegment(n, x[i - 1] / intToFloatScale);
+				segmentUpperBounds[i] = f(x[i]);
+			}
+
+			return new OneSidedDoubleZigguratTable(segments, segmentUpperBounds, ~((~0UL) << tableSizeMagnitidue), tableSizeMagnitidue);
+		}
+
 		public static TwoSidedSymmetricFloatZigguratTable GenerateTwoSidedSymmetricFloatZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
 		{
 			int segmentCount = 1 << tableSizeMagnitidue;
@@ -271,28 +272,7 @@ namespace Experilous.MakeItRandom.Detail
 			var segments = new FloatZigguratSegment[segmentCount];
 			var segmentUpperBounds = new float[segmentCount];
 
-			var x = new double[segmentCount];
-			double a = totalArea / segmentCount;
-			double rMin = fInv(f(0d) / segmentCount);
-			double rMax = rMin;
-			do
-			{
-				rMax = fInv(f(rMax) * 0.5d);
-			} while (rMax * f(rMax) + totalArea - fCDF(rMax) > a);
-			double tableError;
-			do
-			{
-				double rAvg = (rMin + rMax) * 0.5d;
-				tableError = CalculateZigguratTableErrorTwoSidedSymmetric(rAvg, segmentCount, f, fInv, fCDF, totalArea, x);
-				if (double.IsNaN(tableError) || tableError > 0d)
-				{
-					rMin = rAvg;
-				}
-				else
-				{
-					rMax = rAvg;
-				}
-			} while (double.IsNaN(tableError) || Math.Abs(tableError) > acceptableError);
+			var x = GenerateZigguratTableXValues(segmentCount, f, fInv, fCDF, totalArea, totalArea * 0.5d, acceptableError);
 
 			double intToFloatScale = 1 << (31 - tableSizeMagnitidue);
 
@@ -313,37 +293,16 @@ namespace Experilous.MakeItRandom.Detail
 			return new TwoSidedSymmetricFloatZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, (int)(~((~0U) << tableSizeMagnitidue)), tableSizeMagnitidue);
 		}
 
-		public static TwoSidedSymmetricDoubleZigguratTable GenerateTwoSidedSymmetricDoubleZiggurat(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
+		public static TwoSidedSymmetricDoubleZigguratTable GenerateTwoSidedSymmetricDoubleZigguratTable(int tableSizeMagnitidue, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double acceptableError)
 		{
 			int segmentCount = 1 << tableSizeMagnitidue;
 
 			var segments = new DoubleZigguratSegment[segmentCount];
 			var segmentUpperBounds = new double[segmentCount];
 
-			var x = new double[segmentCount];
-			double a = totalArea / segmentCount;
-			double rMin = fInv(f(0d) / segmentCount);
-			double rMax = rMin;
-			do
-			{
-				rMax = fInv(f(rMax) * 0.5d);
-			} while (rMax * f(rMax) + totalArea - fCDF(rMax) > a);
-			double tableError;
-			do
-			{
-				double rAvg = (rMin + rMax) * 0.5d;
-				tableError = CalculateZigguratTableErrorTwoSidedSymmetric(rAvg, segmentCount, f, fInv, fCDF, totalArea, x);
-				if (double.IsNaN(tableError) || tableError > 0d)
-				{
-					rMin = rAvg;
-				}
-				else
-				{
-					rMax = rAvg;
-				}
-			} while (double.IsNaN(tableError) || Math.Abs(tableError) > acceptableError);
+			var x = GenerateZigguratTableXValues(segmentCount, f, fInv, fCDF, totalArea, totalArea * 0.5d, acceptableError);
 
-			double intToFloatScale = 1 << (63 - tableSizeMagnitidue);
+			double intToFloatScale = 1L << (63 - tableSizeMagnitidue);
 
 			double y0 = f(x[0]);
 			double a0 = x[0] * y0;
@@ -359,10 +318,53 @@ namespace Experilous.MakeItRandom.Detail
 				segmentUpperBounds[i] = f(x[i]);
 			}
 
-			return new TwoSidedSymmetricDoubleZigguratTable(segments, segmentUpperBounds, int.MinValue + segmentCount, (int)(~((~0UL) << tableSizeMagnitidue)), tableSizeMagnitidue);
+			return new TwoSidedSymmetricDoubleZigguratTable(segments, segmentUpperBounds, long.MinValue + segmentCount, (long)(~((~0UL) << tableSizeMagnitidue)), tableSizeMagnitidue);
 		}
 
-		private static double CalculateZigguratTableErrorTwoSidedSymmetric(double r, int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double[] x)
+		private static double[] GenerateZigguratTableXValues(int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double activeArea, double acceptableError)
+		{
+#if UNITY_EDITOR
+			var loopGuard = new Core.InfiniteLoopGuard();
+#endif
+			var x = new double[segmentCount];
+			double a = activeArea / segmentCount;
+			double rMin = fInv(f(0d) / segmentCount);
+			double rMax = rMin;
+#if UNITY_EDITOR
+			loopGuard.Reset(100);
+#endif
+			do
+			{
+				rMax = fInv(f(rMax) * 0.5d);
+#if UNITY_EDITOR
+				loopGuard.Iterate();
+#endif
+			} while (rMax * f(rMax) + totalArea - fCDF(rMax) > a);
+			double tableError;
+#if UNITY_EDITOR
+			loopGuard.Reset(1000);
+#endif
+			do
+			{
+				double rAvg = (rMin + rMax) * 0.5d;
+				tableError = CalculateZigguratTableError(rAvg, segmentCount, f, fInv, fCDF, totalArea, x);
+				if (double.IsNaN(tableError) || tableError > 0d)
+				{
+					rMin = rAvg;
+				}
+				else
+				{
+					rMax = rAvg;
+				}
+#if UNITY_EDITOR
+				loopGuard.Iterate();
+#endif
+			} while (double.IsNaN(tableError) || Math.Abs(tableError) > acceptableError);
+
+			return x;
+		}
+
+		private static double CalculateZigguratTableError(double r, int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double[] x)
 		{
 			x[0] = r;
 			x[segmentCount - 1] = 0d;
@@ -386,21 +388,23 @@ namespace Experilous.MakeItRandom.Detail
 
 		#region Lookup Table Generation
 
-		private static void GenerateZigguratLookupTable(OneSidedFloatZigguratTable table, string distributionName)
+		private static void GenerateZigguratLookupTable(string distributionName, string tableTypeName, string segmentTypeName, string numericTypeName, int segmentCount, Func<int, string> segmentToString, Func<int, string> upperBoundToString, Func<string> finaleToString)
 		{
-			using (var file = System.IO.File.Open("Experilous/MakeItRandom/Generated/" + distributionName + "DistributionFloatZigguratTable.txt", System.IO.FileMode.Create, System.IO.FileAccess.Write))
+			using (var file = System.IO.File.Open(string.Format("Experilous/MakeItRandom/Generated/{0}{1}.txt", distributionName, tableTypeName), System.IO.FileMode.Create, System.IO.FileAccess.Write))
 			{
 				using (var writer = new System.IO.StreamWriter(file))
 				{
-					writer.WriteLine("\t\t\tpublic static readonly OneSidedFloatZigguratTable zigguratTable = new OneSidedFloatZigguratTable(", distributionName);
+					writer.WriteLine("\t\t\t#region Lookup Table");
+					writer.WriteLine();
+					writer.WriteLine("\t\t\tpublic static readonly {0} zigguratTable = new {0}(", tableTypeName);
 
-					writer.WriteLine("\t\t\t\tnew FloatZigguratSegment[]");
+					writer.WriteLine("\t\t\t\tnew {0}[]", segmentTypeName);
 					writer.WriteLine("\t\t\t\t{");
 					int itemsInRow = 0;
-					foreach (var segment in table.segments)
+					for (int i = 0; i < segmentCount; ++i)
 					{
 						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
-						writer.Write("new FloatZigguratSegment({0:D}U, {1:R}f)", segment.n, segment.s);
+						writer.Write("new {0}({1})", segmentTypeName, segmentToString(i));
 						if (itemsInRow < 3)
 						{
 							writer.Write(", ");
@@ -414,80 +418,62 @@ namespace Experilous.MakeItRandom.Detail
 					}
 					writer.WriteLine("\t\t\t\t},");
 
-					writer.WriteLine("\t\t\t\tnew float[]");
+					writer.WriteLine("\t\t\t\tnew {0}[]", numericTypeName);
 					writer.WriteLine("\t\t\t\t{");
 					itemsInRow = 0;
-					foreach (var segmentUpperBound in table.segmentUpperBounds)
+					for (int i = 0; i < segmentCount; ++i)
 					{
 						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
-						writer.Write(segmentUpperBound.ToString("R"));
+						writer.Write(upperBoundToString(i));
 						if (itemsInRow < 3)
 						{
-							writer.Write("f, ");
+							writer.Write(", ");
 							++itemsInRow;
 						}
 						else
 						{
-							writer.WriteLine("f,");
+							writer.WriteLine(",");
 							itemsInRow = 0;
 						}
 					}
 					writer.WriteLine("\t\t\t\t},");
-					writer.WriteLine("\t\t\t\t{0:D}U, {1:D});", table.mask, table.shift);
+					writer.WriteLine("\t\t\t\t{0});", finaleToString());
+					writer.WriteLine();
+					writer.WriteLine("\t\t\t#endregion");
 				}
 			}
 		}
 
+		private static void GenerateZigguratLookupTable(OneSidedFloatZigguratTable table, string distributionName)
+		{
+			GenerateZigguratLookupTable(distributionName, "OneSidedFloatZigguratTable", "FloatZigguratSegment", "float", table.segments.Length,
+				(int i) => string.Format("{0:D}U, {1:R}f", table.segments[i].n, table.segments[i].s),
+				(int i) => string.Format("{0:R}f", table.segmentUpperBounds[i]),
+				() => string.Format("{0:D}U, {1:D}", table.mask, table.shift));
+		}
+
+		private static void GenerateZigguratLookupTable(OneSidedDoubleZigguratTable table, string distributionName)
+		{
+			GenerateZigguratLookupTable(distributionName, "OneSidedDoubleZigguratTable", "DoubleZigguratSegment", "double", table.segments.Length,
+				(int i) => string.Format("{0:D}UL, {1:R}d", table.segments[i].n, table.segments[i].s),
+				(int i) => string.Format("{0:R}d", table.segmentUpperBounds[i]),
+				() => string.Format("{0:D}UL, {1:D}", table.mask, table.shift));
+		}
+
 		private static void GenerateZigguratLookupTable(TwoSidedSymmetricFloatZigguratTable table, string distributionName)
 		{
-			using (var file = System.IO.File.Open("Experilous/MakeItRandom/Generated/" + distributionName + "DistributionFloatZigguratTable.txt", System.IO.FileMode.Create, System.IO.FileAccess.Write))
-			{
-				using (var writer = new System.IO.StreamWriter(file))
-				{
-					writer.WriteLine("\t\t\tpublic static readonly TwoSidedSymmetricFloatZigguratTable zigguratTable = new TwoSidedSymmetricFloatZigguratTable(", distributionName);
+			GenerateZigguratLookupTable(distributionName, "TwoSidedSymmetricFloatZigguratTable", "FloatZigguratSegment", "float", table.segments.Length,
+				(int i) => string.Format("{0:D}U, {1:R}f", table.segments[i].n, table.segments[i].s),
+				(int i) => string.Format("{0:R}f", table.segmentUpperBounds[i]),
+				() => string.Format("{0:D}, {1:D}, {2:D}", table.threshold, table.mask, table.shift));
+		}
 
-					writer.WriteLine("\t\t\t\tnew FloatZigguratSegment[]");
-					writer.WriteLine("\t\t\t\t{");
-					int itemsInRow = 0;
-					foreach (var segment in table.segments)
-					{
-						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
-						writer.Write("new FloatZigguratSegment({0:D}U, {1:R}f)", segment.n, segment.s);
-						if (itemsInRow < 3)
-						{
-							writer.Write(", ");
-							++itemsInRow;
-						}
-						else
-						{
-							writer.WriteLine(",");
-							itemsInRow = 0;
-						}
-					}
-					writer.WriteLine("\t\t\t\t},");
-
-					writer.WriteLine("\t\t\t\tnew float[]");
-					writer.WriteLine("\t\t\t\t{");
-					itemsInRow = 0;
-					foreach (var segmentUpperBound in table.segmentUpperBounds)
-					{
-						if (itemsInRow == 0) writer.Write("\t\t\t\t\t");
-						writer.Write(segmentUpperBound.ToString("R"));
-						if (itemsInRow < 3)
-						{
-							writer.Write("f, ");
-							++itemsInRow;
-						}
-						else
-						{
-							writer.WriteLine("f,");
-							itemsInRow = 0;
-						}
-					}
-					writer.WriteLine("\t\t\t\t},");
-					writer.WriteLine("\t\t\t\t{0:D}, {1:D}, {2:D});", table.threshold, table.mask, table.shift);
-				}
-			}
+		private static void GenerateZigguratLookupTable(TwoSidedSymmetricDoubleZigguratTable table, string distributionName)
+		{
+			GenerateZigguratLookupTable(distributionName, "TwoSidedSymmetricDoubleZigguratTable", "DoubleZigguratSegment", "double", table.segments.Length,
+				(int i) => string.Format("{0:D}UL, {1:R}d", table.segments[i].n, table.segments[i].s),
+				(int i) => string.Format("{0:R}d", table.segmentUpperBounds[i]),
+				() => string.Format("{0:D}L, {1:D}L, {2:D}", table.threshold, table.mask, table.shift));
 		}
 
 		#endregion
@@ -702,6 +688,162 @@ namespace Experilous.MakeItRandom.Detail
 				} while (y * 2d <= x * x);
 				return xMin + x;
 			}
+
+#if UNITY_EDITOR
+			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
+			private static void GenerateZigguratLookupTable()
+			{
+				var table = GenerateTwoSidedSymmetricDoubleZigguratTable(8,
+					NormalDouble.F,
+					NormalDouble.Inv,
+					NormalDouble.CDF,
+					NormalDouble.totalArea,
+					0.0000000001d);
+
+				Distributions.GenerateZigguratLookupTable(table, "normal");
+			}
+#endif
+
+			#region Lookup Table
+
+			public static readonly TwoSidedSymmetricDoubleZigguratTable zigguratTable = new TwoSidedSymmetricDoubleZigguratTable(
+				new DoubleZigguratSegment[]
+				{
+					new DoubleZigguratSegment(33664194707075580UL, 1.0854731187964883E-16d), new DoubleZigguratSegment(34008778872348400UL, 1.0142325429635547E-16d), new DoubleZigguratSegment(34680993337014104UL, 9.5736780388841845E-17d), new DoubleZigguratSegment(34990657568770336UL, 9.2155356756013127E-17d),
+					new DoubleZigguratSegment(35171969675147616UL, 8.94999777450312E-17d), new DoubleZigguratSegment(35292134271790764UL, 8.7371512890583414E-17d), new DoubleZigguratSegment(35378117278016196UL, 8.5585071376125462E-17d), new DoubleZigguratSegment(35442945514234080UL, 8.4039405778611841E-17d),
+					new DoubleZigguratSegment(35493718323093744UL, 8.2672870773124692E-17d), new DoubleZigguratSegment(35534649467085456UL, 8.1445061477858823E-17d), new DoubleZigguratSegment(35568405008977104UL, 8.0328013974976749E-17d), new DoubleZigguratSegment(35596757795375192UL, 7.9301546846675833E-17d),
+					new DoubleZigguratSegment(35620934667556988UL, 7.8350602558666633E-17d), new DoubleZigguratSegment(35641812848711008UL, 7.7463638140262342E-17d), new DoubleZigguratSegment(35660036954743912UL, 7.6631603650886906E-17d), new DoubleZigguratSegment(35676091784898296UL, 7.5847267857806921E-17d),
+					new DoubleZigguratSegment(35690349282072844UL, 7.5104758238378093E-17d), new DoubleZigguratSegment(35703099787115232UL, 7.4399238277715669E-17d), new DoubleZigguratSegment(35714573408379836UL, 7.3726675551129153E-17d), new DoubleZigguratSegment(35724954981311136UL, 7.308367150700726E-17d),
+					new DoubleZigguratSegment(35734394760846728UL, 7.246733420165257E-17d), new DoubleZigguratSegment(35743016206439688UL, 7.1875181573923323E-17d), new DoubleZigguratSegment(35750921744806292UL, 7.1305066846536944E-17d), new DoubleZigguratSegment(35758197099729808UL, 7.0755120230545752E-17d),
+					new DoubleZigguratSegment(35764914589387784UL, 7.022370282547083E-17d), new DoubleZigguratSegment(35771135668386020UL, 6.9709369768342458E-17d), new DoubleZigguratSegment(35776912909584068UL, 6.9210840484864176E-17d), new DoubleZigguratSegment(35782291565124904UL, 6.8726974456648237E-17d),
+					new DoubleZigguratSegment(35787310807698084UL, 6.8256751317626843E-17d), new DoubleZigguratSegment(35792004726196092UL, 6.7799254380931024E-17d), new DoubleZigguratSegment(35796403130849804UL, 6.7353656908321467E-17d), new DoubleZigguratSegment(35800532209211864UL, 6.6919210590299986E-17d),
+					new DoubleZigguratSegment(35804415064373916UL, 6.6495235821835874E-17d), new DoubleZigguratSegment(35808072159456316UL, 6.6081113446981766E-17d), new DoubleZigguratSegment(35811521686945528UL, 6.5676277713109855E-17d), new DoubleZigguratSegment(35814779877351944UL, 6.528021022747218E-17d),
+					new DoubleZigguratSegment(35817861258552220UL, 6.4892434749169039E-17d), new DoubleZigguratSegment(35820778874804868UL, 6.4512512681230418E-17d), new DoubleZigguratSegment(35823544472597684UL, 6.4140039152460463E-17d), new DoubleZigguratSegment(35826168659065284UL, 6.3774639598510711E-17d),
+					new DoubleZigguratSegment(35828661037604592UL, 6.34159667674924E-17d), new DoubleZigguratSegment(35831030324442284UL, 6.3063698088186088E-17d), new DoubleZigguratSegment(35833284449216072UL, 6.2717533349223272E-17d), new DoubleZigguratSegment(35835430642080296UL, 6.2377192646010181E-17d),
+					new DoubleZigguratSegment(35837475509404112UL, 6.2042414559032007E-17d), new DoubleZigguratSegment(35839425099774752UL, 6.1712954532822292E-17d), new DoubleZigguratSegment(35841284961729536UL, 6.1388583429547154E-17d), new DoubleZigguratSegment(35843060194405860UL, 6.1069086235024589E-17d),
+					new DoubleZigguratSegment(35844755492105972UL, 6.0754260898225572E-17d), new DoubleZigguratSegment(35846375183616132UL, 6.0443917288003085E-17d), new DoubleZigguratSegment(35847923266988940UL, 6.01378762530641E-17d), new DoubleZigguratSegment(35849403440390440UL, 5.9835968773111986E-17d),
+					new DoubleZigguratSegment(35850819129523364UL, 5.9538035190706432E-17d), new DoubleZigguratSegment(35852173512063472UL, 5.924392451476283E-17d), new DoubleZigguratSegment(35853469539482884UL, 5.8953493787785243E-17d), new DoubleZigguratSegment(35854709956581572UL, 5.86666075099288E-17d),
+					new DoubleZigguratSegment(35855897319003892UL, 5.8383137113846216E-17d), new DoubleZigguratSegment(35857034008979116UL, 5.8102960485012374E-17d), new DoubleZigguratSegment(35858122249492996UL, 5.7825961522857639E-17d), new DoubleZigguratSegment(35859164117070260UL, 5.7552029738591955E-17d),
+					new DoubleZigguratSegment(35860161553324524UL, 5.7281059886079485E-17d), new DoubleZigguratSegment(35861116375412264UL, 5.7012951622538921E-17d), new DoubleZigguratSegment(35862030285510420UL, 5.6747609196206521E-17d), new DoubleZigguratSegment(35862904879422248UL, 5.6484941158415288E-17d),
+					new DoubleZigguratSegment(35863741654403748UL, 5.6224860097820187E-17d), new DoubleZigguratSegment(35864542016291452UL, 5.5967282394742606E-17d), new DoubleZigguratSegment(35865307286003252UL, 5.571212799382039E-17d), new DoubleZigguratSegment(35866038705475488UL, 5.545932019333822E-17d),
+					new DoubleZigguratSegment(35866737443092224UL, 5.5208785449779225E-17d), new DoubleZigguratSegment(35867404598656440UL, 5.4960453196285553E-17d), new DoubleZigguratSegment(35868041207947340UL, 5.4714255673845981E-17d), new DoubleZigguratSegment(35868648246903020UL, 5.4470127774144235E-17d),
+					new DoubleZigguratSegment(35869226635463676UL, 5.4228006893104534E-17d), new DoubleZigguratSegment(35869777241106620UL, 5.3987832794262582E-17d), new DoubleZigguratSegment(35870300882101204UL, 5.3749547481171936E-17d), new DoubleZigguratSegment(35870798330508716UL, 5.35130950781288E-17d),
+					new DoubleZigguratSegment(35871270314949872UL, 5.3278421718563805E-17d), new DoubleZigguratSegment(35871717523160160UL, 5.3045475440507924E-17d), new DoubleZigguratSegment(35872140604351216UL, 5.28142060885925E-17d), new DoubleZigguratSegment(35872540171394800UL, 5.2584565222090544E-17d),
+					new DoubleZigguratSegment(35872916802844080UL, 5.235650602854949E-17d), new DoubleZigguratSegment(35873271044805700UL, 5.212998324260366E-17d), new DoubleZigguratSegment(35873603412674756UL, 5.1904953069589761E-17d), new DoubleZigguratSegment(35873914392743628UL, 5.1681373113620042E-17d),
+					new DoubleZigguratSegment(35874204443694672UL, 5.1459202309796161E-17d), new DoubleZigguratSegment(35874473997985716UL, 5.1238400860272662E-17d), new DoubleZigguratSegment(35874723463136704UL, 5.1018930173902257E-17d), new DoubleZigguratSegment(35874953222924820UL, 5.0800752809216491E-17d),
+					new DoubleZigguratSegment(35875163638494956UL, 5.0583832420514567E-17d), new DoubleZigguratSegment(35875355049391712UL, 5.0368133706850852E-17d), new DoubleZigguratSegment(35875527774518516UL, 5.0153622363727465E-17d), new DoubleZigguratSegment(35875682113029072UL, 4.9940265037313126E-17d),
+					new DoubleZigguratSegment(35875818345155812UL, 4.972802928102276E-17d), new DoubleZigguratSegment(35875936732979608UL, 4.9516883514304547E-17d), new DoubleZigguratSegment(35876037521144716UL, 4.9306796983492352E-17d), new DoubleZigguratSegment(35876120937522532UL, 4.909773972459166E-17d),
+					new DoubleZigguratSegment(35876187193827380UL, 4.8889682527876581E-17d), new DoubleZigguratSegment(35876236486187384UL, 4.8682596904184085E-17d), new DoubleZigguratSegment(35876268995673216UL, 4.8476455052799463E-17d), new DoubleZigguratSegment(35876284888787052UL, 4.8271229830834529E-17d),
+					new DoubleZigguratSegment(35876284317914272UL, 4.8066894724006371E-17d), new DoubleZigguratSegment(35876267421739792UL, 4.7863423818731043E-17d), new DoubleZigguratSegment(35876234325631068UL, 4.7660791775451929E-17d), new DoubleZigguratSegment(35876185141989488UL, 4.7458973803127895E-17d),
+					new DoubleZigguratSegment(35876119970571700UL, 4.7257945634811152E-17d), new DoubleZigguratSegment(35876038898782456UL, 4.7057683504249107E-17d), new DoubleZigguratSegment(35875942001940124UL, 4.6858164123448746E-17d), new DoubleZigguratSegment(35875829343516196UL, 4.6659364661145692E-17d),
+					new DoubleZigguratSegment(35875700975349836UL, 4.6461262722123733E-17d), new DoubleZigguratSegment(35875556937838412UL, 4.6263836327333759E-17d), new DoubleZigguratSegment(35875397260104932UL, 4.60670638947641E-17d), new DoubleZigguratSegment(35875221960143116UL, 4.5870924221016983E-17d),
+					new DoubleZigguratSegment(35875031044940916UL, 4.5675396463548382E-17d), new DoubleZigguratSegment(35874824510582828UL, 4.5480460123530982E-17d), new DoubleZigguratSegment(35874602342331888UL, 4.5286095029301979E-17d), new DoubleZigguratSegment(35874364514691508UL, 4.5092281320359729E-17d),
+					new DoubleZigguratSegment(35874110991447596UL, 4.4898999431874913E-17d), new DoubleZigguratSegment(35873841725691400UL, 4.4706230079683639E-17d), new DoubleZigguratSegment(35873556659823120UL, 4.4513954245731648E-17d), new DoubleZigguratSegment(35873255725536628UL, 4.4322153163940065E-17d),
+					new DoubleZigguratSegment(35872938843785276UL, 4.4130808306464661E-17d), new DoubleZigguratSegment(35872605924728916UL, 4.3939901370321723E-17d), new DoubleZigguratSegment(35872256867662032UL, 4.3749414264354834E-17d), new DoubleZigguratSegment(35871891560923020UL, 4.3559329096517885E-17d),
+					new DoubleZigguratSegment(35871509881784372UL, 4.3369628161450639E-17d), new DoubleZigguratSegment(35871111696323500UL, 4.3180293928324075E-17d), new DoubleZigguratSegment(35870696859274160UL, 4.2991309028933341E-17d), new DoubleZigguratSegment(35870265213857844UL, 4.2802656246017204E-17d),
+					new DoubleZigguratSegment(35869816591594968UL, 4.2614318501783156E-17d), new DoubleZigguratSegment(35869350812095264UL, 4.2426278846618258E-17d), new DoubleZigguratSegment(35868867682826892UL, 4.2238520447966022E-17d), new DoubleZigguratSegment(35868366998863560UL, 4.2051026579350316E-17d),
+					new DoubleZigguratSegment(35867848542609188UL, 4.1863780609527425E-17d), new DoubleZigguratSegment(35867312083499068UL, 4.1676765991747995E-17d), new DoubleZigguratSegment(35866757377676896UL, 4.1489966253110574E-17d), new DoubleZigguratSegment(35866184167646664UL, 4.1303364983988877E-17d),
+					new DoubleZigguratSegment(35865592181898328UL, 4.1116945827514946E-17d), new DoubleZigguratSegment(35864981134506320UL, 4.0930692469100447E-17d), new DoubleZigguratSegment(35864350724699460UL, 4.07445886259785E-17d), new DoubleZigguratSegment(35863700636401124UL, 4.0558618036748247E-17d),
+					new DoubleZigguratSegment(35863030537738160UL, 4.037276445090438E-17d), new DoubleZigguratSegment(35862340080516980UL, 4.0187011618333752E-17d), new DoubleZigguratSegment(35861628899665208UL, 4.0001343278760819E-17d), new DoubleZigguratSegment(35860896612636980UL, 3.9815743151123617E-17d),
+					new DoubleZigguratSegment(35860142818779980UL, 3.9630194922861487E-17d), new DoubleZigguratSegment(35859367098662056UL, 3.9444682239095424E-17d), new DoubleZigguratSegment(35858569013355140UL, 3.9259188691681492E-17d), new DoubleZigguratSegment(35857748103673908UL, 3.9073697808117217E-17d),
+					new DoubleZigguratSegment(35856903889366572UL, 3.88881930402802E-17d), new DoubleZigguratSegment(35856035868254904UL, 3.8702657752977574E-17d), new DoubleZigguratSegment(35855143515320252UL, 3.8517075212284249E-17d), new DoubleZigguratSegment(35854226281732248UL, 3.83314285736468E-17d),
+					new DoubleZigguratSegment(35853283593816532UL, 3.8145700869729168E-17d), new DoubleZigguratSegment(35852314851957512UL, 3.79598749979752E-17d), new DoubleZigguratSegment(35851319429431836UL, 3.7773933707861888E-17d), new DoubleZigguratSegment(35850296671168024UL, 3.7587859587815938E-17d),
+					new DoubleZigguratSegment(35849245892427168UL, 3.7401635051764994E-17d), new DoubleZigguratSegment(35848166377399248UL, 3.7215242325293222E-17d), new DoubleZigguratSegment(35847057377709304UL, 3.70286634313694E-17d), new DoubleZigguratSegment(35845918110826860UL, 3.6841880175613884E-17d),
+					new DoubleZigguratSegment(35844747758371804UL, 3.6654874131068793E-17d), new DoubleZigguratSegment(35843545464309232UL, 3.6467626622433658E-17d), new DoubleZigguratSegment(35842310333024872UL, 3.6280118709726541E-17d), new DoubleZigguratSegment(35841041427272436UL, 3.6092331171327947E-17d),
+					new DoubleZigguratSegment(35839737765982992UL, 3.5904244486362238E-17d), new DoubleZigguratSegment(35838398321925948UL, 3.5715838816368176E-17d), new DoubleZigguratSegment(35837022019210084UL, 3.5527093986206982E-17d), new DoubleZigguratSegment(35835607730612088UL, 3.5337989464152724E-17d),
+					new DoubleZigguratSegment(35834154274718872UL, 3.5148504341105944E-17d), new DoubleZigguratSegment(35832660412868724UL, 3.4958617308867188E-17d), new DoubleZigguratSegment(35831124845874880UL, 3.4768306637402508E-17d), new DoubleZigguratSegment(35829546210513544UL, 3.4577550151027855E-17d),
+					new DoubleZigguratSegment(35827923075756752UL, 3.4386325203433822E-17d), new DoubleZigguratSegment(35826253938728312UL, 3.4194608651466136E-17d), new DoubleZigguratSegment(35824537220359376UL, 3.400237682757051E-17d), new DoubleZigguratSegment(35822771260717184UL, 3.38096055108035E-17d),
+					new DoubleZigguratSegment(35820954313978616UL, 3.3616269896302648E-17d), new DoubleZigguratSegment(35819084543016604UL, 3.3422344563100776E-17d), new DoubleZigguratSegment(35817160013564636UL, 3.3227803440159466E-17d), new DoubleZigguratSegment(35815178687920572UL, 3.3032619770486245E-17d),
+					new DoubleZigguratSegment(35813138418147292UL, 3.283676607318827E-17d), new DoubleZigguratSegment(35811036938722564UL, 3.26402141033026E-17d), new DoubleZigguratSegment(35808871858585836UL, 3.2442934809228737E-17d), new DoubleZigguratSegment(35806640652523676UL, 3.2244898287573534E-17d),
+					new DoubleZigguratSegment(35804340651828860UL, 3.2046073735201342E-17d), new DoubleZigguratSegment(35801969034161036UL, 3.1846429398262723E-17d), new DoubleZigguratSegment(35799522812528312UL, 3.1645932517954048E-17d), new DoubleZigguratSegment(35796998823299900UL, 3.1444549272736306E-17d),
+					new DoubleZigguratSegment(35794393713148992UL, 3.1242244716715365E-17d), new DoubleZigguratSegment(35791703924813096UL, 3.1038982713856265E-17d), new DoubleZigguratSegment(35788925681545224UL, 3.083472586767153E-17d), new DoubleZigguratSegment(35786054970113428UL, 3.0629435445986742E-17d),
+					new DoubleZigguratSegment(35783087522188376UL, 3.0423071300345669E-17d), new DoubleZigguratSegment(35780018793937868UL, 3.0215591779571182E-17d), new DoubleZigguratSegment(35776843943623812UL, 3.0006953636946593E-17d), new DoubleZigguratSegment(35773557806969784UL, 2.9797111930423926E-17d),
+					new DoubleZigguratSegment(35770154870036240UL, 2.9586019915200083E-17d), new DoubleZigguratSegment(35766629239304296UL, 2.9373628927927925E-17d), new DoubleZigguratSegment(35762974608627224UL, 2.9159888261745578E-17d), new DoubleZigguratSegment(35759184222660468UL, 2.8944745031212309E-17d),
+					new DoubleZigguratSegment(35755250836324664UL, 2.8728144026131585E-17d), new DoubleZigguratSegment(35751166669790432UL, 2.8510027553119066E-17d), new DoubleZigguratSegment(35746923358397352UL, 2.8290335263633149E-17d), new DoubleZigguratSegment(35742511896829180UL, 2.8069003967025613E-17d),
+					new DoubleZigguratSegment(35737922576762168UL, 2.7845967426985929E-17d), new DoubleZigguratSegment(35733144917078656UL, 2.7621156139541869E-17d), new DoubleZigguratSegment(35728167585590724UL, 2.7394497090535609E-17d), new DoubleZigguratSegment(35722978311044436UL, 2.7165913490213404E-17d),
+					new DoubleZigguratSegment(35717563783966876UL, 2.6935324482241311E-17d), new DoubleZigguratSegment(35711909544670368UL, 2.6702644824080875E-17d), new DoubleZigguratSegment(35705999856430460UL, 2.6467784535217825E-17d), new DoubleZigguratSegment(35699817561496592UL, 2.6230648509221188E-17d),
+					new DoubleZigguratSegment(35693343917162064UL, 2.5991136085005665E-17d), new DoubleZigguratSegment(35686558408595640UL, 2.574914057195866E-17d), new DoubleZigguratSegment(35679438534499520UL, 2.5504548722752941E-17d), new DoubleZigguratSegment(35671959560877180UL, 2.5257240146670295E-17d),
+					new DoubleZigguratSegment(35664094237236188UL, 2.5007086655076293E-17d), new DoubleZigguratSegment(35655812468366472UL, 2.4753951529270857E-17d), new DoubleZigguratSegment(35647080933365484UL, 2.4497688699240826E-17d), new DoubleZigguratSegment(35637862641748124UL, 2.42381418197943E-17d),
+					new DoubleZigguratSegment(35628116414179804UL, 2.3975143228078815E-17d), new DoubleZigguratSegment(35617796272468200UL, 2.3708512763471374E-17d), new DoubleZigguratSegment(35606850719764496UL, 2.3438056427142347E-17d), new DoubleZigguratSegment(35595221887214084UL, 2.3163564854063853E-17d),
+					new DoubleZigguratSegment(35582844517235560UL, 2.2884811564629531E-17d), new DoubleZigguratSegment(35569644745748208UL, 2.2601550956081931E-17d), new DoubleZigguratSegment(35555538635402056UL, 2.2313515985216139E-17d), new DoubleZigguratSegment(35540430398342264UL, 2.2020415482826678E-17d),
+					new DoubleZigguratSegment(35524210229071720UL, 2.1721931026396633E-17d), new DoubleZigguratSegment(35506751643877428UL, 2.1417713279656403E-17d), new DoubleZigguratSegment(35487908190645160UL, 2.1107377684585354E-17d), new DoubleZigguratSegment(35467509348197948UL, 2.0790499361429334E-17d),
+					new DoubleZigguratSegment(35445355372412284UL, 2.0466607032898442E-17d), new DoubleZigguratSegment(35421210759614272UL, 2.0135175736418704E-17d), new DoubleZigguratSegment(35394795874520784UL, 1.9795618018169048E-17d), new DoubleZigguratSegment(35365776112393596UL, 1.9447273207436863E-17d),
+					new DoubleZigguratSegment(35333747705118680UL, 1.908939423896812E-17d), new DoubleZigguratSegment(35298218893900992UL, 1.8721131308609017E-17d), new DoubleZigguratSegment(35258584604257224UL, 1.8341511389484261E-17d), new DoubleZigguratSegment(35214091850277996UL, 1.7949412264741622E-17d),
+					new DoubleZigguratSegment(35163791656304948UL, 1.7543529189065707E-17d), new DoubleZigguratSegment(35106470948133716UL, 1.712233147823125E-17d), new DoubleZigguratSegment(35040553965378924UL, 1.6684005083168497E-17d), new DoubleZigguratSegment(34963956025378688UL, 1.6226375256651104E-17d),
+					new DoubleZigguratSegment(34873860465221124UL, 1.5746800278294615E-17d), new DoubleZigguratSegment(34766367254131880UL, 1.5242021968979491E-17d), new DoubleZigguratSegment(34635918196021084UL, 1.4707949676759017E-17d), new DoubleZigguratSegment(34474313779230784UL, 1.4139338084679377E-17d),
+					new DoubleZigguratSegment(34268938726180456UL, 1.3529288183152378E-17d), new DoubleZigguratSegment(33999340538109528UL, 1.2868438197180147E-17d), new DoubleZigguratSegment(33630057975745736UL, 1.2143575380250794E-17d), new DoubleZigguratSegment(33093853899417256UL, 1.1335075768855529E-17d),
+					new DoubleZigguratSegment(32246150418226184UL, 1.0411708757188931E-17d), new DoubleZigguratSegment(30710080583058260UL, 9.3185883091894422E-18d), new DoubleZigguratSegment(27098515317920860UL, 7.9429406911622032E-18d), new DoubleZigguratSegment(0UL, 5.97416283079066E-18d),
+				},
+				new double[]
+				{
+					0.0012602631037794076d, 0.0026090481839409815d, 0.0040379470002657189d, 0.0055223769562859539d,
+					0.0070508485338551625d, 0.0086165553374865853d, 0.010214943584137251d, 0.011842729631753177d,
+					0.013497422046532948d, 0.015177059457249942d, 0.01688005403419755d, 0.018605091913229687d,
+					0.020351066643595386d, 0.022117032914488306d, 0.023902173322087931d, 0.025705773847723452d,
+					0.027527205344009837d, 0.02936590927893078d, 0.03122138656925684d, 0.033093188701737858d,
+					0.034980910579235004d, 0.036884184688332884d, 0.038802676293856184d, 0.040736079441651259d,
+					0.042684113604935771d, 0.044646520848480864d, 0.046623063413460605d, 0.048613521647041753d,
+					0.050617692216774535d, 0.052635386562021366d, 0.054666429544031385d, 0.056710658263552288d,
+					0.058767921020584771d, 0.060838076395404707d, 0.062920992433580986d, 0.065016545920612942d,
+					0.06712462173415161d, 0.069245112263675815d, 0.071377916889054788d, 0.073522941510715728d,
+					0.07568009812519913d, 0.077849304440773273d, 0.0800304835285196d, 0.082223563504925129d,
+					0.0844284772425457d, 0.086645162105747311d, 0.0888735597089166d, 0.0911136156948517d,
+					0.093365279531327575d, 0.095628504324064639d, 0.097903246644540087d, 0.10018946637125786d,
+					0.10248712654325007d, 0.1047961932247166d, 0.10711663537982939d, 0.10944842475683067d,
+					0.1117915357806457d, 0.11414594545331015d, 0.11651163326158441d, 0.1188885810911868d,
+					0.12127677314713731d, 0.1236761958797481d, 0.12608683791584466d, 0.12850868999483861d,
+					0.13094174490930813d, 0.13338599744977464d, 0.13584144435339196d, 0.13830808425628768d,
+					0.1407859176493225d, 0.14327494683705133d, 0.14577517589968933d, 0.14828661065790358d,
+					0.1508092586402647d, 0.15334312905320882d, 0.15588823275337071d, 0.15844458222216212d,
+					0.16101219154247903d, 0.16359107637743125d, 0.16618125395099712d, 0.16878274303051302d,
+					0.17139556391091637d, 0.17401973840066678d, 0.17665528980927606d, 0.17930224293638461d,
+					0.18196062406232591d, 0.18463046094012789d, 0.18731178278890181d, 0.19000462028857643d,
+					0.19270900557593706d, 0.19542497224193547d, 0.19815255533023685d, 0.20089179133697707d,
+					0.20364271821170368d, 0.20640537535947912d, 0.20917980364412631d, 0.21196604539260014d,
+					0.21476414440047067d, 0.21757414593850696d, 0.22039609676035149d, 0.22323004511127939d,
+					0.22607604073803739d, 0.22893413489975975d, 0.23180438037996215d, 0.234686831499614d,
+					0.23758154413129448d, 0.24048857571443658d, 0.2434079852716689d, 0.24633983342626395d,
+					0.24928418242070521d, 0.25224109613638718d, 0.25521064011446359d, 0.25819288157786274d,
+					0.26118788945448895d, 0.26419573440163319d, 0.26721648883161536d, 0.27025022693868683d,
+					0.27329702472721934d, 0.27635696004121318d, 0.27943011259515582d, 0.28251656400626773d,
+					0.28561639782817211d, 0.28872969958603067d, 0.29185655681318706d, 0.29499705908936413d,
+					0.2981512980804642d, 0.30131936758002414d, 0.30450136355237972d, 0.30769738417759696d,
+					0.31090752989823395d, 0.31413190346799535d, 0.31737061000235139d, 0.32062375703119322d,
+					0.32389145455360052d, 0.3271738150948057d, 0.33047095376543795d, 0.33378298832314d,
+					0.33711003923665456d, 0.340452229752479d, 0.34380968596420125d, 0.34718253688462491d,
+					0.35057091452080869d, 0.3539749539521444d, 0.35739479341161062d, 0.36083057437034172d,
+					0.36428244162566636d, 0.36775054339277291d, 0.37123503140017139d, 0.37473606098913287d,
+					0.37825379121729397d, 0.38178838496662981d, 0.38534000905600846d, 0.38890883435855428d,
+					0.39249503592406065d, 0.3960987931067082d, 0.39972028969836149d, 0.40335971406773158d,
+					0.40701725930571442d, 0.41069312337723179d, 0.41438750927992329d, 0.41810062521006269d,
+					0.4218326847360947d, 0.42558390698021531d, 0.42935451680844844d, 0.43314474502970085d,
+					0.43695482860431323d, 0.44078501086265803d, 0.44463554173437719d, 0.44850667798889243d,
+					0.45239868348786821d, 0.45631182945035631d, 0.46024639473140438d, 0.46420266611497124d,
+					0.4681809386220519d, 0.47218151583498907d, 0.47620471023901778d, 0.48025084358217812d,
+					0.48432024725481471d, 0.48841326268998525d, 0.49253024178620258d, 0.49667154735405783d,
+					0.50083755358839455d, 0.5050286465678524d, 0.50924522478374934d, 0.51348769970044261d,
+					0.5177564963495026d, 0.52205205396023491d, 0.52637482662932111d, 0.53072528403260044d,
+					0.53510391218229825d, 0.53951121423331849d, 0.54394771134256592d, 0.54841394358565088d,
+					0.55291047093576107d, 0.5574378743099635d, 0.56199675668874394d, 0.56658774431518844d,
+					0.57121148798089449d, 0.57586866440645668d, 0.58055997772523316d, 0.5852861610800647d,
+					0.59004797834371825d, 0.5948462259750642d, 0.59968173502441113d, 0.60455537330302844d,
+					0.60946804773371765d, 0.61442070690139527d, 0.61941434382505389d, 0.62444999897523468d,
+					0.62952876356433585d, 0.63465178314077086d, 0.63982026152226645d, 0.64503546510857d,
+					0.65029872761964114d, 0.65561145531220477d, 0.6609751327355311d, 0.66639132909673138d,
+					0.67186170531700928d, 0.677388021873564d, 0.68297214753765556d, 0.68861606913830564d,
+					0.69432190250392845d, 0.70009190476181493d, 0.705928488208979d, 0.71183423600894935d,
+					0.71781192001958771d, 0.72386452111949351d, 0.72999525247832509d, 0.73620758631385352d,
+					0.74250528480162237d, 0.74889243595964516d, 0.75537349553135413d, 0.76195333614981209d,
+					0.76863730540551067d, 0.77543129488775442d, 0.78234182286676468d, 0.78937613408958662d,
+					0.79654232126471991d, 0.80384947433796661d, 0.81130786581244374d, 0.81892918344439058d,
+					0.82672682613658155d, 0.8347162855364465d, 0.84291564603138935d, 0.85134625175895529d,
+					0.86003361489043029d, 0.8690086821390387d, 0.87830965033534147d, 0.88798465572506224d,
+					0.898095917332063d, 0.908726435976224d, 0.91999150148558251d, 0.93206007296811533d,
+					0.94519895106839869d, 0.95987909012352313d, 0.97710170042559519d, 1d,
+				},
+				-9223372036854775552L, 255L, 8);
+
+			#endregion
 		}
 
 		public static class ExponentialFloat
@@ -897,6 +1039,162 @@ namespace Experilous.MakeItRandom.Detail
 				//return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
 				throw new NotImplementedException();
 			}
+
+#if UNITY_EDITOR
+			//[UnityEditor.Callbacks.DidReloadScripts] // Uncomment this attribute in order to generate and print tables in the Unity console pane.
+			private static void GenerateZigguratLookupTable()
+			{
+				var table = GenerateOneSidedDoubleZigguratTable(8,
+					ExponentialDouble.F,
+					ExponentialDouble.Inv,
+					ExponentialDouble.CDF,
+					ExponentialDouble.totalArea,
+					0.0000000001d);
+
+				Distributions.GenerateZigguratLookupTable(table, "exponential");
+			}
+#endif
+
+			#region Lookup Table
+
+			public static readonly OneSidedDoubleZigguratTable zigguratTable = new OneSidedDoubleZigguratTable(
+				new DoubleZigguratSegment[]
+				{
+					new DoubleZigguratSegment(63772366859522280UL, 1.20696750791125E-16d), new DoubleZigguratSegment(64979414100238672UL, 1.0681896298331217E-16d), new DoubleZigguratSegment(67254589512039624UL, 9.6326191876421157E-17d), new DoubleZigguratSegment(68340206366486832UL, 8.9905562077145374E-17d),
+					new DoubleZigguratSegment(68984669232829704UL, 8.526741348889737E-17d), new DoubleZigguratSegment(69414802082054456UL, 8.1631150670592829E-17d), new DoubleZigguratSegment(69723845488995376UL, 7.8637237937017711E-17d), new DoubleZigguratSegment(69957458710799600UL, 7.609039270331503E-17d),
+					new DoubleZigguratSegment(70140739975257512UL, 7.3872720521710013E-17d), new DoubleZigguratSegment(70288673577583824UL, 7.19075810198551E-17d), new DoubleZigguratSegment(70410779876389352UL, 7.0142343184507428E-17d), new DoubleZigguratSegment(70513409253243560UL, 6.8539300429306E-17d),
+					new DoubleZigguratSegment(70600966658820592UL, 6.7070512214976535E-17d), new DoubleZigguratSegment(70676607522012184UL, 6.5714697526358633E-17d), new DoubleZigguratSegment(70742653925986240UL, 6.4455272862060018E-17d), new DoubleZigguratSegment(70800854274376992UL, 6.3279063402889638E-17d),
+					new DoubleZigguratSegment(70852551217625272UL, 6.2175427953490451E-17d), new DoubleZigguratSegment(70898793638242776UL, 6.1135647843497291E-17d), new DoubleZigguratSegment(70940413345692672UL, 6.0152489661463532E-17d), new DoubleZigguratSegment(70978078840928856UL, 5.9219885666882523E-17d),
+					new DoubleZigguratSegment(71012333790235880UL, 5.8332695809998062E-17d), new DoubleZigguratSegment(71043625065941864UL, 5.7486527562431951E-17d), new DoubleZigguratSegment(71072323521182632UL, 5.6677597483183857E-17d), new DoubleZigguratSegment(71098739610610056UL, 5.5902623429363161E-17d),
+					new DoubleZigguratSegment(71123135293969672UL, 5.5158739614067925E-17d), new DoubleZigguratSegment(71145733218227816UL, 5.4443428934794447E-17d), new DoubleZigguratSegment(71166723879712304UL, 5.3754468521966395E-17d), new DoubleZigguratSegment(71186271267988856UL, 5.3089885523930752E-17d),
+					new DoubleZigguratSegment(71204517355341680UL, 5.2447920902046322E-17d), new DoubleZigguratSegment(71221585699139440UL, 5.1826999554768008E-17d), new DoubleZigguratSegment(71237584355744536UL, 5.1225705487422824E-17d), new DoubleZigguratSegment(71252608255239720UL, 5.0642761038094523E-17d),
+					new DoubleZigguratSegment(71266741150279312UL, 5.0077009389346928E-17d), new DoubleZigguratSegment(71280057225887664UL, 4.9527399760977617E-17d), new DoubleZigguratSegment(71292622437321400UL, 4.8992974805038552E-17d), new DoubleZigguratSegment(71304495628308168UL, 4.8472859821247125E-17d),
+					new DoubleZigguratSegment(71315729470752208UL, 4.7966253486016329E-17d), new DoubleZigguratSegment(71326371258417424UL, 4.74724198470148E-17d), new DoubleZigguratSegment(71336463580487072UL, 4.6990681381359775E-17d), new DoubleZigguratSegment(71346044895765176UL, 4.6520412952161853E-17d),
+					new DoubleZigguratSegment(71355150024270752UL, 4.6061036527357203E-17d), new DoubleZigguratSegment(71363810569815488UL, 4.5612016548221393E-17d), new DoubleZigguratSegment(71372055284652128UL, 4.5172855853905525E-17d), new DoubleZigguratSegment(71379910385285088UL, 4.4743092083723381E-17d),
+					new DoubleZigguratSegment(71387399826935872UL, 4.4322294491482472E-17d), new DoubleZigguratSegment(71394545542866120UL, 4.3910061116462461E-17d), new DoubleZigguratSegment(71401367653717376UL, 4.3506016264145878E-17d), new DoubleZigguratSegment(71407884651176136UL, 4.3109808256848286E-17d),
+					new DoubleZigguratSegment(71414113559577480UL, 4.2721107420253575E-17d), new DoubleZigguratSegment(71420070078489120UL, 4.2339604276754553E-17d), new DoubleZigguratSegment(71425768708846112UL, 4.1965007920603921E-17d), new DoubleZigguratSegment(71431222864816272UL, 4.1597044553336888E-17d),
+					new DoubleZigguratSegment(71436444973250568UL, 4.123545616084716E-17d), new DoubleZigguratSegment(71441446562302288UL, 4.0879999315974251E-17d), new DoubleZigguratSegment(71446238340570696UL, 4.0530444092567017E-17d), new DoubleZigguratSegment(71450830267934128UL, 4.0186573078786464E-17d),
+					new DoubleZigguratSegment(71455231619075776UL, 3.9848180478950536E-17d), new DoubleZigguratSegment(71459451040569208UL, 3.9515071294545575E-17d), new DoubleZigguratSegment(71463496602274232UL, 3.9187060576167681E-17d), new DoubleZigguratSegment(71467375843695584UL, 3.8863972739140352E-17d),
+					new DoubleZigguratSegment(71471095815871664UL, 3.8545640936406042E-17d), new DoubleZigguratSegment(71474663119289416UL, 3.8231906483028066E-17d), new DoubleZigguratSegment(71478083938258224UL, 3.79226183272825E-17d), new DoubleZigguratSegment(71481364072123376UL, 3.7617632563880344E-17d),
+					new DoubleZigguratSegment(71484508963652568UL, 3.7316811985350846E-17d), new DoubleZigguratSegment(71487523724889744UL, 3.7020025668046269E-17d), new DoubleZigguratSegment(71490413160735560UL, 3.6727148589605975E-17d), new DoubleZigguratSegment(71493181790483760UL, 3.6438061275049469E-17d),
+					new DoubleZigguratSegment(71495833867516728UL, 3.6152649468960936E-17d), new DoubleZigguratSegment(71498373397340208UL, 3.5870803831486411E-17d), new DoubleZigguratSegment(71500804154117744UL, 3.5592419656093572E-17d), new DoubleZigguratSegment(71503129695847080UL, 3.5317396607247272E-17d),
+					new DoubleZigguratSegment(71505353378306168UL, 3.5045638476334119E-17d), new DoubleZigguratSegment(71507478367882224UL, 3.4777052954330013E-17d), new DoubleZigguratSegment(71509507653385736UL, 3.4511551419847518E-17d), new DoubleZigguratSegment(71511444056940432UL, 3.4249048741327744E-17d),
+					new DoubleZigguratSegment(71513290244031144UL, 3.3989463092255551E-17d), new DoubleZigguratSegment(71515048732782992UL, 3.3732715778379211E-17d), new DoubleZigguratSegment(71516721902538448UL, 3.347873107600745E-17d), new DoubleZigguratSegment(71518312001791240UL, 3.3227436080539247E-17d),
+					new DoubleZigguratSegment(71519821155531784UL, 3.2978760564455773E-17d), new DoubleZigguratSegment(71521251372051992UL, 3.2732636844070869E-17d), new DoubleZigguratSegment(71522604549254016UL, 3.2488999654396488E-17d), new DoubleZigguratSegment(71523882480502568UL, 3.2247786031534141E-17d),
+					new DoubleZigguratSegment(71525086860056864UL, 3.2008935202052505E-17d), new DoubleZigguratSegment(71526219288115176UL, 3.17723884788559E-17d), new DoubleZigguratSegment(71527281275501592UL, 3.1538089163088858E-17d), new DoubleZigguratSegment(71528274248022352UL, 3.1305982451658517E-17d),
+					new DoubleZigguratSegment(71529199550516096UL, 3.1076015349990128E-17d), new DoubleZigguratSegment(71530058450620744UL, 3.0848136589661031E-17d), new DoubleZigguratSegment(71530852142277376UL, 3.0622296550586263E-17d), new DoubleZigguratSegment(71531581748990056UL, 3.0398447187454056E-17d),
+					new DoubleZigguratSegment(71532248326858184UL, 3.0176541960132511E-17d), new DoubleZigguratSegment(71532852867397528UL, 2.9956535767789653E-17d), new DoubleZigguratSegment(71533396300163880UL, 2.9738384886488344E-17d), new DoubleZigguratSegment(71533879495192424UL, 2.9522046910035111E-17d),
+					new DoubleZigguratSegment(71534303265264960UL, 2.9307480693877972E-17d), new DoubleZigguratSegment(71534668368015544UL, 2.9094646301863269E-17d), new DoubleZigguratSegment(71534975507884952UL, 2.8883504955674859E-17d), new DoubleZigguratSegment(71535225337932888UL, 2.8674018986791709E-17d),
+					new DoubleZigguratSegment(71535418461516336UL, 2.8466151790811229E-17d), new DoubleZigguratSegment(71535555433841896UL, 2.8259867783996306E-17d), new DoubleZigguratSegment(71535636763398888UL, 2.8055132361913684E-17d), new DoubleZigguratSegment(71535662913279912UL, 2.78519118600403E-17d),
+					new DoubleZigguratSegment(71535634302394504UL, 2.7650173516222479E-17d), new DoubleZigguratSegment(71535551306581368UL, 2.7449885434880427E-17d), new DoubleZigguratSegment(71535414259624120UL, 2.7251016552857628E-17d), new DoubleZigguratSegment(71535223454174752UL, 2.70535366068212E-17d),
+					new DoubleZigguratSegment(71534979142589192UL, 2.6857416102125263E-17d), new DoubleZigguratSegment(71534681537678208UL, 2.6662626283055072E-17d), new DoubleZigguratSegment(71534330813377344UL, 2.6469139104374668E-17d), new DoubleZigguratSegment(71533927105338544UL, 2.6276927204105794E-17d),
+					new DoubleZigguratSegment(71533470511446256UL, 2.6085963877470075E-17d), new DoubleZigguratSegment(71532961092260304UL, 2.5896223051930759E-17d), new DoubleZigguratSegment(71532398871387568UL, 2.5707679263274017E-17d), new DoubleZigguratSegment(71531783835784296UL, 2.5520307632673431E-17d),
+					new DoubleZigguratSegment(71531115935990608UL, 2.5334083844684606E-17d), new DoubleZigguratSegment(71530395086298368UL, 2.5148984126119895E-17d), new DoubleZigguratSegment(71529621164853544UL, 2.4964985225756105E-17d), new DoubleZigguratSegment(71528794013693928UL, 2.4782064394830715E-17d),
+					new DoubleZigguratSegment(71527913438722624UL, 2.4600199368284624E-17d), new DoubleZigguratSegment(71526979209617888UL, 2.4419368346711734E-17d), new DoubleZigguratSegment(71525991059679344UL, 2.423954997897786E-17d), new DoubleZigguratSegment(71524948685610536UL, 2.4060723345473449E-17d),
+					new DoubleZigguratSegment(71523851747237608UL, 2.3882867941966423E-17d), new DoubleZigguratSegment(71522699867163496UL, 2.370596366402328E-17d), new DoubleZigguratSegment(71521492630357192UL, 2.352999079196811E-17d), new DoubleZigguratSegment(71520229583676768UL, 2.33549299763508E-17d),
+					new DoubleZigguratSegment(71518910235325544UL, 2.3180762223896976E-17d), new DoubleZigguratSegment(71517534054239544UL, 2.3007468883913711E-17d), new DoubleZigguratSegment(71516100469405040UL, 2.2835031635126063E-17d), new DoubleZigguratSegment(71514608869104128UL, 2.2663432472920768E-17d),
+					new DoubleZigguratSegment(71513058600086448UL, 2.2492653696974424E-17d), new DoubleZigguratSegment(71511448966664608UL, 2.2322677899244458E-17d), new DoubleZigguratSegment(71509779229730824UL, 2.2153487952302097E-17d), new DoubleZigguratSegment(71508048605691832UL, 2.198506699798742E-17d),
+					new DoubleZigguratSegment(71506256265319024UL, 2.181739843636726E-17d), new DoubleZigguratSegment(71504401332510368UL, 2.1650465914977544E-17d), new DoubleZigguratSegment(71502482882960120UL, 2.1484253318332238E-17d), new DoubleZigguratSegment(71500499942732576UL, 2.1318744757681668E-17d),
+					new DoubleZigguratSegment(71498451486735056UL, 2.1153924561003576E-17d), new DoubleZigguratSegment(71496336437085424UL, 2.098977726321071E-17d), new DoubleZigguratSegment(71494153661368752UL, 2.0826287596559232E-17d), new DoubleZigguratSegment(71491901970777576UL, 2.0663440481242576E-17d),
+					new DoubleZigguratSegment(71489580118129312UL, 2.0501221016155804E-17d), new DoubleZigguratSegment(71487186795754240UL, 2.0339614469815731E-17d), new DoubleZigguratSegment(71484720633246856UL, 2.0178606271422415E-17d), new DoubleZigguratSegment(71482180195072584UL, 2.0018182002047778E-17d),
+					new DoubleZigguratSegment(71479563978021464UL, 1.985832738593732E-17d), new DoubleZigguratSegment(71476870408499648UL, 1.969902828191098E-17d), new DoubleZigguratSegment(71474097839648632UL, 1.9540270674849322E-17d), new DoubleZigguratSegment(71471244548281720UL, 1.9382040667251208E-17d),
+					new DoubleZigguratSegment(71468308731626032UL, 1.922432447084916E-17d), new DoubleZigguratSegment(71465288503857344UL, 1.9067108398268543E-17d), new DoubleZigguratSegment(71462181892414368UL, 1.8910378854716563E-17d), new DoubleZigguratSegment(71458986834077944UL, 1.8754122329686949E-17d),
+					new DoubleZigguratSegment(71455701170798680UL, 1.8598325388666054E-17d), new DoubleZigguratSegment(71452322645256392UL, 1.8442974664825692E-17d), new DoubleZigguratSegment(71448848896132328UL, 1.8288056850687888E-17d), new DoubleZigguratSegment(71445277453073952UL, 1.8133558689746263E-17d),
+					new DoubleZigguratSegment(71441605731330320UL, 1.797946696802835E-17d), new DoubleZigguratSegment(71437831026034192UL, 1.7825768505582683E-17d), new DoubleZigguratSegment(71433950506104784UL, 1.7672450147873911E-17d), new DoubleZigguratSegment(71429961207743080UL, 1.7519498757068557E-17d),
+					new DoubleZigguratSegment(71425860027488696UL, 1.7366901203193372E-17d), new DoubleZigguratSegment(71421643714805160UL, 1.7214644355147341E-17d), new DoubleZigguratSegment(71417308864156744UL, 1.7062715071547652E-17d), new DoubleZigguratSegment(71412851906537296UL, 1.6911100191388819E-17d),
+					new DoubleZigguratSegment(71408269100407136UL, 1.6759786524493173E-17d), new DoubleZigguratSegment(71403556521991136UL, 1.66087608417296E-17d), new DoubleZigguratSegment(71398710054885048UL, 1.645800986497626E-17d), new DoubleZigguratSegment(71393725378913792UL, 1.6307520256801348E-17d),
+					new DoubleZigguratSegment(71388597958178944UL, 1.6157278609834474E-17d), new DoubleZigguratSegment(71383323028226568UL, 1.6007271435799465E-17d), new DoubleZigguratSegment(71377895582260496UL, 1.5857485154177305E-17d), new DoubleZigguratSegment(71372310356317792UL, 1.5707906080465929E-17d),
+					new DoubleZigguratSegment(71366561813315232UL, 1.5558520414001098E-17d), new DoubleZigguratSegment(71360644125866232UL, 1.5409314225300011E-17d), new DoubleZigguratSegment(71354551157757176UL, 1.5260273442886417E-17d), new DoubleZigguratSegment(71348276443960256UL, 1.5111383839552822E-17d),
+					new DoubleZigguratSegment(71341813169047312UL, 1.4962631018011879E-17d), new DoubleZigguratSegment(71335154143854104UL, 1.4814000395885147E-17d), new DoubleZigguratSegment(71328291780228152UL, 1.4665477189973224E-17d), new DoubleZigguratSegment(71321218063675016UL, 1.4517046399746417E-17d),
+					new DoubleZigguratSegment(71313924523696616UL, 1.4368692789990012E-17d), new DoubleZigguratSegment(71306402201592224UL, 1.4220400872532339E-17d), new DoubleZigguratSegment(71298641615465872UL, 1.4072154886977439E-17d), new DoubleZigguratSegment(71290632722153896UL, 1.3923938780357068E-17d),
+					new DoubleZigguratSegment(71282364875752632UL, 1.3775736185608778E-17d), new DoubleZigguratSegment(71273826782387200UL, 1.3627530398778089E-17d), new DoubleZigguratSegment(71265006450818544UL, 1.3479304354832931E-17d), new DoubleZigguratSegment(71255891138435608UL, 1.3331040601967594E-17d),
+					new DoubleZigguratSegment(71246467292122376UL, 1.3182721274261178E-17d), new DoubleZigguratSegment(71236720483423656UL, 1.3034328062541884E-17d), new DoubleZigguratSegment(71226635337358696UL, 1.28858421832931E-17d), new DoubleZigguratSegment(71216195454144664UL, 1.2737244345420058E-17d),
+					new DoubleZigguratSegment(71205383322992928UL, 1.2588514714676393E-17d), new DoubleZigguratSegment(71194180227025976UL, 1.243963287552815E-17d), new DoubleZigguratSegment(71182566138229392UL, 1.2290577790208097E-17d), new DoubleZigguratSegment(71170519601199848UL, 1.2141327754685309E-17d),
+					new DoubleZigguratSegment(71158017604269208UL, 1.1991860351243424E-17d), new DoubleZigguratSegment(71145035436377184UL, 1.1842152397324965E-17d), new DoubleZigguratSegment(71131546527819136UL, 1.1692179890258388E-17d), new DoubleZigguratSegment(71117522272709312UL, 1.1541917947437776E-17d),
+					new DoubleZigguratSegment(71102931830663096UL, 1.1391340741471876E-17d), new DoubleZigguratSegment(71087741904803656UL, 1.1240421429758035E-17d), new DoubleZigguratSegment(71071916492728992UL, 1.1089132077866427E-17d), new DoubleZigguratSegment(71055416606517360UL, 1.0937443576039054E-17d),
+					new DoubleZigguratSegment(71038199957185192UL, 1.0785325548014646E-17d), new DoubleZigguratSegment(71020220598218552UL, 1.0632746251282332E-17d), new DoubleZigguratSegment(71001428521848824UL, 1.0479672467741293E-17d), new DoubleZigguratSegment(70981769200598696UL, 1.0326069383597154E-17d),
+					new DoubleZigguratSegment(70961183065243192UL, 1.0171900457154626E-17d), new DoubleZigguratSegment(70939604908654200UL, 1.0017127272965171E-17d), new DoubleZigguratSegment(70916963202955104UL, 9.8617093805521682E-18d), new DoubleZigguratSegment(70893179314914896UL, 9.7056041156570079E-18d),
+					new DoubleZigguratSegment(70868166601440784UL, 9.5487664016187281E-18d), new DoubleZigguratSegment(70841829363236496UL, 9.3911485281061336E-18d), new DoubleZigguratSegment(70814061629987016UL, 9.2326999039508186E-18d), new DoubleZigguratSegment(70784745744555392UL, 9.0733667802648861E-18d),
+					new DoubleZigguratSegment(70753750706306280UL, 8.9130919393463231E-18d), new DoubleZigguratSegment(70720930224362304UL, 8.7518143440503925E-18d), new DoubleZigguratSegment(70686120419778504UL, 8.5894687413013E-18d), new DoubleZigguratSegment(70649137100503544UL, 8.4259852121896653E-18d),
+					new DoubleZigguratSegment(70609772513534400UL, 8.2612886595890151E-18d), new DoubleZigguratSegment(70567791453432432UL, 8.095298222352302E-18d), new DoubleZigguratSegment(70522926573379376UL, 7.92792660281732E-18d), new DoubleZigguratSegment(70474872701480272UL, 7.7590792914254253E-18d),
+					new DoubleZigguratSegment(70423279907230520UL, 7.5886536685651286E-18d), new DoubleZigguratSegment(70367744985522208UL, 7.4165379590539734E-18d), new DoubleZigguratSegment(70307800920475736UL, 7.242610008647501E-18d), new DoubleZigguratSegment(70242903747443136UL, 7.066735844172189E-18d),
+					new DoubleZigguratSegment(70172416032100376UL, 6.8887679687100935E-18d), new DoubleZigguratSegment(70095585905830032UL, 6.7085433298604241E-18d), new DoubleZigguratSegment(70011520199026600UL, 6.5258808812531432E-18d), new DoubleZigguratSegment(69919149640719184UL, 6.340578633444393E-18d),
+					new DoubleZigguratSegment(69817183253405528UL, 6.1524100575325489E-18d), new DoubleZigguratSegment(69704047821513848UL, 5.96111965951503E-18d), new DoubleZigguratSegment(69577806414364616UL, 5.7664174798549849E-18d), new DoubleZigguratSegment(69436047005750224UL, 5.5679721821766175E-18d),
+					new DoubleZigguratSegment(69275727577351408UL, 5.36540226370626E-18d), new DoubleZigguratSegment(69092956533460488UL, 5.1582647259604188E-18d), new DoubleZigguratSegment(68882674629876648UL, 4.9460402509591506E-18d), new DoubleZigguratSegment(68638182865525768UL, 4.7281134745321224E-18d),
+					new DoubleZigguratSegment(68350421943724144UL, 4.5037462269844095E-18d), new DoubleZigguratSegment(68006836686689368UL, 4.272040428935364E-18d), new DoubleZigguratSegment(67589518048921080UL, 4.0318853224078037E-18d), new DoubleZigguratSegment(67072025684496680UL, 3.7818801669484457E-18d),
+					new DoubleZigguratSegment(66413657710639856UL, 3.5202169470124157E-18d), new DoubleZigguratSegment(65548422586560504UL, 3.2444947199183369E-18d), new DoubleZigguratSegment(64362011183706384UL, 2.951410102162591E-18d), new DoubleZigguratSegment(62638351640543032UL, 2.6362063921133255E-18d),
+					new DoubleZigguratSegment(59916484182323304UL, 2.2916061130118481E-18d), new DoubleZigguratSegment(55019203100610928UL, 1.9054893971358314E-18d), new DoubleZigguratSegment(43886864057643872UL, 1.4549265701529616E-18d), new DoubleZigguratSegment(0UL, 8.8612679136286624E-19d),
+				},
+				new double[]
+				{
+					0.00045413435380838583d, 0.00096726928225608492d, 0.0015362997801877318d, 0.0021459677435587436d,
+					0.0027887987933646174d, 0.0034602647775755354d, 0.00415729512051815d, 0.0048776559831702785d,
+					0.0056196422067748492d, 0.0063819059368280728d, 0.0071633531830815438d, 0.007963077437399475d,
+					0.008780314985125548d, 0.00961441364175124d, 0.010464810180209824d, 0.011331013596943648d,
+					0.01221259242529206d, 0.01310916493021775d, 0.014020391402069251d, 0.014945968010501512d,
+					0.015885621838705087d, 0.01683910682469196d, 0.017806200409482005d, 0.018786700743183851d,
+					0.0197804243364133d, 0.020787204070895984d, 0.021806887502514336d, 0.022839335404527462d,
+					0.023884420509610454d, 0.024942026417692716d, 0.026012046643002395d, 0.027094383778729809d,
+					0.028188948761657083d, 0.029295660222218869d, 0.030414443907949711d, 0.031545232170276945d,
+					0.032687963506241695d, 0.0338425821480539d, 0.035009037694472986d, 0.036187284778901582d,
+					0.037377282769822696d, 0.038578995499829953d, 0.039792391020019545d, 0.04101744137694914d,
+					0.042254122409738012d, 0.043502413565196d, 0.044762297729135668d, 0.046033761072250677d,
+					0.047316792909138726d, 0.048611385569216854d, 0.049917534278422444d, 0.051235237050719563d,
+					0.0525644945885407d, 0.053905310191389319d, 0.055257689671912989d, 0.056621641278830029d,
+					0.057997175626157471d, 0.059384305628245183d, 0.060783046440171115d, 0.062193415403097467d,
+					0.063615431994227228d, 0.065049117781035462d, 0.0664944963794817d, 0.067951593415937109d,
+					0.069420436492586224d, 0.070901055156084636d, 0.072393480869275217d, 0.073897746985783219d,
+					0.075413888727327183d, 0.076941943163597912d, 0.07848194919457073d, 0.0800339475351294d,
+					0.0815979807018903d, 0.0831740930021269d, 0.084762330524702528d, 0.0863627411329294d,
+					0.087975374459278929d, 0.089600281901875981d, 0.091237516622715828d, 0.0928871335475499d,
+					0.094549189367391d, 0.0962237425415948d, 0.097910853302479131d, 0.099610583661447025d,
+					0.10132299741658451d, 0.10304816016170756d, 0.10478613929683697d, 0.10653700404008339d,
+					0.10830082544092837d, 0.11007767639489066d, 0.1118676316595702d, 0.1136707678720647d,
+					0.11548716356775823d, 0.11731689920048237d, 0.11916005716405433d, 0.12101672181519911d,
+					0.12288697949786473d, 0.12477091856894357d, 0.1266686294254139d, 0.12858020453291971d,
+					0.13050573845580818d, 0.13244532788864832d, 0.13439907168925541d, 0.13636707091324907d,
+					0.13834942885017629d, 0.14034625106123183d, 0.14235764541861229d, 0.14438372214654291d,
+					0.14642459386401843d, 0.14848037562930291d, 0.15055118498623585d, 0.15263714201239584d,
+					0.15473836936917526d, 0.15685499235382366d, 0.15898713895352098d, 0.16113493990154418d,
+					0.16329852873559628d, 0.16547804185836973d, 0.16767361860042004d, 0.16988540128543045d,
+					0.17211353529795254d, 0.17435816915371238d, 0.17661945457257688d, 0.17889754655427997d,
+					0.18119260345701418d, 0.18350478707899806d, 0.18583426274313683d, 0.18818119938489949d,
+					0.19054576964354239d, 0.19292814995681637d, 0.19532852065930245d, 0.19774706608452836d,
+					0.20018397467102708d, 0.20263943907250709d, 0.20511365627231393d, 0.20760682770237221d,
+					0.21011915936680808d, 0.21265086197046337d, 0.2152021510525246d, 0.21777324712550275d,
+					0.22036437581981341d, 0.22297576803422109d, 0.22560766009242714d, 0.22826029390609703d,
+					0.23093391714463996d, 0.23362878341207297d, 0.23634515243132118d, 0.23908329023632727d,
+					0.24184346937236645d, 0.24462596910498685d, 0.24743107563802222d, 0.25025908234115091d,
+					0.25311028998750618d, 0.25598500700187404d, 0.25888354972005062d, 0.26180624265996677d,
+					0.2647534188052289d, 0.26772541990176768d, 0.27072259676833227d, 0.27374530962161758d,
+					0.27679392841686712d, 0.27986883320485051d, 0.28297041450617866d, 0.28609907370398729d,
+					0.28925522345609278d, 0.29243928812780412d, 0.29565170424666087d, 0.298892920980461d,
+					0.30216340064004349d, 0.30546361920840193d, 0.30879406689782413d, 0.31215524873688633d,
+					0.31554768518926862d, 0.31897191280651971d, 0.322428484917064d, 0.32591797235393272d,
+					0.3294409642239034d, 0.33299806872095522d, 0.33658991398719129d, 0.34021714902464906d,
+					0.34388044466171425d, 0.34758049457817869d, 0.35131801639334165d, 0.35509375282194855d,
+					0.35890847290319938d, 0.36276297330854124d, 0.36665807973449621d, 0.37059464838737088d,
+					0.37457356756735349d, 0.37859575936024165d, 0.38266218144586261d, 0.38677382903316421d,
+					0.39093173693297839d, 0.39513698178060652d, 0.39939068442166209d, 0.40369401247605469d,
+					0.40804818309662805d, 0.412454465940805d, 0.41691418637567085d, 0.42142872893928357d,
+					0.42599954108367416d, 0.43062813722804411d, 0.43531610315413866d, 0.44006510077974276d,
+					0.44487687335079279d, 0.44975325109782172d, 0.45469615740847008d, 0.45970761557474382d,
+					0.46478975618174562d, 0.46994482521395248d, 0.47517519296600047d, 0.4804833638576631d,
+					0.48587198726763225d, 0.49134386951826819d, 0.4969019871642204d, 0.50254950176239732d,
+					0.50828977633001138d, 0.51412639373237223d, 0.52006317728404428d, 0.5261042138975448d,
+					0.53225388017500486d, 0.53851687191277653d, 0.54489823758021771d, 0.55140341644618618d,
+					0.55803828216579487d, 0.56480919281315733d, 0.57172304856301015d, 0.5787873584983233d,
+					0.5860103183698947d, 0.59340090158134917d, 0.600968966251662d, 0.60872538196267267d,
+					0.61668218079466508d, 0.62485273857929213d, 0.63325199408589494d, 0.64189671629439837d,
+					0.65080583327696861d, 0.66000084093627787d, 0.66950631658364246d, 0.6793505721104135d,
+					0.68956649595606312d, 0.700192654914412d, 0.71127476062850714d, 0.722867659407808d,
+					0.73503809223523664d, 0.74786862177705538d, 0.761463388627856d, 0.77595685180163154d,
+					0.7915276367141405d, 0.80842165123997678d, 0.82699329632824714d, 0.84778550026617883d,
+					0.8717043319607144d, 0.90046992940234216d, 0.93814368012746407d, 1d,
+				},
+				255UL, 8);
+
+			#endregion
 		}
 	}
 }
