@@ -21,12 +21,19 @@ namespace Experilous.MakeItRandom
 	}
 
 	/// <summary>
-	/// A static class of extension methods for generating random numbers according to non-uniform distributions.
+	/// A static class of extension methods for generating random numbers according to various probability distributions.
 	/// </summary>
 	public static class RandomSample
 	{
 		#region Uniform Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a uniform probability distribution with the given range.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <returns>A random value from within the given range.</returns>
 		public static float UniformSample(this IRandom random, float x0, float x1)
 		{
 #if UNITY_EDITOR
@@ -57,11 +64,25 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a uniform probability distribution with the given range.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <returns>A sample generator producing random values from within the given range.</returns>
 		public static ISampleGenerator<float> MakeUniformSampleGenerator(this IRandom random, float x0, float x1)
 		{
 			return new FloatUniformSampleGenerator(random, x0, x1);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a uniform probability distribution with the given range.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <returns>A random value from within the given range.</returns>
 		public static double UniformSample(this IRandom random, double x0, double x1)
 		{
 #if UNITY_EDITOR
@@ -92,6 +113,13 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a uniform probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower inclusive bound of the probability distribution's range.</param>
+		/// <param name="x1">The upper inclusive bound of the probability distribution's range.</param>
+		/// <returns>A sample generator producing random values from within the given range.</returns>
 		public static ISampleGenerator<double> MakeUniformSampleGenerator(this IRandom random, double x0, double x1)
 		{
 			return new DoubleUniformSampleGenerator(random, x0, x1);
@@ -101,6 +129,13 @@ namespace Experilous.MakeItRandom
 
 		#region Normal Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <returns>A random value from within the given normal distribution.</returns>
 		public static float NormalSample(this IRandom random, float mean, float standardDeviation)
 		{
 #if UNITY_EDITOR
@@ -138,16 +173,40 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation)
 		{
 			return new FloatNormalSampleGenerator(random, mean, standardDeviation, Detail.Distributions.NormalFloat.zigguratTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable lookupTable)
 		{
 			return new FloatNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
@@ -164,6 +223,13 @@ namespace Experilous.MakeItRandom
 			return new FloatNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution with the given range.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <returns>A random value from within the given normal distribution.</returns>
 		public static double NormalSample(this IRandom random, double mean, double standardDeviation)
 		{
 #if UNITY_EDITOR
@@ -201,16 +267,40 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation)
 		{
 			return new DoubleNormalSampleGenerator(random, mean, standardDeviation, Detail.Distributions.NormalDouble.zigguratTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable lookupTable)
 		{
 			return new DoubleNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
@@ -231,6 +321,12 @@ namespace Experilous.MakeItRandom
 
 		#region Exponential Distribution
 
+		/// <summary>
+		/// Returns a random value sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static float ExponentialSample(this IRandom random, float eventRate)
 		{
 #if UNITY_EDITOR
@@ -266,16 +362,37 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate)
 		{
 			return new FloatExponentialSampleGenerator(random, eventRate, Detail.Distributions.ExponentialFloat.zigguratTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, Detail.Distributions.OneSidedFloatZigguratTable lookupTable)
 		{
 			return new FloatExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
@@ -292,6 +409,12 @@ namespace Experilous.MakeItRandom
 			return new FloatExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static double ExponentialSample(this IRandom random, double eventRate)
 		{
 #if UNITY_EDITOR
@@ -327,16 +450,37 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate)
 		{
 			return new DoubleExponentialSampleGenerator(random, eventRate, Detail.Distributions.ExponentialDouble.zigguratTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, Detail.Distributions.OneSidedDoubleZigguratTable lookupTable)
 		{
 			return new DoubleExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, int lookupTableSize, double epsilon = 0.0000000001d)
 		{
 			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
