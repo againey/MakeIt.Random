@@ -154,12 +154,34 @@ namespace Experilous.MakeItRandom
 			if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
 #endif
 
-			float sample = Detail.Distributions.SampleZiggurat(random,
-				Detail.Distributions.NormalFloat.zigguratTable,
-				Detail.Distributions.NormalFloat.F,
-				Detail.Distributions.NormalFloat.SampleFallback);
+			return Detail.Distributions.NormalFloat.Sample(random, Detail.Distributions.NormalFloat.zigguratTable) * standardDeviation + mean;
+		}
 
-			return sample * standardDeviation + mean;
+		/// <summary>
+		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <returns>A random value from within the given normal distribution.</returns>
+		public static float NormalSample(this IRandom random, float mean, float standardDeviation, float min, float max)
+		{
+#if UNITY_EDITOR
+			if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+			if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
+			if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+			if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
+#endif
+
+			float sample;
+			do
+			{
+				sample = Detail.Distributions.NormalFloat.Sample(random, Detail.Distributions.NormalFloat.zigguratTable) * standardDeviation + mean;
+			} while (sample < min || sample > max);
+
+			return sample;
 		}
 
 		private class FloatNormalSampleGenerator : ISampleGenerator<float>
@@ -235,8 +257,100 @@ namespace Experilous.MakeItRandom
 			return new FloatNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
+		private class ConstrainedFloatNormalSampleGenerator : ISampleGenerator<float>
+		{
+			private IRandom _random;
+			private float _mean;
+			private float _standardDeviation;
+			private float _min;
+			private float _max;
+			private Detail.Distributions.TwoSidedSymmetricFloatZigguratTable _zigguratTable;
+
+			public ConstrainedFloatNormalSampleGenerator(IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable zigguratTable)
+			{
+				if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+				if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
+				if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+				if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
+
+				_random = random;
+				_mean = mean;
+				_min = min;
+				_max = max;
+				_standardDeviation = standardDeviation;
+				_zigguratTable = zigguratTable;
+			}
+
+			public float Next()
+			{
+				float sample;
+				do
+				{
+					sample = Detail.Distributions.NormalFloat.Sample(_random, _zigguratTable) * _standardDeviation + _mean;
+				} while (sample < _min || sample > _max);
+
+				return sample;
+			}
+		}
+
 		/// <summary>
-		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution with the given range.
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, float min, float max)
+		{
+			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalFloat.zigguratTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable lookupTable)
+		{
+			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2..</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, float min, float max, int lookupTableSize, double epsilon = 0.0000000001d)
+		{
+			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
+			if (lookupTableSize != (1 << lookupTableSizeMagnitude)) throw new ArgumentException("Lookup table size must be an exact power of two.", "lookupTableSize");
+
+			var lookupTable = Detail.Distributions.GenerateTwoSidedSymmetricFloatZigguratTable(
+				lookupTableSizeMagnitude,
+				Detail.Distributions.NormalDouble.F,
+				Detail.Distributions.NormalDouble.Inv,
+				Detail.Distributions.NormalDouble.CDF,
+				Detail.Distributions.NormalDouble.totalArea,
+				epsilon);
+
+			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
@@ -248,12 +362,34 @@ namespace Experilous.MakeItRandom
 			if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
 #endif
 
-			double sample = Detail.Distributions.SampleZiggurat(random,
-				Detail.Distributions.NormalDouble.zigguratTable,
-				Detail.Distributions.NormalDouble.F,
-				Detail.Distributions.NormalDouble.SampleFallback);
+			return Detail.Distributions.NormalDouble.Sample(random, Detail.Distributions.NormalDouble.zigguratTable) * standardDeviation + mean;
+		}
 
-			return sample * standardDeviation + mean;
+		/// <summary>
+		/// Returns a random value sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <returns>A random value from within the given normal distribution.</returns>
+		public static double NormalSample(this IRandom random, double mean, double standardDeviation, double min, double max)
+		{
+#if UNITY_EDITOR
+			if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+			if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
+			if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+			if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
+#endif
+
+			double sample;
+			do
+			{
+				sample = Detail.Distributions.NormalDouble.Sample(random, Detail.Distributions.NormalDouble.zigguratTable) * standardDeviation + mean;
+			} while (sample < min || sample > max);
+
+			return sample;
 		}
 
 		private class DoubleNormalSampleGenerator : ISampleGenerator<double>
@@ -310,7 +446,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="mean">The mean (average) of the probability distribution.</param>
 		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
-		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2..</param>
 		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, int lookupTableSize, double epsilon = 0.0000000001d)
@@ -329,6 +465,98 @@ namespace Experilous.MakeItRandom
 			return new DoubleNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
+		private class ConstrainedDoubleNormalSampleGenerator : ISampleGenerator<double>
+		{
+			private IRandom _random;
+			private double _mean;
+			private double _standardDeviation;
+			private double _min;
+			private double _max;
+			private Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable _zigguratTable;
+
+			public ConstrainedDoubleNormalSampleGenerator(IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable zigguratTable)
+			{
+				if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+				if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
+				if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+				if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
+
+				_random = random;
+				_mean = mean;
+				_min = min;
+				_max = max;
+				_standardDeviation = standardDeviation;
+				_zigguratTable = zigguratTable;
+			}
+
+			public double Next()
+			{
+				double sample;
+				do
+				{
+					sample = Detail.Distributions.NormalDouble.Sample(_random, _zigguratTable) * _standardDeviation + _mean;
+				} while (sample < _min || sample > _max);
+
+				return sample;
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, double min, double max)
+		{
+			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalDouble.zigguratTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable lookupTable)
+		{
+			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a normal (gaussian/bell curve) probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="mean">The mean (average) of the probability distribution.</param>
+		/// <param name="standardDeviation">The standard deviation of the probability distribution.  Must be positive.</param>
+		/// <param name="min">The minimum value to which the distribution will be constrained.  Must be less than or equal to the <paramref name="mean"/>, and together with <paramref name="max"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to the <paramref name="mean"/>, and together with <paramref name="min"/>, must cover a range at least one <paramref name="standardDeviation"/> in size.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2..</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
+		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, double min, double max, int lookupTableSize, double epsilon = 0.0000000001d)
+		{
+			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
+			if (lookupTableSize != (1 << lookupTableSizeMagnitude)) throw new ArgumentException("Lookup table size must be an exact power of two.", "lookupTableSize");
+
+			var lookupTable = Detail.Distributions.GenerateTwoSidedSymmetricDoubleZigguratTable(
+				lookupTableSizeMagnitude,
+				Detail.Distributions.NormalDouble.F,
+				Detail.Distributions.NormalDouble.Inv,
+				Detail.Distributions.NormalDouble.CDF,
+				Detail.Distributions.NormalDouble.totalArea,
+				epsilon);
+
+			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+		}
+
 		#endregion
 
 		#region Exponential Distribution
@@ -344,13 +572,30 @@ namespace Experilous.MakeItRandom
 #if UNITY_EDITOR
 			if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
 #endif
+			return Detail.Distributions.ExponentialFloat.Sample(random, Detail.Distributions.ExponentialFloat.zigguratTable) / eventRate;
+		}
 
-			float sample = Detail.Distributions.SampleZiggurat(random,
-				Detail.Distributions.ExponentialFloat.zigguratTable,
-				Detail.Distributions.ExponentialFloat.F,
-				Detail.Distributions.ExponentialFloat.SampleFallback);
+		/// <summary>
+		/// Returns a random value sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to approximately 0.693 divided by <paramref name="eventRate"/>, guaranteeing that at least half of distribution is included.</param>
+		/// <returns>A random value from within the given exponential distribution.</returns>
+		public static float ExponentialSample(this IRandom random, float eventRate, float max)
+		{
+#if UNITY_EDITOR
+			if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+			if (max * eventRate < 0.69314718f) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+#endif
 
-			return sample / eventRate;
+			float sample;
+			do
+			{
+				sample = Detail.Distributions.ExponentialFloat.Sample(random, Detail.Distributions.ExponentialFloat.zigguratTable) / eventRate;
+			} while (sample > max);
+
+			return sample;
 		}
 
 		private class FloatExponentialSampleGenerator : ISampleGenerator<float>
@@ -421,6 +666,83 @@ namespace Experilous.MakeItRandom
 			return new FloatExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
+		private class ConstrainedFloatExponentialSampleGenerator : ISampleGenerator<float>
+		{
+			private IRandom _random;
+			private float _eventRate;
+			private float _max;
+			private Detail.Distributions.OneSidedFloatZigguratTable _zigguratTable;
+
+			public ConstrainedFloatExponentialSampleGenerator(IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable zigguratTable)
+			{
+				if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+				if (max * eventRate < 0.69314718f) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+
+				_random = random;
+				_eventRate = eventRate;
+				_max = max;
+				_zigguratTable = zigguratTable;
+			}
+
+			public float Next()
+			{
+				float sample;
+				do
+				{
+					sample = Detail.Distributions.ExponentialFloat.Sample(_random, _zigguratTable) / _eventRate;
+				} while (sample > _max);
+
+				return sample;
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, float max)
+		{
+			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialFloat.zigguratTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable lookupTable)
+		{
+			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, float max, int lookupTableSize, double epsilon = 0.0000000001d)
+		{
+			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
+			if (lookupTableSize != (1 << lookupTableSizeMagnitude)) throw new ArgumentException("Lookup table size must be an exact power of two.", "lookupTableSize");
+
+			var lookupTable = Detail.Distributions.GenerateOneSidedFloatZigguratTable(
+				lookupTableSizeMagnitude,
+				Detail.Distributions.ExponentialDouble.F,
+				Detail.Distributions.ExponentialDouble.Inv,
+				Detail.Distributions.ExponentialDouble.CDF,
+				Detail.Distributions.ExponentialDouble.totalArea,
+				epsilon);
+
+			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
+		}
+
 		/// <summary>
 		/// Returns a random value sampled from an exponential probability distribution.
 		/// </summary>
@@ -430,15 +752,32 @@ namespace Experilous.MakeItRandom
 		public static double ExponentialSample(this IRandom random, double eventRate)
 		{
 #if UNITY_EDITOR
-			if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+			if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+#endif
+			return Detail.Distributions.ExponentialDouble.Sample(random, Detail.Distributions.ExponentialDouble.zigguratTable) / eventRate;
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value to which the distribution will be constrained.  Must be greater than or equal to approximately 0.693 divided by <paramref name="eventRate"/>, guaranteeing that at least half of distribution is included.</param>
+		/// <returns>A random value from within the given exponential distribution.</returns>
+		public static double ExponentialSample(this IRandom random, double eventRate, double max)
+		{
+#if UNITY_EDITOR
+			if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+			if (max * eventRate < 0.69314718055994531d) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
 #endif
 
-			double sample = Detail.Distributions.SampleZiggurat(random,
-				Detail.Distributions.ExponentialDouble.zigguratTable,
-				Detail.Distributions.ExponentialDouble.F,
-				Detail.Distributions.ExponentialDouble.SampleFallback);
+			double sample;
+			do
+			{
+				sample = Detail.Distributions.ExponentialDouble.Sample(random, Detail.Distributions.ExponentialDouble.zigguratTable) / eventRate;
+			} while (sample > max);
 
-			return sample / eventRate;
+			return sample;
 		}
 
 		private class DoubleExponentialSampleGenerator : ISampleGenerator<double>
@@ -449,7 +788,7 @@ namespace Experilous.MakeItRandom
 
 			public DoubleExponentialSampleGenerator(IRandom random, double eventRate, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
 			{
-				if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+				if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
 
 				_random = random;
 				_eventRate = eventRate;
@@ -507,6 +846,83 @@ namespace Experilous.MakeItRandom
 				epsilon);
 
 			return new DoubleExponentialSampleGenerator(random, eventRate, lookupTable);
+		}
+
+		private class ConstrainedDoubleExponentialSampleGenerator : ISampleGenerator<double>
+		{
+			private IRandom _random;
+			private double _eventRate;
+			private double _max;
+			private Detail.Distributions.OneSidedDoubleZigguratTable _zigguratTable;
+
+			public ConstrainedDoubleExponentialSampleGenerator(IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
+			{
+				if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+				if (max * eventRate < 0.69314718055994531d) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+
+				_random = random;
+				_eventRate = eventRate;
+				_max = max;
+				_zigguratTable = zigguratTable;
+			}
+
+			public double Next()
+			{
+				double sample;
+				do
+				{
+					sample = Detail.Distributions.ExponentialDouble.Sample(_random, _zigguratTable) / _eventRate;
+				} while (sample > _max);
+
+				return sample;
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, double max)
+		{
+			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialDouble.zigguratTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable lookupTable)
+		{
+			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a an exponential probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
+		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
+		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
+		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, double max, int lookupTableSize, double epsilon = 0.0000000001d)
+		{
+			var lookupTableSizeMagnitude = Detail.DeBruijnLookup.GetBitCountForRangeSize(lookupTableSize);
+			if (lookupTableSize != (1 << lookupTableSizeMagnitude)) throw new ArgumentException("Lookup table size must be an exact power of two.", "lookupTableSize");
+
+			var lookupTable = Detail.Distributions.GenerateOneSidedDoubleZigguratTable(
+				lookupTableSizeMagnitude,
+				Detail.Distributions.ExponentialDouble.F,
+				Detail.Distributions.ExponentialDouble.Inv,
+				Detail.Distributions.ExponentialDouble.CDF,
+				Detail.Distributions.ExponentialDouble.totalArea,
+				epsilon);
+
+			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
 		}
 
 		#endregion

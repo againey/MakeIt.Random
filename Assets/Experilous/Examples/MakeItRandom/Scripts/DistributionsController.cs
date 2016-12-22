@@ -30,11 +30,16 @@ namespace Experilous.Examples.MakeItRandom
 		[Header("Normal")]
 		public float normalMean = 0f;
 		public float normalStandardDeviation = 1f;
+		public bool normalConstrained = false;
+		public float normalMin = -3f;
+		public float normalMax = +3f;
 		public float normalViewCenter = 0f;
 		public float normalViewRange = 8f;
 
 		[Header("Exponential")]
 		public float exponentialEventRage = 1f;
+		public bool exponentialConstrained = false;
+		public float exponentialMax = 6f;
 		public float exponentialViewCenter = 4f;
 		public float exponentialViewRange = 8f;
 
@@ -218,7 +223,14 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			if (isOn)
 			{
-				Initialize(_random.MakeNormalSampleGenerator(normalMean, normalStandardDeviation), normalViewCenter, normalViewRange);
+				if (normalConstrained)
+				{
+					Initialize(_random.MakeNormalSampleGenerator(normalMean, normalStandardDeviation, normalMin, normalMax), normalViewCenter, normalViewRange);
+				}
+				else
+				{
+					Initialize(_random.MakeNormalSampleGenerator(normalMean, normalStandardDeviation), normalViewCenter, normalViewRange);
+				}
 			}
 		}
 
@@ -226,7 +238,14 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			if (isOn)
 			{
-				Initialize(_random.MakeExponentialSampleGenerator(exponentialEventRage), exponentialViewCenter, exponentialViewRange);
+				if (exponentialConstrained)
+				{
+					Initialize(_random.MakeExponentialSampleGenerator(exponentialEventRage, exponentialMax), exponentialViewCenter, exponentialViewRange);
+				}
+				else
+				{
+					Initialize(_random.MakeExponentialSampleGenerator(exponentialEventRage), exponentialViewCenter, exponentialViewRange);
+				}
 			}
 		}
 

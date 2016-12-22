@@ -513,9 +513,14 @@ MonoBehaviour:
   uniformViewRange: 8
   normalMean: 0
   normalStandardDeviation: 1
+  normalConstrained: 0
+  normalMin: -3
+  normalMax: 3
   normalViewCenter: 0
   normalViewRange: 8
   exponentialEventRage: 1
+  exponentialConstrained: 0
+  exponentialMax: 6
   exponentialViewCenter: 4
   exponentialViewRange: 8
   triangularLower: -3
