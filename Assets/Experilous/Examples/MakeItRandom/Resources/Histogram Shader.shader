@@ -21,7 +21,7 @@
 			fixed4 frag(v2f_img i) : SV_Target
 			{
 				float s = tex2D(_MainTex, i.uv).r;
-				float c = 1 - step(s, i.uv.y);
+				float c = step(i.uv.y, s - 0.00000011920928955078125);
 				return fixed4(c, c, c, 1);
 			}
 			ENDCG
