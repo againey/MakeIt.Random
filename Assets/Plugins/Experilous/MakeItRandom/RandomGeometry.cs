@@ -1333,63 +1333,62 @@ namespace Experilous.MakeItRandom
 				x = 0L; // Q32.32
 				y = 0L; // Q32.32
 				z = -1L << 32; // Q32.32
-				goto Angle;
 			}
-
+			else
+			{
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
-			int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
-			int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
-			int uScaled = u >> 10; //x*2^15
-			int vScaled = v >> 10; //y*2^15
-			int uvSqrScaled = uScaled * uScaled + vScaled * vScaled; //(x^2 + y^2)*2^30
-			// First do a check against the 32-bit radius before doing a full 64-bit calculation
-			if (uvSqrScaled > 0x40000000) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+				int u = (int)(upper & 0x03FFFFFFU) - 0x02000000; // x*2^25
+				int v = (int)(lower & 0x03FFFFFFU) - 0x02000000; // y*2^25
+				int uScaled = u >> 10; //x*2^15
+				int vScaled = v >> 10; //y*2^15
+				int uvSqrScaled = uScaled * uScaled + vScaled * vScaled; //(x^2 + y^2)*2^30
+				// First do a check against the 32-bit radius before doing a full 64-bit calculation
+				if (uvSqrScaled > 0x40000000) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 
-			ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
-			ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
-			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+				ulong uSqr = (ulong)((long)u * u); // x^2 * 2^50
+				ulong vSqr = (ulong)((long)v * v); // y^2 * 2^50
+				ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
+				if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #else
-			long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
-			long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
-			ulong uSqr = (ulong)(u * u); // x^2 * 2^50
-			ulong vSqr = (ulong)(v * v); // y^2 * 2^50
-			ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
-			if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
+				long u = (upper & 0x03FFFFFFU) - 0x02000000L; // x*2^25
+				long v = (lower & 0x03FFFFFFU) - 0x02000000L; // y*2^25
+				ulong uSqr = (ulong)(u * u); // x^2 * 2^50
+				ulong vSqr = (ulong)(v * v); // y^2 * 2^50
+				ulong uvSqr = uSqr + vSqr; // (x^2 + y^2) * 2^50
+				if (uvSqr >= 0x0004000000000000UL) goto Axis; // x^2 + y^2 >= r^2, so generated point is not inside the circle.
 #endif
 
-			ulong uvSqrInv = (0x0004000000000000UL - uvSqr) << 12; // (1 - (x^2 + y^2)) * 2^62
+				ulong uvSqrInv = (0x0004000000000000UL - uvSqr) << 12; // (1 - (x^2 + y^2)) * 2^62
 
-			// Calculate the square root of uvSqrInv.  This starts with an approximation found at
-			//   http://stackoverflow.com/a/1100591
-			// It is followed by two uses of the divide-and-average method to improve the initial approximation.
+				// Calculate the square root of uvSqrInv.  This starts with an approximation found at
+				//   http://stackoverflow.com/a/1100591
+				// It is followed by two uses of the divide-and-average method to improve the initial approximation.
 
-			// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
-			ulong mask = uvSqrInv | (uvSqrInv >> 1);
-			mask |= mask >> 2;
-			mask |= mask >> 4;
-			mask |= mask >> 8;
-			mask |= mask >> 16;
-			mask |= mask >> 32;
-			int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
+				// Begin with an inline of Detail.DeBruijnLookup.GetBitMaskForRangeMax()
+				ulong mask = uvSqrInv | (uvSqrInv >> 1);
+				mask |= mask >> 2;
+				mask |= mask >> 4;
+				mask |= mask >> 8;
+				mask |= mask >> 16;
+				mask |= mask >> 32;
+				int bitCount = Detail.DeBruijnLookup.bitCountTable64[mask * Detail.DeBruijnLookup.multiplier64 >> Detail.DeBruijnLookup.shift64];
 
-			// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
-			ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
-			// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
-			ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (uvSqrInv >> (bitCount - 7)) : (uvSqrInv << (7 - bitCount))) & 0x3FU]; // b * 2^31
-			// Square root is a*b
-			ulong uvInv = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt(1 - (x^2 + y^2)) * 2^31
+				// Lookup sqrt(a) (the portion of the square root determined by the magnitude of the number)
+				ulong sqrtA = Detail.FloatingPoint.fastSqrtUpper[bitCount]; // a * 2^31
+				// Lookup sqrt(b) (the square root of a number between 1 and 2, using 6 bits worth of data)
+				ulong sqrtB = Detail.FloatingPoint.fastSqrtLower[(bitCount >= 7 ? (uvSqrInv >> (bitCount - 7)) : (uvSqrInv << (7 - bitCount))) & 0x3FU]; // b * 2^31
+				// Square root is a*b
+				ulong uvInv = (sqrtA * sqrtB) >> 31; // a * b * 2^31 = sqrt(1 - (x^2 + y^2)) * 2^31
 
-			// Improve the square root approximation using the divide-and-average method twice
-			uvInv = (uvSqrInv / uvInv + uvInv) >> 1; // sqrt(1 - (x^2 + y^2)) * 2^31, better approximation
-			uvInv = (uvSqrInv / uvInv + uvInv); // 2 * sqrt(1 - (x^2 + y^2)) * 2^31, even better approximation, multiplied by 2
+				// Improve the square root approximation using the divide-and-average method twice
+				uvInv = (uvSqrInv / uvInv + uvInv) >> 1; // sqrt(1 - (x^2 + y^2)) * 2^31, better approximation
+				uvInv = (uvSqrInv / uvInv + uvInv); // 2 * sqrt(1 - (x^2 + y^2)) * 2^31, even better approximation, multiplied by 2
 
-			// Determine the final components using Marsaglia's formulas:  t = 2 * sqrt(1 - (u^2 + v^2)); x = u*t; y = v*t; z = 1 - 2 * (u^2 + v^2))
-			x = (u * (long)uvInv) >> 24; // x * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * x * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
-			y = (v * (long)uvInv) >> 24; // y * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * y * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
-			z = (0x0002000000000000L - ((long)uvSqr)) >> 17; // 2 * (1/2 - (x^2 + y^2)) * 2^49, shifted down to Q32.32
-
-			Angle:
+				// Determine the final components using Marsaglia's formulas:  t = 2 * sqrt(1 - (u^2 + v^2)); x = u*t; y = v*t; z = 1 - 2 * (u^2 + v^2))
+				x = (u * (long)uvInv) >> 24; // x * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * x * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
+				y = (v * (long)uvInv) >> 24; // y * 2^25 * 2 * sqrt(1 - (x^2 + y^2)) * 2^31 = 2 * y * sqrt(1 - (x^2 + y^2)) * 2^56, shifted down to Q32.32
+				z = (0x0002000000000000L - ((long)uvSqr)) >> 17; // 2 * (1/2 - (x^2 + y^2)) * 2^49, shifted down to Q32.32
+			}
 
 			ulong angleBits = random.Next64(); // Q1.32, in range [0, 2), as if it were radians in [0, π), scaled by 2/π
 
