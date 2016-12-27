@@ -552,7 +552,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static byte RangeCO(this IRandom random, byte upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
+			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperExclusive", upperExclusive, "The exclusive upper bound cannot be zero.");
 			uint mask = upperExclusive - 1U;
 			mask |= mask >> 1;
 			mask |= mask >> 2;
@@ -643,7 +643,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static ushort RangeCO(this IRandom random, ushort upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
+			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperExclusive", upperExclusive, "The exclusive upper bound cannot be zero.");
 			uint mask = upperExclusive - 1U;
 			mask |= mask >> 1;
 			mask |= mask >> 2;
@@ -735,7 +735,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static uint RangeCO(this IRandom random, uint upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
+			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperExclusive", upperExclusive, "The exclusive upper bound cannot be zero.");
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			if (upperExclusive == 1U) return 0U;
 #endif
@@ -836,7 +836,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static ulong RangeCO(this IRandom random, ulong upperExclusive)
 		{
-			if (upperExclusive == 0UL) throw new System.ArgumentOutOfRangeException("upperBound");
+			if (upperExclusive == 0UL) throw new System.ArgumentOutOfRangeException("upperExclusive", upperExclusive, "The exclusive upper bound cannot be zero.");
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			if (upperExclusive == 1UL) return 0UL;
 #endif

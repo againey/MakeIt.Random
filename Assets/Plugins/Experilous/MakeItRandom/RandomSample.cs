@@ -42,8 +42,8 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float UniformSample(this IRandom random, float x0, float x1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
 #endif
 
 			return random.RangeCC(x0, x1);
@@ -57,7 +57,7 @@ namespace Experilous.MakeItRandom
 
 			public FloatUniformSampleGenerator(IRandom random, float x0, float x1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
 
 				_random = random;
 				_x0 = x0;
@@ -97,8 +97,8 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double UniformSample(this IRandom random, double x0, double x1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
 #endif
 
 			return random.RangeCC(x0, x1);
@@ -112,7 +112,7 @@ namespace Experilous.MakeItRandom
 
 			public DoubleUniformSampleGenerator(IRandom random, double x0, double x1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
 
 				_random = random;
 				_x0 = x0;
@@ -150,8 +150,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static float NormalSample(this IRandom random, float mean, float standardDeviation)
 		{
-#if UNITY_EDITOR
-			if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (standardDeviation <= 0f) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 #endif
 
 			return Detail.Distributions.NormalFloat.Sample(random, Detail.Distributions.NormalFloat.zigguratTable) * standardDeviation + mean;
@@ -168,10 +168,10 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static float NormalSample(this IRandom random, float mean, float standardDeviation, float min, float max)
 		{
-#if UNITY_EDITOR
-			if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
-			if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
-			if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (standardDeviation <= 0f) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
+			if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
+			if (max < mean) throw new ArgumentOutOfRangeException("max", max, "The maximum value of the constrained range must not be less than the mean.");
 			if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
 #endif
 
@@ -193,7 +193,7 @@ namespace Experilous.MakeItRandom
 
 			public FloatNormalSampleGenerator(IRandom random, float mean, float standardDeviation, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable zigguratTable)
 			{
-				if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+				if (standardDeviation <= 0f) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 
 				_random = random;
 				_mean = mean;
@@ -268,9 +268,9 @@ namespace Experilous.MakeItRandom
 
 			public ConstrainedFloatNormalSampleGenerator(IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable zigguratTable)
 			{
-				if (standardDeviation <= 0f) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
-				if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
-				if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+				if (standardDeviation <= 0f) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
+				if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
+				if (max < mean) throw new ArgumentOutOfRangeException("max", max, "The maximum value of the constrained range must not be less than the mean.");
 				if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
 
 				_random = random;
@@ -358,8 +358,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static double NormalSample(this IRandom random, double mean, double standardDeviation)
 		{
-#if UNITY_EDITOR
-			if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (standardDeviation <= 0d) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 #endif
 
 			return Detail.Distributions.NormalDouble.Sample(random, Detail.Distributions.NormalDouble.zigguratTable) * standardDeviation + mean;
@@ -376,10 +376,10 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given normal distribution.</returns>
 		public static double NormalSample(this IRandom random, double mean, double standardDeviation, double min, double max)
 		{
-#if UNITY_EDITOR
-			if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
-			if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
-			if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (standardDeviation <= 0d) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
+			if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
+			if (max < mean) throw new ArgumentOutOfRangeException("max", max, "The maximum value of the constrained range must not be less than the mean.");
 			if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
 #endif
 
@@ -401,7 +401,7 @@ namespace Experilous.MakeItRandom
 
 			public DoubleNormalSampleGenerator(IRandom random, double mean, double standardDeviation, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable zigguratTable)
 			{
-				if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
+				if (standardDeviation <= 0d) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 
 				_random = random;
 				_mean = mean;
@@ -476,9 +476,9 @@ namespace Experilous.MakeItRandom
 
 			public ConstrainedDoubleNormalSampleGenerator(IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable zigguratTable)
 			{
-				if (standardDeviation <= 0d) throw new ArgumentException("The standard deviation must be greater than zero.", "standardDeviation");
-				if (min > mean) throw new ArgumentOutOfRangeException("The minimum value of the constrained range must not be greater than the mean.", "min");
-				if (max < mean) throw new ArgumentOutOfRangeException("The maximum value of the constrained range must not be less than the mean.", "max");
+				if (standardDeviation <= 0d) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
+				if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
+				if (max < mean) throw new ArgumentOutOfRangeException("max", max, "The maximum value of the constrained range must not be less than the mean.");
 				if (max - min < standardDeviation) throw new ArgumentException("The constrained range must not be smaller than one standard deviation in size.", "max");
 
 				_random = random;
@@ -569,8 +569,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static float ExponentialSample(this IRandom random, float eventRate)
 		{
-#if UNITY_EDITOR
-			if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (eventRate <= 0f) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 #endif
 			return Detail.Distributions.ExponentialFloat.Sample(random, Detail.Distributions.ExponentialFloat.zigguratTable) / eventRate;
 		}
@@ -584,9 +584,9 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static float ExponentialSample(this IRandom random, float eventRate, float max)
 		{
-#if UNITY_EDITOR
-			if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
-			if (max * eventRate < 0.69314718f) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (eventRate <= 0f) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
+			if (max * eventRate < 0.69314718f) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
 #endif
 
 			float sample;
@@ -606,7 +606,7 @@ namespace Experilous.MakeItRandom
 
 			public FloatExponentialSampleGenerator(IRandom random, float eventRate, Detail.Distributions.OneSidedFloatZigguratTable zigguratTable)
 			{
-				if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+				if (eventRate <= 0f) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 
 				_random = random;
 				_eventRate = eventRate;
@@ -675,8 +675,8 @@ namespace Experilous.MakeItRandom
 
 			public ConstrainedFloatExponentialSampleGenerator(IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable zigguratTable)
 			{
-				if (eventRate <= 0f) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
-				if (max * eventRate < 0.69314718f) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+				if (eventRate <= 0f) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
+				if (max * eventRate < 0.69314718f) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
 
 				_random = random;
 				_eventRate = eventRate;
@@ -751,8 +751,8 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static double ExponentialSample(this IRandom random, double eventRate)
 		{
-#if UNITY_EDITOR
-			if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (eventRate <= 0d) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 #endif
 			return Detail.Distributions.ExponentialDouble.Sample(random, Detail.Distributions.ExponentialDouble.zigguratTable) / eventRate;
 		}
@@ -766,9 +766,9 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random value from within the given exponential distribution.</returns>
 		public static double ExponentialSample(this IRandom random, double eventRate, double max)
 		{
-#if UNITY_EDITOR
-			if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
-			if (max * eventRate < 0.69314718055994531d) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (eventRate <= 0d) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
+			if (max * eventRate < 0.69314718055994531d) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
 #endif
 
 			double sample;
@@ -788,7 +788,7 @@ namespace Experilous.MakeItRandom
 
 			public DoubleExponentialSampleGenerator(IRandom random, double eventRate, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
 			{
-				if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
+				if (eventRate <= 0d) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 
 				_random = random;
 				_eventRate = eventRate;
@@ -857,8 +857,8 @@ namespace Experilous.MakeItRandom
 
 			public ConstrainedDoubleExponentialSampleGenerator(IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
 			{
-				if (eventRate <= 0d) throw new ArgumentException("The event rate must be greater than zero.", "eventRate");
-				if (max * eventRate < 0.69314718055994531d) throw new ArgumentException("The constrained range must not be smaller than one half of the overall distribution.", "max");
+				if (eventRate <= 0d) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
+				if (max * eventRate < 0.69314718055994531d) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
 
 				_random = random;
 				_eventRate = eventRate;
@@ -929,6 +929,8 @@ namespace Experilous.MakeItRandom
 
 		#region Triangular Distribution
 
+		//TODO:  Rename lower/mode/upper to x0/x1/x2 for better consistency.
+
 		/// <summary>
 		/// Returns a random value sampled from a triangular probability distribution.
 		/// </summary>
@@ -945,9 +947,9 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float TriangularSample(this IRandom random, float lower, float mode, float upper)
 		{
-#if UNITY_EDITOR
-			if (lower >= mode) throw new ArgumentException("The mode must be greater than the lower range boundary.", "mode");
-			if (mode >= upper) throw new ArgumentException("The upper range boundary must be greater than the mode boundary.", "upper");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
+			if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
 #endif
 
 			float n = random.FloatOO();
@@ -968,8 +970,8 @@ namespace Experilous.MakeItRandom
 
 			public FloatTriangularSampleGenerator(IRandom random, float lower, float mode, float upper)
 			{
-				if (lower >= mode) throw new ArgumentException("The mode must be greater than the lower range boundary.", "mode");
-				if (mode >= upper) throw new ArgumentException("The upper range boundary must be greater than the mode boundary.", "upper");
+				if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
+				if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
 
 				_random = random;
 
@@ -1020,9 +1022,9 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double TriangularSample(this IRandom random, double lower, double mode, double upper)
 		{
-#if UNITY_EDITOR
-			if (lower >= mode) throw new ArgumentException("The mode must be greater than the lower range boundary.", "mode");
-			if (mode >= upper) throw new ArgumentException("The upper range boundary must be greater than the mode boundary.", "upper");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
+			if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
 #endif
 
 			double n = random.DoubleOO();
@@ -1043,8 +1045,8 @@ namespace Experilous.MakeItRandom
 
 			public DoubleTriangularSampleGenerator(IRandom random, double lower, double mode, double upper)
 			{
-				if (lower >= mode) throw new ArgumentException("The mode must be greater than the lower range boundary.", "mode");
-				if (mode >= upper) throw new ArgumentException("The upper range boundary must be greater than the mode boundary.", "upper");
+				if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
+				if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
 
 				_random = random;
 
@@ -1083,6 +1085,8 @@ namespace Experilous.MakeItRandom
 
 		#region Trapezoidal Distribution
 
+		//TODO:  Rename lower/lowerMode/upperMode/upper to x0/x1/x2/x3 for better consistency.
+
 		/// <summary>
 		/// Returns a random value sampled from a trapezoidal probability distribution.
 		/// </summary>
@@ -1100,10 +1104,10 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float TrapezoidalSample(this IRandom random, float lower, float lowerMode, float upperMode, float upper)
 		{
-#if UNITY_EDITOR
-			if (lower >= lowerMode) throw new ArgumentException("The lower mode boundary must be greater than the lower range boundary.", "lowerMode");
-			if (lowerMode >= upperMode) throw new ArgumentException("The upper mode boundary must be greater than the lower mode boundary.", "upperMode");
-			if (upperMode >= upper) throw new ArgumentException("The upper range boundary must be greater than the upper mode boundary.", "upper");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
+			if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
 #endif
 
 			float n = random.FloatOO();
@@ -1135,9 +1139,9 @@ namespace Experilous.MakeItRandom
 
 			public FloatTrapezoidalSampleGenerator(IRandom random, float lower, float lowerMode, float upperMode, float upper)
 			{
-				if (lower >= lowerMode) throw new ArgumentException("The lower mode boundary must be greater than the lower range boundary.", "lowerMode");
-				if (lowerMode >= upperMode) throw new ArgumentException("The upper mode boundary must be greater than the lower mode boundary.", "upperMode");
-				if (upperMode >= upper) throw new ArgumentException("The upper range boundary must be greater than the upper mode boundary.", "upper");
+				if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
+				if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
 
 				_random = random;
 
@@ -1196,10 +1200,10 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double TrapezoidalSample(this IRandom random, double lower, double lowerMode, double upperMode, double upper)
 		{
-#if UNITY_EDITOR
-			if (lower >= lowerMode) throw new ArgumentException("The lower mode boundary must be greater than the lower range boundary.", "lowerMode");
-			if (lowerMode >= upperMode) throw new ArgumentException("The upper mode boundary must be greater than the lower mode boundary.", "upperMode");
-			if (upperMode >= upper) throw new ArgumentException("The upper range boundary must be greater than the upper mode boundary.", "upper");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
+			if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
 #endif
 
 			double n = random.DoubleOO();
@@ -1231,9 +1235,9 @@ namespace Experilous.MakeItRandom
 
 			public DoubleTrapezoidalSampleGenerator(IRandom random, double lower, double lowerMode, double upperMode, double upper)
 			{
-				if (lower >= lowerMode) throw new ArgumentException("The lower mode boundary must be greater than the lower range boundary.", "lowerMode");
-				if (lowerMode >= upperMode) throw new ArgumentException("The upper mode boundary must be greater than the lower mode boundary.", "upperMode");
-				if (upperMode >= upper) throw new ArgumentException("The upper range boundary must be greater than the upper mode boundary.", "upper");
+				if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
+				if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
 
 				_random = random;
 
@@ -1249,7 +1253,7 @@ namespace Experilous.MakeItRandom
 				_rangeUpperRange = range * upperRange;
 				_lowerSplit = lowerRange / range;
 				_upperSplit = (midRange + midRange + lowerRange) / range;
-				_modeScale = (_upperSplit - _lowerSplit) * midRange;
+				_modeScale = midRange / (_upperSplit - _lowerSplit);
 			}
 
 			public double Next()
@@ -1257,7 +1261,7 @@ namespace Experilous.MakeItRandom
 				double n = _random.DoubleOO();
 				if (n < _lowerSplit) return _lower + Math.Sqrt(n * _rangeLowerRange); // Within lower triangle.
 				if (n > _upperSplit) return _upper - Math.Sqrt((1d - n) * _rangeUpperRange); // Within upper triangle.
-				return _lowerMode + (n - _lowerSplit) / _modeScale; // Within middle rectangle.
+				return _lowerMode + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
 			}
 		}
 
@@ -1300,10 +1304,10 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
-			if (y0 < 0f) throw new ArgumentException("The domain must be entirely non-negative.", "y0");
-			if (y1 < 0f) throw new ArgumentException("The domain must be entirely non-negative.", "y1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
 			if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
 #endif
 
@@ -1369,9 +1373,9 @@ namespace Experilous.MakeItRandom
 
 			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float x1, float y1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
-				if (y0 < 0f) throw new ArgumentException("The domain must be entirely non-negative.", "y0");
-				if (y1 < 0f) throw new ArgumentException("The domain must be entirely non-negative.", "y1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
 				if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
 
 				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
@@ -1487,10 +1491,10 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
-			if (y0 < 0d) throw new ArgumentException("The domain must be entirely non-negative.", "y0");
-			if (y1 < 0d) throw new ArgumentException("The domain must be entirely non-negative.", "y1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
 			if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
 #endif
 
@@ -1534,9 +1538,9 @@ namespace Experilous.MakeItRandom
 
 			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double x1, double y1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary.", "x1");
-				if (y0 < 0d) throw new ArgumentException("The domain must be entirely non-negative.", "y0");
-				if (y1 < 0d) throw new ArgumentException("The domain must be entirely non-negative.", "y1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
 				if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
 
 				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
@@ -1617,6 +1621,8 @@ namespace Experilous.MakeItRandom
 
 		#region Hermite Curve Distribution
 
+		//TODO:  Rename to HermiteSpline because "Hermite Distribution" is a different thing in literature
+
 		private static void CalculateHermiteCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
 		{
 			float xDelta = x1 - x0;
@@ -1683,10 +1689,13 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary", "x1");
-			if (y0 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y0");
-			if (y1 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+			if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+			if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
 #endif
 
 			return random.HermiteSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
@@ -1737,9 +1746,12 @@ namespace Experilous.MakeItRandom
 
 			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary", "x1");
-				if (y0 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y0");
-				if (y1 < 0f) throw new ArgumentException("The domain must be entirely non-negative", "y1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+				if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+				if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
 
 				float k4, k3, k2, k1, area;
 				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
@@ -1873,10 +1885,13 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double HermiteSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
-#if UNITY_EDITOR
-			if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary", "x1");
-			if (y0 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y0");
-			if (y1 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y1");
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+			if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+			if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
 #endif
 
 			return random.HermiteSample(x0, y0, m0, x1, y1, m1, random.DoubleCC());
@@ -1903,9 +1918,12 @@ namespace Experilous.MakeItRandom
 
 			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 			{
-				if (x0 >= x1) throw new ArgumentException("The upper range boundary must be greater than the lower range boundary", "x1");
-				if (y0 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y0");
-				if (y1 < 0d) throw new ArgumentException("The domain must be entirely non-negative", "y1");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+				if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+				if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
 
 				double k4, k3, k2, k1, area;
 				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
@@ -2024,7 +2042,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseUniformSample(this IRandom random, float[] x, float[] y)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length - y.Length != 1) throw new ArgumentException("The array of y values must have exactly one fewer element than the array of x values.", "y");
 #endif
@@ -2037,9 +2055,17 @@ namespace Experilous.MakeItRandom
 				float h = y[i];
 				++i;
 				float x1 = x[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (h < 0f) throw new ArgumentOutOfRangeException("y", h, "The relative weight of a segment must not be negative.");
+#endif
 				totalArea += (x1 - x0) * h;
 				x0 = x1;
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			float n = random.RangeCC(totalArea);
 			i = 0;
@@ -2076,7 +2102,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseUniformSample(this IRandom random, Vector2[] p, float xLast)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (p.Length < 1) throw new ArgumentException("The array of vectors must have at least one element.", "p");
 #endif
 
@@ -2085,10 +2111,22 @@ namespace Experilous.MakeItRandom
 			for (int i = 1; i < p.Length; ++i)
 			{
 				Vector2 p1 = p[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (p0.x >= p1.x) throw new ArgumentOutOfRangeException("p", p1.x, "The upper range boundary must be greater than the lower range boundary.");
+				if (p0.y < 0f) throw new ArgumentOutOfRangeException("p", p0.y, "The relative weight of a segment must not be negative.");
+#endif
 				totalArea += (p1.x - p0.x) * p0.y;
 				p0 = p1;
 			}
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (p0.x >= xLast) throw new ArgumentOutOfRangeException("xLast", xLast, "The upper range boundary must be greater than the lower range boundary.");
+			if (p0.y < 0f) throw new ArgumentOutOfRangeException("p", p0.y, "The relative weight of a segment must not be negative.");
+#endif
 			totalArea += (xLast - p0.x) * p0.y;
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "p");
+#endif
 
 			float n = random.RangeCC(totalArea);
 			p0 = p[0];
@@ -2126,7 +2164,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseWeightedUniformSample(this IRandom random, float[] x, float[] weights)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length - weights.Length != 1) throw new ArgumentException("The array of weights must have exactly one fewer element than the array of x values.", "weights");
 #endif
@@ -2134,8 +2172,16 @@ namespace Experilous.MakeItRandom
 			float weightSum = 0f;
 			for (int i = 0; i < weights.Length; ++i)
 			{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+				if (weights[i] < 0f) throw new ArgumentOutOfRangeException("weights", weights[i], "The weight of a segment must not be negative.");
+#endif
 				weightSum += weights[i];
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (weightSum <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "weights");
+#endif
 
 			float n = random.RangeCC(weightSum);
 			for (int i = 0; i < weights.Length; ++i)
@@ -2163,15 +2209,21 @@ namespace Experilous.MakeItRandom
 				generator._x = new float[x.Length];
 				Array.Copy(x, generator._x, x.Length);
 
-				generator._cdf = new uint[y.Length];
 				double totalWeight = 0d;
 				for (int i = 0; i < y.Length; ++i)
 				{
+					if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+					if (y[i] < 0f) throw new ArgumentOutOfRangeException("y", y[i], "The relative weight of a segment must not be negative.");
+
 					totalWeight += (x[i + 1] - x[i]) * y[i];
 				}
 
+				if (totalWeight <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+
 				double weightToIntScale = uint.MaxValue + 1d;
 				totalWeight += 1d / weightToIntScale;
+
+				generator._cdf = new uint[y.Length];
 
 				double weightSum = 0d;
 				for (int i = 0; i < y.Length; ++i)
@@ -2192,24 +2244,40 @@ namespace Experilous.MakeItRandom
 
 				generator._x = new float[p.Length + 1];
 
-				generator._cdf = new uint[p.Length];
 				double totalWeight = 0d;
-				for (int i = 0; i < p.Length; ++i)
+				for (int i = 0; i < p.Length - 1; ++i)
 				{
+					if (p[i].x >= p[i + 1].x) throw new ArgumentOutOfRangeException("p", p[i + 1].x, "The upper range boundary must be greater than the lower range boundary.");
+					if (p[i].y < 0f) throw new ArgumentOutOfRangeException("p", p[i].y, "The relative weight of a segment must not be negative.");
+
 					generator._x[i] = p[i].x;
 					totalWeight += (p[i + 1].x - p[i].x) * p[i].y;
 				}
+
+				if (p[p.Length - 1].x >= xLast) throw new ArgumentOutOfRangeException("p", p[p.Length - 1].x, "The upper range boundary must be greater than the lower range boundary.");
+				if (p[p.Length - 1].y < 0f) throw new ArgumentOutOfRangeException("p", p[p.Length - 1].y, "The relative weight of a segment must not be negative.");
+
+				generator._x[p.Length - 1] = p[p.Length - 1].x;
+				totalWeight += (xLast - p[p.Length - 1].x) * p[p.Length - 1].y;
+
 				generator._x[p.Length] = xLast;
+
+				if (totalWeight <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "p");
 
 				double weightToIntScale = uint.MaxValue + 1d;
 				totalWeight += 1d / weightToIntScale;
 
+				generator._cdf = new uint[p.Length];
+
 				double weightSum = 0d;
-				for (int i = 0; i < p.Length; ++i)
+				for (int i = 0; i < p.Length - 1; ++i)
 				{
 					weightSum += (p[i + 1].x - p[i].x) * p[i].y;
 					generator._cdf[i] = (uint)Math.Floor(weightSum / totalWeight * weightToIntScale);
 				}
+
+				weightSum += (xLast - p[p.Length - 1].x) * p[p.Length - 1].y;
+				generator._cdf[p.Length - 1] = (uint)Math.Floor(weightSum / totalWeight * weightToIntScale);
 
 				return generator;
 			}
@@ -2225,15 +2293,21 @@ namespace Experilous.MakeItRandom
 				generator._x = new float[x.Length];
 				Array.Copy(x, generator._x, x.Length);
 
-				generator._cdf = new uint[weights.Length];
 				double totalWeight = 0d;
 				for (int i = 0; i < weights.Length; ++i)
 				{
+					if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+					if (weights[i] < 0f) throw new ArgumentOutOfRangeException("weights", weights[i], "The relative weight of a segment must not be negative.");
+
 					totalWeight += weights[i];
 				}
 
+				if (totalWeight <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "weights");
+
 				double weightToIntScale = uint.MaxValue + 1d;
 				totalWeight += 1d / weightToIntScale;
+
+				generator._cdf = new uint[weights.Length];
 
 				double weightSum = 0d;
 				for (int i = 0; i < weights.Length; ++i)
@@ -2341,7 +2415,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double PiecewiseUniformSample(this IRandom random, double[] x, double[] y)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length - y.Length != 1) throw new ArgumentException("The array of y values must have exactly one fewer element than the array of x values.", "y");
 #endif
@@ -2354,9 +2428,17 @@ namespace Experilous.MakeItRandom
 				double h = y[i];
 				++i;
 				double x1 = x[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (h < 0d) throw new ArgumentOutOfRangeException("y", h, "The relative weight of a segment must not be negative.");
+#endif
 				totalArea += (x1 - x0) * h;
 				x0 = x1;
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			double n = random.RangeCC(totalArea);
 			i = 0;
@@ -2395,7 +2477,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double PiecewiseWeightedUniformSample(this IRandom random, double[] x, double[] weights)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length - weights.Length != 1) throw new ArgumentException("The array of weights must have exactly one fewer element than the array of x values.", "weights");
 #endif
@@ -2403,8 +2485,16 @@ namespace Experilous.MakeItRandom
 			double weightSum = 0f;
 			for (int i = 0; i < weights.Length; ++i)
 			{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+				if (weights[i] < 0d) throw new ArgumentOutOfRangeException("weights", weights[i], "The weight of a segment must not be negative.");
+#endif
 				weightSum += weights[i];
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (weightSum <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "weights");
+#endif
 
 			double n = random.RangeCC(weightSum);
 			for (int i = 0; i < weights.Length; ++i)
@@ -2432,22 +2522,39 @@ namespace Experilous.MakeItRandom
 				generator._x = new double[x.Length];
 				Array.Copy(x, generator._x, x.Length);
 
-				generator._cdf = new ulong[y.Length];
 				double totalWeight = 0d;
 				for (int i = 0; i < y.Length; ++i)
 				{
+					if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+					if (y[i] < 0d) throw new ArgumentOutOfRangeException("y", y[i], "The relative weight of a segment must not be negative.");
+
 					totalWeight += (x[i + 1] - x[i]) * y[i];
 				}
 
-				double weightToIntScale = ulong.MaxValue + 1d;
-				totalWeight += 1d / weightToIntScale;
+				if (totalWeight <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+
+				double weightToIntScale = 0xFFFFFFFFFFFFF800UL;
+
+				generator._cdf = new ulong[y.Length];
 
 				double weightSum = 0d;
 				for (int i = 0; i < y.Length; ++i)
 				{
-					weightSum += (x[i + 1] - x[i]) * y[i];
+					double weight = (x[i + 1] - x[i]) * y[i];
+					weightSum += weight;
 					generator._cdf[i] = (ulong)Math.Floor(weightSum / totalWeight * weightToIntScale);
 				}
+
+				ulong remainder = ulong.MaxValue - generator._cdf[y.Length - 1];
+				for (int i = 0; i < y.Length - 1; ++i)
+				{
+					double weight = (x[i + 1] - x[i]) * y[i];
+					ulong extra = (ulong)Math.Floor(weight / weightSum * remainder);
+					generator._cdf[i] += extra;
+					remainder -= extra;
+					weightSum -= weight;
+				}
+				generator._cdf[y.Length - 1] = ulong.MaxValue;
 
 				return generator;
 			}
@@ -2463,15 +2570,20 @@ namespace Experilous.MakeItRandom
 				generator._x = new double[x.Length];
 				Array.Copy(x, generator._x, x.Length);
 
-				generator._cdf = new ulong[weights.Length];
 				double totalWeight = 0d;
 				for (int i = 0; i < weights.Length; ++i)
 				{
+					if (x[i] >= x[i + 1]) throw new ArgumentOutOfRangeException("x", x[i + 1], "The upper range boundary must be greater than the lower range boundary.");
+					if (weights[i] < 0f) throw new ArgumentOutOfRangeException("weights", weights[i], "The relative weight of a segment must not be negative.");
+
 					totalWeight += weights[i];
 				}
 
-				double weightToIntScale = ulong.MaxValue + 1d;
-				totalWeight += 1d / weightToIntScale;
+				if (totalWeight <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "weights");
+
+				double weightToIntScale = 0xFFFFFFFFFFFFF800UL;
+
+				generator._cdf = new ulong[weights.Length];
 
 				double weightSum = 0d;
 				for (int i = 0; i < weights.Length; ++i)
@@ -2479,6 +2591,16 @@ namespace Experilous.MakeItRandom
 					weightSum += weights[i];
 					generator._cdf[i] = (ulong)Math.Floor(weightSum / totalWeight * weightToIntScale);
 				}
+
+				ulong remainder = ulong.MaxValue - generator._cdf[weights.Length - 1];
+				for (int i = 0; i < weights.Length - 1; ++i)
+				{
+					ulong extra = (ulong)Math.Floor(weights[i] / weightSum * remainder);
+					generator._cdf[i] += extra;
+					remainder -= extra;
+					weightSum -= weights[i];
+				}
+				generator._cdf[weights.Length - 1] = ulong.MaxValue;
 
 				return generator;
 			}
@@ -2562,7 +2684,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseLinearSample(this IRandom random, float[] x, float[] y)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
 #endif
@@ -2574,10 +2696,21 @@ namespace Experilous.MakeItRandom
 			{
 				float x1 = x[i];
 				float y1 = y[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
 				doubleTotalArea += (x1 - x0) * (y0 + y1); // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 				x0 = x1;
 				y0 = y1;
 			}
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (y[y.Length - 1] < 0f) throw new ArgumentOutOfRangeException("y", y[y.Length - 1], "The domain must be entirely non-negative.");
+#endif
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (doubleTotalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			float n = random.RangeCC(doubleTotalArea);
 			x0 = x[0];
@@ -2610,7 +2743,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseLinearSample(this IRandom random, Vector2[] p)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (p.Length < 2) throw new ArgumentException("The array of vectors must have at least two elements.", "p");
 #endif
 
@@ -2619,9 +2752,20 @@ namespace Experilous.MakeItRandom
 			for (int i = 1; i < p.Length; ++i)
 			{
 				Vector2 p1 = p[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (p0.x >= p1.x) throw new ArgumentOutOfRangeException("p", p1.x, "The upper range boundary must be greater than the lower range boundary.");
+				if (p0.y < 0f) throw new ArgumentOutOfRangeException("p", p0.y, "The domain must be entirely non-negative.");
+#endif
 				doubleTotalArea += (p1.x - p0.x) * (p0.y + p1.y); // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 				p0 = p1;
 			}
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (p[p.Length - 1].y < 0f) throw new ArgumentOutOfRangeException("p", p[p.Length - 1].y, "The domain must be entirely non-negative.");
+#endif
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (doubleTotalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "p");
+#endif
 
 			double n = random.RangeCC(doubleTotalArea);
 			p0 = p[0];
@@ -2681,11 +2825,16 @@ namespace Experilous.MakeItRandom
 					float y0 = y[i - 1];
 					float x1 = x[i];
 					float y1 = y[i];
+					if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+					if (y0 < 0f) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
 					float area = (x1 - x0) * (y0 + y1);
 					if (area == 0f) continue;
 					doubleTotalArea += (x1 - x0) * (y0 + y1); // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 					++segmentCount;
 				}
+				if (y[y.Length - 1] < 0f) throw new ArgumentOutOfRangeException("y", y[y.Length - 1], "The domain must be entirely non-negative.");
+
+				if (doubleTotalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
 
 				double areaToIntScale = uint.MaxValue + 1d;
 				doubleTotalArea += 1d / areaToIntScale;
@@ -2721,11 +2870,16 @@ namespace Experilous.MakeItRandom
 				{
 					Vector2 p0 = p[i - 1];
 					Vector2 p1 = p[i];
-					float area = (p1.x - p0.x) * (p0.y + p1.y);
-					if (area == 0f) continue;
-					doubleTotalArea += area; // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
+					if (p0.x >= p1.x) throw new ArgumentOutOfRangeException("p", p1.x, "The upper range boundary must be greater than the lower range boundary.");
+					if (p0.y < 0f) throw new ArgumentOutOfRangeException("p", p0.y, "The domain must be entirely non-negative.");
+					float doubleArea = (p1.x - p0.x) * (p0.y + p1.y);
+					if (doubleArea == 0f) continue;
+					doubleTotalArea += doubleArea; // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 					++segmentCount;
 				}
+				if (p[p.Length - 1].y < 0f) throw new ArgumentOutOfRangeException("p", p[p.Length - 1].y, "The domain must be entirely non-negative.");
+
+				if (doubleTotalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "p");
 
 				double areaToIntScale = uint.MaxValue + 1d;
 				doubleTotalArea += 1d / areaToIntScale;
@@ -2738,9 +2892,9 @@ namespace Experilous.MakeItRandom
 				{
 					Vector2 p0 = p[i - 1];
 					Vector2 p1 = p[i];
-					float area = (p1.x - p0.x) * (p0.y + p1.y);
-					if (area == 0f) continue;
-					doubleAreaSum += area;
+					float doubleArea = (p1.x - p0.x) * (p0.y + p1.y);
+					if (doubleArea == 0f) continue;
+					doubleAreaSum += doubleArea;
 					_segments[j] = new SegmentData(p0.x, p0.y, p1.x, p1.y);
 					_cdf[j] = (uint)Math.Floor(doubleAreaSum / doubleTotalArea * areaToIntScale);
 					++j;
@@ -2854,7 +3008,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double PiecewiseLinearSample(this IRandom random, double[] x, double[] y)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
 #endif
@@ -2866,10 +3020,21 @@ namespace Experilous.MakeItRandom
 			{
 				double x1 = x[i];
 				double y1 = y[i];
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
 				doubleTotalArea += (x1 - x0) * (y0 + y1); // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 				x0 = x1;
 				y0 = y1;
 			}
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (y0 < 0d) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (doubleTotalArea <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			double n = random.RangeCC(doubleTotalArea);
 			x0 = x[0];
@@ -2932,14 +3097,18 @@ namespace Experilous.MakeItRandom
 					double y0 = y[i - 1];
 					double x1 = x[i];
 					double y1 = y[i];
-					double area = (x1 - x0) * (y0 + y1);
-					if (area == 0f) continue;
+					double doubleArea = (x1 - x0) * (y0 + y1);
+					if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+					if (y0 < 0d) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+					if (doubleArea == 0f) continue;
 					doubleTotalArea += (x1 - x0) * (y0 + y1); // Double the area of a trapeoid; no need to scale by one half, since it's all relative.
 					++segmentCount;
 				}
+				if (y[y.Length - 1] < 0d) throw new ArgumentOutOfRangeException("y", y[y.Length - 1], "The domain must be entirely non-negative.");
 
-				double areaToIntScale = ulong.MaxValue + 1d;
-				doubleTotalArea += 1d / areaToIntScale;
+				if (doubleTotalArea <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+
+				double areaToIntScale = 0xFFFFFFFFFFFFF800UL;
 
 				_segments = new SegmentData[segmentCount];
 				_cdf = new ulong[segmentCount];
@@ -2951,11 +3120,27 @@ namespace Experilous.MakeItRandom
 					double y0 = y[i - 1];
 					double x1 = x[i];
 					double y1 = y[i];
-					double area = (x1 - x0) * (y0 + y1);
-					if (area == 0f) continue;
-					doubleAreaSum += area;
+					double doubleArea = (x1 - x0) * (y0 + y1);
+					if (doubleArea == 0f) continue;
+					doubleAreaSum += doubleArea;
 					_cdf[j] = (ulong)Math.Floor(doubleAreaSum / doubleTotalArea * areaToIntScale);
 					_segments[j] = new SegmentData(x0, y0, x1, y1);
+					++j;
+				}
+
+				ulong remainder = ulong.MaxValue - _cdf[segmentCount - 1];
+				for (int i = 1, j = 0; i < x.Length; ++i)
+				{
+					double x0 = x[i - 1];
+					double y0 = y[i - 1];
+					double x1 = x[i];
+					double y1 = y[i];
+					double doubleArea = (x1 - x0) * (y0 + y1);
+					if (doubleArea == 0f) continue;
+					ulong extra = (ulong)Math.Floor(doubleArea / doubleTotalArea * remainder);
+					_cdf[j] += extra;
+					remainder -= extra;
+					doubleAreaSum -= doubleArea;
 					++j;
 				}
 			}
@@ -3059,7 +3244,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, float[] x, float[] y, float[] m)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
 			if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
@@ -3068,15 +3253,27 @@ namespace Experilous.MakeItRandom
 			float totalArea = 0f;
 			float x0 = x[0];
 			float y0 = y[0];
-			float m0 = m[0];
-			for (int i = 1, j = 1; i < x.Length; ++i)
+			for (int i = 1, j = 0; i < x.Length; ++i)
 			{
 				float x1 = x[i];
 				float y1 = y[i];
+				float m0 = m[j++];
 				float m1 = m[j++];
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
+
 				float xDelta = x1 - x0;
 				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
 				{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (y1 < 0f) throw new ArgumentOutOfRangeException("y", y1, "The domain must be entirely non-negative.");
+					if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m", m0, "The domain must be entirely non-negative.");
+					if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m", m1, "The domain must be entirely non-negative.");
+#endif
+
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
 					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
@@ -3089,17 +3286,20 @@ namespace Experilous.MakeItRandom
 				}
 				x0 = x1;
 				y0 = y1;
-				m0 = m[j++];
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			float n = random.RangeCC(totalArea);
 			x0 = x[0];
 			y0 = y[0];
-			m0 = m[0];
-			for (int i = 1, j = 1; i < x.Length; ++i)
+			for (int i = 1, j = 0; i < x.Length; ++i)
 			{
 				float x1 = x[i];
 				float y1 = y[i];
+				float m0 = m[j++];
 				float m1 = m[j++];
 				float xDelta = x1 - x0;
 				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
@@ -3118,7 +3318,6 @@ namespace Experilous.MakeItRandom
 				}
 				x0 = x1;
 				y0 = y1;
-				m0 = m[j++];
 			}
 			return x0;
 		}
@@ -3146,21 +3345,33 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, Vector2[] p, float[] m)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (p.Length < 2) throw new ArgumentException("The array of positions must have at least two elements.", "p");
 			if (m.Length != (p.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of positions.", "m");
 #endif
 
 			float totalArea = 0f;
 			Vector2 p0 = p[0];
-			float m0 = m[0];
-			for (int i = 1, j = 1; i < p.Length; ++i)
+			for (int i = 1, j = 0; i < p.Length; ++i)
 			{
 				Vector2 p1 = p[i];
+				float m0 = m[j++];
 				float m1 = m[j++];
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (p0.x >= p1.x) throw new ArgumentOutOfRangeException("p", p1.x, "The upper range boundary must be greater than the lower range boundary.");
+				if (p0.y < 0f) throw new ArgumentOutOfRangeException("p", p0.y, "The domain must be entirely non-negative.");
+#endif
+
 				float xDelta = p1.x - p0.x;
 				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
 				{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (p1.y < 0f) throw new ArgumentOutOfRangeException("p", p1.y, "The domain must be entirely non-negative.");
+					if (p0.y == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m", m0, "The domain must be entirely non-negative.");
+					if (p1.y == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m", m1, "The domain must be entirely non-negative.");
+#endif
+
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
 					CalculateHermiteCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
@@ -3172,15 +3383,18 @@ namespace Experilous.MakeItRandom
 					totalArea += p0.y * xDelta;
 				}
 				p0 = p1;
-				m0 = m[j++];
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "p");
+#endif
 
 			float n = random.RangeCC(totalArea);
 			p0 = p[0];
-			m0 = m[0];
-			for (int i = 1, j = 1; i < p.Length; ++i)
+			for (int i = 1, j = 0; i < p.Length; ++i)
 			{
 				Vector2 p1 = p[i];
+				float m0 = m[j++];
 				float m1 = m[j++];
 				float xDelta = p1.x - p0.x;
 				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
@@ -3198,7 +3412,6 @@ namespace Experilous.MakeItRandom
 					if (totalArea < n) return random.RangeCO(p0.x, p1.x);
 				}
 				p0 = p1;
-				m0 = m[j++];
 			}
 			return p0.x;
 		}
@@ -3221,7 +3434,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static float PiecewiseHermiteSample(this IRandom random, AnimationCurve curve)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (curve.length < 2) throw new ArgumentException("The curve must have at least two keyframes.", "curve");
 #endif
 
@@ -3230,9 +3443,21 @@ namespace Experilous.MakeItRandom
 			for (int i = 1; i < curve.length; ++i)
 			{
 				Keyframe kf1 = curve[i];
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (kf0.time >= kf1.time) throw new ArgumentOutOfRangeException("curve", kf1.time, "The upper range boundary must be greater than the lower range boundary.");
+				if (kf0.value < 0f) throw new ArgumentOutOfRangeException("curve", kf0.value, "The domain must be entirely non-negative.");
+#endif
+
 				float xDelta = kf1.time - kf0.time;
 				if (!float.IsInfinity(kf0.outTangent) && !float.IsInfinity(kf1.inTangent))
 				{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (kf1.value < 0f) throw new ArgumentOutOfRangeException("curve", kf1.value, "The domain must be entirely non-negative.");
+					if (kf0.value == 0f && kf0.outTangent < 0f) throw new ArgumentOutOfRangeException("curve", kf0.outTangent, "The domain must be entirely non-negative.");
+					if (kf1.value == 0f && kf1.inTangent > 0f) throw new ArgumentOutOfRangeException("curve", kf1.inTangent, "The domain must be entirely non-negative.");
+#endif
+
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
 					CalculateHermiteCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
@@ -3245,6 +3470,10 @@ namespace Experilous.MakeItRandom
 				}
 				kf0 = kf1;
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "curve");
+#endif
 
 			float n = random.RangeCC(totalArea);
 			kf0 = curve[0];
@@ -3304,19 +3533,26 @@ namespace Experilous.MakeItRandom
 
 				_random = random;
 
-				Initialize(x.Length,
-					(int index, out float x0, out float y0, out float m0) =>
-					{
-						x0 = x[index];
-						y0 = y[index];
-						m0 = m[index * 2];
-					},
-					(int index, out float x1, out float y1, out float m1) =>
-					{
-						x1 = x[index];
-						y1 = y[index];
-						m1 = m[index * 2 - 1];
-					});
+				try
+				{
+					Initialize(x.Length,
+						(int index, out float x0, out float y0, out float m0) =>
+						{
+							x0 = x[index];
+							y0 = y[index];
+							m0 = m[index * 2];
+						},
+						(int index, out float x1, out float y1, out float m1) =>
+						{
+							x1 = x[index];
+							y1 = y[index];
+							m1 = m[index * 2 - 1];
+						});
+				}
+				catch (ArgumentOutOfRangeException ex)
+				{
+					throw new ArgumentOutOfRangeException(ex.ParamName, ex.ActualValue, ex.Message);
+				}
 			}
 
 			public FloatPiecewiseHermiteSampleGenerator(IRandom random, Vector2[] p, float[] m)
@@ -3326,19 +3562,26 @@ namespace Experilous.MakeItRandom
 
 				_random = random;
 
-				Initialize(p.Length,
-					(int index, out float x0, out float y0, out float m0) =>
-					{
-						x0 = p[index].x;
-						y0 = p[index].y;
-						m0 = m[index * 2];
-					},
-					(int index, out float x1, out float y1, out float m1) =>
-					{
-						x1 = p[index].x;
-						y1 = p[index].y;
-						m1 = m[index * 2 - 1];
-					});
+				try
+				{
+					Initialize(p.Length,
+						(int index, out float x0, out float y0, out float m0) =>
+						{
+							x0 = p[index].x;
+							y0 = p[index].y;
+							m0 = m[index * 2];
+						},
+						(int index, out float x1, out float y1, out float m1) =>
+						{
+							x1 = p[index].x;
+							y1 = p[index].y;
+							m1 = m[index * 2 - 1];
+						});
+				}
+				catch (ArgumentOutOfRangeException ex)
+				{
+					throw new ArgumentOutOfRangeException(ex.ParamName == "m" ? "m" : "p", ex.ActualValue, ex.Message);
+				}
 			}
 
 			public FloatPiecewiseHermiteSampleGenerator(IRandom random, AnimationCurve curve)
@@ -3347,21 +3590,28 @@ namespace Experilous.MakeItRandom
 
 				_random = random;
 
-				Initialize(curve.length,
-					(int index, out float x, out float y, out float m) =>
-					{
-						var keyframe = curve[index];
-						x = keyframe.time;
-						y = keyframe.value;
-						m = keyframe.outTangent;
-					},
-					(int index, out float x, out float y, out float m) =>
-					{
-						var keyframe = curve[index];
-						x = keyframe.time;
-						y = keyframe.value;
-						m = keyframe.inTangent;
-					});
+				try
+				{
+					Initialize(curve.length,
+						(int index, out float x, out float y, out float m) =>
+						{
+							var keyframe = curve[index];
+							x = keyframe.time;
+							y = keyframe.value;
+							m = keyframe.outTangent;
+						},
+						(int index, out float x, out float y, out float m) =>
+						{
+							var keyframe = curve[index];
+							x = keyframe.time;
+							y = keyframe.value;
+							m = keyframe.inTangent;
+						});
+				}
+				catch (ArgumentOutOfRangeException ex)
+				{
+					throw new ArgumentOutOfRangeException("curve", ex.ActualValue, ex.Message);
+				}
 			}
 
 			private delegate void GetFrameDelegate(int index, out float x, out float y, out float m);
@@ -3375,9 +3625,21 @@ namespace Experilous.MakeItRandom
 					float x0, y0, m0, x1, y1, m1;
 					getFront(i - 1, out x0, out y0, out m0);
 					getBack(i, out x1, out y1, out m1);
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+					if (y0 < 0f) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
+
 					float xDelta = x1 - x0;
 					if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
 					{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+						if (y1 < 0f) throw new ArgumentOutOfRangeException("y", y1, "The domain must be entirely non-negative.");
+						if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m", m0, "The domain must be entirely non-negative.");
+						if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m", m1, "The domain must be entirely non-negative.");
+#endif
+
 						// Hermite Segment
 						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
 
@@ -3395,6 +3657,10 @@ namespace Experilous.MakeItRandom
 					++segmentCount;
 				}
 
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
+
 				double areaToIntScale = uint.MaxValue + 1d;
 				totalArea += 1d / areaToIntScale;
 
@@ -3409,6 +3675,7 @@ namespace Experilous.MakeItRandom
 					getBack(i, out x1, out y1, out m1);
 					if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
 					{
+						// Hermite Segment
 						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
 
 						var segmentData = new SegmentData(x0, y0, m0, x1, y1, m1);
@@ -3527,7 +3794,7 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static double PiecewiseHermiteSample(this IRandom random, double[] x, double[] y, double[] m)
 		{
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x.Length < 2) throw new ArgumentException("The array of x values must have at least two elements.", "x");
 			if (x.Length != y.Length) throw new ArgumentException("The array of y values must have exactly the same number of elements as the array of x values.", "y");
 			if (m.Length != (x.Length - 1) * 2) throw new ArgumentException("The array of slopes must have exactly two less than double the number of elements as the array of x values.", "m");
@@ -3536,15 +3803,27 @@ namespace Experilous.MakeItRandom
 			double totalArea = 0d;
 			double x0 = x[0];
 			double y0 = y[0];
-			double m0 = m[0];
-			for (int i = 1, j = 1; i < x.Length; ++i)
+			for (int i = 1, j = 0; i < x.Length; ++i)
 			{
 				double x1 = x[i];
 				double y1 = y[i];
+				double m0 = m[j++];
 				double m1 = m[j++];
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
+
 				double xDelta = x1 - x0;
 				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
 				{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (y1 < 0d) throw new ArgumentOutOfRangeException("y", y1, "The domain must be entirely non-negative.");
+					if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m", m0, "The domain must be entirely non-negative.");
+					if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m", m1, "The domain must be entirely non-negative.");
+#endif
+
 					// Hermite Segment
 					double k4, k3, k2, k1, area;
 					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
@@ -3557,17 +3836,20 @@ namespace Experilous.MakeItRandom
 				}
 				x0 = x1;
 				y0 = y1;
-				m0 = m[j++];
 			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0d) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
 
 			double n = random.RangeCC(totalArea);
 			x0 = x[0];
 			y0 = y[0];
-			m0 = m[0];
-			for (int i = 1, j = 1; i < x.Length; ++i)
+			for (int i = 1, j = 0; i < x.Length; ++i)
 			{
 				double x1 = x[i];
 				double y1 = y[i];
+				double m0 = m[j++];
 				double m1 = m[j++];
 				double xDelta = x1 - x0;
 				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
@@ -3586,7 +3868,6 @@ namespace Experilous.MakeItRandom
 				}
 				x0 = x1;
 				y0 = y1;
-				m0 = m[j++];
 			}
 			return x0;
 		}
@@ -3624,19 +3905,26 @@ namespace Experilous.MakeItRandom
 
 				_random = random;
 
-				Initialize(x.Length,
-					(int index, out double x0, out double y0, out double m0) =>
-					{
-						x0 = x[index];
-						y0 = y[index];
-						m0 = m[index * 2];
-					},
-					(int index, out double x1, out double y1, out double m1) =>
-					{
-						x1 = x[index];
-						y1 = y[index];
-						m1 = m[index * 2 - 1];
-					});
+				try
+				{
+					Initialize(x.Length,
+						(int index, out double x0, out double y0, out double m0) =>
+						{
+							x0 = x[index];
+							y0 = y[index];
+							m0 = m[index * 2];
+						},
+						(int index, out double x1, out double y1, out double m1) =>
+						{
+							x1 = x[index];
+							y1 = y[index];
+							m1 = m[index * 2 - 1];
+						});
+				}
+				catch (ArgumentOutOfRangeException ex)
+				{
+					throw new ArgumentOutOfRangeException(ex.ParamName, ex.ActualValue, ex.Message);
+				}
 			}
 
 			private delegate void GetFrameDelegate(int index, out double x, out double y, out double m);
@@ -3650,9 +3938,21 @@ namespace Experilous.MakeItRandom
 					double x0, y0, m0, x1, y1, m1;
 					getFront(i - 1, out x0, out y0, out m0);
 					getBack(i, out x1, out y1, out m1);
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (x0 >= x1) throw new ArgumentOutOfRangeException("x", x1, "The upper range boundary must be greater than the lower range boundary.");
+					if (y0 < 0d) throw new ArgumentOutOfRangeException("y", y0, "The domain must be entirely non-negative.");
+#endif
+
 					double xDelta = x1 - x0;
 					if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
 					{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+						if (y1 < 0d) throw new ArgumentOutOfRangeException("y", y1, "The domain must be entirely non-negative.");
+						if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m", m0, "The domain must be entirely non-negative.");
+						if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m", m1, "The domain must be entirely non-negative.");
+#endif
+
 						// Hermite Segment
 						if (y0 <= 0d && y1 <= 0d && m0 <= 0d && m1 >= 0d) continue;
 
@@ -3670,8 +3970,11 @@ namespace Experilous.MakeItRandom
 					++segmentCount;
 				}
 
-				double areaToIntScale = ulong.MaxValue + 1d;
-				totalArea += 1d / areaToIntScale;
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "y");
+#endif
+
+				double areaToIntScale = 0xFFFFFFFFFFFFF800UL;
 
 				_segments = new SegmentData[segmentCount];
 				_cdf = new ulong[segmentCount];
@@ -3684,13 +3987,14 @@ namespace Experilous.MakeItRandom
 					getBack(i, out x1, out y1, out m1);
 					if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
 					{
+						// Hermite Segment
 						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
 
 						var segmentData = new SegmentData(x0, y0, m0, x1, y1, m1);
 
 						areaSum += segmentData.area * segmentData.xDelta;
 						_segments[j] = segmentData;
-						_cdf[j] = (uint)Math.Floor(areaSum / totalArea * areaToIntScale);
+						_cdf[j] = (ulong)Math.Floor(areaSum / totalArea * areaToIntScale);
 					}
 					else
 					{
@@ -3704,11 +4008,48 @@ namespace Experilous.MakeItRandom
 					}
 					++j;
 				}
+
+				ulong remainder = ulong.MaxValue - _cdf[segmentCount - 1];
+				for (int i = 1, j = 0; i < frameCount; ++i)
+				{
+					double x0, y0, m0, x1, y1, m1;
+					getFront(i - 1, out x0, out y0, out m0);
+					getBack(i, out x1, out y1, out m1);
+					if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+					{
+						// Hermite Segment
+						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
+
+						var segmentData = new SegmentData(x0, y0, m0, x1, y1, m1);
+
+						var area = segmentData.area * segmentData.xDelta;
+						ulong extra = (ulong)Math.Floor(area / totalArea * remainder);
+						_cdf[j] += extra;
+						remainder -= extra;
+						areaSum -= area;
+					}
+					else
+					{
+						// Uniform Segment
+						if (y0 <= 0f) continue;
+
+						var segmentData = new SegmentData(x0, y0, 0f, x1, y0, 0f);
+
+						var area = segmentData.area * segmentData.xDelta;
+						ulong extra = (ulong)Math.Floor(area / totalArea * remainder);
+						_cdf[j] += extra;
+						remainder -= extra;
+						areaSum -= area;
+					}
+					++j;
+				}
+
+				//TODO:  See why remainder isn't 0 by this point.  Same for other piecewise double generators.
 			}
 
 			public double Next()
 			{
-				int i = BinarySearch(_random.Next32(), _cdf);
+				int i = BinarySearch(_random.Next64(), _cdf);
 
 				if (i < _cdf.Length)
 				{
