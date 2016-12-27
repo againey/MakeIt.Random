@@ -277,7 +277,7 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			if (isOn)
 			{
-				Initialize(_random.MakeHermiteSampleGenerator(hermitePosition0, hermiteSlope0, hermitePosition1, hermiteSlope1), hermiteViewCenter, hermiteViewRange);
+				Initialize(_random.MakeHermiteSplineSampleGenerator(hermitePosition0, hermiteSlope0, hermitePosition1, hermiteSlope1), hermiteViewCenter, hermiteViewRange);
 			}
 		}
 

@@ -929,15 +929,13 @@ namespace Experilous.MakeItRandom
 
 		#region Triangular Distribution
 
-		//TODO:  Rename lower/mode/upper to x0/x1/x2 for better consistency.
-
 		/// <summary>
 		/// Returns a random value sampled from a triangular probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
-		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <returns>A random value from within the given triangular distribution.</returns>
 		/// <remarks>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
@@ -945,42 +943,42 @@ namespace Experilous.MakeItRandom
 		/// <see cref="MakeTriangularSampleGenerator(IRandom, float, float, float)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static float TriangularSample(this IRandom random, float lower, float mode, float upper)
+		public static float TriangularSample(this IRandom random, float x0, float x1, float x2)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
-			if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
 #endif
 
 			float n = random.FloatOO();
-			float range = upper - lower;
-			float lowerRange = mode - lower;
+			float range = x2 - x0;
+			float lowerRange = x1 - x0;
 			float split = lowerRange / range;
-			return n < split ? lower + Mathf.Sqrt(n * range * lowerRange) : upper - Mathf.Sqrt((1f - n) * range * (upper - mode));
+			return n < split ? x0 + Mathf.Sqrt(n * range * lowerRange) : x2 - Mathf.Sqrt((1f - n) * range * (x2 - x1));
 		}
 
 		private class FloatTriangularSampleGenerator : ISampleGenerator<float>
 		{
 			private IRandom _random;
 			private float _split;
-			private float _lower;
-			private float _upper;
+			private float _x0;
+			private float _x1;
 			private float _rangeLowerRange;
 			private float _rangeUpperRange;
 
-			public FloatTriangularSampleGenerator(IRandom random, float lower, float mode, float upper)
+			public FloatTriangularSampleGenerator(IRandom random, float x0, float x1, float x2)
 			{
-				if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
-				if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
 
 				_random = random;
 
-				float range = upper - lower;
-				float lowerRange = mode - lower;
-				float upperRange = upper - mode;
+				float range = x2 - x0;
+				float lowerRange = x1 - x0;
+				float upperRange = x2 - x1;
 
-				_lower = lower;
-				_upper = upper;
+				_x0 = x0;
+				_x1 = x2;
 				_rangeLowerRange = range * lowerRange;
 				_rangeUpperRange = range * upperRange;
 				_split = lowerRange / range;
@@ -989,7 +987,7 @@ namespace Experilous.MakeItRandom
 			public float Next()
 			{
 				float n = _random.FloatOO();
-				return n < _split ? _lower + Mathf.Sqrt(n * _rangeLowerRange) : _upper - Mathf.Sqrt((1f - n) * _rangeUpperRange);
+				return n < _split ? _x0 + Mathf.Sqrt(n * _rangeLowerRange) : _x1 - Mathf.Sqrt((1f - n) * _rangeUpperRange);
 			}
 		}
 
@@ -997,22 +995,22 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
-		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
-		public static ISampleGenerator<float> MakeTriangularSampleGenerator(this IRandom random, float lower, float mode, float upper)
+		public static ISampleGenerator<float> MakeTriangularSampleGenerator(this IRandom random, float x0, float x1, float x2)
 		{
-			return new FloatTriangularSampleGenerator(random, lower, mode, upper);
+			return new FloatTriangularSampleGenerator(random, x0, x1, x2);
 		}
 
 		/// <summary>
 		/// Returns a random value sampled from a triangular probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
-		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <returns>A random value from within the given triangular distribution.</returns>
 		/// <remarks>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
@@ -1020,42 +1018,42 @@ namespace Experilous.MakeItRandom
 		/// <see cref="MakeTriangularSampleGenerator(IRandom, double, double, double)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static double TriangularSample(this IRandom random, double lower, double mode, double upper)
+		public static double TriangularSample(this IRandom random, double x0, double x1, double x2)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
-			if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
 #endif
 
 			double n = random.DoubleOO();
-			double range = upper - lower;
-			double lowerRange = mode - lower;
+			double range = x2 - x0;
+			double lowerRange = x1 - x0;
 			double split = lowerRange / range;
-			return n < split ? lower + Math.Sqrt(n * range * lowerRange) : upper - Math.Sqrt((1d - n) * range * (upper - mode));
+			return n < split ? x0 + Math.Sqrt(n * range * lowerRange) : x2 - Math.Sqrt((1d - n) * range * (x2 - x1));
 		}
 
 		private class DoubleTriangularSampleGenerator : ISampleGenerator<double>
 		{
 			private IRandom _random;
 			private double _split;
-			private double _lower;
-			private double _upper;
+			private double _x0;
+			private double _x2;
 			private double _rangeLowerRange;
 			private double _rangeUpperRange;
 
-			public DoubleTriangularSampleGenerator(IRandom random, double lower, double mode, double upper)
+			public DoubleTriangularSampleGenerator(IRandom random, double x0, double x1, double x2)
 			{
-				if (lower >= mode) throw new ArgumentOutOfRangeException("mode", mode, "The mode must be greater than the lower range boundary.");
-				if (mode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the mode boundary.");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
 
 				_random = random;
 
-				double range = upper - lower;
-				double lowerRange = mode - lower;
-				double upperRange = upper - mode;
+				double range = x2 - x0;
+				double lowerRange = x1 - x0;
+				double upperRange = x2 - x1;
 
-				_lower = lower;
-				_upper = upper;
+				_x0 = x0;
+				_x2 = x2;
 				_rangeLowerRange = range * lowerRange;
 				_rangeUpperRange = range * upperRange;
 				_split = lowerRange / range;
@@ -1064,7 +1062,7 @@ namespace Experilous.MakeItRandom
 			public double Next()
 			{
 				double n = _random.DoubleOO();
-				return n < _split ? _lower + Math.Sqrt(n * _rangeLowerRange) : _upper - Math.Sqrt((1d - n) * _rangeUpperRange);
+				return n < _split ? _x0 + Math.Sqrt(n * _rangeLowerRange) : _x2 - Math.Sqrt((1d - n) * _rangeUpperRange);
 			}
 		}
 
@@ -1072,29 +1070,27 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="mode"/>.</param>
-		/// <param name="mode">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="mode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
-		public static ISampleGenerator<double> MakeTriangularSampleGenerator(this IRandom random, double lower, double mode, double upper)
+		public static ISampleGenerator<double> MakeTriangularSampleGenerator(this IRandom random, double x0, double x1, double x2)
 		{
-			return new DoubleTriangularSampleGenerator(random, lower, mode, upper);
+			return new DoubleTriangularSampleGenerator(random, x0, x1, x2);
 		}
 
 		#endregion
 
 		#region Trapezoidal Distribution
 
-		//TODO:  Rename lower/lowerMode/upperMode/upper to x0/x1/x2/x3 for better consistency.
-
 		/// <summary>
 		/// Returns a random value sampled from a trapezoidal probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
-		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
-		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
 		/// <returns>A random value from within the given trapezoidal distribution.</returns>
 		/// <remarks>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
@@ -1102,27 +1098,27 @@ namespace Experilous.MakeItRandom
 		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static float TrapezoidalSample(this IRandom random, float lower, float lowerMode, float upperMode, float upper)
+		public static float TrapezoidalSample(this IRandom random, float x0, float x1, float x2, float x3)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
-			if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
-			if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
 #endif
 
 			float n = random.FloatOO();
 
-			float range = upper + upperMode - lowerMode - lower;
+			float range = x3 + x2 - x1 - x0;
 
-			float lowerRange = lowerMode - lower;
+			float lowerRange = x1 - x0;
 			float lowerSplit = lowerRange / range;
-			if (n < lowerSplit) return lower + Mathf.Sqrt(n * range * lowerRange); // Within lower triangle.
+			if (n < lowerSplit) return x0 + Mathf.Sqrt(n * range * lowerRange); // Within lower triangle.
 
-			float midRange = upperMode - lowerMode;
+			float midRange = x2 - x1;
 			float upperSplit = (midRange + midRange + lowerRange) / range;
-			if (n > upperSplit) return upper - Mathf.Sqrt((1f - n) * range * (upper - upperMode)); // Within upper triangle.
+			if (n > upperSplit) return x3 - Mathf.Sqrt((1f - n) * range * (x3 - x2)); // Within upper triangle.
 
-			return lowerMode + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
+			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
 		}
 
 		private class FloatTrapezoidalSampleGenerator : ISampleGenerator<float>
@@ -1130,29 +1126,29 @@ namespace Experilous.MakeItRandom
 			private IRandom _random;
 			private float _lowerSplit;
 			private float _upperSplit;
-			private float _lower;
-			private float _lowerMode;
-			private float _upper;
+			private float _x0;
+			private float _x1;
+			private float _x3;
 			private float _rangeLowerRange;
 			private float _rangeUpperRange;
 			private float _modeScale;
 
-			public FloatTrapezoidalSampleGenerator(IRandom random, float lower, float lowerMode, float upperMode, float upper)
+			public FloatTrapezoidalSampleGenerator(IRandom random, float x0, float x1, float x2, float x3)
 			{
-				if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
-				if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
-				if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
 
 				_random = random;
 
-				float range = upper + upperMode - lowerMode - lower;
-				float lowerRange = lowerMode - lower;
-				float midRange = upperMode - lowerMode;
-				float upperRange = upper - upperMode;
+				float range = x3 + x2 - x1 - x0;
+				float lowerRange = x1 - x0;
+				float midRange = x2 - x1;
+				float upperRange = x3 - x2;
 
-				_lower = lower;
-				_lowerMode = lowerMode;
-				_upper = upper;
+				_x0 = x0;
+				_x1 = x1;
+				_x3 = x3;
 				_rangeLowerRange = range * lowerRange;
 				_rangeUpperRange = range * upperRange;
 				_lowerSplit = lowerRange / range;
@@ -1163,9 +1159,9 @@ namespace Experilous.MakeItRandom
 			public float Next()
 			{
 				float n = _random.FloatOO();
-				if (n < _lowerSplit) return _lower + Mathf.Sqrt(n * _rangeLowerRange); // Within lower triangle.
-				if (n > _upperSplit) return _upper - Mathf.Sqrt((1f - n) * _rangeUpperRange); // Within upper triangle.
-				return _lowerMode + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
+				if (n < _lowerSplit) return _x0 + Mathf.Sqrt(n * _rangeLowerRange); // Within lower triangle.
+				if (n > _upperSplit) return _x3 - Mathf.Sqrt((1f - n) * _rangeUpperRange); // Within upper triangle.
+				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
 			}
 		}
 
@@ -1173,24 +1169,24 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
-		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
-		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
 		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
-		public static ISampleGenerator<float> MakeTrapezoidalSampleGenerator(this IRandom random, float lower, float lowerMode, float upperMode, float upper)
+		public static ISampleGenerator<float> MakeTrapezoidalSampleGenerator(this IRandom random, float x0, float x1, float x2, float x3)
 		{
-			return new FloatTrapezoidalSampleGenerator(random, lower, lowerMode, upperMode, upper);
+			return new FloatTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
 		}
 
 		/// <summary>
 		/// Returns a random value sampled from a trapezoidal probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
-		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
-		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
 		/// <returns>A random value from within the given trapezoidal distribution.</returns>
 		/// <remarks>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
@@ -1198,27 +1194,27 @@ namespace Experilous.MakeItRandom
 		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static double TrapezoidalSample(this IRandom random, double lower, double lowerMode, double upperMode, double upper)
+		public static double TrapezoidalSample(this IRandom random, double x0, double x1, double x2, double x3)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
-			if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
-			if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
 #endif
 
 			double n = random.DoubleOO();
 
-			double range = upper + upperMode - lowerMode - lower;
+			double range = x3 + x2 - x1 - x0;
 
-			double lowerRange = lowerMode - lower;
+			double lowerRange = x1 - x0;
 			double lowerSplit = lowerRange / range;
-			if (n < lowerSplit) return lower + Math.Sqrt(n * range * lowerRange); // Within lower triangle.
+			if (n < lowerSplit) return x0 + Math.Sqrt(n * range * lowerRange); // Within lower triangle.
 
-			double midRange = upperMode - lowerMode;
+			double midRange = x2 - x1;
 			double upperSplit = (midRange + midRange + lowerRange) / range;
-			if (n > upperSplit) return upper - Math.Sqrt((1d - n) * range * (upper - upperMode)); // Within upper triangle.
+			if (n > upperSplit) return x3 - Math.Sqrt((1d - n) * range * (x3 - x2)); // Within upper triangle.
 
-			return lowerMode + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
+			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
 		}
 
 		private class DoubleTrapezoidalSampleGenerator : ISampleGenerator<double>
@@ -1226,29 +1222,29 @@ namespace Experilous.MakeItRandom
 			private IRandom _random;
 			private double _lowerSplit;
 			private double _upperSplit;
-			private double _lower;
-			private double _lowerMode;
-			private double _upper;
+			private double _x0;
+			private double _x1;
+			private double _x3;
 			private double _rangeLowerRange;
 			private double _rangeUpperRange;
 			private double _modeScale;
 
-			public DoubleTrapezoidalSampleGenerator(IRandom random, double lower, double lowerMode, double upperMode, double upper)
+			public DoubleTrapezoidalSampleGenerator(IRandom random, double x0, double x1, double x2, double x3)
 			{
-				if (lower >= lowerMode) throw new ArgumentOutOfRangeException("lowerMode", lowerMode, "The lower mode boundary must be greater than the lower range boundary.");
-				if (lowerMode >= upperMode) throw new ArgumentOutOfRangeException("upperMode", upperMode, "The upper mode boundary must be greater than the lower mode boundary.");
-				if (upperMode >= upper) throw new ArgumentOutOfRangeException("upper", upper, "The upper range boundary must be greater than the upper mode boundary.");
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
 
 				_random = random;
 
-				double range = upper + upperMode - lowerMode - lower;
-				double lowerRange = lowerMode - lower;
-				double midRange = upperMode - lowerMode;
-				double upperRange = upper - upperMode;
+				double range = x3 + x2 - x1 - x0;
+				double lowerRange = x1 - x0;
+				double midRange = x2 - x1;
+				double upperRange = x3 - x2;
 
-				_lower = lower;
-				_lowerMode = lowerMode;
-				_upper = upper;
+				_x0 = x0;
+				_x1 = x1;
+				_x3 = x3;
 				_rangeLowerRange = range * lowerRange;
 				_rangeUpperRange = range * upperRange;
 				_lowerSplit = lowerRange / range;
@@ -1259,9 +1255,9 @@ namespace Experilous.MakeItRandom
 			public double Next()
 			{
 				double n = _random.DoubleOO();
-				if (n < _lowerSplit) return _lower + Math.Sqrt(n * _rangeLowerRange); // Within lower triangle.
-				if (n > _upperSplit) return _upper - Math.Sqrt((1d - n) * _rangeUpperRange); // Within upper triangle.
-				return _lowerMode + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
+				if (n < _lowerSplit) return _x0 + Math.Sqrt(n * _rangeLowerRange); // Within lower triangle.
+				if (n > _upperSplit) return _x3 - Math.Sqrt((1d - n) * _rangeUpperRange); // Within upper triangle.
+				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
 			}
 		}
 
@@ -1269,14 +1265,14 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="lower">The lower bound of the probability distribution.  Must be strictly less than <paramref name="lowerMode"/>.</param>
-		/// <param name="lowerMode">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lower"/> and strictly less than <paramref name="upperMode"/>.</param>
-		/// <param name="upperMode">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="lowerMode"/> and strictly less than <paramref name="upper"/>.</param>
-		/// <param name="upper">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="upperMode"/>.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
 		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
-		public static ISampleGenerator<double> MakeTrapezoidalSampleGenerator(this IRandom random, double lower, double lowerMode, double upperMode, double upper)
+		public static ISampleGenerator<double> MakeTrapezoidalSampleGenerator(this IRandom random, double x0, double x1, double x2, double x3)
 		{
-			return new DoubleTrapezoidalSampleGenerator(random, lower, lowerMode, upperMode, upper);
+			return new DoubleTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
 		}
 
 		#endregion
@@ -1621,9 +1617,7 @@ namespace Experilous.MakeItRandom
 
 		#region Hermite Curve Distribution
 
-		//TODO:  Rename to HermiteSpline because "Hermite Distribution" is a different thing in literature
-
-		private static void CalculateHermiteCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
+		private static void CalculateHermiteSplineCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
 		{
 			float xDelta = x1 - x0;
 			float yDelta = y1 - y0;
@@ -1667,7 +1661,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// Returns a random value sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
@@ -1676,7 +1670,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -1684,10 +1678,10 @@ namespace Experilous.MakeItRandom
 		/// to a negative value.</para>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
 		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSampleGenerator(IRandom, float, float, float, float, float, float)"/> to create a generator
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, float, float, float, float, float, float)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
+		public static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
@@ -1698,18 +1692,18 @@ namespace Experilous.MakeItRandom
 			if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
 #endif
 
-			return random.HermiteSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
+			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// Returns a random value sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
 		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
 		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -1717,23 +1711,23 @@ namespace Experilous.MakeItRandom
 		/// to a negative value.</para>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
 		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSampleGenerator(IRandom, Vector2, float, Vector2, float)"/> to create a generator
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, Vector2, float, Vector2, float)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static float HermiteSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		public static float HermiteSplineSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
 		{
-			return random.HermiteSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
+			return random.HermiteSplineSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
 		}
 
-		private static float HermiteSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
+		private static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
 		{
 			float k4, k3, k2, k1, area;
-			CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
 			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
 		}
 
-		private class FloatHermiteSampleGenerator : ISampleGenerator<float>
+		private class FloatHermiteSplineSampleGenerator : ISampleGenerator<float>
 		{
 			protected IRandom _random;
 			protected float _xDelta;
@@ -1754,11 +1748,11 @@ namespace Experilous.MakeItRandom
 				if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
 
 				float k4, k3, k2, k1, area;
-				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
 				if (k4 == 0f && k3 == 0f) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
 
-				var generator = new FloatHermiteSampleGenerator();
+				var generator = new FloatHermiteSplineSampleGenerator();
 				generator._random = random;
 				generator._x0 = x0;
 				generator._xDelta = x1 - x0;
@@ -1778,7 +1772,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
@@ -1787,39 +1781,39 @@ namespace Experilous.MakeItRandom
 		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
 		/// </remarks>
-		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
 		{
-			return FloatHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+			return FloatHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
 		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
 		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
 		/// </remarks>
-		public static ISampleGenerator<float> MakeHermiteSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
 		{
-			return FloatHermiteSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
+			return FloatHermiteSplineSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
 		}
 
-		private static void CalculateHermiteCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
+		private static void CalculateHermiteSplineCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
 		{
 			double xDelta = x1 - x0;
 			double yDelta = y1 - y0;
@@ -1863,7 +1857,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a Hermite curve probability distribution.
+		/// Returns a random value sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
@@ -1872,7 +1866,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -1880,10 +1874,10 @@ namespace Experilous.MakeItRandom
 		/// to a negative value.</para>
 		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
 		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSampleGenerator(IRandom, double, double, double, double, double, double)"/> to create a generator
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, double, double, double, double, double, double)"/> to create a generator
 		/// that will perform and utilize this precomputation for you.</para></note>
 		/// </remarks>
-		public static double HermiteSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
+		public static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
 #if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
 			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
@@ -1894,18 +1888,18 @@ namespace Experilous.MakeItRandom
 			if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
 #endif
 
-			return random.HermiteSample(x0, y0, m0, x1, y1, m1, random.DoubleCC());
+			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.DoubleCC());
 		}
 
-		private static double HermiteSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1, double t)
+		private static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1, double t)
 		{
 			double k4, k3, k2, k1, area;
-			CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
 			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
 		}
 
-		private class DoubleHermiteSampleGenerator : ISampleGenerator<double>
+		private class DoubleHermiteSplineSampleGenerator : ISampleGenerator<double>
 		{
 			protected IRandom _random;
 			protected double _xDelta;
@@ -1926,11 +1920,11 @@ namespace Experilous.MakeItRandom
 				if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
 
 				double k4, k3, k2, k1, area;
-				CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 
 				if (k4 == 0d && k3 == 0d) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
 
-				var generator = new DoubleHermiteSampleGenerator();
+				var generator = new DoubleHermiteSplineSampleGenerator();
 				generator._random = random;
 				generator._x0 = x0;
 				generator._xDelta = x1 - x0;
@@ -1950,7 +1944,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
@@ -1959,16 +1953,16 @@ namespace Experilous.MakeItRandom
 		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
 		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
 		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
 		/// </remarks>
-		public static ISampleGenerator<double> MakeHermiteSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
+		public static ISampleGenerator<double> MakeHermiteSplineSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
 		{
-			return DoubleHermiteSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+			return DoubleHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
 		}
 
 		#endregion
@@ -3220,13 +3214,13 @@ namespace Experilous.MakeItRandom
 		#region Piecewise Hermite Curve Distribution
 
 		/// <summary>
-		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
 		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -3276,7 +3270,7 @@ namespace Experilous.MakeItRandom
 
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea += area * xDelta;
 				}
 				else
@@ -3306,7 +3300,7 @@ namespace Experilous.MakeItRandom
 				{
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea -= area * xDelta;
 					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + x0;
 				}
@@ -3323,12 +3317,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -3374,7 +3368,7 @@ namespace Experilous.MakeItRandom
 
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea += area * xDelta;
 				}
 				else
@@ -3401,7 +3395,7 @@ namespace Experilous.MakeItRandom
 				{
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(p0.x, p0.y, m0, p1.x, p1.y, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea -= area * xDelta;
 					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + p0.x;
 				}
@@ -3417,11 +3411,11 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite curve segments that define the probability distribution function.</param>
-		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -3460,7 +3454,7 @@ namespace Experilous.MakeItRandom
 
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
 					totalArea += area * xDelta;
 				}
 				else
@@ -3485,7 +3479,7 @@ namespace Experilous.MakeItRandom
 				{
 					// Hermite Segment
 					float k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
 					totalArea -= area * xDelta;
 					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + kf0.time;
 				}
@@ -3517,7 +3511,7 @@ namespace Experilous.MakeItRandom
 					xDelta = x1 - x0;
 					this.x0 = x0;
 
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 				}
 			}
 
@@ -3644,7 +3638,7 @@ namespace Experilous.MakeItRandom
 						if (y0 <= 0f && y1 <= 0f && m0 <= 0f && m1 >= 0f) continue;
 
 						float k4, k3, k2, k1, area;
-						CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+						CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 						totalArea += area * xDelta;
 					}
 					else
@@ -3716,13 +3710,13 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
 		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
@@ -3735,12 +3729,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
@@ -3753,11 +3747,11 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite curve segments that define the probability distribution function.</param>
-		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
@@ -3770,13 +3764,13 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random value sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
 		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A random value from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
@@ -3826,7 +3820,7 @@ namespace Experilous.MakeItRandom
 
 					// Hermite Segment
 					double k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea += area * xDelta;
 				}
 				else
@@ -3856,7 +3850,7 @@ namespace Experilous.MakeItRandom
 				{
 					// Hermite Segment
 					double k4, k3, k2, k1, area;
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 					totalArea -= area * xDelta;
 					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.DoubleCO()) * xDelta + x0;
 				}
@@ -3889,7 +3883,7 @@ namespace Experilous.MakeItRandom
 					xDelta = x1 - x0;
 					this.x0 = x0;
 
-					CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+					CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 				}
 			}
 
@@ -3957,7 +3951,7 @@ namespace Experilous.MakeItRandom
 						if (y0 <= 0d && y1 <= 0d && m0 <= 0d && m1 >= 0d) continue;
 
 						double k4, k3, k2, k1, area;
-						CalculateHermiteCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+						CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
 						totalArea += area * xDelta;
 					}
 					else
@@ -4065,13 +4059,13 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a piecewise Hermite curve probability distribution.
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
 		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
-		/// <returns>A sample generator producing random values from within the given piecewise Hermite curve distribution.</returns>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
