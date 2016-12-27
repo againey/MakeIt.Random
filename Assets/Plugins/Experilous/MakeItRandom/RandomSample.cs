@@ -2543,7 +2543,7 @@ namespace Experilous.MakeItRandom
 				for (int i = 0; i < y.Length - 1; ++i)
 				{
 					double weight = (x[i + 1] - x[i]) * y[i];
-					ulong extra = (ulong)Math.Floor(weight / weightSum * remainder);
+					ulong extra = (ulong)Math.Round(weight / weightSum * remainder);
 					generator._cdf[i] += extra;
 					remainder -= extra;
 					weightSum -= weight;
@@ -2589,7 +2589,7 @@ namespace Experilous.MakeItRandom
 				ulong remainder = ulong.MaxValue - generator._cdf[weights.Length - 1];
 				for (int i = 0; i < weights.Length - 1; ++i)
 				{
-					ulong extra = (ulong)Math.Floor(weights[i] / weightSum * remainder);
+					ulong extra = (ulong)Math.Round(weights[i] / weightSum * remainder);
 					generator._cdf[i] += extra;
 					remainder -= extra;
 					weightSum -= weights[i];
@@ -3131,12 +3131,13 @@ namespace Experilous.MakeItRandom
 					double y1 = y[i];
 					double doubleArea = (x1 - x0) * (y0 + y1);
 					if (doubleArea == 0f) continue;
-					ulong extra = (ulong)Math.Floor(doubleArea / doubleTotalArea * remainder);
+					ulong extra = (ulong)Math.Round(doubleArea / doubleAreaSum * remainder);
 					_cdf[j] += extra;
 					remainder -= extra;
 					doubleAreaSum -= doubleArea;
 					++j;
 				}
+				_cdf[segmentCount - 1] = ulong.MaxValue;
 			}
 
 			public double Next()
@@ -4017,7 +4018,7 @@ namespace Experilous.MakeItRandom
 						var segmentData = new SegmentData(x0, y0, m0, x1, y1, m1);
 
 						var area = segmentData.area * segmentData.xDelta;
-						ulong extra = (ulong)Math.Floor(area / totalArea * remainder);
+						ulong extra = (ulong)Math.Round(area / areaSum * remainder);
 						_cdf[j] += extra;
 						remainder -= extra;
 						areaSum -= area;
@@ -4030,15 +4031,14 @@ namespace Experilous.MakeItRandom
 						var segmentData = new SegmentData(x0, y0, 0f, x1, y0, 0f);
 
 						var area = segmentData.area * segmentData.xDelta;
-						ulong extra = (ulong)Math.Floor(area / totalArea * remainder);
+						ulong extra = (ulong)Math.Round(area / areaSum * remainder);
 						_cdf[j] += extra;
 						remainder -= extra;
 						areaSum -= area;
 					}
 					++j;
 				}
-
-				//TODO:  See why remainder isn't 0 by this point.  Same for other piecewise double generators.
+				_cdf[segmentCount - 1] = ulong.MaxValue;
 			}
 
 			public double Next()
