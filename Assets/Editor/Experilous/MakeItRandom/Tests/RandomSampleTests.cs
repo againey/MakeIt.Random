@@ -1716,18 +1716,28 @@ namespace Experilous.MakeItRandom.Tests
 				float x1 = x[i];
 				float y1 = y[i];
 				float m1 = m[i * 2 - 1];
-				float dx = x1 - x0;
-				float dy = y1 - y0;
-				float a = (m0 + m1) * dx - 2f * dy;
-				float b = 3f * dy - (2f * m0 + m1) * dx;
-				float c = m0 * dx;
-				float d = y0;
-				float area = a / 4f + b / 3f + c / 2f + d;
-				float segmentMean = (a / 5f + b / 4f + c / 3f + d / 2f) / area;
-				area *= dx;
-				totalArea += area;
-				segmentMean = segmentMean * dx + x0;
-				meanSum += segmentMean * area;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					float dx = x1 - x0;
+					float dy = y1 - y0;
+					float a = (m0 + m1) * dx - 2f * dy;
+					float b = 3f * dy - (2f * m0 + m1) * dx;
+					float c = m0 * dx;
+					float d = y0;
+					float area = a / 4f + b / 3f + c / 2f + d;
+					float segmentMean = (a / 5f + b / 4f + c / 3f + d / 2f) / area;
+					area *= dx;
+					totalArea += area;
+					segmentMean = segmentMean * dx + x0;
+					meanSum += segmentMean * area;
+				}
+				else
+				{
+					float area = (x1 - x0) * y0;
+					float segmentMean = (x0 + x1) / 2f;
+					totalArea += area;
+					meanSum += segmentMean * area;
+				}
 			}
 
 			float mean = meanSum / totalArea;
@@ -1741,19 +1751,30 @@ namespace Experilous.MakeItRandom.Tests
 				float x1 = x[i];
 				float y1 = y[i];
 				float m1 = m[i * 2 - 1];
-				float dx = x1 - x0;
-				float dy = y1 - y0;
-				float a = (m0 + m1) * dx - 2f * dy;
-				float b = 3f * dy - (2f * m0 + m1) * dx;
-				float c = m0 * dx;
-				float d = y0;
-				float area = a / 4f + b / 3f + c / 2f + d;
-				float segmentMean = (a / 5f + b / 4f + c / 3f + d / 2f) / area;
-				float segmentVariance = (a / 6f + b / 5f + c / 4f + d / 3f) / area - segmentMean * segmentMean;
-				area *= dx;
-				segmentMean = segmentMean * dx + x0;
-				segmentVariance = (segmentVariance * dx * dx + segmentMean * segmentMean) * area;
-				varianceSum += segmentVariance;
+				if (!float.IsInfinity(m0) && !float.IsInfinity(m1))
+				{
+					float dx = x1 - x0;
+					float dy = y1 - y0;
+					float a = (m0 + m1) * dx - 2f * dy;
+					float b = 3f * dy - (2f * m0 + m1) * dx;
+					float c = m0 * dx;
+					float d = y0;
+					float area = a / 4f + b / 3f + c / 2f + d;
+					float segmentMean = (a / 5f + b / 4f + c / 3f + d / 2f) / area;
+					float segmentVariance = (a / 6f + b / 5f + c / 4f + d / 3f) / area - segmentMean * segmentMean;
+					area *= dx;
+					segmentMean = segmentMean * dx + x0;
+					segmentVariance = segmentVariance * dx * dx + segmentMean * segmentMean;
+					varianceSum += segmentVariance * area;
+				}
+				else
+				{
+					float dx = x1 - x0;
+					float area = dx * y0;
+					float segmentMean = (x0 + x1) / 2f;
+					float segmentVariance = dx * dx / 12f;
+					varianceSum += (segmentVariance + segmentMean * segmentMean) * area;
+				}
 			}
 
 			float variance = varianceSum / totalArea - mean * mean;
@@ -1775,18 +1796,28 @@ namespace Experilous.MakeItRandom.Tests
 				double x1 = x[i];
 				double y1 = y[i];
 				double m1 = m[i * 2 - 1];
-				double dx = x1 - x0;
-				double dy = y1 - y0;
-				double a = (m0 + m1) * dx - 2d * dy;
-				double b = 3d * dy - (2d * m0 + m1) * dx;
-				double c = m0 * dx;
-				double d = y0;
-				double area = a / 4d + b / 3d + c / 2d + d;
-				double segmentMean = (a / 5d + b / 4d + c / 3d + d / 2d) / area;
-				area *= dx;
-				totalArea += area;
-				segmentMean = segmentMean * dx + x0;
-				meanSum += segmentMean * area;
+				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+				{
+					double dx = x1 - x0;
+					double dy = y1 - y0;
+					double a = (m0 + m1) * dx - 2d * dy;
+					double b = 3d * dy - (2d * m0 + m1) * dx;
+					double c = m0 * dx;
+					double d = y0;
+					double area = a / 4d + b / 3d + c / 2d + d;
+					double segmentMean = (a / 5d + b / 4d + c / 3d + d / 2d) / area;
+					area *= dx;
+					totalArea += area;
+					segmentMean = segmentMean * dx + x0;
+					meanSum += segmentMean * area;
+				}
+				else
+				{
+					double area = (x1 - x0) * y0;
+					double segmentMean = (x0 + x1) / 2d;
+					totalArea += area;
+					meanSum += segmentMean * area;
+				}
 			}
 
 			double mean = meanSum / totalArea;
@@ -1800,19 +1831,30 @@ namespace Experilous.MakeItRandom.Tests
 				double x1 = x[i];
 				double y1 = y[i];
 				double m1 = m[i * 2 - 1];
-				double dx = x1 - x0;
-				double dy = y1 - y0;
-				double a = (m0 + m1) * dx - 2d * dy;
-				double b = 3d * dy - (2d * m0 + m1) * dx;
-				double c = m0 * dx;
-				double d = y0;
-				double area = a / 4d + b / 3d + c / 2d + d;
-				double segmentMean = (a / 5d + b / 4d + c / 3d + d / 2d) / area;
-				double segmentVariance = (a / 6d + b / 5d + c / 4d + d / 3d) / area - segmentMean * segmentMean;
-				area *= dx;
-				segmentMean = segmentMean * dx + x0;
-				segmentVariance = (segmentVariance * dx * dx + segmentMean * segmentMean) * area;
-				varianceSum += segmentVariance;
+				if (!double.IsInfinity(m0) && !double.IsInfinity(m1))
+				{
+					double dx = x1 - x0;
+					double dy = y1 - y0;
+					double a = (m0 + m1) * dx - 2d * dy;
+					double b = 3d * dy - (2d * m0 + m1) * dx;
+					double c = m0 * dx;
+					double d = y0;
+					double area = a / 4d + b / 3d + c / 2d + d;
+					double segmentMean = (a / 5d + b / 4d + c / 3d + d / 2d) / area;
+					double segmentVariance = (a / 6d + b / 5d + c / 4d + d / 3d) / area - segmentMean * segmentMean;
+					area *= dx;
+					segmentMean = segmentMean * dx + x0;
+					segmentVariance = segmentVariance * dx * dx + segmentMean * segmentMean;
+					varianceSum += segmentVariance * area;
+				}
+				else
+				{
+					double dx = x1 - x0;
+					double area = dx * y0;
+					double segmentMean = (x0 + x1) / 2d;
+					double segmentVariance = dx * dx / 12d;
+					varianceSum += (segmentVariance + segmentMean * segmentMean) * area;
+				}
 			}
 
 			double variance = varianceSum / totalArea - mean * mean;
@@ -1825,8 +1867,6 @@ namespace Experilous.MakeItRandom.Tests
 		[Test]
 		public void TestPiecewiseHermiteDistribution_Float()
 		{
-			//TODO:  Test with +/- infinity slopes.
-
 			var random = MIRandom.CreateStandard(seed);
 			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }), 50000, 2, 20, new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }, 0.005f, 0.005f);
 
@@ -1835,6 +1875,9 @@ namespace Experilous.MakeItRandom.Tests
 
 			random = MIRandom.CreateStandard(seed);
 			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
 
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new float[] { 1f, 2f, 0f }, new float[]{ 1f, 1f, 1f }, new float[]{ 0f, 0f, 0f, 0f }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new float[] { 0f, 2f, 1f }, new float[]{ 1f, 1f, 1f }, new float[]{ 0f, 0f, 0f, 0f }));
@@ -1859,6 +1902,9 @@ namespace Experilous.MakeItRandom.Tests
 
 			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f });
 			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f });
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
 
 			var random = MIRandom.CreateStandard(seed);
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new float[] { 1f, 2f, 0f }, new float[]{ 1f, 1f, 1f }, new float[]{ 0f, 0f, 0f, 0f }));
@@ -1885,6 +1931,9 @@ namespace Experilous.MakeItRandom.Tests
 			random = MIRandom.CreateStandard(seed);
 			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new Vector2 [] { new Vector2(-188.8f, 0.125f), new Vector2(-172.3f, 0.839f), new Vector2(-96.83f, 0.001f), new Vector2(-60.60f, 0.487f), new Vector2(-47.03f, 0.972f), new Vector2(-10.38f, 0.738f), new Vector2(-0.2346f, 0.738f) }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
 
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new Vector2 [] { new Vector2(-188.8f, 0.125f), new Vector2(-172.3f, 0.839f), new Vector2(-96.83f, 0f), new Vector2(-60.60f, 0.487f), new Vector2(-47.03f, 0.972f), new Vector2(-10.38f, 0.738f), new Vector2(-0.2346f, 0.738f) }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Vector2 [] { new Vector2(1f, 1f), new Vector2(2f, 1f), new Vector2(0f, 1f) }, new float[]{ 0f, 0f, 0f, 0f }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Vector2 [] { new Vector2(0f, 1f), new Vector2(2f, 1f), new Vector2(1f, 1f) }, new float[]{ 0f, 0f, 0f, 0f }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Vector2 [] { new Vector2(2f, 1f), new Vector2(1f, 1f), new Vector2(0f, 1f) }, new float[]{ 0f, 0f, 0f, 0f }));
@@ -1909,6 +1958,9 @@ namespace Experilous.MakeItRandom.Tests
 			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(-188.8f, 0.125f), new Vector2(-172.3f, 0.839f), new Vector2(-96.83f, 0.001f), new Vector2(-60.60f, 0.487f), new Vector2(-47.03f, 0.972f), new Vector2(-10.38f, 0.738f), new Vector2(-0.2346f, 0.738f) }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f });
 			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
 
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(-188.8f, 0.125f), new Vector2(-172.3f, 0.839f), new Vector2(-96.83f, 0f), new Vector2(-60.60f, 0.487f), new Vector2(-47.03f, 0.972f), new Vector2(-10.38f, 0.738f), new Vector2(-0.2346f, 0.738f) }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f });
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
 			var random = MIRandom.CreateStandard(seed);
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(1f, 1f), new Vector2(2f, 1f), new Vector2(0f, 1f) }, new float[]{ 0f, 0f, 0f, 0f }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(2f, 1f), new Vector2(1f, 1f) }, new float[]{ 0f, 0f, 0f, 0f }));
@@ -1922,13 +1974,56 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.Throws<ArgumentException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(2f, 0f) }, new float[]{ 0f, 0f, 0f, 0f }));
 		}
 
-		//TODO:  Test with animation curve.
+		[Test]
+		public void TestPiecewiseHermiteDistribution_AnimationCurve()
+		{
+			var random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) })), 50000, 2, 20, new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(-6f, 5f, 0f, -2f), new Keyframe(-2f, 1f, -3f, 0f), new Keyframe(1f, 3f, 0f, -1f), new Keyframe(2f, 0f, -1f, 0f), new Keyframe(3f, 2f, 0f, -1f), new Keyframe(6f, 0f, 0f, 0f) })), 50000, 2, 20, new float[] { -6f, -2f, 1f, 2f, 3f, 6f }, new float[] { 5f, 1f, 3f, 0f, 2f, 0f }, new float[] { -2f, -3f, 0f, 0f, -1f, -1f, 0f, 0f, -1f, 0f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0.001f, -0.04f, 0.25f), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, 0.01f, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) })), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0f, -0.04f, float.PositiveInfinity), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, float.NegativeInfinity, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) })), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, -1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, -1f, -1f), new Keyframe(2f, 1f, -1f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, 1f, 1f), new Keyframe(2f, 1f, -1f, 0f) })));
+			Assert.Throws<ArgumentException>(() => random.PiecewiseHermiteSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f), new Keyframe(2f, 0f, 0f, 0f) })));
+		}
+
+		[Test]
+		public void TestPiecewiseHermiteDistribution_SampleGenerator_AnimationCurve()
+		{
+			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) }));
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(-6f, 5f, 0f, -2f), new Keyframe(-2f, 1f, -3f, 0f), new Keyframe(1f, 3f, 0f, -1f), new Keyframe(2f, 0f, -1f, 0f), new Keyframe(3f, 2f, 0f, -1f), new Keyframe(6f, 0f, 0f, 0f) }));
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -6f, -2f, 1f, 2f, 3f, 6f }, new float[] { 5f, 1f, 3f, 0f, 2f, 0f }, new float[] { -2f, -3f, 0f, 0f, -1f, -1f, 0f, 0f, -1f, 0f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0.001f, -0.04f, 0.25f), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, 0.01f, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) }));
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0f, -0.04f, float.PositiveInfinity), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, float.NegativeInfinity, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) }));
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			var random = MIRandom.CreateStandard(seed);
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, -1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, -1f, -1f), new Keyframe(2f, 1f, -1f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, 1f, 1f), new Keyframe(2f, 1f, -1f, 0f) })));
+			Assert.Throws<ArgumentException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f), new Keyframe(2f, 0f, 0f, 0f) })));
+		}
 
 		[Test]
 		public void TestPiecewiseHermiteDistribution_Double()
 		{
-			//TODO:  Test with +/- infinity slopes.
-
 			var random = MIRandom.CreateStandard(seed);
 			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 3d, 2d, 4d }, new double[] { 0.5d, -1d, -1d, -2d, 0d, 0d }), 50000, 2, 20, new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 3d, 2d, 4d }, new double[] { 0.5d, -1d, -1d, -2d, 0d, 0d }, 0.005d, 0.005d);
 
@@ -1937,6 +2032,9 @@ namespace Experilous.MakeItRandom.Tests
 
 			random = MIRandom.CreateStandard(seed);
 			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0.001d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, 0.25d, 0.1d, 0.1d, 0.1d, 1d, 0.01d, 0.21d, -0.21d }), 50000, 2, 20, new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0.001d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, 0.25d, 0.1d, 0.1d, 0.1d, 1d, 0.01d, 0.21d, -0.21d }, 0.005d, 0.005d);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteDistribution(() => random.PiecewiseHermiteSample(new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, double.PositiveInfinity, 0.1d, 0.1d, 0.1d, 1d, double.NegativeInfinity, 0.21d, -0.21d }), 50000, 2, 20, new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, double.PositiveInfinity, 0.1d, 0.1d, 0.1d, 1d, double.NegativeInfinity, 0.21d, -0.21d }, 0.005d, 0.005d);
 
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new double[] { 1d, 2d, 0d }, new double[]{ 1d, 1d, 1d }, new double[]{ 0d, 0d, 0d, 0d }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new double[] { 0d, 2d, 1d }, new double[]{ 1d, 1d, 1d }, new double[]{ 0d, 0d, 0d, 0d }));
@@ -1961,6 +2059,9 @@ namespace Experilous.MakeItRandom.Tests
 
 			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0.001d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, 0.25d, 0.1d, 0.1d, 0.1d, 1d, 0.01d, 0.21d, -0.21d });
 			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0.001d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, 0.25d, 0.1d, 0.1d, 0.1d, 1d, 0.01d, 0.21d, -0.21d }, 0.005d, 0.005d);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, double.PositiveInfinity, 0.1d, 0.1d, 0.1d, 1d, double.NegativeInfinity, 0.21d, -0.21d });
+			TestPiecewiseHermiteDistribution(() => generator.Next(), 50000, 2, 20, new double[] { -188.8d, -172.3d, -96.83d, -60.60d, -47.03d, -10.38d, -0.2346d }, new double[] { 0.125d, 0.839d, 0d, 0.487d, 0.972d, 0.738d, 0.738d }, new double[] { 0.1d, -0.2d, -0.03d, -0.04d, double.PositiveInfinity, 0.1d, 0.1d, 0.1d, 1d, double.NegativeInfinity, 0.21d, -0.21d }, 0.005d, 0.005d);
 
 			var random = MIRandom.CreateStandard(seed);
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new double[] { 1d, 2d, 0d }, new double[]{ 1d, 1d, 1d }, new double[]{ 0d, 0d, 0d, 0d }));
