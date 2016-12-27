@@ -912,7 +912,7 @@ namespace Experilous.MakeItRandom.Detail
 
 			public static float SampleFallback(IRandom random, float xMin)
 			{
-				return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
+				return Sample(random, zigguratTable) + xMin;
 			}
 
 			public static float Sample(IRandom random, OneSidedFloatZigguratTable ziggurat)
@@ -1115,8 +1115,7 @@ namespace Experilous.MakeItRandom.Detail
 
 			public static double SampleFallback(IRandom random, double xMin)
 			{
-				//return SampleZiggurat(random, zigguratTable, F, SampleFallback) + xMin;
-				throw new NotImplementedException();
+				return Sample(random, zigguratTable) + xMin;
 			}
 
 			public static double Sample(IRandom random, OneSidedDoubleZigguratTable ziggurat)
