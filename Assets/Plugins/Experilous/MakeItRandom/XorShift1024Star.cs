@@ -213,7 +213,7 @@ namespace Experilous.MakeItRandom
 		{
 			if (state == null) throw new System.ArgumentNullException("state");
 			if (state.Length != 16) throw new System.ArgumentException("The provided state array must have a length of exactly 16.", "state");
-			if (offset < 0 || offset >= 16) throw new System.ArgumentOutOfRangeException("The provided offset must be within the range [0, 15].", "offset");
+			if (offset < 0 || offset >= 16) throw new System.ArgumentOutOfRangeException("offset", offset, "The provided offset must be within the range [0, 15].");
 			for (int i = 0; i < 16; ++i)
 			{
 				if (state[i] != 0UL)
