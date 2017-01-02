@@ -139,6 +139,1046 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
+		#region Triangular Distribution
+
+		/// <summary>
+		/// Returns a random value sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <returns>A random value from within the given triangular distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTriangularSampleGenerator(IRandom, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float TriangularSample(this IRandom random, float x0, float x1, float x2)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
+#endif
+
+			float n = random.FloatOO();
+			float range = x2 - x0;
+			float lowerRange = x1 - x0;
+			float split = lowerRange / range;
+			return n < split ? x0 + Mathf.Sqrt(n * range * lowerRange) : x2 - Mathf.Sqrt((1f - n) * range * (x2 - x1));
+		}
+
+		private class FloatTriangularSampleGenerator : ISampleGenerator<float>
+		{
+			private IRandom _random;
+			private float _split;
+			private float _x0;
+			private float _x1;
+			private float _rangeLowerRange;
+			private float _rangeUpperRange;
+
+			public FloatTriangularSampleGenerator(IRandom random, float x0, float x1, float x2)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
+
+				_random = random;
+
+				float range = x2 - x0;
+				float lowerRange = x1 - x0;
+				float upperRange = x2 - x1;
+
+				_x0 = x0;
+				_x1 = x2;
+				_rangeLowerRange = range * lowerRange;
+				_rangeUpperRange = range * upperRange;
+				_split = lowerRange / range;
+			}
+
+			public float Next()
+			{
+				float n = _random.FloatOO();
+				return n < _split ? _x0 + Mathf.Sqrt(n * _rangeLowerRange) : _x1 - Mathf.Sqrt((1f - n) * _rangeUpperRange);
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
+		public static ISampleGenerator<float> MakeTriangularSampleGenerator(this IRandom random, float x0, float x1, float x2)
+		{
+			return new FloatTriangularSampleGenerator(random, x0, x1, x2);
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <returns>A random value from within the given triangular distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTriangularSampleGenerator(IRandom, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static double TriangularSample(this IRandom random, double x0, double x1, double x2)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
+#endif
+
+			double n = random.DoubleOO();
+			double range = x2 - x0;
+			double lowerRange = x1 - x0;
+			double split = lowerRange / range;
+			return n < split ? x0 + Math.Sqrt(n * range * lowerRange) : x2 - Math.Sqrt((1d - n) * range * (x2 - x1));
+		}
+
+		private class DoubleTriangularSampleGenerator : ISampleGenerator<double>
+		{
+			private IRandom _random;
+			private double _split;
+			private double _x0;
+			private double _x2;
+			private double _rangeLowerRange;
+			private double _rangeUpperRange;
+
+			public DoubleTriangularSampleGenerator(IRandom random, double x0, double x1, double x2)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
+
+				_random = random;
+
+				double range = x2 - x0;
+				double lowerRange = x1 - x0;
+				double upperRange = x2 - x1;
+
+				_x0 = x0;
+				_x2 = x2;
+				_rangeLowerRange = range * lowerRange;
+				_rangeUpperRange = range * upperRange;
+				_split = lowerRange / range;
+			}
+
+			public double Next()
+			{
+				double n = _random.DoubleOO();
+				return n < _split ? _x0 + Math.Sqrt(n * _rangeLowerRange) : _x2 - Math.Sqrt((1d - n) * _rangeUpperRange);
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
+		public static ISampleGenerator<double> MakeTriangularSampleGenerator(this IRandom random, double x0, double x1, double x2)
+		{
+			return new DoubleTriangularSampleGenerator(random, x0, x1, x2);
+		}
+
+		#endregion
+
+		#region Trapezoidal Distribution
+
+		/// <summary>
+		/// Returns a random value sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
+		/// <returns>A random value from within the given trapezoidal distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float TrapezoidalSample(this IRandom random, float x0, float x1, float x2, float x3)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
+#endif
+
+			float n = random.FloatOO();
+
+			float range = x3 + x2 - x1 - x0;
+
+			float lowerRange = x1 - x0;
+			float lowerSplit = lowerRange / range;
+			if (n < lowerSplit) return x0 + Mathf.Sqrt(n * range * lowerRange); // Within lower triangle.
+
+			float midRange = x2 - x1;
+			float upperSplit = (midRange + midRange + lowerRange) / range;
+			if (n > upperSplit) return x3 - Mathf.Sqrt((1f - n) * range * (x3 - x2)); // Within upper triangle.
+
+			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
+		}
+
+		private class FloatTrapezoidalSampleGenerator : ISampleGenerator<float>
+		{
+			private IRandom _random;
+			private float _lowerSplit;
+			private float _upperSplit;
+			private float _x0;
+			private float _x1;
+			private float _x3;
+			private float _rangeLowerRange;
+			private float _rangeUpperRange;
+			private float _modeScale;
+
+			public FloatTrapezoidalSampleGenerator(IRandom random, float x0, float x1, float x2, float x3)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
+
+				_random = random;
+
+				float range = x3 + x2 - x1 - x0;
+				float lowerRange = x1 - x0;
+				float midRange = x2 - x1;
+				float upperRange = x3 - x2;
+
+				_x0 = x0;
+				_x1 = x1;
+				_x3 = x3;
+				_rangeLowerRange = range * lowerRange;
+				_rangeUpperRange = range * upperRange;
+				_lowerSplit = lowerRange / range;
+				_upperSplit = (midRange + midRange + lowerRange) / range;
+				_modeScale = midRange / (_upperSplit - _lowerSplit);
+			}
+
+			public float Next()
+			{
+				float n = _random.FloatOO();
+				if (n < _lowerSplit) return _x0 + Mathf.Sqrt(n * _rangeLowerRange); // Within lower triangle.
+				if (n > _upperSplit) return _x3 - Mathf.Sqrt((1f - n) * _rangeUpperRange); // Within upper triangle.
+				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
+		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
+		public static ISampleGenerator<float> MakeTrapezoidalSampleGenerator(this IRandom random, float x0, float x1, float x2, float x3)
+		{
+			return new FloatTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
+		/// <returns>A random value from within the given trapezoidal distribution.</returns>
+		/// <remarks>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static double TrapezoidalSample(this IRandom random, double x0, double x1, double x2, double x3)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
+#endif
+
+			double n = random.DoubleOO();
+
+			double range = x3 + x2 - x1 - x0;
+
+			double lowerRange = x1 - x0;
+			double lowerSplit = lowerRange / range;
+			if (n < lowerSplit) return x0 + Math.Sqrt(n * range * lowerRange); // Within lower triangle.
+
+			double midRange = x2 - x1;
+			double upperSplit = (midRange + midRange + lowerRange) / range;
+			if (n > upperSplit) return x3 - Math.Sqrt((1d - n) * range * (x3 - x2)); // Within upper triangle.
+
+			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
+		}
+
+		private class DoubleTrapezoidalSampleGenerator : ISampleGenerator<double>
+		{
+			private IRandom _random;
+			private double _lowerSplit;
+			private double _upperSplit;
+			private double _x0;
+			private double _x1;
+			private double _x3;
+			private double _rangeLowerRange;
+			private double _rangeUpperRange;
+			private double _modeScale;
+
+			public DoubleTrapezoidalSampleGenerator(IRandom random, double x0, double x1, double x2, double x3)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
+				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
+				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
+
+				_random = random;
+
+				double range = x3 + x2 - x1 - x0;
+				double lowerRange = x1 - x0;
+				double midRange = x2 - x1;
+				double upperRange = x3 - x2;
+
+				_x0 = x0;
+				_x1 = x1;
+				_x3 = x3;
+				_rangeLowerRange = range * lowerRange;
+				_rangeUpperRange = range * upperRange;
+				_lowerSplit = lowerRange / range;
+				_upperSplit = (midRange + midRange + lowerRange) / range;
+				_modeScale = midRange / (_upperSplit - _lowerSplit);
+			}
+
+			public double Next()
+			{
+				double n = _random.DoubleOO();
+				if (n < _lowerSplit) return _x0 + Math.Sqrt(n * _rangeLowerRange); // Within lower triangle.
+				if (n > _upperSplit) return _x3 - Math.Sqrt((1d - n) * _rangeUpperRange); // Within upper triangle.
+				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
+		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
+		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
+		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
+		public static ISampleGenerator<double> MakeTrapezoidalSampleGenerator(this IRandom random, double x0, double x1, double x2, double x3)
+		{
+			return new DoubleTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
+		}
+
+		#endregion
+
+		#region Linear Distribution
+
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
+#endif
+
+			return random.LinearSample(x0, y0, x1, y1, random.FloatCC());
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, Vector2, Vector2)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float LinearSample(this IRandom random, Vector2 p0, Vector2 p1)
+		{
+			return random.LinearSample(p0.x, p0.y, p1.x, p1.y);
+		}
+
+		private static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1, float n)
+		{
+			float xDelta = x1 - x0;
+
+			if (y0 == y1) return n * xDelta + x0;
+
+			float yDelta = y1 - y0;
+			float ySum = y0 + y1;
+			float area = 0.5f * xDelta * ySum;
+
+			float a = 0.5f * yDelta;
+			float b = x1 * y0 - x0 * y1;
+			float c = -(a * x0 + b) * x0 - area * xDelta * n;
+
+			float sqrt = Mathf.Sqrt(b * b - 4f * a * c);
+			if (b >= 0f)
+			{
+				return -2f * c / (b + sqrt); // Citardauq
+			}
+			else
+			{
+				return -0.5f * (b - sqrt) / a; // Quadratic
+			}
+		}
+
+		private abstract class FloatLinearSampleGenerator : ISampleGenerator<float>
+		{
+			protected IRandom _random;
+			protected float _a;
+			protected float _aTimesFour;
+			protected float _b;
+			protected float _bSquared;
+			protected float _c0;
+			protected float _scaledArea;
+
+			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float x1, float y1)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
+
+				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
+
+				FloatLinearSampleGenerator generator;
+				float b = x1 * y0 - x0 * y1;
+
+				if (b >= 0f)
+				{
+					generator = new PositiveYInterceptFloatLinearSampleGenerator();
+				}
+				else
+				{
+					generator = new NegativeYInterceptFloatLinearSampleGenerator();
+				}
+
+				generator._random = random;
+
+				float xDelta = x1 - x0;
+				float yDelta = y1 - y0;
+				float ySum = y0 + y1;
+				float area = 0.5f * xDelta * ySum;
+
+				generator._a = 0.5f * yDelta;
+				generator._aTimesFour = yDelta * 2f;
+				generator._b = b;
+				generator._bSquared = generator._b * generator._b;
+				generator._c0 = -(generator._a * x0 + generator._b) * x0;
+				generator._scaledArea = area * xDelta;
+
+				return generator;
+			}
+
+			public abstract float Next();
+		}
+
+		private class PositiveYInterceptFloatLinearSampleGenerator : FloatLinearSampleGenerator
+		{
+			public override float Next()
+			{
+				float c = _c0 - _scaledArea * _random.FloatCC();
+				float sqrt = Mathf.Sqrt(_bSquared - _aTimesFour * c);
+				return -2f * c / (_b + sqrt); // Citardauq
+			}
+		}
+
+		private class NegativeYInterceptFloatLinearSampleGenerator : FloatLinearSampleGenerator
+		{
+			public override float Next()
+			{
+				float c = _c0 - _scaledArea * _random.FloatCC();
+				float sqrt = Mathf.Sqrt(_bSquared - _aTimesFour * c);
+				return -0.5f * (_b - sqrt) / _a; // Quadratic
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, float x0, float y0, float x1, float y1)
+		{
+			return FloatLinearSampleGenerator.Create(random, x0, y0, x1, y1);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, Vector2 p0, Vector2 p1)
+		{
+			return FloatLinearSampleGenerator.Create(random, p0.x, p0.y, p1.x, p1.y);
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A random value from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeLinearSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
+#endif
+
+			return random.LinearSample(x0, y0, x1, y1, random.DoubleCC());
+		}
+
+		private static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1, double n)
+		{
+			double xDelta = x1 - x0;
+
+			if (y0 == y1) return n * xDelta + x0;
+
+			double yDelta = y1 - y0;
+			double ySum = y0 + y1;
+			double area = 0.5d * xDelta * ySum;
+
+			double a = 0.5d * yDelta;
+			double b = x1 * y0 - x0 * y1;
+			double c = -(a * x0 + b) * x0 - area * xDelta * n;
+
+			double sqrt = Math.Sqrt(b * b - 4d * a * c);
+			if (b >= 0d)
+			{
+				return -2d * c / (b + sqrt); // Citardauq
+			}
+			else
+			{
+				return -0.5d * (b - sqrt) / a; // Quadratic
+			}
+		}
+
+		private abstract class DoubleLinearSampleGenerator : ISampleGenerator<double>
+		{
+			protected IRandom _random;
+			protected double _a;
+			protected double _aTimesFour;
+			protected double _b;
+			protected double _bSquared;
+			protected double _c0;
+			protected double _scaledArea;
+
+			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double x1, double y1)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
+
+				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
+
+				DoubleLinearSampleGenerator generator;
+				double b = x1 * y0 - x0 * y1;
+
+				if (b >= 0d)
+				{
+					generator = new PositiveYInterceptDoubleLinearSampleGenerator();
+				}
+				else
+				{
+					generator = new NegativeYInterceptDoubleLinearSampleGenerator();
+				}
+
+				generator._random = random;
+
+				double xDelta = x1 - x0;
+				double yDelta = y1 - y0;
+				double ySum = y0 + y1;
+				double area = 0.5d * xDelta * ySum;
+
+				generator._a = 0.5d * yDelta;
+				generator._aTimesFour = yDelta * 2d;
+				generator._b = b;
+				generator._bSquared = generator._b * generator._b;
+				generator._c0 = -(generator._a * x0 + generator._b) * x0;
+				generator._scaledArea = area * xDelta;
+
+				return generator;
+			}
+
+			public abstract double Next();
+		}
+
+		private class PositiveYInterceptDoubleLinearSampleGenerator : DoubleLinearSampleGenerator
+		{
+			public override double Next()
+			{
+				double c = _c0 - _scaledArea * _random.DoubleCC();
+				double sqrt = Math.Sqrt(_bSquared - _aTimesFour * c);
+				return -2d * c / (_b + sqrt); // Citardauq
+			}
+		}
+
+		private class NegativeYInterceptDoubleLinearSampleGenerator : DoubleLinearSampleGenerator
+		{
+			public override double Next()
+			{
+				double c = _c0 - _scaledArea * _random.DoubleCC();
+				double sqrt = Math.Sqrt(_bSquared - _aTimesFour * c);
+				return -0.5d * (_b - sqrt) / _a; // Quadratic
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the line does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<double> MakeLinearSampleGenerator(this IRandom random, double x0, double y0, double x1, double y1)
+		{
+			return DoubleLinearSampleGenerator.Create(random, x0, y0, x1, y1);
+		}
+
+		#endregion
+
+		#region Hermite Spline Distribution
+
+		private static void CalculateHermiteSplineCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
+		{
+			float xDelta = x1 - x0;
+			float yDelta = y1 - y0;
+
+			float a = -2f * yDelta + (m0 + m1) * xDelta;
+			float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
+			float c = m0 * xDelta;
+			float d = y0;
+
+			k4 = a / 4f;
+			k3 = b / 3f;
+			k2 = c / 2f;
+			k1 = d;
+			area = k4 + k3 + k2 + k1;
+		}
+
+		private static float FindRoot(float k4, float k3, float k2, float k1, float area, float t)
+		{
+			float x = t;
+			float k0 = -area * t;
+			float k4t4 = 4f * k4;
+			float k3t3 = 3f * k3;
+			float k2t2 = 2f * k2;
+			float k4t12 = 12f * k4;
+			float k3t6 = 6f * k3;
+
+			for (int i = 0; i < 32; ++i)
+			{
+				float f0 = (((k4 * x + k3) * x + k2) * x + k1) * x + k0;
+				float f1 = ((k4t4 * x + k3t3) * x + k2t2) * x + k1;
+				float f2 = (k4t12 * x + k3t6) * x + k2t2;
+				float d = 2f * f1 * f1 - f0 * f2;
+				if (d == 0f) return x;
+				float n = 2f * f0 * f1;
+				float x1 = x - n / d;
+				if (Mathf.Abs(x1 - x) < 5.9604644775390625E-8f) return x1;
+				x = x1;
+			}
+
+			return x;
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, float, float, float, float, float, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+			if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+			if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the spline must be positive.", "m1");
+#endif
+
+			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, Vector2, float, Vector2, float)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float HermiteSplineSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		{
+			return random.HermiteSplineSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
+		}
+
+		private static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
+		{
+			float k4, k3, k2, k1, area;
+			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+
+			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
+		}
+
+		private class FloatHermiteSplineSampleGenerator : ISampleGenerator<float>
+		{
+			protected IRandom _random;
+			protected float _xDelta;
+			protected float _x0;
+			protected float _k4;
+			protected float _k3;
+			protected float _k2;
+			protected float _k1;
+			protected float _area;
+
+			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+				if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+				if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the spline must be positive.", "m1");
+
+				float k4, k3, k2, k1, area;
+				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+
+				if (k4 == 0f && k3 == 0f) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
+
+				var generator = new FloatHermiteSplineSampleGenerator();
+				generator._random = random;
+				generator._x0 = x0;
+				generator._xDelta = x1 - x0;
+				generator._k4 = k4;
+				generator._k3 = k3;
+				generator._k2 = k2;
+				generator._k1 = k1;
+				generator._area = k4 + k3 + k2 + k1;
+				
+				return generator;
+			}
+
+			public float Next()
+			{
+				return FindRoot(_k4, _k3, _k2, _k1, _area, _random.FloatCC()) * _xDelta + _x0;
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
+		{
+			return FloatHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
+		{
+			return FloatHermiteSplineSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
+		}
+
+		private static void CalculateHermiteSplineCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
+		{
+			double xDelta = x1 - x0;
+			double yDelta = y1 - y0;
+
+			double a = -2d * yDelta + (m0 + m1) * xDelta;
+			double b = 3d * yDelta - (2d * m0 + m1) * xDelta;
+			double c = m0 * xDelta;
+			double d = y0;
+
+			k4 = a / 4d;
+			k3 = b / 3d;
+			k2 = c / 2d;
+			k1 = d;
+			area = k4 + k3 + k2 + k1;
+		}
+
+		private static double FindRoot(double k4, double k3, double k2, double k1, double area, double t)
+		{
+			double x = t;
+			double k0 = -area * t;
+			double k4t4 = 4d * k4;
+			double k3t3 = 3d * k3;
+			double k2t2 = 2d * k2;
+			double k4t12 = 12d * k4;
+			double k3t6 = 6d * k3;
+
+			for (int i = 0; i < 32; ++i)
+			{
+				double f0 = (((k4 * x + k3) * x + k2) * x + k1) * x + k0;
+				double f1 = ((k4t4 * x + k3t3) * x + k2t2) * x + k1;
+				double f2 = (k4t12 * x + k3t6) * x + k2t2;
+				double d = 2d * f1 * f1 - f0 * f2;
+				if (d == 0f) return x;
+				double n = 2d * f0 * f1;
+				double x1 = x - n / d;
+				if (Math.Abs(x1 - x) < 2.3283064365386962890625E-10d) return x1;
+				x = x1;
+			}
+
+			return x;
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, double, double, double, double, double, double)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+			if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+			if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+			if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the spline must be positive.", "m1");
+#endif
+
+			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.DoubleCC());
+		}
+
+		private static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1, double t)
+		{
+			double k4, k3, k2, k1, area;
+			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+
+			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
+		}
+
+		private class DoubleHermiteSplineSampleGenerator : ISampleGenerator<double>
+		{
+			protected IRandom _random;
+			protected double _xDelta;
+			protected double _x0;
+			protected double _k4;
+			protected double _k3;
+			protected double _k2;
+			protected double _k1;
+			protected double _area;
+
+			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
+			{
+				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
+				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
+				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
+				if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
+				if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
+				if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the spline must be positive.", "m1");
+
+				double k4, k3, k2, k1, area;
+				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
+
+				if (k4 == 0d && k3 == 0d) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
+
+				var generator = new DoubleHermiteSplineSampleGenerator();
+				generator._random = random;
+				generator._x0 = x0;
+				generator._xDelta = x1 - x0;
+				generator._k4 = k4;
+				generator._k3 = k3;
+				generator._k2 = k2;
+				generator._k1 = k1;
+				generator._area = k4 + k3 + k2 + k1;
+				
+				return generator;
+			}
+
+			public double Next()
+			{
+				return FindRoot(_k4, _k3, _k2, _k1, _area, _random.DoubleCC()) * _xDelta + _x0;
+			}
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
+		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
+		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
+		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
+		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
+		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<double> MakeHermiteSplineSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
+		{
+			return DoubleHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
+		}
+
+		#endregion
+
 		#region Normal Distribution
 
 		/// <summary>
@@ -923,1046 +1963,6 @@ namespace Experilous.MakeItRandom
 				epsilon);
 
 			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
-		}
-
-		#endregion
-
-		#region Triangular Distribution
-
-		/// <summary>
-		/// Returns a random value sampled from a triangular probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <returns>A random value from within the given triangular distribution.</returns>
-		/// <remarks>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeTriangularSampleGenerator(IRandom, float, float, float)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float TriangularSample(this IRandom random, float x0, float x1, float x2)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
-			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
-#endif
-
-			float n = random.FloatOO();
-			float range = x2 - x0;
-			float lowerRange = x1 - x0;
-			float split = lowerRange / range;
-			return n < split ? x0 + Mathf.Sqrt(n * range * lowerRange) : x2 - Mathf.Sqrt((1f - n) * range * (x2 - x1));
-		}
-
-		private class FloatTriangularSampleGenerator : ISampleGenerator<float>
-		{
-			private IRandom _random;
-			private float _split;
-			private float _x0;
-			private float _x1;
-			private float _rangeLowerRange;
-			private float _rangeUpperRange;
-
-			public FloatTriangularSampleGenerator(IRandom random, float x0, float x1, float x2)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
-				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
-
-				_random = random;
-
-				float range = x2 - x0;
-				float lowerRange = x1 - x0;
-				float upperRange = x2 - x1;
-
-				_x0 = x0;
-				_x1 = x2;
-				_rangeLowerRange = range * lowerRange;
-				_rangeUpperRange = range * upperRange;
-				_split = lowerRange / range;
-			}
-
-			public float Next()
-			{
-				float n = _random.FloatOO();
-				return n < _split ? _x0 + Mathf.Sqrt(n * _rangeLowerRange) : _x1 - Mathf.Sqrt((1f - n) * _rangeUpperRange);
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
-		public static ISampleGenerator<float> MakeTriangularSampleGenerator(this IRandom random, float x0, float x1, float x2)
-		{
-			return new FloatTriangularSampleGenerator(random, x0, x1, x2);
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a triangular probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <returns>A random value from within the given triangular distribution.</returns>
-		/// <remarks>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeTriangularSampleGenerator(IRandom, double, double, double)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static double TriangularSample(this IRandom random, double x0, double x1, double x2)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
-			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
-#endif
-
-			double n = random.DoubleOO();
-			double range = x2 - x0;
-			double lowerRange = x1 - x0;
-			double split = lowerRange / range;
-			return n < split ? x0 + Math.Sqrt(n * range * lowerRange) : x2 - Math.Sqrt((1d - n) * range * (x2 - x1));
-		}
-
-		private class DoubleTriangularSampleGenerator : ISampleGenerator<double>
-		{
-			private IRandom _random;
-			private double _split;
-			private double _x0;
-			private double _x2;
-			private double _rangeLowerRange;
-			private double _rangeUpperRange;
-
-			public DoubleTriangularSampleGenerator(IRandom random, double x0, double x1, double x2)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The mode must be greater than the lower range boundary.");
-				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper range boundary must be greater than the mode boundary.");
-
-				_random = random;
-
-				double range = x2 - x0;
-				double lowerRange = x1 - x0;
-				double upperRange = x2 - x1;
-
-				_x0 = x0;
-				_x2 = x2;
-				_rangeLowerRange = range * lowerRange;
-				_rangeUpperRange = range * upperRange;
-				_split = lowerRange / range;
-			}
-
-			public double Next()
-			{
-				double n = _random.DoubleOO();
-				return n < _split ? _x0 + Math.Sqrt(n * _rangeLowerRange) : _x2 - Math.Sqrt((1d - n) * _rangeUpperRange);
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a triangular probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The most common value within the probability distribution.  This is the x value of the triangular PDF's peak.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <returns>A sample generator producing random values from within the given triangular distribution.</returns>
-		public static ISampleGenerator<double> MakeTriangularSampleGenerator(this IRandom random, double x0, double x1, double x2)
-		{
-			return new DoubleTriangularSampleGenerator(random, x0, x1, x2);
-		}
-
-		#endregion
-
-		#region Trapezoidal Distribution
-
-		/// <summary>
-		/// Returns a random value sampled from a trapezoidal probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
-		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
-		/// <returns>A random value from within the given trapezoidal distribution.</returns>
-		/// <remarks>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float TrapezoidalSample(this IRandom random, float x0, float x1, float x2, float x3)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
-			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
-			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
-#endif
-
-			float n = random.FloatOO();
-
-			float range = x3 + x2 - x1 - x0;
-
-			float lowerRange = x1 - x0;
-			float lowerSplit = lowerRange / range;
-			if (n < lowerSplit) return x0 + Mathf.Sqrt(n * range * lowerRange); // Within lower triangle.
-
-			float midRange = x2 - x1;
-			float upperSplit = (midRange + midRange + lowerRange) / range;
-			if (n > upperSplit) return x3 - Mathf.Sqrt((1f - n) * range * (x3 - x2)); // Within upper triangle.
-
-			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
-		}
-
-		private class FloatTrapezoidalSampleGenerator : ISampleGenerator<float>
-		{
-			private IRandom _random;
-			private float _lowerSplit;
-			private float _upperSplit;
-			private float _x0;
-			private float _x1;
-			private float _x3;
-			private float _rangeLowerRange;
-			private float _rangeUpperRange;
-			private float _modeScale;
-
-			public FloatTrapezoidalSampleGenerator(IRandom random, float x0, float x1, float x2, float x3)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
-				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
-				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
-
-				_random = random;
-
-				float range = x3 + x2 - x1 - x0;
-				float lowerRange = x1 - x0;
-				float midRange = x2 - x1;
-				float upperRange = x3 - x2;
-
-				_x0 = x0;
-				_x1 = x1;
-				_x3 = x3;
-				_rangeLowerRange = range * lowerRange;
-				_rangeUpperRange = range * upperRange;
-				_lowerSplit = lowerRange / range;
-				_upperSplit = (midRange + midRange + lowerRange) / range;
-				_modeScale = midRange / (_upperSplit - _lowerSplit);
-			}
-
-			public float Next()
-			{
-				float n = _random.FloatOO();
-				if (n < _lowerSplit) return _x0 + Mathf.Sqrt(n * _rangeLowerRange); // Within lower triangle.
-				if (n > _upperSplit) return _x3 - Mathf.Sqrt((1f - n) * _rangeUpperRange); // Within upper triangle.
-				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
-		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
-		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
-		public static ISampleGenerator<float> MakeTrapezoidalSampleGenerator(this IRandom random, float x0, float x1, float x2, float x3)
-		{
-			return new FloatTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a trapezoidal probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
-		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
-		/// <returns>A random value from within the given trapezoidal distribution.</returns>
-		/// <remarks>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeTrapezoidalSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static double TrapezoidalSample(this IRandom random, double x0, double x1, double x2, double x3)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
-			if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
-			if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
-#endif
-
-			double n = random.DoubleOO();
-
-			double range = x3 + x2 - x1 - x0;
-
-			double lowerRange = x1 - x0;
-			double lowerSplit = lowerRange / range;
-			if (n < lowerSplit) return x0 + Math.Sqrt(n * range * lowerRange); // Within lower triangle.
-
-			double midRange = x2 - x1;
-			double upperSplit = (midRange + midRange + lowerRange) / range;
-			if (n > upperSplit) return x3 - Math.Sqrt((1d - n) * range * (x3 - x2)); // Within upper triangle.
-
-			return x1 + (n - lowerSplit) / (upperSplit - lowerSplit) * midRange; // Within middle rectangle.
-		}
-
-		private class DoubleTrapezoidalSampleGenerator : ISampleGenerator<double>
-		{
-			private IRandom _random;
-			private double _lowerSplit;
-			private double _upperSplit;
-			private double _x0;
-			private double _x1;
-			private double _x3;
-			private double _rangeLowerRange;
-			private double _rangeUpperRange;
-			private double _modeScale;
-
-			public DoubleTrapezoidalSampleGenerator(IRandom random, double x0, double x1, double x2, double x3)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The lower mode boundary must be greater than the lower range boundary.");
-				if (x1 >= x2) throw new ArgumentOutOfRangeException("x2", x2, "The upper mode boundary must be greater than the lower mode boundary.");
-				if (x2 >= x3) throw new ArgumentOutOfRangeException("x3", x3, "The upper range boundary must be greater than the upper mode boundary.");
-
-				_random = random;
-
-				double range = x3 + x2 - x1 - x0;
-				double lowerRange = x1 - x0;
-				double midRange = x2 - x1;
-				double upperRange = x3 - x2;
-
-				_x0 = x0;
-				_x1 = x1;
-				_x3 = x3;
-				_rangeLowerRange = range * lowerRange;
-				_rangeUpperRange = range * upperRange;
-				_lowerSplit = lowerRange / range;
-				_upperSplit = (midRange + midRange + lowerRange) / range;
-				_modeScale = midRange / (_upperSplit - _lowerSplit);
-			}
-
-			public double Next()
-			{
-				double n = _random.DoubleOO();
-				if (n < _lowerSplit) return _x0 + Math.Sqrt(n * _rangeLowerRange); // Within lower triangle.
-				if (n > _upperSplit) return _x3 - Math.Sqrt((1d - n) * _rangeUpperRange); // Within upper triangle.
-				return _x1 + (n - _lowerSplit) * _modeScale; // Within middle rectangle.
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a trapezoidal probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="x1">The lower bound of the most common range within the probability distribution.  This is the leftmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x0"/> and strictly less than <paramref name="x2"/>.</param>
-		/// <param name="x2">The upper bound of the most common range within the probability distribution.  This is the rightmost x value of the trapezoidal PDF's plateau.  Must be strictly greater than <paramref name="x1"/> and strictly less than <paramref name="x3"/>.</param>
-		/// <param name="x3">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x2"/>.</param>
-		/// <returns>A sample generator producing random values from within the given trapezoidal distribution.</returns>
-		public static ISampleGenerator<double> MakeTrapezoidalSampleGenerator(this IRandom random, double x0, double x1, double x2, double x3)
-		{
-			return new DoubleTrapezoidalSampleGenerator(random, x0, x1, x2, x3);
-		}
-
-		#endregion
-
-		#region Linear Distribution
-
-		/// <summary>
-		/// Returns a random value sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <returns>A random value from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeLinearSampleGenerator(IRandom, float, float, float, float)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-			if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
-#endif
-
-			return random.LinearSample(x0, y0, x1, y1, random.FloatCC());
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
-		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
-		/// <returns>A random value from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeLinearSampleGenerator(IRandom, Vector2, Vector2)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float LinearSample(this IRandom random, Vector2 p0, Vector2 p1)
-		{
-			return random.LinearSample(p0.x, p0.y, p1.x, p1.y);
-		}
-
-		private static float LinearSample(this IRandom random, float x0, float y0, float x1, float y1, float n)
-		{
-			float xDelta = x1 - x0;
-
-			if (y0 == y1) return n * xDelta + x0;
-
-			float yDelta = y1 - y0;
-			float ySum = y0 + y1;
-			float area = 0.5f * xDelta * ySum;
-
-			float a = 0.5f * yDelta;
-			float b = x1 * y0 - x0 * y1;
-			float c = -(a * x0 + b) * x0 - area * xDelta * n;
-
-			float sqrt = Mathf.Sqrt(b * b - 4f * a * c);
-			if (b >= 0f)
-			{
-				return -2f * c / (b + sqrt); // Citardauq
-			}
-			else
-			{
-				return -0.5f * (b - sqrt) / a; // Quadratic
-			}
-		}
-
-		private abstract class FloatLinearSampleGenerator : ISampleGenerator<float>
-		{
-			protected IRandom _random;
-			protected float _a;
-			protected float _aTimesFour;
-			protected float _b;
-			protected float _bSquared;
-			protected float _c0;
-			protected float _scaledArea;
-
-			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float x1, float y1)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-				if (y0 == 0f && y1 == 0f) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
-
-				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
-
-				FloatLinearSampleGenerator generator;
-				float b = x1 * y0 - x0 * y1;
-
-				if (b >= 0f)
-				{
-					generator = new PositiveYInterceptFloatLinearSampleGenerator();
-				}
-				else
-				{
-					generator = new NegativeYInterceptFloatLinearSampleGenerator();
-				}
-
-				generator._random = random;
-
-				float xDelta = x1 - x0;
-				float yDelta = y1 - y0;
-				float ySum = y0 + y1;
-				float area = 0.5f * xDelta * ySum;
-
-				generator._a = 0.5f * yDelta;
-				generator._aTimesFour = yDelta * 2f;
-				generator._b = b;
-				generator._bSquared = generator._b * generator._b;
-				generator._c0 = -(generator._a * x0 + generator._b) * x0;
-				generator._scaledArea = area * xDelta;
-
-				return generator;
-			}
-
-			public abstract float Next();
-		}
-
-		private class PositiveYInterceptFloatLinearSampleGenerator : FloatLinearSampleGenerator
-		{
-			public override float Next()
-			{
-				float c = _c0 - _scaledArea * _random.FloatCC();
-				float sqrt = Mathf.Sqrt(_bSquared - _aTimesFour * c);
-				return -2f * c / (_b + sqrt); // Citardauq
-			}
-		}
-
-		private class NegativeYInterceptFloatLinearSampleGenerator : FloatLinearSampleGenerator
-		{
-			public override float Next()
-			{
-				float c = _c0 - _scaledArea * _random.FloatCC();
-				float sqrt = Mathf.Sqrt(_bSquared - _aTimesFour * c);
-				return -0.5f * (_b - sqrt) / _a; // Quadratic
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, float x0, float y0, float x1, float y1)
-		{
-			return FloatLinearSampleGenerator.Create(random, x0, y0, x1, y1);
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
-		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
-		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<float> MakeLinearSampleGenerator(this IRandom random, Vector2 p0, Vector2 p1)
-		{
-			return FloatLinearSampleGenerator.Create(random, p0.x, p0.y, p1.x, p1.y);
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <returns>A random value from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeLinearSampleGenerator(IRandom, double, double, double, double)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-			if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
-#endif
-
-			return random.LinearSample(x0, y0, x1, y1, random.DoubleCC());
-		}
-
-		private static double LinearSample(this IRandom random, double x0, double y0, double x1, double y1, double n)
-		{
-			double xDelta = x1 - x0;
-
-			if (y0 == y1) return n * xDelta + x0;
-
-			double yDelta = y1 - y0;
-			double ySum = y0 + y1;
-			double area = 0.5d * xDelta * ySum;
-
-			double a = 0.5d * yDelta;
-			double b = x1 * y0 - x0 * y1;
-			double c = -(a * x0 + b) * x0 - area * xDelta * n;
-
-			double sqrt = Math.Sqrt(b * b - 4d * a * c);
-			if (b >= 0d)
-			{
-				return -2d * c / (b + sqrt); // Citardauq
-			}
-			else
-			{
-				return -0.5d * (b - sqrt) / a; // Quadratic
-			}
-		}
-
-		private abstract class DoubleLinearSampleGenerator : ISampleGenerator<double>
-		{
-			protected IRandom _random;
-			protected double _a;
-			protected double _aTimesFour;
-			protected double _b;
-			protected double _bSquared;
-			protected double _c0;
-			protected double _scaledArea;
-
-			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double x1, double y1)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-				if (y0 == 0d && y1 == 0d) throw new ArgumentException("The probability distribution must have a positive area.", "y1");
-
-				if (y0 == y1) return random.MakeUniformSampleGenerator(x0, x1);
-
-				DoubleLinearSampleGenerator generator;
-				double b = x1 * y0 - x0 * y1;
-
-				if (b >= 0d)
-				{
-					generator = new PositiveYInterceptDoubleLinearSampleGenerator();
-				}
-				else
-				{
-					generator = new NegativeYInterceptDoubleLinearSampleGenerator();
-				}
-
-				generator._random = random;
-
-				double xDelta = x1 - x0;
-				double yDelta = y1 - y0;
-				double ySum = y0 + y1;
-				double area = 0.5d * xDelta * ySum;
-
-				generator._a = 0.5d * yDelta;
-				generator._aTimesFour = yDelta * 2d;
-				generator._b = b;
-				generator._bSquared = generator._b * generator._b;
-				generator._c0 = -(generator._a * x0 + generator._b) * x0;
-				generator._scaledArea = area * xDelta;
-
-				return generator;
-			}
-
-			public abstract double Next();
-		}
-
-		private class PositiveYInterceptDoubleLinearSampleGenerator : DoubleLinearSampleGenerator
-		{
-			public override double Next()
-			{
-				double c = _c0 - _scaledArea * _random.DoubleCC();
-				double sqrt = Math.Sqrt(_bSquared - _aTimesFour * c);
-				return -2d * c / (_b + sqrt); // Citardauq
-			}
-		}
-
-		private class NegativeYInterceptDoubleLinearSampleGenerator : DoubleLinearSampleGenerator
-		{
-			public override double Next()
-			{
-				double c = _c0 - _scaledArea * _random.DoubleCC();
-				double sqrt = Math.Sqrt(_bSquared - _aTimesFour * c);
-				return -0.5d * (_b - sqrt) / _a; // Quadratic
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a linear probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <returns>A sample generator producing random values from within the given linear distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the line does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<double> MakeLinearSampleGenerator(this IRandom random, double x0, double y0, double x1, double y1)
-		{
-			return DoubleLinearSampleGenerator.Create(random, x0, y0, x1, y1);
-		}
-
-		#endregion
-
-		#region Hermite Curve Distribution
-
-		private static void CalculateHermiteSplineCDFCoefficients(float x0, float y0, float m0, float x1, float y1, float m1, out float k4, out float k3, out float k2, out float k1, out float area)
-		{
-			float xDelta = x1 - x0;
-			float yDelta = y1 - y0;
-
-			float a = -2f * yDelta + (m0 + m1) * xDelta;
-			float b = 3f * yDelta - (2f * m0 + m1) * xDelta;
-			float c = m0 * xDelta;
-			float d = y0;
-
-			k4 = a / 4f;
-			k3 = b / 3f;
-			k2 = c / 2f;
-			k1 = d;
-			area = k4 + k3 + k2 + k1;
-		}
-
-		private static float FindRoot(float k4, float k3, float k2, float k1, float area, float t)
-		{
-			float x = t;
-			float k0 = -area * t;
-			float k4t4 = 4f * k4;
-			float k3t3 = 3f * k3;
-			float k2t2 = 2f * k2;
-			float k4t12 = 12f * k4;
-			float k3t6 = 6f * k3;
-
-			for (int i = 0; i < 32; ++i)
-			{
-				float f0 = (((k4 * x + k3) * x + k2) * x + k1) * x + k0;
-				float f1 = ((k4t4 * x + k3t3) * x + k2t2) * x + k1;
-				float f2 = (k4t12 * x + k3t6) * x + k2t2;
-				float d = 2f * f1 * f1 - f0 * f2;
-				if (d == 0f) return x;
-				float n = 2f * f0 * f1;
-				float x1 = x - n / d;
-				if (Mathf.Abs(x1 - x) < 5.9604644775390625E-8f) return x1;
-				x = x1;
-			}
-
-			return x;
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, float, float, float, float, float, float)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-			if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-			if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-			if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
-			if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
-			if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
-#endif
-
-			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.FloatCC());
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, Vector2, float, Vector2, float)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static float HermiteSplineSample(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
-		{
-			return random.HermiteSplineSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
-		}
-
-		private static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
-		{
-			float k4, k3, k2, k1, area;
-			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
-
-			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
-		}
-
-		private class FloatHermiteSplineSampleGenerator : ISampleGenerator<float>
-		{
-			protected IRandom _random;
-			protected float _xDelta;
-			protected float _x0;
-			protected float _k4;
-			protected float _k3;
-			protected float _k2;
-			protected float _k1;
-			protected float _area;
-
-			public static ISampleGenerator<float> Create(IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-				if (y0 < 0f) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-				if (y1 < 0f) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-				if (y0 == 0f && m0 < 0f) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
-				if (y1 == 0f && m1 > 0f) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
-				if (y0 == 0f && m0 == 0f && y1 == 0f && m1 == 0f) throw new ArgumentException("The area under the curve must be positive.", "m1");
-
-				float k4, k3, k2, k1, area;
-				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
-
-				if (k4 == 0f && k3 == 0f) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
-
-				var generator = new FloatHermiteSplineSampleGenerator();
-				generator._random = random;
-				generator._x0 = x0;
-				generator._xDelta = x1 - x0;
-				generator._k4 = k4;
-				generator._k3 = k3;
-				generator._k2 = k2;
-				generator._k1 = k1;
-				generator._area = k4 + k3 + k2 + k1;
-				
-				return generator;
-			}
-
-			public float Next()
-			{
-				return FindRoot(_k4, _k3, _k2, _k1, _area, _random.FloatCC()) * _xDelta + _x0;
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1)
-		{
-			return FloatHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="p0">The lower bound (x) and weight (y) of the probability distribution.  The x component must be strictly less than <paramref name="p1"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p1"/>.y is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="p1">The upper bound (x) and weight (y) of the probability distribution.  The x component must be strictly greater than <paramref name="p0"/>.x.  The y component must not be negative; it can be 0, but not if <paramref name="p0"/>.y is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
-		{
-			return FloatHermiteSplineSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
-		}
-
-		private static void CalculateHermiteSplineCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
-		{
-			double xDelta = x1 - x0;
-			double yDelta = y1 - y0;
-
-			double a = -2d * yDelta + (m0 + m1) * xDelta;
-			double b = 3d * yDelta - (2d * m0 + m1) * xDelta;
-			double c = m0 * xDelta;
-			double d = y0;
-
-			k4 = a / 4d;
-			k3 = b / 3d;
-			k2 = c / 2d;
-			k1 = d;
-			area = k4 + k3 + k2 + k1;
-		}
-
-		private static double FindRoot(double k4, double k3, double k2, double k1, double area, double t)
-		{
-			double x = t;
-			double k0 = -area * t;
-			double k4t4 = 4d * k4;
-			double k3t3 = 3d * k3;
-			double k2t2 = 2d * k2;
-			double k4t12 = 12d * k4;
-			double k3t6 = 6d * k3;
-
-			for (int i = 0; i < 32; ++i)
-			{
-				double f0 = (((k4 * x + k3) * x + k2) * x + k1) * x + k0;
-				double f1 = ((k4t4 * x + k3t3) * x + k2t2) * x + k1;
-				double f2 = (k4t12 * x + k3t6) * x + k2t2;
-				double d = 2d * f1 * f1 - f0 * f2;
-				if (d == 0f) return x;
-				double n = 2d * f0 * f1;
-				double x1 = x - n / d;
-				if (Math.Abs(x1 - x) < 2.3283064365386962890625E-10d) return x1;
-				x = x1;
-			}
-
-			return x;
-		}
-
-		/// <summary>
-		/// Returns a random value sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A random value from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
-		/// gain performance if you need to request many samples from a single distribution.  Use
-		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, double, double, double, double, double, double)"/> to create a generator
-		/// that will perform and utilize this precomputation for you.</para></note>
-		/// </remarks>
-		public static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
-		{
-#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
-			if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-			if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-			if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-			if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
-			if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
-			if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
-#endif
-
-			return random.HermiteSplineSample(x0, y0, m0, x1, y1, m1, random.DoubleCC());
-		}
-
-		private static double HermiteSplineSample(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1, double t)
-		{
-			double k4, k3, k2, k1, area;
-			CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
-
-			return FindRoot(k4, k3, k2, k1, area, t) * (x1 - x0) + x0;
-		}
-
-		private class DoubleHermiteSplineSampleGenerator : ISampleGenerator<double>
-		{
-			protected IRandom _random;
-			protected double _xDelta;
-			protected double _x0;
-			protected double _k4;
-			protected double _k3;
-			protected double _k2;
-			protected double _k1;
-			protected double _area;
-
-			public static ISampleGenerator<double> Create(IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
-			{
-				if (x0 >= x1) throw new ArgumentOutOfRangeException("x1", x1, "The upper range boundary must be greater than the lower range boundary.");
-				if (y0 < 0d) throw new ArgumentOutOfRangeException("y0", y0, "The domain must be entirely non-negative.");
-				if (y1 < 0d) throw new ArgumentOutOfRangeException("y1", y1, "The domain must be entirely non-negative.");
-				if (y0 == 0d && m0 < 0d) throw new ArgumentOutOfRangeException("m0", m0, "The domain must be entirely non-negative.");
-				if (y1 == 0d && m1 > 0d) throw new ArgumentOutOfRangeException("m1", m1, "The domain must be entirely non-negative.");
-				if (y0 == 0d && m0 == 0d && y1 == 0d && m1 == 0d) throw new ArgumentException("The area under the curve must be positive.", "m1");
-
-				double k4, k3, k2, k1, area;
-				CalculateHermiteSplineCDFCoefficients(x0, y0, m0, x1, y1, m1, out k4, out k3, out k2, out k1, out area);
-
-				if (k4 == 0d && k3 == 0d) return random.MakeLinearSampleGenerator(x0, y0, x1, y1);
-
-				var generator = new DoubleHermiteSplineSampleGenerator();
-				generator._random = random;
-				generator._x0 = x0;
-				generator._xDelta = x1 - x0;
-				generator._k4 = k4;
-				generator._k3 = k3;
-				generator._k2 = k2;
-				generator._k1 = k1;
-				generator._area = k4 + k3 + k2 + k1;
-				
-				return generator;
-			}
-
-			public double Next()
-			{
-				return FindRoot(_k4, _k3, _k2, _k1, _area, _random.DoubleCC()) * _xDelta + _x0;
-			}
-		}
-
-		/// <summary>
-		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
-		/// </summary>
-		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="x0">The lower bound of the probability distribution.  Must be strictly less than <paramref name="x1"/>.</param>
-		/// <param name="y0">The weight of the probability distribution at the lower bound.  Must not be negative.  Can be 0, but not if <paramref name="y1"/> is 0.</param>
-		/// <param name="m0">The slope of the probability distribution at the lower bound.</param>
-		/// <param name="x1">The upper bound of the probability distribution.  Must be strictly greater than <paramref name="x1"/>.</param>
-		/// <param name="y1">The weight of the probability distribution at the upper bound.  Must not be negative.  Can be 0, but not if <paramref name="y0"/> is 0.</param>
-		/// <param name="m1">The slope of the probability distribution at the upper bound.</param>
-		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
-		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
-		/// be normalized into a proper probability distribution function.  It should however have
-		/// a positive area, and at no point within the given range should the function evaluate
-		/// to a negative value.</para>
-		/// </remarks>
-		public static ISampleGenerator<double> MakeHermiteSplineSampleGenerator(this IRandom random, double x0, double y0, double m0, double x1, double y1, double m1)
-		{
-			return DoubleHermiteSplineSampleGenerator.Create(random, x0, y0, m0, x1, y1, m1);
 		}
 
 		#endregion
@@ -3212,7 +3212,7 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
-		#region Piecewise Hermite Curve Distribution
+		#region Piecewise Hermite Spline Distribution
 
 		/// <summary>
 		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
@@ -3223,7 +3223,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
 		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
@@ -3325,7 +3325,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
 		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
@@ -3418,7 +3418,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
 		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
@@ -3773,7 +3773,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="m">The slopes of the probability distribution at the range bounds.</param>
 		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
-		/// <para>The area underneath the curve does not need to equal 1, as it will automatically
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
 		/// be normalized into a proper probability distribution function.  It should however have
 		/// a positive area, and at no point within the given range should the function evaluate
 		/// to a negative value.</para>
