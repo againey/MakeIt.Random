@@ -34,6 +34,32 @@
 				</para>
 			</content>
 		</section>
+		<section address="distributions">
+			<title>Distributions</title>
+			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Probability Distributions Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/distributions/</linkUri>
+					</externalLink>.
+				</para>
+				<mediaLink>
+					<caption placement="after">The "Distributions.unity" demo scene.</caption>
+					<image placement="center" xlink:href="distributions-demo-scene"/>
+				</mediaLink>
+				<para>
+					The distributions scene demonstrates taking random samples from a
+					variety of probability distributions using the functions available in
+					<codeEntityReference>T:Experilous.MakeItRandom.RandomSample</codeEntityReference>.
+					Samples are taken slowly at first and then accelerate, and the
+					display shows the relative quantity of samples generated within
+					each narrow segment of the sampled range.  Taller areas indicate
+					values that are generated more frequently than shorter areas.
+				</para>
+			</content>
+		</section>
 		<section address="colors">
 			<title>Colors</title>
 			<content>

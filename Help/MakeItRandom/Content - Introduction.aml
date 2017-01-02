@@ -58,6 +58,7 @@
 				</para>
 				<list class="bullet">
 					<listItem><codeEntityReference linkText="evaluating probabilities">T:Experilous.MakeItRandom.RandomChance</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="sampling from distributions">T:Experilous.MakeItRandom.RandomSample</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="selecting elements from a list">T:Experilous.MakeItRandom.RandomListAccess</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="selecting values from an enumeration">T:Experilous.MakeItRandom.RandomEnum</codeEntityReference></listItem>
 					<listItem><codeEntityReference linkText="selecting values from the set {-1, 0, +1}">T:Experilous.MakeItRandom.RandomSignOrZero</codeEntityReference></listItem>
@@ -188,6 +189,9 @@
 						// Check a 3 in 10 probability
 						bool criticalHit = random.Probability(3, 10);
 						
+						// Generate a random height for a male character in cm
+						float height = random.NormalSample(176f, 8f);
+						
 						// Generate an angle in degrees where -90 < n < +90
 						float angleNeg90toPos90 = random.SignedHalfAngleDegOO();
 						
@@ -234,6 +238,7 @@
 		<relatedTopics>
 			<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386" /> <!-- Random Engines -->
 			<link xlink:href="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" /> <!-- Numeric Ranges -->
+			<link xlink:href="608698f3-b1ba-494c-af62-0af699eb942f" /> <!-- Distribution Sampling -->
 			<link xlink:href="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" /> <!-- Generators -->
 			<link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b" /> <!-- Example Scenes -->
 			<link xlink:href="73032fa5-81e7-462d-94ae-8f5ccf1c1d72" /> <!-- Compile Options -->
