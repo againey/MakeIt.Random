@@ -25,16 +25,14 @@ namespace Experilous.Examples.MakeItRandom
 		public Toggle hclToggle;
 		public Toggle hcyToggle;
 
+		public ToggleGroup colorCategoriesToggleGroup;
+
 		public ColorComponentSlider firstAbsoluteColorComponentSlider;
 		public ColorComponentSlider secondAbsoluteColorComponentSlider;
 		public ColorComponentSlider thirdAbsoluteColorComponentSlider;
 		public ColorComponentSlider fourthAbsoluteColorComponentSlider;
 
 		public ColorComponentSlider relativeColorComponentSlider;
-
-		public RectTransform generateRedsPanel;
-		public RectTransform generateGreensPanel;
-		public RectTransform generateBluesPanel;
 
 		public RectTransform saturationPanel;
 		public RectTransform hardnessPanel;
@@ -58,6 +56,10 @@ namespace Experilous.Examples.MakeItRandom
 
 		protected void Start()
 		{
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+			colorCategoriesToggleGroup.transform.parent.GetComponent<ScrollRect>().scrollSensitivity = 25;
+#endif
+
 			_random = XorShift128Plus.Create();
 
 			_colorButtons = colorGrid.GetComponentsInChildren<ColorToggleButton>();
@@ -188,19 +190,6 @@ namespace Experilous.Examples.MakeItRandom
 		{
 			if (toggle.isOn)
 			{
-				if (toggle == rgbToggle)
-				{
-					generateRedsPanel.gameObject.SetActive(true);
-					generateGreensPanel.gameObject.SetActive(true);
-					generateBluesPanel.gameObject.SetActive(true);
-				}
-				else
-				{
-					generateRedsPanel.gameObject.SetActive(false);
-					generateGreensPanel.gameObject.SetActive(false);
-					generateBluesPanel.gameObject.SetActive(false);
-				}
-
 				if (toggle == cmykToggle)
 				{
 					fourthAbsoluteColorComponentSlider.gameObject.SetActive(true);
@@ -276,145 +265,179 @@ namespace Experilous.Examples.MakeItRandom
 
 		public void GenerateRandomColors()
 		{
-			System.Func<Color> generator;
+			System.Func<Color> generator = null;
 
-			if (rgbToggle.isOn)
+			var options = colorCategoriesToggleGroup.GetComponentsInChildren<Toggle>();
+			foreach (var option in options)
 			{
-				generator = () => _random.ColorRGB();
+				if (option.isOn)
+				{
+					if (option.name == "Completely Random Toggle")
+					{
+						if (rgbToggle.isOn)
+						{
+							generator = () => _random.ColorRGB();
+						}
+						else if (cmyToggle.isOn)
+						{
+							generator = () => _random.ColorCMY();
+						}
+						else if (cmykToggle.isOn)
+						{
+							generator = () => _random.ColorCMYK();
+						}
+						else if (hsvToggle.isOn)
+						{
+							generator = () => _random.ColorHSV();
+						}
+						else if (hslToggle.isOn)
+						{
+							generator = () => _random.ColorHSL();
+						}
+						else if (hsyToggle.isOn)
+						{
+							generator = () => _random.ColorHSY();
+						}
+						else if (hcvToggle.isOn)
+						{
+							generator = () => _random.ColorHCV();
+						}
+						else if (hclToggle.isOn)
+						{
+							generator = () => _random.ColorHCL();
+						}
+						else if (hcyToggle.isOn)
+						{
+							generator = () => _random.ColorHCY();
+						}
+						else
+						{
+							throw new System.NotImplementedException();
+						}
+					}
+					else if (option.name == "Red Toggle")
+					{
+						if (hsyToggle.isOn || hcyToggle.isOn)
+						{
+							generator = () => _random.ColorLumaLerp(new ColorHSY(0f, 1f, 0f), new ColorHSY(0f, 1f, 1f));
+						}
+						else
+						{
+							generator = () => _random.ColorRed();
+						}
+					}
+					else if (option.name == "Dark Red Toggle")
+					{
+						generator = () => _random.ColorDarkRed();
+					}
+					else if (option.name == "Light Red Toggle")
+					{
+						generator = () => _random.ColorLightRed();
+					}
+					else if (option.name == "Green Toggle")
+					{
+						if (hsyToggle.isOn || hcyToggle.isOn)
+						{
+							generator = () => _random.ColorLumaLerp(new ColorHSY(1f / 3f, 1f, 0f), new ColorHSY(1f / 3f, 1f, 1f));
+						}
+						else
+						{
+							generator = () => _random.ColorGreen();
+						}
+					}
+					else if (option.name == "Dark Green Toggle")
+					{
+						generator = () => _random.ColorDarkGreen();
+					}
+					else if (option.name == "Light Green Toggle")
+					{
+						generator = () => _random.ColorLightGreen();
+					}
+					else if (option.name == "Blue Toggle")
+					{
+						if (hsyToggle.isOn || hcyToggle.isOn)
+						{
+							generator = () => _random.ColorLumaLerp(new ColorHSY(2f / 3f, 1f, 0f), new ColorHSY(2f / 3f, 1f, 1f));
+						}
+						else
+						{
+							generator = () => _random.ColorBlue();
+						}
+					}
+					else if (option.name == "Dark Blue Toggle")
+					{
+						generator = () => _random.ColorDarkBlue();
+					}
+					else if (option.name == "Light Blue Toggle")
+					{
+						generator = () => _random.ColorLightBlue();
+					}
+					else if (option.name == "Bold Toggle")
+					{
+						generator = () => _random.ColorBold();
+					}
+					else if (option.name == "Festive Toggle")
+					{
+						generator = () => _random.ColorFestive();
+					}
+					else if (option.name == "Pastel Toggle")
+					{
+						generator = () => _random.ColorPastel();
+					}
+					else if (option.name == "Pale Toggle")
+					{
+						generator = () => _random.ColorPale();
+					}
+					else if (option.name == "Neutral Toggle")
+					{
+						generator = () => _random.ColorNeutral();
+					}
+					else if (option.name == "Mellow Toggle")
+					{
+						generator = () => _random.ColorMellow();
+					}
+					else if (option.name == "Somber Toggle")
+					{
+						generator = () => _random.ColorSomber();
+					}
+					else if (option.name == "Subdued Toggle")
+					{
+						generator = () => _random.ColorSubdued();
+					}
+					else if (option.name == "Deep Toggle")
+					{
+						generator = () => _random.ColorDeep();
+					}
+					else if (option.name == "Warm Toggle")
+					{
+						generator = () => _random.ColorWarm();
+					}
+					else if (option.name == "Hot Toggle")
+					{
+						generator = () => _random.ColorHot();
+					}
+					else if (option.name == "Cool Toggle")
+					{
+						generator = () => _random.ColorCool();
+					}
+					else if (option.name == "Cold Toggle")
+					{
+						generator = () => _random.ColorCold();
+					}
+
+					break;
+				}
 			}
-			else if (cmyToggle.isOn)
+
+			if (generator != null)
 			{
-				generator = () => (Color)_random.ColorCMY();
+				foreach (ColorToggleButton colorButton in _colorButtons)
+				{
+					colorButton.colorImage.color = generator();
+				}
+
+				UpdateSelectedColor();
 			}
-			else if (cmykToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorCMYK();
-			}
-			else if (hsvToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHSV();
-			}
-			else if (hslToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHSL();
-			}
-			else if (hsyToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHSY();
-			}
-			else if (hcvToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHCV();
-			}
-			else if (hclToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHCL();
-			}
-			else if (hcyToggle.isOn)
-			{
-				generator = () => (Color)_random.ColorHCY();
-			}
-			else
-			{
-				throw new System.NotImplementedException();
-			}
-
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = generator();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateAnyRed()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorRed();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateDarkRed()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorDarkRed();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateLightRed()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorLightRed();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateAnyGreen()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorGreen();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateDarkGreen()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorDarkGreen();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateLightGreen()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorLightGreen();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateAnyBlue()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorBlue();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateDarkBlue()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorDarkBlue();
-			}
-
-			UpdateSelectedColor();
-		}
-
-		public void GenerateLightBlue()
-		{
-			foreach (ColorToggleButton colorButton in _colorButtons)
-			{
-				colorButton.colorImage.color = _random.ColorLightBlue();
-			}
-
-			UpdateSelectedColor();
 		}
 
 		public void GenerateChangeColors()
