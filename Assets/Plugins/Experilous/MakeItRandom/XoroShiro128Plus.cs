@@ -365,21 +365,33 @@ namespace Experilous.MakeItRandom
 			return new SystemRandomWrapper(this);
 		}
 
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
 		public bool Equals(XoroShiro128Plus other)
 		{
 			return other != null && _state0 == other._state0 && _state1 == other._state1;
 		}
 
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
 		public override bool Equals(object obj)
 		{
 			return Equals(obj as XoroShiro128Plus);
 		}
 
+		/// <inheritdoc />
 		public override int GetHashCode()
 		{
 			return _state0.GetHashCode() ^ _state1.GetHashCode();
 		}
 
+		/// <inheritdoc />
 		public override string ToString()
 		{
 			return string.Format("XoroShiro128Plus {{ 0x{0:X16}, 0x{1:X16} }}", _state0, _state1);

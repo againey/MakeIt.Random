@@ -376,7 +376,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Checks if the specified random engine is the same type and has the same state as this one.
 		/// </summary>
-		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
 		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
 		/// <remarks>Since Unity's random engine is a static global, all instances of the <see cref="UnityRandom"/> wrapper reference
 		/// the same underlying state and are therefore always equal.</remarks>

@@ -338,7 +338,7 @@ namespace Experilous.MakeItRandom
 		/// <summary>
 		/// Checks if the specified random state generator is the same type and has the same state as this one.
 		/// </summary>
-		/// <param name="other">The other random state generator whose state is to be compared.</param>
+		/// <param name="obj">The other random state generator whose state is to be compared.</param>
 		/// <returns>Returns true if the other random state generator is not null and is the same type and has the same state as this one, false otherwise.</returns>
 		public override bool Equals(object obj)
 		{

@@ -895,6 +895,11 @@ namespace Experilous.MakeItRandom
 				_list = list;
 			}
 
+			public WeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, TWeight[] weights) : base(random, elementCount, weights)
+			{
+				_list = list;
+			}
+
 			public WeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, TWeight> weightsAccessor) : base(random, list.Count, weightsAccessor)
 			{
 				_list = list;
@@ -975,6 +980,7 @@ namespace Experilous.MakeItRandom
 		private class SByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, sbyte, int, int>
 		{
 			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, sbyte[] weights) : base(random, list, weights) { }
+			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, sbyte[] weights) : base(random, list, elementCount, weights) { }
 			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1007,6 +1013,7 @@ namespace Experilous.MakeItRandom
 		private class ByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, byte, uint, uint>
 		{
 			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, byte[] weights) : base(random, list, weights) { }
+			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, byte[] weights) : base(random, list, elementCount, weights) { }
 			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1039,6 +1046,7 @@ namespace Experilous.MakeItRandom
 		private class ShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, short, int, int>
 		{
 			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, short[] weights) : base(random, list, weights) { }
+			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, short[] weights) : base(random, list, elementCount, weights) { }
 			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1071,6 +1079,7 @@ namespace Experilous.MakeItRandom
 		private class UShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ushort, uint, uint>
 		{
 			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, ushort[] weights) : base(random, list, weights) { }
+			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, ushort[] weights) : base(random, list, elementCount, weights) { }
 			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1103,6 +1112,7 @@ namespace Experilous.MakeItRandom
 		private class IntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, int, int, int>
 		{
 			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, int[] weights) : base(random, list, weights) { }
+			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, int[] weights) : base(random, list, elementCount, weights) { }
 			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1135,6 +1145,7 @@ namespace Experilous.MakeItRandom
 		private class UIntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, uint, uint, uint>
 		{
 			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, uint[] weights) : base(random, list, weights) { }
+			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, uint[] weights) : base(random, list, elementCount, weights) { }
 			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1167,6 +1178,7 @@ namespace Experilous.MakeItRandom
 		private class LongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, long, long, long>
 		{
 			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, long[] weights) : base(random, list, weights) { }
+			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, long[] weights) : base(random, list, elementCount, weights) { }
 			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1199,6 +1211,7 @@ namespace Experilous.MakeItRandom
 		private class ULongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ulong, ulong, ulong>
 		{
 			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, ulong[] weights) : base(random, list, weights) { }
+			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, ulong[] weights) : base(random, list, elementCount, weights) { }
 			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1231,6 +1244,7 @@ namespace Experilous.MakeItRandom
 		private class FloatWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, float, float, uint>
 		{
 			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, float[] weights) : base(random, list, weights) { }
+			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, float[] weights) : base(random, list, elementCount, weights) { }
 			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -1263,6 +1277,7 @@ namespace Experilous.MakeItRandom
 		private class DoubleWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, double, double, ulong>
 		{
 			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, double[] weights) : base(random, list, weights) { }
+			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, double[] weights) : base(random, list, elementCount, weights) { }
 			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -2002,7 +2017,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, sbyte}, int)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, int[], int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, sbyte}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, sbyte})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, sbyte> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2095,7 +2110,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, sbyte[])"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, sbyte[] weights, sbyte weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, sbyte[] weights, int weightSum)
 		{
 			return random.WeightedIndex(list.Count, weights, weightSum);
 		}
@@ -2142,7 +2157,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, sbyte})"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, sbyte> weightsAccessor, sbyte weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, sbyte> weightsAccessor, int weightSum)
 		{
 			return random.WeightedIndex(list.Count, weightsAccessor, weightSum);
 		}
@@ -2180,6 +2195,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
 		/// and saved, and then the overload <see cref="WeightedIndex(IRandom, int, byte[], uint)"/> can be
@@ -2279,7 +2295,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, byte}, uint)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, byte}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, byte})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, byte> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2372,7 +2388,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, byte[])"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, byte[] weights, byte weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, byte[] weights, uint weightSum)
 		{
 			return random.WeightedIndex(list.Count, weights, weightSum);
 		}
@@ -2419,7 +2435,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, byte})"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, byte> weightsAccessor, byte weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, byte> weightsAccessor, uint weightSum)
 		{
 			return random.WeightedIndex(list.Count, weightsAccessor, weightSum);
 		}
@@ -2557,7 +2573,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, short}, int)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, int[], int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, short}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, short})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, short> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2650,7 +2666,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, short[])"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, short[] weights, short weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, short[] weights, int weightSum)
 		{
 			return random.WeightedIndex(list.Count, weights, weightSum);
 		}
@@ -2697,7 +2713,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, short})"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, short> weightsAccessor, short weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, short> weightsAccessor, int weightSum)
 		{
 			return random.WeightedIndex(list.Count, weightsAccessor, weightSum);
 		}
@@ -2735,6 +2751,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
 		/// <param name="weights">The weights that will determine the distribution by which indices are generated.</param>
+		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
 		/// and saved, and then the overload <see cref="WeightedIndex(IRandom, int, ushort[], uint)"/> can be
@@ -2834,7 +2851,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, ushort}, uint)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ushort}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ushort})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ushort> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -2927,7 +2944,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, ushort[])"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, ushort[] weights, ushort weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, ushort[] weights, uint weightSum)
 		{
 			return random.WeightedIndex(list.Count, weights, weightSum);
 		}
@@ -2974,7 +2991,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomIndexBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ushort})"/>
-		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ushort> weightsAccessor, ushort weightSum)
+		public static int WeightedRandomIndex<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ushort> weightsAccessor, uint weightSum)
 		{
 			return random.WeightedIndex(list.Count, weightsAccessor, weightSum);
 		}
@@ -3112,7 +3129,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, int}, int)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, int[], int)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, int}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, int})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, int> weightsAccessor)
 		{
 			int weightSum = SumWeights(elementCount, weightsAccessor);
@@ -3164,7 +3181,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -3184,7 +3201,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -3317,7 +3334,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -3462,7 +3479,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, uint}, uint)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, uint}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, uint})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, uint> weightsAccessor)
 		{
 			uint weightSum = SumWeights(elementCount, weightsAccessor);
@@ -3514,7 +3531,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -3534,7 +3551,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -3667,7 +3684,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -3812,7 +3829,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, long}, long)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, long[], long)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, long}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, long})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, long> weightsAccessor)
 		{
 			long weightSum = SumWeights(elementCount, weightsAccessor);
@@ -3864,7 +3881,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -3884,7 +3901,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -4017,7 +4034,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -4162,7 +4179,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, ulong}, ulong)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, ulong[], ulong)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ulong}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, ulong})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, ulong> weightsAccessor)
 		{
 			ulong weightSum = SumWeights(elementCount, weightsAccessor);
@@ -4214,7 +4231,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -4234,7 +4251,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -4367,7 +4384,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -4512,7 +4529,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, float}, float)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, float[], float)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, float}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, float})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, float> weightsAccessor)
 		{
 			float weightSum = SumWeights(elementCount, weightsAccessor);
@@ -4564,7 +4581,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -4584,7 +4601,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -4717,7 +4734,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -4862,7 +4879,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedIndex(IRandom, int, System.Func{int, double}, double)"/>
 		/// <seealso cref="WeightedIndexBinarySearch(IRandom, int, double[], double)"/>
-		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, double}"/>
+		/// <seealso cref="MakeWeightedIndexGenerator(IRandom, int, System.Func{int, double})"/>
 		public static int WeightedIndex(this IRandom random, int elementCount, System.Func<int, double> weightsAccessor)
 		{
 			double weightSum = SumWeights(elementCount, weightsAccessor);
@@ -4914,7 +4931,7 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
+		/// Returns a random index in the range [0, <paramref name="cumulativeWeightSums"/>.Length), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
@@ -4934,7 +4951,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random index in the range [0, <paramref name="elementCount"/>), non-uniformly distributed according to the weights from which <paramref name="cumulativeWeightSums"/> is derived, suitable for indexing into a collection with a corresponding length.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="cumulativeWeightSums"/> to consider.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
 		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="elementCount"/>).</returns>
@@ -5067,7 +5084,7 @@ namespace Experilous.MakeItRandom
 		/// <param name="list">The collection from which a random element will be selected.</param>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="cumulativeWeightSums">The cumulative weight sums of all weights from the first up to and including each sum's index that will determine the distribution by which indices are generated.  Must all be non-negative and sorted in increasing order.</param>
-		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="elementCount"/> weights.</param>
+		/// <param name="weightSum">The pre-calculated sum of the first <paramref name="cumulativeWeightSums"/>.Length weights.</param>
 		/// <returns>A random index in the range [0, <paramref name="list"/>.Count).</returns>
 		/// <remarks>
 		/// <para>By using a pre-computed array of the sum of all weights for each element up to and including the weight
@@ -5097,7 +5114,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, sbyte[], int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, sbyte[], int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5153,7 +5170,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte}, int)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
@@ -5225,7 +5242,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int, sbyte[])"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, sbyte[] weights, sbyte weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, sbyte[] weights, int weightSum)
 		{
 			return random.WeightedElement(list, weights, weightSum);
 		}
@@ -5240,7 +5257,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, sbyte}, int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, sbyte}, int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5272,7 +5289,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, sbyte})"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, sbyte> weightsAccessor, sbyte weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, sbyte> weightsAccessor, int weightSum)
 		{
 			return random.WeightedElement(list, weightsAccessor, weightSum);
 		}
@@ -5291,7 +5308,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, byte[], uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, byte[], uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5347,7 +5364,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, byte}, uint)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
@@ -5419,7 +5436,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int, byte[])"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, byte[] weights, byte weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, byte[] weights, uint weightSum)
 		{
 			return random.WeightedElement(list, weights, weightSum);
 		}
@@ -5434,7 +5451,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, byte}, uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, byte}, uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5466,7 +5483,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, byte})"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, byte> weightsAccessor, byte weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, byte> weightsAccessor, uint weightSum)
 		{
 			return random.WeightedElement(list, weightsAccessor, weightSum);
 		}
@@ -5485,7 +5502,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, short[], int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, short[], int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5541,7 +5558,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, short}, int)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
@@ -5613,7 +5630,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int, short[])"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, short[] weights, short weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, short[] weights, int weightSum)
 		{
 			return random.WeightedElement(list, weights, weightSum);
 		}
@@ -5628,7 +5645,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, short}, int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, short}, int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5660,7 +5677,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, short})"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, short> weightsAccessor, short weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, short> weightsAccessor, int weightSum)
 		{
 			return random.WeightedElement(list, weightsAccessor, weightSum);
 		}
@@ -5679,7 +5696,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, ushort[], uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, ushort[], uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5735,7 +5752,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ushort}, uint)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
@@ -5807,7 +5824,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, int, ushort[])"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, ushort[] weights, ushort weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, ushort[] weights, uint weightSum)
 		{
 			return random.WeightedElement(list, weights, weightSum);
 		}
@@ -5822,7 +5839,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, ushort}, uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, ushort}, uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5854,7 +5871,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/>
 		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ushort})"/>
-		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ushort> weightsAccessor, ushort weightSum)
+		public static TElement WeightedRandomElement<TElement>(this IList<TElement> list, IRandom random, System.Func<int, ushort> weightsAccessor, uint weightSum)
 		{
 			return random.WeightedElement(list, weightsAccessor, weightSum);
 		}
@@ -5873,7 +5890,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, int[], int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, int[], int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -5929,7 +5946,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, int}, int)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, int[], int)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, int})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor)
 		{
 			int weightSum = SumWeights(list.Count, weightsAccessor);
@@ -6035,7 +6052,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, int}, int)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, int}, int)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, int[], int)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6106,7 +6123,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, uint[], uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, uint[], uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6162,7 +6179,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, uint}, uint)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, uint[], uint)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, uint})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor)
 		{
 			uint weightSum = SumWeights(list.Count, weightsAccessor);
@@ -6268,7 +6285,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, uint}, uint)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, uint}, uint)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, uint[], uint)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6339,7 +6356,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, long[], long)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, long[], long)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, long[], long)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6395,7 +6412,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, long}, long)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, long[], long)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, long})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor)
 		{
 			long weightSum = SumWeights(list.Count, weightsAccessor);
@@ -6501,7 +6518,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, long}, long)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, long}, long)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, long[], long)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6572,7 +6589,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, ulong[], ulong)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, ulong[], ulong)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, ulong[], ulong)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6628,7 +6645,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, ulong}, ulong)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, ulong[], ulong)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, ulong})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor)
 		{
 			ulong weightSum = SumWeights(list.Count, weightsAccessor);
@@ -6734,7 +6751,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, ulong}, ulong)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, ulong}, ulong)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, ulong[], ulong)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6805,7 +6822,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, float[], float)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, float[], float)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, float[], float)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -6861,7 +6878,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, float}, float)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, float[], float)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, float}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, float})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor)
 		{
 			float weightSum = SumWeights(list.Count, weightsAccessor);
@@ -6967,7 +6984,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, float}, float)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, float}, float)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, float[], float)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -7038,7 +7055,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement(IRandom, IList{TElement}, double[], double)"/> can be
+		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IRandom, IList{TElement}, double[], double)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, double[], double)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -7094,7 +7111,7 @@ namespace Experilous.MakeItRandom
 		/// to automate the pre-calculation process.</para></note></remarks>
 		/// <seealso cref="WeightedElement{TElement}(IRandom, IList{TElement}, System.Func{int, double}, double)"/>
 		/// <seealso cref="WeightedElementBinarySearch{TElement}(IRandom, IList{TElement}, double[], double)"/>
-		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, double}"/>
+		/// <seealso cref="MakeWeightedElementGenerator{TElement}(IRandom, IList{TElement}, System.Func{int, double})"/>
 		public static TElement WeightedElement<TElement>(this IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor)
 		{
 			double weightSum = SumWeights(list.Count, weightsAccessor);
@@ -7200,7 +7217,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A random element from <paramref name="list"/>.</returns>
 		/// <remarks><note type="caution"><para>This function needs to sum all the weights each time
 		/// it is called. If called frequently, it is strongly recommended that the sum be first pre-computed
-		/// and saved, and then the overload <see cref="WeightedElement{TElement}(IList{TElement}, IRandom, System.Func{int, double}, double)"/> can be
+		/// and saved, and then the overload <see cref="WeightedRandomElement{TElement}(IList{TElement}, IRandom, System.Func{int, double}, double)"/> can be
 		/// used to avoid recomputing the sum.  Calculating an array of cumulative weight sums and calling
 		/// <see cref="WeightedRandomElementBinarySearch{TElement}(IList{TElement}, IRandom, double[], double)"/> will be even faster, especially
 		/// if there are a large number of items.</para>
@@ -7320,6 +7337,22 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, sbyte, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, sbyte[] weights)
+		{
+			return new SByteWeightedElementGenerator<TElement>(random, list, elementCount, weights);
+		}
+
+		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
@@ -7420,6 +7453,22 @@ namespace Experilous.MakeItRandom
 		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, byte[] weights)
 		{
 			return new ByteWeightedElementGenerator<TElement>(random, list, weights);
+		}
+
+		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, byte, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, byte[] weights)
+		{
+			return new ByteWeightedElementGenerator<TElement>(random, list, elementCount, weights);
 		}
 
 		/// <summary>
@@ -7526,6 +7575,22 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, short, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, short[] weights)
+		{
+			return new ShortWeightedElementGenerator<TElement>(random, list, elementCount, weights);
+		}
+
+		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
@@ -7626,6 +7691,22 @@ namespace Experilous.MakeItRandom
 		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, ushort[] weights)
 		{
 			return new UShortWeightedElementGenerator<TElement>(random, list, weights);
+		}
+
+		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ushort, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, ushort[] weights)
+		{
+			return new UShortWeightedElementGenerator<TElement>(random, list, elementCount, weights);
 		}
 
 		/// <summary>
@@ -7732,6 +7813,22 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, int, int> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, int[] weights)
+		{
+			return new IntWeightedElementGenerator<TElement>(random, list, elementCount, weights);
+		}
+
+		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
@@ -7832,6 +7929,22 @@ namespace Experilous.MakeItRandom
 		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, uint[] weights)
 		{
 			return new UIntWeightedElementGenerator<TElement>(random, list, weights);
+		}
+
+		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, uint, uint> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, uint[] weights)
+		{
+			return new UIntWeightedElementGenerator<TElement>(random, list, elementCount, weights);
 		}
 
 		/// <summary>
@@ -7938,6 +8051,22 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, long, long> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, long[] weights)
+		{
+			return new LongWeightedElementGenerator<TElement>(random, list, elementCount, weights);
+		}
+
+		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
@@ -8038,6 +8167,22 @@ namespace Experilous.MakeItRandom
 		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, ulong[] weights)
 		{
 			return new ULongWeightedElementGenerator<TElement>(random, list, weights);
+		}
+
+		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, ulong, ulong> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, ulong[] weights)
+		{
+			return new ULongWeightedElementGenerator<TElement>(random, list, elementCount, weights);
 		}
 
 		/// <summary>
@@ -8144,6 +8289,22 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, float, float> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, float[] weights)
+		{
+			return new FloatWeightedElementGenerator<TElement>(random, list, elementCount, weights);
+		}
+
+		/// <summary>
 		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
@@ -8244,6 +8405,22 @@ namespace Experilous.MakeItRandom
 		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, double[] weights)
 		{
 			return new DoubleWeightedElementGenerator<TElement>(random, list, weights);
+		}
+
+		/// <summary>
+		/// Returns a weighted element generator which will return random elements from <paramref name="list"/>, non-uniformly distributed according to <paramref name="weights"/>.
+		/// </summary>
+		/// <typeparam name="TElement">The element type contained by <paramref name="list"/> and returned by the generator.</typeparam>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="list">The collection from which the element generator will select random elements.  Must be the same length as <paramref name="weights"/>.</param>
+		/// <param name="elementCount">The number of elements from <paramref name="weights"/> to consider.</param>
+		/// <param name="weights">The weights that will determine the distribution by which indices are generated.  Must have at least as many elements as <paramref name="list"/>.</param>
+		/// <returns>A weighted element generator which will return random elements from <paramref name="list"/>.</returns>
+		/// <remarks><note type="important">The values in the <paramref name="weights"/> array must not be changed without a corresponding
+		/// call to <see cref="IWeightedElementGenerator{TElement, TWeight, TWeightSum}.UpdateWeights()"/> to update the generator's internal state.</note></remarks>
+		public static IWeightedElementGenerator<TElement, double, double> MakeWeightedElementGenerator<TElement>(this IRandom random, IList<TElement> list, int elementCount, double[] weights)
+		{
+			return new DoubleWeightedElementGenerator<TElement>(random, list, elementCount, weights);
 		}
 
 		/// <summary>

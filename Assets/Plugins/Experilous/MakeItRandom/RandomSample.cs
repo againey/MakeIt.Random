@@ -1297,7 +1297,7 @@ namespace Experilous.MakeItRandom
 			return new FloatNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
-		private class ConstrainedFloatNormalSampleGenerator : ISampleGenerator<float>
+		private class TruncatedFloatNormalSampleGenerator : ISampleGenerator<float>
 		{
 			private IRandom _random;
 			private float _mean;
@@ -1306,7 +1306,7 @@ namespace Experilous.MakeItRandom
 			private float _max;
 			private Detail.Distributions.TwoSidedSymmetricFloatZigguratTable _zigguratTable;
 
-			public ConstrainedFloatNormalSampleGenerator(IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable zigguratTable)
+			public TruncatedFloatNormalSampleGenerator(IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable zigguratTable)
 			{
 				if (standardDeviation <= 0f) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 				if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
@@ -1344,7 +1344,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, float min, float max)
 		{
-			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalFloat.zigguratTable);
+			return new TruncatedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalFloat.zigguratTable);
 		}
 
 		/// <summary>
@@ -1359,7 +1359,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<float> MakeNormalSampleGenerator(this IRandom random, float mean, float standardDeviation, float min, float max, Detail.Distributions.TwoSidedSymmetricFloatZigguratTable lookupTable)
 		{
-			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+			return new TruncatedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1386,7 +1386,7 @@ namespace Experilous.MakeItRandom
 				Detail.Distributions.NormalDouble.totalArea,
 				epsilon);
 
-			return new ConstrainedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+			return new TruncatedFloatNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1505,7 +1505,7 @@ namespace Experilous.MakeItRandom
 			return new DoubleNormalSampleGenerator(random, mean, standardDeviation, lookupTable);
 		}
 
-		private class ConstrainedDoubleNormalSampleGenerator : ISampleGenerator<double>
+		private class TruncatedDoubleNormalSampleGenerator : ISampleGenerator<double>
 		{
 			private IRandom _random;
 			private double _mean;
@@ -1514,7 +1514,7 @@ namespace Experilous.MakeItRandom
 			private double _max;
 			private Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable _zigguratTable;
 
-			public ConstrainedDoubleNormalSampleGenerator(IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable zigguratTable)
+			public TruncatedDoubleNormalSampleGenerator(IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable zigguratTable)
 			{
 				if (standardDeviation <= 0d) throw new ArgumentOutOfRangeException("standardDeviation", standardDeviation, "The standard deviation must be greater than zero.");
 				if (min > mean) throw new ArgumentOutOfRangeException("min", min, "The minimum value of the constrained range must not be greater than the mean.");
@@ -1552,7 +1552,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, double min, double max)
 		{
-			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalDouble.zigguratTable);
+			return new TruncatedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, Detail.Distributions.NormalDouble.zigguratTable);
 		}
 
 		/// <summary>
@@ -1567,7 +1567,7 @@ namespace Experilous.MakeItRandom
 		/// <returns>A sample generator producing random values from within the given normal distribution.</returns>
 		public static ISampleGenerator<double> MakeNormalSampleGenerator(this IRandom random, double mean, double standardDeviation, double min, double max, Detail.Distributions.TwoSidedSymmetricDoubleZigguratTable lookupTable)
 		{
-			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+			return new TruncatedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1594,7 +1594,7 @@ namespace Experilous.MakeItRandom
 				Detail.Distributions.NormalDouble.totalArea,
 				epsilon);
 
-			return new ConstrainedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
+			return new TruncatedDoubleNormalSampleGenerator(random, mean, standardDeviation, min, max, lookupTable);
 		}
 
 		#endregion
@@ -1706,14 +1706,14 @@ namespace Experilous.MakeItRandom
 			return new FloatExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
-		private class ConstrainedFloatExponentialSampleGenerator : ISampleGenerator<float>
+		private class TruncatedFloatExponentialSampleGenerator : ISampleGenerator<float>
 		{
 			private IRandom _random;
 			private float _eventRate;
 			private float _max;
 			private Detail.Distributions.OneSidedFloatZigguratTable _zigguratTable;
 
-			public ConstrainedFloatExponentialSampleGenerator(IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable zigguratTable)
+			public TruncatedFloatExponentialSampleGenerator(IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable zigguratTable)
 			{
 				if (eventRate <= 0f) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 				if (max * eventRate < 0.69314718f) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
@@ -1741,10 +1741,11 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, float max)
 		{
-			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialFloat.zigguratTable);
+			return new TruncatedFloatExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialFloat.zigguratTable);
 		}
 
 		/// <summary>
@@ -1752,11 +1753,12 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<float> MakeExponentialSampleGenerator(this IRandom random, float eventRate, float max, Detail.Distributions.OneSidedFloatZigguratTable lookupTable)
 		{
-			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
+			return new TruncatedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1764,6 +1766,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
 		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
@@ -1780,7 +1783,7 @@ namespace Experilous.MakeItRandom
 				Detail.Distributions.ExponentialDouble.totalArea,
 				epsilon);
 
-			return new ConstrainedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
+			return new TruncatedFloatExponentialSampleGenerator(random, eventRate, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1888,14 +1891,14 @@ namespace Experilous.MakeItRandom
 			return new DoubleExponentialSampleGenerator(random, eventRate, lookupTable);
 		}
 
-		private class ConstrainedDoubleExponentialSampleGenerator : ISampleGenerator<double>
+		private class TruncatedDoubleExponentialSampleGenerator : ISampleGenerator<double>
 		{
 			private IRandom _random;
 			private double _eventRate;
 			private double _max;
 			private Detail.Distributions.OneSidedDoubleZigguratTable _zigguratTable;
 
-			public ConstrainedDoubleExponentialSampleGenerator(IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
+			public TruncatedDoubleExponentialSampleGenerator(IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable zigguratTable)
 			{
 				if (eventRate <= 0d) throw new ArgumentOutOfRangeException("eventRate", eventRate, "The event rate must be greater than zero.");
 				if (max * eventRate < 0.69314718055994531d) throw new ArgumentOutOfRangeException("max", max, "The constrained range must not be smaller than one half of the overall distribution.");
@@ -1923,10 +1926,11 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, double max)
 		{
-			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialDouble.zigguratTable);
+			return new TruncatedDoubleExponentialSampleGenerator(random, eventRate, max, Detail.Distributions.ExponentialDouble.zigguratTable);
 		}
 
 		/// <summary>
@@ -1934,11 +1938,12 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <param name="lookupTable">The pre-computed lookup table to use when applying the ziggurat algorithm for generating samples.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
 		public static ISampleGenerator<double> MakeExponentialSampleGenerator(this IRandom random, double eventRate, double max, Detail.Distributions.OneSidedDoubleZigguratTable lookupTable)
 		{
-			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
+			return new TruncatedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
 		}
 
 		/// <summary>
@@ -1946,6 +1951,7 @@ namespace Experilous.MakeItRandom
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="eventRate">The event rate of the probability distribution.  Must be positive.</param>
+		/// <param name="max">The maximum value of the truncated distribution.  Must be positive; recommended to be at least twice as large as eventRate.</param>
 		/// <param name="lookupTableSize">The size to use when pre-computing the lookup table to use when applying the ziggurat algorithm for generating samples.  Must be a power of 2.</param>
 		/// <param name="epsilon">The precision required during the pre-computation of the lookup table.  Must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given exponential distribution.</returns>
@@ -1962,7 +1968,7 @@ namespace Experilous.MakeItRandom
 				Detail.Distributions.ExponentialDouble.totalArea,
 				epsilon);
 
-			return new ConstrainedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
+			return new TruncatedDoubleExponentialSampleGenerator(random, eventRate, max, lookupTable);
 		}
 
 		#endregion
@@ -3199,7 +3205,8 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a piecewise linear probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="p">The range bounds (x) and weights (y) of the probability distribution pieces.  The x components must be in strictly increasing order.  The y components must all be non-negative, and at least one must be positive.</param>
+		/// <param name="x">The range bounds of the probability distribution pieces.  Must be in strictly increasing order.</param>
+		/// <param name="y">The weights of the probability distribution at the range bounds.  Must all be non-negative, and at least one must be positive.</param>
 		/// <returns>A sample generator producing random values from within the given piecewise linear distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
@@ -3722,7 +3729,10 @@ namespace Experilous.MakeItRandom
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
 		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
-		/// <paramref name="y"/>.</para>
+		/// <paramref name="y"/>, and exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="x"/> and <paramref name="y"/>.
+		/// For any piece i, it will be bounded by x[i] and x[i + 1], will have weights y[i] and
+		/// y[i + 1] at those bounds, and slopes m[2i] and m[2i + 1] also at those bounds.</para>
 		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, float[] x, float[] y, float[] m)
 		{
@@ -3739,8 +3749,10 @@ namespace Experilous.MakeItRandom
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
-		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
-		/// <paramref name="y"/>.</para>
+		/// <para>There should be exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="p"/>.  For any piece i, it will
+		/// be bounded by and have the weights of p[i] and p[i + 1], and will have slopes m[2i]
+		/// and m[2i + 1] at those bounds.</para>
 		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, Vector2[] p, float[] m)
 		{
@@ -3756,8 +3768,6 @@ namespace Experilous.MakeItRandom
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
-		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
-		/// <paramref name="y"/>.</para>
 		/// </remarks>
 		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, AnimationCurve curve)
 		{
@@ -4070,7 +4080,10 @@ namespace Experilous.MakeItRandom
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
 		/// automatically be normalized into a proper probability distribution function.</para>
 		/// <para>There should be exactly the same number of elements in <paramref name="x"/> and
-		/// <paramref name="y"/>.</para>
+		/// <paramref name="y"/>, and exactly two less than double the number of elements in
+		/// <paramref name="m"/> as there are in <paramref name="x"/> and <paramref name="y"/>.
+		/// For any piece i, it will be bounded by x[i] and x[i + 1], will have weights y[i] and
+		/// y[i + 1] at those bounds, and slopes m[2i] and m[2i + 1] also at those bounds.</para>
 		/// </remarks>
 		public static ISampleGenerator<double> MakePiecewiseHermiteSampleGenerator(this IRandom random, double[] x, double[] y, double[] m)
 		{
