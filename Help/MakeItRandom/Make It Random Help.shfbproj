@@ -179,6 +179,7 @@ copy /Y /B "archive.php" "Build\archive.php"</PostBuildEvent>
     <None Include="Content - Compile Options.aml" />
     <None Include="Content - Third Party Licenses.aml" />
     <None Include="Content - Distribution Sampling.aml" />
+    <None Include="Content - Version History.aml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="colors-demo-scene.png">
