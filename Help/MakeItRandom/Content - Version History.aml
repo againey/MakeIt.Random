@@ -29,7 +29,7 @@
 									<listItem>exponential distribution</listItem>
 									<listItem>piecewise uniform distribution</listItem>
 									<listItem>piecewise linear distribution</listItem>
-									<listItem>piecewise Hermite spline distribution (can be initialized with an instance of <codeEntityReference qualifyHint="true">T:UnityEngine.AnimationCurve</codeEntityReference>)</listItem>
+									<listItem>piecewise Hermite spline distribution</listItem>
 								</list>
 							</listItem>
 						</list>

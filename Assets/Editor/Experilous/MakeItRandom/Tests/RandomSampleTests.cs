@@ -1055,6 +1055,94 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[Test]
+		public void TestHermiteSplineDistribution_Keyframe()
+		{
+			var random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f)), 50000, 2, 20, 2f, 1f, 1f, 4f, 2f, -1f, 0.005d, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new Keyframe(-1f, 4f, 0f, 2f), new Keyframe(5f, 4f, 1f, 0f)), 50000, 2, 20, -1f, 4f, 2f, 5f, 4f, 1f, 0.005d, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new Keyframe(-172.3f, 60.60f, 0f, -0.07283f), new Keyframe(-96.83f, 0.2346f, -0.2481f, 0f)), 50000, 2, 20, -172.3f, 60.60f, -0.07283f, -96.83f, 0.2346f, -0.2481f, 0.005d, 0.005f);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(1f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(0f, 0f, 0f, -1f), new Keyframe(1f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 0f, 1f, 0f)));
+			Assert.Throws<ArgumentException>(() => random.HermiteSplineSample(new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f)));
+			Assert.DoesNotThrow(() => random.HermiteSplineSample(new Keyframe(0f, 0f, 0f, 1f), new Keyframe(1f, 0f, -1f, 0f)));
+		}
+
+		[Test]
+		public void TestHermiteSplineDistribution_SampleGenerator_Keyframe()
+		{
+			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, 2f, 1f, 1f, 4f, 2f, -1f, 0.005d, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new Keyframe(-1f, 4f, 0f, 2f), new Keyframe(5f, 4f, 1f, 0f));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, -1f, 4f, 2f, 5f, 4f, 1f, 0.005d, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new Keyframe(-172.3f, 60.60f, 0f, -0.07283f), new Keyframe(-96.83f, 0.2346f, -0.2481f, 0f));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, -172.3f, 60.60f, -0.07283f, -96.83f, 0.2346f, -0.2481f, 0.005d, 0.005f);
+
+			var random = MIRandom.CreateStandard(seed);
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(1f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 0f, 0f, -1f), new Keyframe(1f, 1f, 0f, 0f)));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 0f, 1f, 0f)));
+			Assert.Throws<ArgumentException>(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f)));
+			Assert.DoesNotThrow(() => generator = random.MakeHermiteSplineSampleGenerator(new Keyframe(0f, 0f, 0f, 1f), new Keyframe(1f, 0f, -1f, 0f)));
+		}
+
+		[Test]
+		public void TestHermiteSplineDistribution_AnimationCurve()
+		{
+			var random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f) })), 50000, 2, 20, 2f, 1f, 1f, 4f, 2f, -1f, 0.005d, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(-1f, 4f, 0f, 2f), new Keyframe(5f, 4f, 1f, 0f) })), 50000, 2, 20, -1f, 4f, 2f, 5f, 4f, 1f, 0.005d, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestHermiteSplineDistribution(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(-172.3f, 60.60f, 0f, -0.07283f), new Keyframe(-96.83f, 0.2346f, -0.2481f, 0f) })), 50000, 2, 20, -172.3f, 60.60f, -0.07283f, -96.83f, 0.2346f, -0.2481f, 0.005d, 0.005f);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, -1f), new Keyframe(1f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 0f, 1f, 0f) })));
+			Assert.Throws<ArgumentException>(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f) })));
+			Assert.DoesNotThrow(() => random.HermiteSplineSample(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 1f), new Keyframe(1f, 0f, -1f, 0f) })));
+		}
+
+		[Test]
+		public void TestHermiteSplineDistribution_SampleGenerator_AnimationCurve()
+		{
+			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f) }));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, 2f, 1f, 1f, 4f, 2f, -1f, 0.005d, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(-1f, 4f, 0f, 2f), new Keyframe(5f, 4f, 1f, 0f) }));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, -1f, 4f, 2f, 5f, 4f, 1f, 0.005d, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(-172.3f, 60.60f, 0f, -0.07283f), new Keyframe(-96.83f, 0.2346f, -0.2481f, 0f) }));
+			TestHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, -172.3f, 60.60f, -0.07283f, -96.83f, 0.2346f, -0.2481f, 0.005d, 0.005f);
+
+			var random = MIRandom.CreateStandard(seed);
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(0f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, -1f), new Keyframe(1f, 1f, 0f, 0f) })));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 0f, 1f, 0f) })));
+			Assert.Throws<ArgumentException>(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f) })));
+			Assert.DoesNotThrow(() => generator = random.MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 0f, 0f, 1f), new Keyframe(1f, 0f, -1f, 0f) })));
+		}
+
+		[Test]
 		public void TestHermiteSplineDistribution_Double()
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1966,6 +2054,53 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(1f, 0f), new Vector2(2f, 1f) }, new float[]{ 1f, -1f, -1f, -1f }));
 			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(1f, 0f), new Vector2(2f, 1f) }, new float[]{ 1f, 1f, 1f, -1f }));
 			Assert.Throws<ArgumentException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(2f, 0f) }, new float[]{ 0f, 0f, 0f, 0f }));
+		}
+
+		[Test]
+		public void TestPiecewiseHermiteSplineDistribution_Keyframe()
+		{
+			var random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteSplineDistribution(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) }), 50000, 2, 20, new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteSplineDistribution(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(-6f, 5f, 0f, -2f), new Keyframe(-2f, 1f, -3f, 0f), new Keyframe(1f, 3f, 0f, -1f), new Keyframe(2f, 0f, -1f, 0f), new Keyframe(3f, 2f, 0f, -1f), new Keyframe(6f, 0f, 0f, 0f) }), 50000, 2, 20, new float[] { -6f, -2f, 1f, 2f, 3f, 6f }, new float[] { 5f, 1f, 3f, 0f, 2f, 0f }, new float[] { -2f, -3f, 0f, 0f, -1f, -1f, 0f, 0f, -1f, 0f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteSplineDistribution(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0.001f, -0.04f, 0.25f), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, 0.01f, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			random = MIRandom.CreateStandard(seed);
+			TestPiecewiseHermiteSplineDistribution(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0f, -0.04f, float.PositiveInfinity), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, float.NegativeInfinity, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) }), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, -1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, -1f, -1f), new Keyframe(2f, 1f, -1f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, 1f, 1f), new Keyframe(2f, 1f, -1f, 0f) }));
+			Assert.Throws<ArgumentException>(() => random.PiecewiseHermiteSample(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f), new Keyframe(2f, 0f, 0f, 0f) }));
+		}
+
+		[Test]
+		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_Keyframe()
+		{
+			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) });
+			TestPiecewiseHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(-6f, 5f, 0f, -2f), new Keyframe(-2f, 1f, -3f, 0f), new Keyframe(1f, 3f, 0f, -1f), new Keyframe(2f, 0f, -1f, 0f), new Keyframe(3f, 2f, 0f, -1f), new Keyframe(6f, 0f, 0f, 0f) });
+			TestPiecewiseHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -6f, -2f, 1f, 2f, 3f, 6f }, new float[] { 5f, 1f, 3f, 0f, 2f, 0f }, new float[] { -2f, -3f, 0f, 0f, -1f, -1f, 0f, 0f, -1f, 0f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0.001f, -0.04f, 0.25f), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, 0.01f, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) });
+			TestPiecewiseHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0.001f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, 0.25f, 0.1f, 0.1f, 0.1f, 1f, 0.01f, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(-188.8f, 0.125f, 0f, 0.1f), new Keyframe(-172.3f, 0.839f, -0.2f, -0.03f), new Keyframe(-96.83f, 0f, -0.04f, float.PositiveInfinity), new Keyframe(-60.60f, 0.487f, 0.1f, 0.1f), new Keyframe(-47.03f, 0.972f, 0.1f, 1f), new Keyframe(-10.38f, 0.738f, float.NegativeInfinity, 0.21f), new Keyframe(-0.2346f, 0.738f, -0.21f, 0f) });
+			TestPiecewiseHermiteSplineDistribution(() => generator.Next(), 50000, 2, 20, new float[] { -188.8f, -172.3f, -96.83f, -60.60f, -47.03f, -10.38f, -0.2346f }, new float[] { 0.125f, 0.839f, 0f, 0.487f, 0.972f, 0.738f, 0.738f }, new float[] { 0.1f, -0.2f, -0.03f, -0.04f, float.PositiveInfinity, 0.1f, 0.1f, 0.1f, 1f, float.NegativeInfinity, 0.21f, -0.21f }, 0.005f, 0.005f);
+
+			var random = MIRandom.CreateStandard(seed);
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, -1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, -1f, 0f, 0f), new Keyframe(2f, 1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0f), new Keyframe(1f, 1f, 0f, 0f), new Keyframe(2f, -1f, 0f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, -1f, -1f), new Keyframe(2f, 1f, -1f, 0f) }));
+			Assert.Throws<ArgumentOutOfRangeException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 1f), new Keyframe(1f, 0f, 1f, 1f), new Keyframe(2f, 1f, -1f, 0f) }));
+			Assert.Throws<ArgumentException>(() => generator = random.MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 0f, 0f, 0f), new Keyframe(1f, 0f, 0f, 0f), new Keyframe(2f, 0f, 0f, 0f) }));
 		}
 
 		[Test]

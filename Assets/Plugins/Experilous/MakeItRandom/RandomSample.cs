@@ -931,6 +931,52 @@ namespace Experilous.MakeItRandom
 			return random.HermiteSplineSample(p0.x, p0.y, m0, p1.x, p1.y, m1);
 		}
 
+		/// <summary>
+		/// Returns a random value sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="kf0">The key frame at the lower bound of the probability distribution.  The time component must be strictly less than <paramref name="kf1"/>.time.  The value component must not be negative; it can be 0, but not if <paramref name="kf1"/>.value is 0.</param>
+		/// <param name="kf1">The key frame at the upper bound of the probability distribution.  The time component must be strictly greater than <paramref name="kf0"/>.time.  The value component must not be negative; it can be 0, but not if <paramref name="kf0"/>.value is 0.</param>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, Keyframe, Keyframe)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float HermiteSplineSample(this IRandom random, Keyframe kf0, Keyframe kf1)
+		{
+			return random.HermiteSplineSample(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent);
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The curve describing the bounds, weights, and slopes of the Hermite spline that defines the probability distribution function.</param>
+		/// <param name="segmentIndex">The segment of the provided <paramref name="curve"/> to use.  Must be less than <paramref name="curve"/>.length - 1.  Defaults to the first segment, index 0.</param>
+		/// <returns>A random value from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="note"><para>There is a moderate amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakeHermiteSplineSampleGenerator(IRandom, AnimationCurve, int)"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float HermiteSplineSample(this IRandom random, AnimationCurve curve, int segmentIndex = 0)
+		{
+			var kf0 = curve[segmentIndex];
+			var kf1 = curve[segmentIndex + 1];
+			return random.HermiteSplineSample(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent);
+		}
+
 		private static float HermiteSplineSample(this IRandom random, float x0, float y0, float m0, float x1, float y1, float m1, float t)
 		{
 			float k4, k3, k2, k1, area;
@@ -1023,6 +1069,44 @@ namespace Experilous.MakeItRandom
 		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, Vector2 p0, float m0, Vector2 p1, float m1)
 		{
 			return FloatHermiteSplineSampleGenerator.Create(random, p0.x, p0.y, m0, p1.x, p1.y, m1);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="kf0">The key frame at the lower bound of the probability distribution.  The time component must be strictly less than <paramref name="kf1"/>.time.  The value component must not be negative; it can be 0, but not if <paramref name="kf1"/>.value is 0.</param>
+		/// <param name="kf1">The key frame at the upper bound of the probability distribution.  The time component must be strictly greater than <paramref name="kf0"/>.time.  The value component must not be negative; it can be 0, but not if <paramref name="kf0"/>.value is 0.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, Keyframe kf0, Keyframe kf1)
+		{
+			return FloatHermiteSplineSampleGenerator.Create(random, kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The curve describing the bounds, weights, and slopes of the Hermite spline that defines the probability distribution function.</param>
+		/// <param name="segmentIndex">The segment of the provided <paramref name="curve"/> to use.  Must be less than <paramref name="curve"/>.length - 1.  Defaults to the first segment, index 0.</param>
+		/// <returns>A sample generator producing random values from within the given Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakeHermiteSplineSampleGenerator(this IRandom random, AnimationCurve curve, int segmentIndex = 0)
+		{
+			var kf0 = curve[segmentIndex];
+			var kf1 = curve[segmentIndex + 1];
+			return FloatHermiteSplineSampleGenerator.Create(random, kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent);
 		}
 
 		private static void CalculateHermiteSplineCDFCoefficients(double x0, double y0, double m0, double x1, double y1, double m1, out double k4, out double k3, out double k2, out double k1, out double area)
@@ -3422,7 +3506,91 @@ namespace Experilous.MakeItRandom
 		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <param name="keyframes">The key frames of the curve describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
+		/// be normalized into a proper probability distribution function.  It should however have
+		/// a positive area, and at no point within the given range should the function evaluate
+		/// to a negative value.</para>
+		/// <note type="important"><para>There is a large amount of precomputation that can be done to
+		/// gain performance if you need to request many samples from a single distribution.  Use
+		/// <see cref="MakePiecewiseHermiteSampleGenerator(IRandom, Keyframe[])"/> to create a generator
+		/// that will perform and utilize this precomputation for you.</para></note>
+		/// </remarks>
+		public static float PiecewiseHermiteSample(this IRandom random, Keyframe[] keyframes)
+		{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (keyframes.Length < 2) throw new ArgumentException("The curve must have at least two keyframes.", "keyframes");
+#endif
+
+			float totalArea = 0f;
+			Keyframe kf0 = keyframes[0];
+			for (int i = 1; i < keyframes.Length; ++i)
+			{
+				Keyframe kf1 = keyframes[i];
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+				if (kf0.time >= kf1.time) throw new ArgumentOutOfRangeException("keyframes", kf1.time, "The upper range boundary must be greater than the lower range boundary.");
+				if (kf0.value < 0f) throw new ArgumentOutOfRangeException("keyframes", kf0.value, "The domain must be entirely non-negative.");
+#endif
+
+				float xDelta = kf1.time - kf0.time;
+				if (!float.IsInfinity(kf0.outTangent) && !float.IsInfinity(kf1.inTangent))
+				{
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+					if (kf1.value < 0f) throw new ArgumentOutOfRangeException("keyframes", kf1.value, "The domain must be entirely non-negative.");
+					if (kf0.value == 0f && kf0.outTangent < 0f) throw new ArgumentOutOfRangeException("keyframes", kf0.outTangent, "The domain must be entirely non-negative.");
+					if (kf1.value == 0f && kf1.inTangent > 0f) throw new ArgumentOutOfRangeException("keyframes", kf1.inTangent, "The domain must be entirely non-negative.");
+#endif
+
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteSplineCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					totalArea += area * xDelta;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea += kf0.value * xDelta;
+				}
+				kf0 = kf1;
+			}
+
+#if UNITY_EDITOR && !MAKEITRANDOM_SKIPEDITORARGCHECKS
+			if (totalArea <= 0f) throw new ArgumentException("The total area of the distribution must be positive.", "keyframes");
+#endif
+
+			float n = random.RangeCC(totalArea);
+			kf0 = keyframes[0];
+			for (int i = 1; i < keyframes.Length; ++i)
+			{
+				Keyframe kf1 = keyframes[i];
+				float xDelta = kf1.time - kf0.time;
+				if (!float.IsInfinity(kf0.outTangent) && !float.IsInfinity(kf1.inTangent))
+				{
+					// Hermite Segment
+					float k4, k3, k2, k1, area;
+					CalculateHermiteSplineCDFCoefficients(kf0.time, kf0.value, kf0.outTangent, kf1.time, kf1.value, kf1.inTangent, out k4, out k3, out k2, out k1, out area);
+					totalArea -= area * xDelta;
+					if (totalArea < n) return FindRoot(k4, k3, k2, k1, area, random.FloatCO()) * xDelta + kf0.time;
+				}
+				else
+				{
+					// Uniform Segment
+					totalArea -= kf0.value * xDelta;
+					if (totalArea < n) return random.RangeCO(kf0.time, kf1.time);
+				}
+				kf0 = kf1;
+			}
+			return kf0.time;
+		}
+
+		/// <summary>
+		/// Returns a random value sampled from a piecewise Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The curve describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
 		/// <returns>A random value from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The area underneath the spline does not need to equal 1, as it will automatically
@@ -3583,6 +3751,36 @@ namespace Experilous.MakeItRandom
 				catch (ArgumentOutOfRangeException ex)
 				{
 					throw new ArgumentOutOfRangeException(ex.ParamName == "m" ? "m" : "p", ex.ActualValue, ex.Message);
+				}
+			}
+
+			public FloatPiecewiseHermiteSampleGenerator(IRandom random, Keyframe[] keyframes)
+			{
+				if (keyframes.Length < 2) throw new ArgumentException("The curve must have at least two keyframes.", "keyframes");
+
+				_random = random;
+
+				try
+				{
+					Initialize(keyframes.Length,
+						(int index, out float x, out float y, out float m) =>
+						{
+							var keyframe = keyframes[index];
+							x = keyframe.time;
+							y = keyframe.value;
+							m = keyframe.outTangent;
+						},
+						(int index, out float x, out float y, out float m) =>
+						{
+							var keyframe = keyframes[index];
+							x = keyframe.time;
+							y = keyframe.value;
+							m = keyframe.inTangent;
+						});
+				}
+				catch (ArgumentOutOfRangeException ex)
+				{
+					throw new ArgumentOutOfRangeException("keyframes", ex.ActualValue, ex.Message);
 				}
 			}
 
@@ -3763,7 +3961,22 @@ namespace Experilous.MakeItRandom
 		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="curve">The <see cref="AnimationCurve"/> describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <param name="keyframes">The key frames of the curve describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
+		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
+		/// <remarks>
+		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
+		/// automatically be normalized into a proper probability distribution function.</para>
+		/// </remarks>
+		public static ISampleGenerator<float> MakePiecewiseHermiteSampleGenerator(this IRandom random, Keyframe[] keyframes)
+		{
+			return new FloatPiecewiseHermiteSampleGenerator(random, keyframes);
+		}
+
+		/// <summary>
+		/// Returns a sample generator which will produce values sampled from a piecewise Hermite spline probability distribution.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <param name="curve">The curve describing the bounds, weights, and slopes of the Hermite spline segments that define the probability distribution function.</param>
 		/// <returns>A sample generator producing random values from within the given piecewise Hermite spline distribution.</returns>
 		/// <remarks>
 		/// <para>The total area underneath all of the pieces does not need to equal 1, as it will
