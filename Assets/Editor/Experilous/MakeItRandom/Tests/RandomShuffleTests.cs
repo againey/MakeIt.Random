@@ -58,8 +58,11 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		private static void ValidateShuffleDistributesUniformly(int bucketCount, int iterations, float tolerance, System.Func<IRandom, IList<int>> shuffle)
+		private static void ValidateShuffleDistributesUniformly(int bucketCount, int iterations, float tolerance, System.Func<IRandom, IList<int>> shuffle, int sampleSizePercentage)
 		{
+			iterations = (iterations * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var hitsPerBucket = (bucketCount / 2) * iterations;
 
 			int[] sumArray = new int[bucketCount];
@@ -97,7 +100,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(list.Count, count);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayInPlaceLosesDupesNoElements()
 		{
 			int[] array = CreateLinearArray(100);
@@ -105,7 +108,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(array);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListInPlaceLosesDupesNoElements()
 		{
 			List<int> list = CreateLinearList(100);
@@ -113,7 +116,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(list);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyLosesDupesNoElements()
 		{
 			int[] array = CreateLinearArray(100);
@@ -121,7 +124,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyLosesDupesNoElements()
 		{
 			List<int> list = CreateLinearList(100);
@@ -129,7 +132,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyLosesDupesNoElements()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -137,7 +140,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyAppendLosesDupesNoElements()
 		{
 			int[] array = CreateLinearArray(100);
@@ -145,7 +148,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyAppendLosesDupesNoElements()
 		{
 			List<int> list = CreateLinearList(100);
@@ -153,7 +156,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyAppendLosesDupesNoElements()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -161,55 +164,63 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateItemExistenceAndUniqueness(shuffledList);
 		}
 
-		[Test]
-		public void ShuffleArrayInPlaceDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleArrayInPlaceDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).Shuffle(random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).Shuffle(random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleListInPlaceDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleListInPlaceDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).Shuffle(random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).Shuffle(random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleArrayCopyDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleArrayCopyDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleListCopyDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleListCopyDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleLinkedListCopyDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleLinkedListCopyDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new int[101], random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleArrayCopyAppendDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleArrayCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleListCopyAppendDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleListCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ShuffleLinkedListCopyAppendDistributesUniformly()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ShuffleLinkedListCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
-			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new List<int>(101), random));
+			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayInPlaceMovesAll()
 		{
 			int[] array = CreateLinearArray(100);
@@ -217,7 +228,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(array);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListInPlaceMovesAll()
 		{
 			List<int> list = CreateLinearList(100);
@@ -225,7 +236,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(list);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayCopyMovesAll()
 		{
 			int[] array = CreateLinearArray(100);
@@ -233,7 +244,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListCopyMovesAll()
 		{
 			List<int> list = CreateLinearList(100);
@@ -241,7 +252,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllLinkedListCopyMovesAll()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -249,7 +260,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayCopyAppendMovesAll()
 		{
 			int[] array = CreateLinearArray(100);
@@ -257,7 +268,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListCopyAppendMovesAll()
 		{
 			List<int> list = CreateLinearList(100);
@@ -265,7 +276,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllLinkedListCopyAppendMovesAll()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -273,7 +284,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateAllAreMoved(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayInPlaceMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
@@ -281,7 +292,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(array);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListInPlaceMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
@@ -289,7 +300,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(list);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayCopyMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
@@ -297,7 +308,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListCopyMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
@@ -305,7 +316,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllLinkedListCopyMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -313,7 +324,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledArray);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayCopyAppendMaintainsCycle()
 		{
 			int[] array = CreateLinearArray(100);
@@ -321,7 +332,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListCopyAppendMaintainsCycle()
 		{
 			List<int> list = CreateLinearList(100);
@@ -329,7 +340,7 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllLinkedListCopyAppendMaintainsCycle()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
@@ -337,49 +348,49 @@ namespace Experilous.MakeItRandom.Tests
 			ValidateIsCycle(shuffledList);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyThrowsForTooSmallTarget()
 		{
 			int[] array = CreateLinearArray(100);
 			Assert.Throws<System.ArgumentException>(() => array.ShuffleInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyThrowsForTooSmallTarget()
 		{
 			List<int> list = CreateLinearList(100);
 			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyThrowsForTooSmallTarget()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
 			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed)));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllArrayCopyThrowsForTooSmallTarget()
 		{
 			int[] array = CreateLinearArray(100);
 			Assert.Throws<System.ArgumentException>(() => array.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllListCopyThrowsForTooSmallTarget()
 		{
 			List<int> list = CreateLinearList(100);
 			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleMoveAllLinkedListCopyThrowsForTooSmallTarget()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(100);
 			Assert.Throws<System.ArgumentException>(() => list.ShuffleInto(new int[50], XorShift128Plus.Create(seed), true));
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayInPlaceEmptyCollection()
 		{
 			int[] array = CreateLinearArray(0);
@@ -388,7 +399,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, array.Length);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListInPlaceEmptyCollection()
 		{
 			List<int> list = CreateLinearList(0);
@@ -397,7 +408,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, list.Count);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyEmptyCollection()
 		{
 			int[] array = CreateLinearArray(0);
@@ -406,7 +417,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray.Length);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyEmptyCollection()
 		{
 			List<int> list = CreateLinearList(0);
@@ -415,7 +426,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray.Length);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyEmptyCollection()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(0);
@@ -424,7 +435,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray.Length);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyAppendEmptyCollection()
 		{
 			int[] array = CreateLinearArray(0);
@@ -433,7 +444,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledList.Count);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyAppendEmptyCollection()
 		{
 			List<int> list = CreateLinearList(0);
@@ -442,7 +453,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledList.Count);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyAppendEmptyCollection()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(0);
@@ -451,7 +462,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledList.Count);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayInPlaceOneItemCollection()
 		{
 			int[] array = CreateLinearArray(1);
@@ -461,7 +472,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, array[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListInPlaceOneItemCollection()
 		{
 			List<int> list = CreateLinearList(1);
@@ -471,7 +482,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, list[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyOneItemCollection()
 		{
 			int[] array = CreateLinearArray(1);
@@ -481,7 +492,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyOneItemCollection()
 		{
 			List<int> list = CreateLinearList(1);
@@ -491,7 +502,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyOneItemCollection()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(1);
@@ -501,7 +512,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledArray[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleArrayCopyAppendOneItemCollection()
 		{
 			int[] array = CreateLinearArray(1);
@@ -511,7 +522,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledList[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleListCopyAppendOneItemCollection()
 		{
 			List<int> list = CreateLinearList(1);
@@ -521,7 +532,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0, shuffledList[0]);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ShuffleLinkedListCopyAppendOneItemCollection()
 		{
 			LinkedList<int> list = CreateLinearLinkedList(1);

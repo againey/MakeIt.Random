@@ -26,8 +26,11 @@ namespace Experilous.MakeItRandom.Tests
 			return Mathf.Sqrt(devianceSum / buckets.Length);
 		}
 
-		public static void ValidateNext32BitsDistribution(IRandom random, int bitCount, int hitsPerBucket, float tolerance)
+		public static void ValidateNext32BitsDistribution(IRandom random, int bitCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
 			var buckets = new int[bucketCount];
@@ -41,8 +44,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateNext64BitsDistribution(IRandom random, int bitCount, int hitsPerBucket, float tolerance)
+		public static void ValidateNext64BitsDistribution(IRandom random, int bitCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			int bucketCount = 1;
 			for (int i = 0; i < bitCount; ++i) bucketCount = bucketCount * 2;
 			var buckets = new int[bucketCount];
@@ -56,8 +62,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateChanceDistribution(IRandom random, int numerator, int denominator, int trialCount, float tolerance)
+		public static void ValidateChanceDistribution(IRandom random, int numerator, int denominator, int trialCount, float tolerance, int sampleSizePercentage)
 		{
+			trialCount = (trialCount * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			int falseCount = 0;
 			int trueCount = 0;
 			for (int i = 0; i < trialCount; ++i)
@@ -75,82 +84,87 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(Mathf.Abs((float)numerator / denominator - (float)trueCount / trialCount), tolerance, string.Format("{0}/{1}", numerator, denominator));
 		}
 
-		[Test]
-		public void Next4BitsDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void Next4BitsDistribution(int sampleSizePercentage)
 		{
-			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(SystemRandom.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(UnityRandom.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(XoroShiro128Plus.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(XorShift1024Star.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f);
-			ValidateNext32BitsDistribution(XorShiftAdd.Create(seed), 4, 10000, 0.02f);
+			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(SystemRandom.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(UnityRandom.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XoroShiro128Plus.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShift1024Star.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShiftAdd.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
 
-			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(SystemRandom.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(UnityRandom.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(XoroShiro128Plus.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(XorShift1024Star.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f);
-			ValidateNext64BitsDistribution(XorShiftAdd.Create(seed), 4, 10000, 0.02f);
+			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(SystemRandom.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(UnityRandom.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XoroShiro128Plus.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShift1024Star.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShiftAdd.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void Next5BitsDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void Next5BitsDistribution(int sampleSizePercentage)
 		{
-			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(SystemRandom.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(UnityRandom.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(XoroShiro128Plus.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(XorShift1024Star.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f);
-			ValidateNext32BitsDistribution(XorShiftAdd.Create(seed), 5, 10000, 0.03f);
+			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(SystemRandom.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(UnityRandom.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XoroShiro128Plus.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShift1024Star.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext32BitsDistribution(XorShiftAdd.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
 
-			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(SystemRandom.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(UnityRandom.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(XoroShiro128Plus.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(XorShift1024Star.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f);
-			ValidateNext64BitsDistribution(XorShiftAdd.Create(seed), 5, 10000, 0.03f);
+			ValidateNext64BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(SystemRandom.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(UnityRandom.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XoroShiro128Plus.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShift1024Star.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShift128Plus.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
+			ValidateNext64BitsDistribution(XorShiftAdd.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ChancePowerOfTwoDenominatorDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ChancePowerOfTwoDenominatorDistribution(int sampleSizePercentage)
 		{
-			ValidateChanceDistribution(SplitMix64.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(SystemRandom.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(UnityRandom.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(XoroShiro128Plus.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(XorShift1024Star.Create(seed), 25, 32, 100000, 0.002f);
-			ValidateChanceDistribution(XorShift128Plus.Create(seed), 25, 32, 100000, 0.0025f);
-			ValidateChanceDistribution(XorShiftAdd.Create(seed), 25, 32, 100000, 0.002f);
+			ValidateChanceDistribution(SplitMix64.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
+			ValidateChanceDistribution(SystemRandom.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
+			ValidateChanceDistribution(UnityRandom.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
+			ValidateChanceDistribution(XoroShiro128Plus.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShift1024Star.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShift128Plus.Create(seed), 25, 32, 100000, 0.0025f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShiftAdd.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ChanceNonPowerOfTwoDenominatorDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ChanceNonPowerOfTwoDenominatorDistribution(int sampleSizePercentage)
 		{
-			ValidateChanceDistribution(SplitMix64.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(SystemRandom.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(UnityRandom.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(XoroShiro128Plus.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(XorShift1024Star.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(XorShift128Plus.Create(seed), 17, 25, 100000, 0.003f);
-			ValidateChanceDistribution(XorShiftAdd.Create(seed), 17, 25, 100000, 0.003f);
+			ValidateChanceDistribution(SplitMix64.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(SystemRandom.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(UnityRandom.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(XoroShiro128Plus.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShift1024Star.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShift128Plus.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
+			ValidateChanceDistribution(XorShiftAdd.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ChanceDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "StatisticalSmoke")]
+		public void ChanceDistribution(int sampleSizePercentage)
 		{
 			System.Action<int, int> validateRatio = (int numerator, int denominator) =>
 			{
-				ValidateChanceDistribution(SplitMix64.Create(seed), numerator, denominator, 1000, 0.04f);
-				ValidateChanceDistribution(SystemRandom.Create(seed), numerator, denominator, 1000, 0.04f);
-				ValidateChanceDistribution(UnityRandom.Create(seed), numerator, denominator, 10000, 0.04f);
-				ValidateChanceDistribution(XoroShiro128Plus.Create(seed), numerator, denominator, 10000, 0.04f);
-				ValidateChanceDistribution(XorShift1024Star.Create(seed), numerator, denominator, 10000, 0.04f);
-				ValidateChanceDistribution(XorShift128Plus.Create(seed), numerator, denominator, 10000, 0.04f);
-				ValidateChanceDistribution(XorShiftAdd.Create(seed), numerator, denominator, 10000, 0.04f);
+				ValidateChanceDistribution(SplitMix64.Create(seed), numerator, denominator, 1000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(SystemRandom.Create(seed), numerator, denominator, 1000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(UnityRandom.Create(seed), numerator, denominator, 10000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(XoroShiro128Plus.Create(seed), numerator, denominator, 10000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(XorShift1024Star.Create(seed), numerator, denominator, 10000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(XorShift128Plus.Create(seed), numerator, denominator, 10000, 0.04f, sampleSizePercentage);
+				ValidateChanceDistribution(XorShiftAdd.Create(seed), numerator, denominator, 10000, 0.04f, sampleSizePercentage);
 			};
 
 			for (int denominator = 1; denominator < 20; ++denominator)
@@ -201,7 +215,7 @@ namespace Experilous.MakeItRandom.Tests
 			validateDenominatorRange(500000000, 2);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_64_SplitMix64()
 		{
 			SplitMix64 random;
@@ -309,7 +323,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xDE2B5DB652A541FEUL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_64_XoroShiro128Plus()
 		{
 			XoroShiro128Plus random;
@@ -417,7 +431,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x1DE5438192A8A3AEUL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_64_XorShift128Plus()
 		{
 			XorShift128Plus random;
@@ -525,7 +539,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xA130FC9973B788EAUL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_64_XorShift1024Star()
 		{
 			XorShift1024Star random;
@@ -690,7 +704,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xEF99762BAB68024BUL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First16_64_XorShiftAdd()
 		{
 			XorShiftAdd random;
@@ -750,7 +764,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x73D211F5F40250A8UL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_32_XorShiftAdd()
 		{
 			XorShiftAdd random;
@@ -858,7 +872,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x73D211F5U, random.Next32());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_32x2_SplitMix64()
 		{
 			SplitMix64 random;
@@ -968,7 +982,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0x52A541FEU, lower); Assert.AreEqual(0xDE2B5DB6U, upper);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_32x2_XoroShiro128Plus()
 		{
 			XoroShiro128Plus random;
@@ -1078,7 +1092,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0x92A8A3AEU, lower); Assert.AreEqual(0x1DE54381U, upper);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_32x2_XorShift128Plus()
 		{
 			XorShift128Plus random;
@@ -1188,7 +1202,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0x73B788EAU, lower); Assert.AreEqual(0xA130FC99U, upper);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First32_32x2_XorShift1024Star()
 		{
 			XorShift1024Star random;
@@ -1355,7 +1369,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0xAB68024BU, lower); Assert.AreEqual(0xEF99762BU, upper);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void First16_32x2_XorShiftAdd()
 		{
 			XorShiftAdd random;
@@ -1417,7 +1431,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0xF40250A8U, lower); Assert.AreEqual(0x73D211F5U, upper);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First8_XoroShiro128Plus()
 		{
 			XoroShiro128Plus random;
@@ -1501,7 +1515,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xD0299BC8E22F5280UL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First32_XorShift128Plus()
 		{
 			XorShift128Plus random;
@@ -1585,7 +1599,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x141C3F5D2C9AF0E6UL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First32_XorShift1024Star()
 		{
 			XorShift1024Star random;
@@ -1726,7 +1740,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xFC3A23CD083143BFUL, random.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First32_XorShiftAdd()
 		{
 			XorShiftAdd random;
@@ -1810,7 +1824,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xF35517B4U, random.Next32());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead_Next_MixedOrdering_XoroShiro128Plus()
 		{
 			var random0 = XoroShiro128Plus.CreateWithState(0xB8B90B6C08E2904FUL, 0x1C8B7DFC92AA64DDUL);
@@ -1876,7 +1890,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(next0, next4);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead_Next_MixedOrdering_XorShift128Plus()
 		{
 			var random0 = XorShift128Plus.CreateWithState(0xFE59757D17BCB419UL, 0x7A8282D265985C33UL);
@@ -1942,7 +1956,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(next0, next4);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead_Next_MixedOrdering_XorShift1024Star()
 		{
 			var random0 = XorShift1024Star.CreateWithState(new ulong[]
@@ -2026,7 +2040,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(next0, next4);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SkipAhead_Next_MixedOrdering_XorShiftAdd()
 		{
 			var random0 = XorShiftAdd.CreateWithState(0xFE59757DU, 0x17BCB419U, 0x7A8282D2U, 0x65985C33U);
@@ -2145,68 +2159,68 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(random0.Next64(), random1.Next64());
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_XorShift128Plus()
 		{
 			SaveCreateWithState<XorShift128Plus>(XorShift128Plus.Create, XorShift128Plus.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_XorShift128Plus()
 		{
 			SaveRestoreState<XorShift128Plus>(XorShift128Plus.Create);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_XorShift1024Star()
 		{
 			SaveCreateWithState<XorShift1024Star>(XorShift1024Star.Create, XorShift1024Star.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_XorShift1024Star()
 		{
 			SaveRestoreState<XorShift1024Star>(XorShift1024Star.Create);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_XoroShiro128Plus()
 		{
 			SaveCreateWithState<XoroShiro128Plus>(XoroShiro128Plus.Create, XoroShiro128Plus.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_XoroShiro128Plus()
 		{
 			SaveRestoreState<XoroShiro128Plus>(XoroShiro128Plus.Create);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_XorShiftAdd()
 		{
 			SaveCreateWithState<XorShiftAdd>(XorShiftAdd.Create, XorShiftAdd.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_XorShiftAdd()
 		{
 			SaveRestoreState<XorShiftAdd>(XorShiftAdd.Create);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_SplitMix64()
 		{
 			SaveCreateWithState<SplitMix64>(SplitMix64.Create, SplitMix64.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_SplitMix64()
 		{
 			SaveRestoreState<SplitMix64>(SplitMix64.Create);
 		}
 
 #if UNITY_5_4_OR_NEWER
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_UnityRandom()
 		{
 			var random0 = UnityRandom.Create(seed);
@@ -2232,7 +2246,7 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_UnityRandom()
 		{
 			var random0 = UnityRandom.Create(seed);
@@ -2266,13 +2280,13 @@ namespace Experilous.MakeItRandom.Tests
 		}
 #endif
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveCreateWithState_SystemRandom()
 		{
 			SaveCreateWithState<SystemRandom>(SystemRandom.Create, SystemRandom.CreateWithState);
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SaveRestoreState_SystemRandom()
 		{
 			SaveRestoreState<SystemRandom>(SystemRandom.Create);
