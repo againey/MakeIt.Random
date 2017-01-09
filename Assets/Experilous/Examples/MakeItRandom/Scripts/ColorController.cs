@@ -60,7 +60,7 @@ namespace Experilous.Examples.MakeItRandom
 			colorCategoriesToggleGroup.transform.parent.GetComponent<ScrollRect>().scrollSensitivity = 25;
 #endif
 
-			_random = XorShift128Plus.Create();
+			_random = MIRandom.CreateStandard();
 
 			_colorButtons = colorGrid.GetComponentsInChildren<ColorToggleButton>();
 

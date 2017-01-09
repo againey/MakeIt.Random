@@ -34,7 +34,7 @@ namespace Experilous.Examples.MakeItRandom
 
 		protected void Start()
 		{
-			_random = XorShift128Plus.Create();
+			_random = MIRandom.CreateStandard();
 
 			OnStringLengthChanged();
 			OnQuantityOfStrings();
