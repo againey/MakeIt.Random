@@ -46,8 +46,8 @@ namespace Experilous.MakeItRandom
 		public static void UnitVector2(this IRandom random, out Vector2 vec)
 		{
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
-			var distance = Mathf.Sqrt(random.FloatCC());
-			vec = random.UnitVector2() * distance;
+			var angle = HalfOpenRange(0f, Mathf.PI * 2f, engine);
+			vec = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 #else
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 			// Inline of RandomVector.PointWithinCircle()
