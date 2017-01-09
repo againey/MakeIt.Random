@@ -10,6 +10,7 @@ namespace Experilous.MakeItRandom.Tests
 {
 	class RandomDiceTests
 	{
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		[TestCase(Category = "Normal")]
 		public void TwoSidedDie()
 		{
@@ -724,6 +725,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 			random.Received().Next32();
 		}
+#endif
 	}
 }
 #endif

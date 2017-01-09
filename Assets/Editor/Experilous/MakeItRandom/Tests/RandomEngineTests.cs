@@ -431,6 +431,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x1DE5438192A8A3AEUL, random.Next64());
 		}
 
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		[TestCase(Category = "Normal")]
 		public void First32_64_XorShift128Plus()
 		{
@@ -538,6 +539,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0x722E24535F5E184FUL, random.Next64());
 			Assert.AreEqual(0xA130FC9973B788EAUL, random.Next64());
 		}
+#endif
 
 		[TestCase(Category = "Normal")]
 		public void First32_64_XorShift1024Star()
@@ -1092,6 +1094,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0x92A8A3AEU, lower); Assert.AreEqual(0x1DE54381U, upper);
 		}
 
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		[TestCase(Category = "Normal")]
 		public void First32_32x2_XorShift128Plus()
 		{
@@ -1201,6 +1204,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Next64(out lower, out upper); Assert.AreEqual(0x5F5E184FU, lower); Assert.AreEqual(0x722E2453U, upper);
 			random.Next64(out lower, out upper); Assert.AreEqual(0x73B788EAU, lower); Assert.AreEqual(0xA130FC99U, upper);
 		}
+#endif
 
 		[TestCase(Category = "Normal")]
 		public void First32_32x2_XorShift1024Star()
@@ -1515,6 +1519,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xD0299BC8E22F5280UL, random.Next64());
 		}
 
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First32_XorShift128Plus()
 		{
@@ -1598,6 +1603,7 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.AreEqual(0xE659AD0A8487F68CUL, random.Next64());
 			Assert.AreEqual(0x141C3F5D2C9AF0E6UL, random.Next64());
 		}
+#endif
 
 		[TestCase(Category = "Normal")]
 		public void SkipAhead1_First32_XorShift1024Star()
