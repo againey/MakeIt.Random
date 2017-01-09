@@ -8,6 +8,9 @@
 #define MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 #endif
 
+using System;
+using System.Reflection;
+
 namespace Experilous.MakeItRandom
 {
 	/// <summary>
@@ -16,6 +19,33 @@ namespace Experilous.MakeItRandom
 	/// </summary>
 	public static class MIRandom
 	{
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
+		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
+		[UnityEditor.Callbacks.DidReloadScripts]
+		private static void InitializeStaticFields()
+		{
+			FindStandardCreator();
+			CreateShared();
+		}
+#endif
+
+		private static Type _standardType = null;
+		private static MethodInfo _standardCreator = null;
+		private static object[] _standardCreatorParameters = null;
+
+		private static void FindStandardCreator()
+		{
+#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT
+			_standardType = typeof(XorShift128Plus);
+#else
+			var xorShiftAddType = Assembly.GetExecutingAssembly().GetType("Experilous.MakeItRandom.XorShiftAdd", false, false);
+			_standardType = (xorShiftAddType != null) ? xorShiftAddType : typeof(XorShift128Plus);
+#endif
+			_standardCreator = _standardType.GetMethod("CreateUninitialized", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+			if (_standardCreator == null) throw new InvalidOperationException(string.Format("Failed to find default creator function for the default random engine type {0}.", _standardType.Name));
+			_standardCreatorParameters = new object[0];
+		}
+
 		private static IRandom _shared = null;
 
 		/// <summary>
@@ -50,9 +80,6 @@ namespace Experilous.MakeItRandom
 			}
 		}
 
-#if UNITY_5_2 || UNITY_5_3_OR_NEWER
-		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
-#endif
 		private static void CreateShared()
 		{
 			_shared = CreateStandard();
@@ -65,11 +92,15 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed()"/>
 		public static IRandom CreateStandard()
 		{
-#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT
-			return XorShift128Plus.Create();
-#else
-			return XorShiftAdd.Create();
+#if !UNITY_5_2 && !UNITY_5_3_OR_NEWER
+			if (_standardCreator == null)
+			{
+				FindStandardCreator();
+			}
 #endif
+			var random = (IRandom)_standardCreator.Invoke(null, _standardCreatorParameters);
+			random.Seed();
+			return random;
 		}
 
 		/// <summary>
@@ -80,11 +111,15 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int)"/>
 		public static IRandom CreateStandard(int seed)
 		{
-#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
-			return XorShift128Plus.Create(seed);
-#else
-			return XorShiftAdd.Create(seed);
+#if !UNITY_5_2 && !UNITY_5_3_OR_NEWER
+			if (_standardCreator == null)
+			{
+				FindStandardCreator();
+			}
 #endif
+			var random = (IRandom)_standardCreator.Invoke(null, _standardCreatorParameters);
+			random.Seed(seed);
+			return random;
 		}
 
 		/// <summary>
@@ -95,11 +130,15 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(int[])"/>
 		public static IRandom CreateStandard(params int[] seed)
 		{
-#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
-			return XorShift128Plus.Create(seed);
-#else
-			return XorShiftAdd.Create(seed);
+#if !UNITY_5_2 && !UNITY_5_3_OR_NEWER
+			if (_standardCreator == null)
+			{
+				FindStandardCreator();
+			}
 #endif
+			var random = (IRandom)_standardCreator.Invoke(null, _standardCreatorParameters);
+			random.Seed(seed);
+			return random;
 		}
 
 		/// <summary>
@@ -110,11 +149,15 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="IRandom.Seed(string)"/>
 		public static IRandom CreateStandard(string seed)
 		{
-#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
-			return XorShift128Plus.Create(seed);
-#else
-			return XorShiftAdd.Create(seed);
+#if !UNITY_5_2 && !UNITY_5_3_OR_NEWER
+			if (_standardCreator == null)
+			{
+				FindStandardCreator();
+			}
 #endif
+			var random = (IRandom)_standardCreator.Invoke(null, _standardCreatorParameters);
+			random.Seed(seed);
+			return random;
 		}
 
 		/// <summary>
@@ -126,11 +169,15 @@ namespace Experilous.MakeItRandom
 		/// <seealso cref="RandomStateGenerator"/>
 		public static IRandom CreateStandard(IBitGenerator bitGenerator)
 		{
-#if MAKEITRANDOM_OPTIMIZED_FOR_64BIT || MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0
-			return XorShift128Plus.Create(bitGenerator);
-#else
-			return XorShiftAdd.Create(bitGenerator);
+#if !UNITY_5_2 && !UNITY_5_3_OR_NEWER
+			if (_standardCreator == null)
+			{
+				FindStandardCreator();
+			}
 #endif
+			var random = (IRandom)_standardCreator.Invoke(null, _standardCreatorParameters);
+			random.Seed(bitGenerator);
+			return random;
 		}
 	}
 }
