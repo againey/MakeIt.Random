@@ -24,7 +24,7 @@ namespace Experilous.MakeItRandom.Tests
 		private const int intRangeCount = 1024;
 		private const int floatRangeCount = 1024;
 		private const int geometryRangeCount = 1024;
-		private const string dataFolderPath = "TestData/MakeItRandom/";
+		private const string dataFolderPath = "Experilous/MakeItRandom/TestData";
 
 #if MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 		private const string dataFilePathTemplate = "{0}_{1}_32opt.dat";
@@ -34,8 +34,7 @@ namespace Experilous.MakeItRandom.Tests
 		private const string dataFilePathTemplate_CrossPlatform = "{0}_{1}_32opt.dat";
 #endif
 
-#if MAKEITRANDOM_CALCULATE_TEST_VALUES && UNITY_EDITOR
-		private void CalculateTestValues(IRandom random, string operationName, System.Action<IRandom, BinaryWriter> writeTestValue, int testValueCount)
+		private static void CalculateTestValues(IRandom random, string operationName, System.Action<IRandom, BinaryWriter> writeTestValue, int testValueCount)
 		{
 			string dataFilePath = string.Format(dataFilePathTemplate, random.GetType().Name, operationName);
 			using (var file = File.Open(Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), dataFolderPath), dataFilePath), FileMode.Create, FileAccess.Write))
@@ -54,10 +53,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		[TestCase(Category = "Normal")]
-		public void CalculateTestValues()
+		//[UnityEditor.MenuItem("Assets/Make It Random/Calculate Arch Identity Test Values")]
+		public static void CalculateAllTestValues()
 		{
-			Directory.CreateDirectory(Path.Combine(AssetUtility.canonicalProjectPath, dataFolderPath));
+			Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory().Replace('\\', '/').Trim('/'), dataFolderPath));
 
 			CalculateTestValues(XorShift128Plus.Create(seed), "Next32", (IRandom random, BinaryWriter writer) => { writer.Write(random.Next32()); }, next32Count);
 			CalculateTestValues(XorShift1024Star.Create(seed), "Next32", (IRandom random, BinaryWriter writer) => { writer.Write(random.Next32()); }, next32Count);
@@ -91,7 +90,6 @@ namespace Experilous.MakeItRandom.Tests
 			CalculateTestValues(XorShift128Plus.Create(seed), "PointWithinCircle", (IRandom random, BinaryWriter writer) => { writer.Write(random.PointWithinCircle()); }, geometryRangeCount);
 			CalculateTestValues(XorShift128Plus.Create(seed), "PointWithinSphere", (IRandom random, BinaryWriter writer) => { writer.Write(random.PointWithinSphere()); }, geometryRangeCount);
 		}
-#endif
 
 		private void CompareTestValues<TRandom>(System.Func<byte[], TRandom> randomFactory, string operationName, bool crossPlatform, System.Action<IRandom, BinaryReader> comparer) where TRandom : IRandom
 		{
@@ -117,15 +115,15 @@ namespace Experilous.MakeItRandom.Tests
 			{
 				Assert.Inconclusive(
 					crossPlatform == false
-						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
-						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
+						? "No test data to compare against.  First execute CalculateTestValues."
+						: "No test data to compare against.  First change the build settings to a different platform and execute CalculateTestValues().");
 			}
 			catch (FileNotFoundException)
 			{
 				Assert.Inconclusive(
 					crossPlatform == false
-						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
-						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
+						? "No test data to compare against.  First execute CalculateTestValues."
+						: "No test data to compare against.  First change the build settings to a different platform and execute CalculateTestValues().");
 			}
 		}
 
