@@ -339,22 +339,22 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void Seed()
 		{
-			Seed(SplitMix64.Create());
+			Seed(Seeder.Create());
 		}
 
 		public override void Seed(int seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 
 		public override void Seed(params int[] seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 
 		public override void Seed(string seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 #endif
 
@@ -401,22 +401,22 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void MergeSeed()
 		{
-			MergeSeed(SplitMix64.Create());
+			MergeSeed(Seeder.Create());
 		}
 
 		public override void MergeSeed(int seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 
 		public override void MergeSeed(params int[] seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 
 		public override void MergeSeed(string seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 #endif
 
@@ -761,5 +761,104 @@ namespace Experilous.MakeItRandom
 		{
 			return string.Format("XorShift128Plus {{ 0x{0:X16}, 0x{1:X16} }}", _state0, _state1);
 		}
+
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
+		private sealed class Seeder : IBitGenerator
+		{
+			private ulong _state;
+
+			private Seeder() { }
+
+			private static Seeder CreateUninitialized()
+			{
+				return new Seeder();
+			}
+
+			public static Seeder Create()
+			{
+				var instance = CreateUninitialized();
+				instance.Seed();
+				return instance;
+			}
+
+			public static Seeder Create(int seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			public static Seeder Create(params int[] seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			public static Seeder Create(string seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			private static ulong Hash(byte[] seed)
+			{
+				ulong h = 14695981039346656037UL;
+				for (int i = 0; i < seed.Length; ++i)
+				{
+					h = (h ^ seed[i]) * 1099511628211UL;
+				}
+				return h;
+			}
+
+			public void Seed()
+			{
+				_state = Hash(System.BitConverter.GetBytes(System.Environment.TickCount));
+			}
+
+			public void Seed(int seed)
+			{
+				_state = Hash(System.BitConverter.GetBytes(seed));
+			}
+
+			public void Seed(params int[] seed)
+			{
+				var byteData = new byte[seed.Length * 4];
+				System.Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+				_state = Hash(byteData);
+			}
+
+			public void Seed(string seed)
+			{
+				_state = Hash(new System.Text.UTF8Encoding().GetBytes(seed));
+			}
+
+			public uint Next32()
+			{
+				_state += 0x9E3779B97F4A7C15UL;
+				var z = _state;
+				z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+				z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+				return (uint)(z ^ (z >> 31));
+			}
+
+			public ulong Next64()
+			{
+				_state += 0x9E3779B97F4A7C15UL;
+				var z = _state;
+				z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+				z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+				return z ^ (z >> 31);
+			}
+
+			public void Next64(out uint lower, out uint upper)
+			{
+				ulong next = Next64();
+				lower = (uint)next;
+				upper = (uint)(next >> 32);
+			}
+		}
+#endif
 	}
 }
