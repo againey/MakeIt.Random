@@ -328,7 +328,7 @@ namespace Experilous.MakeItRandom.Detail
 		private static double[] GenerateZigguratTableXValues(int segmentCount, Func<double, double> f, Func<double, double> fInv, Func<double, double> fCDF, double totalArea, double activeArea, double acceptableError)
 		{
 #if UNITY_EDITOR
-			var loopGuard = new Core.InfiniteLoopGuard();
+			var loopGuard = new InfiniteLoopGuard();
 #endif
 			var x = new double[segmentCount];
 			double a = activeArea / segmentCount;
