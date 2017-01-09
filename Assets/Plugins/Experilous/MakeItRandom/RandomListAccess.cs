@@ -396,6 +396,11 @@ namespace Experilous.MakeItRandom
 				_list = list;
 			}
 
+			public WeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, TWeight[] weights) : base(random, elementCount, weights)
+			{
+				_list = list;
+			}
+
 			public WeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, TWeight> weightsAccessor) : base(random, list.Count, weightsAccessor)
 			{
 				_list = list;
@@ -476,6 +481,7 @@ namespace Experilous.MakeItRandom
 		private class SByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, sbyte, int>
 		{
 			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, sbyte[] weights) : base(random, list, weights) { }
+			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, sbyte[] weights) : base(random, list, elementCount, weights) { }
 			public SByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, sbyte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -508,6 +514,7 @@ namespace Experilous.MakeItRandom
 		private class ByteWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, byte, uint>
 		{
 			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, byte[] weights) : base(random, list, weights) { }
+			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, byte[] weights) : base(random, list, elementCount, weights) { }
 			public ByteWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, byte> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -540,6 +547,7 @@ namespace Experilous.MakeItRandom
 		private class ShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, short, int>
 		{
 			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, short[] weights) : base(random, list, weights) { }
+			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, short[] weights) : base(random, list, elementCount, weights) { }
 			public ShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, short> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -572,6 +580,7 @@ namespace Experilous.MakeItRandom
 		private class UShortWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ushort, uint>
 		{
 			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, ushort[] weights) : base(random, list, weights) { }
+			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, ushort[] weights) : base(random, list, elementCount, weights) { }
 			public UShortWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ushort> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -604,6 +613,7 @@ namespace Experilous.MakeItRandom
 		private class IntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, int, int>
 		{
 			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, int[] weights) : base(random, list, weights) { }
+			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, int[] weights) : base(random, list, elementCount, weights) { }
 			public IntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, int> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -636,6 +646,7 @@ namespace Experilous.MakeItRandom
 		private class UIntWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, uint, uint>
 		{
 			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, uint[] weights) : base(random, list, weights) { }
+			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, uint[] weights) : base(random, list, elementCount, weights) { }
 			public UIntWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, uint> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -668,6 +679,7 @@ namespace Experilous.MakeItRandom
 		private class LongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, long, long>
 		{
 			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, long[] weights) : base(random, list, weights) { }
+			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, long[] weights) : base(random, list, elementCount, weights) { }
 			public LongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, long> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -700,6 +712,7 @@ namespace Experilous.MakeItRandom
 		private class ULongWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, ulong, ulong>
 		{
 			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, ulong[] weights) : base(random, list, weights) { }
+			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, ulong[] weights) : base(random, list, elementCount, weights) { }
 			public ULongWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, ulong> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -732,6 +745,7 @@ namespace Experilous.MakeItRandom
 		private class FloatWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, float, float>
 		{
 			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, float[] weights) : base(random, list, weights) { }
+			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, float[] weights) : base(random, list, elementCount, weights) { }
 			public FloatWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, float> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
@@ -764,6 +778,7 @@ namespace Experilous.MakeItRandom
 		private class DoubleWeightedElementGenerator<TElement> : WeightedElementGenerator<TElement, double, double>
 		{
 			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, double[] weights) : base(random, list, weights) { }
+			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, int elementCount, double[] weights) : base(random, list, elementCount, weights) { }
 			public DoubleWeightedElementGenerator(IRandom random, IList<TElement> list, System.Func<int, double> weightsAccessor) : base(random, list, weightsAccessor) { }
 
 			public override int NextIndex()
