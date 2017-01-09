@@ -26,7 +26,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateAngleDeg(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -51,7 +51,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateAngleRad(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -76,7 +76,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateSignedAngleDeg(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -101,7 +101,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateSignedAngleRad(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -126,7 +126,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateHalfAngleDeg(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -151,7 +151,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateHalfAngleRad(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -176,7 +176,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateSignedHalfAngleDeg(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -201,7 +201,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ValidateSignedHalfAngleRad(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);

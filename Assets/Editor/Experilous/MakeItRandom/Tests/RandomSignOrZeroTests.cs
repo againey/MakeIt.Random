@@ -51,7 +51,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformOneOrZero(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -61,7 +61,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformSign(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -71,7 +71,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformSignOrZero(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -81,7 +81,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -91,7 +91,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -101,7 +101,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -111,7 +111,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -121,7 +121,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -131,7 +131,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -141,7 +141,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -151,7 +151,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -161,7 +161,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -171,7 +171,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -181,7 +181,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -191,7 +191,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -201,7 +201,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -211,7 +211,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -221,7 +221,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -231,7 +231,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneOrZeroDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -241,7 +241,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -251,7 +251,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignOrZeroDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -261,7 +261,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -271,7 +271,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -281,7 +281,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -291,7 +291,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -301,7 +301,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -311,7 +311,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -321,7 +321,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -331,7 +331,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -341,7 +341,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -351,7 +351,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -361,7 +361,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -371,7 +371,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -381,7 +381,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -391,7 +391,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -401,7 +401,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -411,7 +411,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -421,7 +421,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -431,7 +431,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -441,7 +441,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -451,7 +451,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -461,7 +461,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -471,7 +471,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -481,7 +481,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -491,7 +491,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -501,7 +501,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -511,7 +511,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -521,7 +521,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -531,7 +531,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -541,7 +541,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -551,7 +551,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -561,7 +561,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -571,7 +571,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -581,7 +581,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -591,7 +591,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -601,7 +601,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -611,7 +611,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -621,7 +621,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -631,7 +631,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -641,7 +641,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -651,7 +651,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -661,7 +661,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -671,7 +671,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -681,7 +681,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -691,7 +691,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -701,7 +701,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -711,7 +711,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -721,7 +721,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -731,7 +731,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -741,7 +741,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -751,7 +751,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -761,7 +761,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -771,7 +771,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -781,7 +781,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -791,7 +791,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -801,7 +801,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -811,7 +811,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedOneProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -821,7 +821,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedZeroProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -831,7 +831,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedPositiveProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -841,7 +841,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedNegativeProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -851,7 +851,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedSignProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);

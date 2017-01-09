@@ -229,7 +229,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenFloatUnitRange(int sampleSizePercentage)
 		{
 			ValidateOpenFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -240,7 +240,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenDoubleUnitRange(int sampleSizePercentage)
 		{
 			ValidateOpenDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -251,7 +251,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenFloatUnitRange(int sampleSizePercentage)
 		{
 			ValidateHalfOpenFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -262,7 +262,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenDoubleUnitRange(int sampleSizePercentage)
 		{
 			ValidateHalfOpenDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -273,7 +273,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedFloatUnitRange(int sampleSizePercentage)
 		{
 			ValidateHalfClosedFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -284,7 +284,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedDoubleUnitRange(int sampleSizePercentage)
 		{
 			ValidateHalfClosedDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -295,7 +295,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedFloatUnitRange(int sampleSizePercentage)
 		{
 			ValidateClosedFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -306,7 +306,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedDoubleUnitRange(int sampleSizePercentage)
 		{
 			ValidateClosedDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
@@ -317,7 +317,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -328,7 +328,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -339,7 +339,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.020f, sampleSizePercentage);
@@ -350,7 +350,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void OpenDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -361,7 +361,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -372,7 +372,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -383,7 +383,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -394,7 +394,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfOpenDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -405,7 +405,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -416,7 +416,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -427,7 +427,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -438,7 +438,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void HalfClosedDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -449,7 +449,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -460,7 +460,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
@@ -471,7 +471,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
@@ -482,7 +482,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ClosedDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
 			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);

@@ -165,56 +165,56 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleArrayInPlaceDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).Shuffle(random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleListInPlaceDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).Shuffle(random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleArrayCopyDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleListCopyDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleLinkedListCopyDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new int[101], random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleArrayCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearArray(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleListCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearList(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ShuffleLinkedListCopyAppendDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateShuffleDistributesUniformly(101, 2000, 0.02f, (IRandom random) => CreateLinearLinkedList(101).ShuffleInto(new List<int>(101), random), sampleSizePercentage);

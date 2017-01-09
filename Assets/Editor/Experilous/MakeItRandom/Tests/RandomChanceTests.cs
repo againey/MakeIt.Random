@@ -28,7 +28,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformChance(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -38,7 +38,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -48,7 +48,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -58,7 +58,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -68,7 +68,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -78,7 +78,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -88,7 +88,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedChanceDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -98,7 +98,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -108,7 +108,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -118,7 +118,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -128,7 +128,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -138,7 +138,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -148,7 +148,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ProbabilityNumeratorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -158,7 +158,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -168,7 +168,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorUInt32(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -178,7 +178,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -188,7 +188,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorUInt64(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -198,7 +198,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorFloat(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -208,7 +208,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void WeightedProbabilityDenominatorDouble(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);

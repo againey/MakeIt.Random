@@ -235,140 +235,140 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWithOneItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesUniformly<OneItemEnum>(1000, 0.001f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWithTwoItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWithTwentyItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWithTenItemEnumWithHolesDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWithFiveValueEightItemEnumWithHolesDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWithOneItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesUniformly<OneItemEnum>(1000, 0.001f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWithTwoItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesUniformly<TwoItemEnum>(10000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWithTwentyItemEnumDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesUniformly<TwentyItemEnum>(1000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWithTenItemEnumWithHolesDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesUniformly<TenItemEnumWithHoles>(2000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWithFiveValueEightItemEnumWithHolesDistributesUniformly(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesUniformly<FiveValueEightItemEnumWithHoles>(4000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWeightedWithOneItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWeightedWithTwoItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWeightedWithTwentyItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWeightedWithTenItemEnumWithHolesDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareWeightedWithFiveValueEightItemEnumWithHolesDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByNameEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWeightedWithOneItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesWithCorrectWeights<OneItemEnum>(1000, 0.001f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWeightedWithTwoItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesWithCorrectWeights<TwoItemEnum>(10000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWeightedWithTwentyItemEnumDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesWithCorrectWeights<TwentyItemEnum>(1000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWeightedWithTenItemEnumWithHolesDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesWithCorrectWeights<TenItemEnumWithHoles>(2000, 0.05f, sampleSizePercentage);
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PrepareByValueWeightedWithFiveValueEightItemEnumWithHolesDistributesWithCorrectWeights(int sampleSizePercentage)
 		{
 			ValidateByValueEnumDistributesWithCorrectWeights<FiveValueEightItemEnumWithHoles>(4000, 0.05f, sampleSizePercentage);

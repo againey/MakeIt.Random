@@ -204,7 +204,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestUniformDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -221,7 +221,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestUniformDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeUniformSampleGenerator(0f, 1f);
@@ -239,7 +239,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestUniformDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -256,7 +256,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestUniformDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeUniformSampleGenerator(0d, 1d);
@@ -288,7 +288,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -305,7 +305,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeNormalSampleGenerator(0f, 1f);
@@ -323,7 +323,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_ConstrainedRange_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -335,7 +335,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_SampleGenerator_ContrainedRange_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeNormalSampleGenerator(0f, 1f, -2f, 3f);
@@ -347,7 +347,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -364,7 +364,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeNormalSampleGenerator(0d, 1d);
@@ -382,7 +382,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_ConstrainedRange_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -394,7 +394,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestNormalDistribution_SampleGenerator_ContrainedRange_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeNormalSampleGenerator(0d, 1d, -2d, 3d);
@@ -420,7 +420,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -437,7 +437,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeExponentialSampleGenerator(1f);
@@ -455,7 +455,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_ConstrainedRange_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -466,7 +466,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_SampleGenerator_ContrainedRange_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeExponentialSampleGenerator(1f, 4f);
@@ -477,7 +477,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -494,7 +494,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeExponentialSampleGenerator(1d);
@@ -512,7 +512,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_ConstrainedRange_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -523,7 +523,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestExponentialDistribution_SampleGenerator_ContrainedRange_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeExponentialSampleGenerator(1d, 4d);
@@ -556,7 +556,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTriangularDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -577,7 +577,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTriangularDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeTriangularSampleGenerator(-1f, 0f, 1f);
@@ -599,7 +599,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTriangularDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -620,7 +620,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTriangularDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeTriangularSampleGenerator(-1d, 0d, 1d);
@@ -682,7 +682,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTrapezoidalDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -715,7 +715,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTrapezoidalDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeTrapezoidalSampleGenerator(-2f, -1f, 1f, 2f);
@@ -749,7 +749,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTrapezoidalDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -782,7 +782,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestTrapezoidalDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeTrapezoidalSampleGenerator(-2d, -1d, 1d, 2d);
@@ -852,7 +852,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -872,7 +872,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeLinearSampleGenerator(2f, 1f, 4f, 2f);
@@ -893,7 +893,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_Vector2(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -913,7 +913,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_SampleGenerator_Vector2(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeLinearSampleGenerator(new Vector2(2f, 1f), new Vector2(4f, 2f));
@@ -934,7 +934,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -954,7 +954,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestLinearDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeLinearSampleGenerator(2d, 1d, 4d, 2d);
@@ -1011,7 +1011,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1034,7 +1034,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(2f, 1f, 1f, 4f, 2f, -1f);
@@ -1058,7 +1058,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_Vector2(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1081,7 +1081,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_SampleGenerator_Vector2(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new Vector2(2f, 1f), 1f, new Vector2(4f, 2f), -1f);
@@ -1105,7 +1105,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_Keyframe(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1128,7 +1128,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_SampleGenerator_Keyframe(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f));
@@ -1152,7 +1152,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_AnimationCurve(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1174,7 +1174,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_SampleGenerator_AnimationCurve(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(2f, 1f, 0f, 1f), new Keyframe(4f, 2f, -1f, 0f) }));
@@ -1197,7 +1197,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1220,7 +1220,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestHermiteSplineDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakeHermiteSplineSampleGenerator(2d, 1d, 1d, 4d, 2d, -1d);
@@ -1398,7 +1398,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1420,7 +1420,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseUniformSampleGenerator(new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 2f, 3f });
@@ -1443,7 +1443,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_Vector2(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1465,7 +1465,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_SampleGenerator_Vector2(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseUniformSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(1f, 2f), new Vector2(2f, 3f) }, 3f);
@@ -1488,7 +1488,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_FloatWeights(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1510,7 +1510,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_SampleGenerator_FloatWeights(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseWeightedUniformSampleGenerator(new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 2f, 3f });
@@ -1533,7 +1533,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1555,7 +1555,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseUniformSampleGenerator(new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 2d, 3d });
@@ -1578,7 +1578,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_DoubleWeights(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1600,7 +1600,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseUniformDistribution_SampleGenerator_DoubleWeights(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseWeightedUniformSampleGenerator(new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 2d, 3d });
@@ -1714,7 +1714,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1737,7 +1737,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseLinearSampleGenerator(new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f });
@@ -1761,7 +1761,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_Vector2(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1784,7 +1784,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_SampleGenerator_Vector2(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseLinearSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(1f, 3f), new Vector2(2f, 2f), new Vector2(3f, 4f) });
@@ -1808,7 +1808,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -1831,7 +1831,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseLinearDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseLinearSampleGenerator(new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 3d, 2d, 4d });
@@ -2019,7 +2019,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_Float(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -2047,7 +2047,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_Float(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new float[] { 0f, 1f, 2f, 3f }, new float[] { 1f, 3f, 2f, 4f }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f });
@@ -2076,7 +2076,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_Vector2(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -2104,7 +2104,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_Vector2(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Vector2 [] { new Vector2(0f, 1f), new Vector2(1f, 3f), new Vector2(2f, 2f), new Vector2(3f, 4f) }, new float[] { 0.5f, -1f, -1f, -2f, 0f, 0f });
@@ -2133,7 +2133,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_Keyframe(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -2157,7 +2157,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_Keyframe(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) });
@@ -2182,7 +2182,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_AnimationCurve(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -2206,7 +2206,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_AnimationCurve(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new AnimationCurve(new Keyframe[] { new Keyframe(0f, 1f, 0f, 0.5f), new Keyframe(1f, 3f, -1f, -1f), new Keyframe(2f, 2f, -2f, 0f), new Keyframe(3f, 4f, 0f, 0f) }));
@@ -2231,7 +2231,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_Double(int sampleSizePercentage)
 		{
 			var random = MIRandom.CreateStandard(seed);
@@ -2259,7 +2259,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void TestPiecewiseHermiteSplineDistribution_SampleGenerator_Double(int sampleSizePercentage)
 		{
 			var generator = MIRandom.CreateStandard(seed).MakePiecewiseHermiteSampleGenerator(new double[] { 0d, 1d, 2d, 3d }, new double[] { 1d, 3d, 2d, 4d }, new double[] { 0.5d, -1d, -1d, -2d, 0d, 0d });

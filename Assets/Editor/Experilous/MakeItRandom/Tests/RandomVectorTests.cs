@@ -13,7 +13,7 @@ namespace Experilous.MakeItRandom.Tests
 		private const string seed = "random seed";
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UnitVector2sAreLength1(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;
@@ -27,7 +27,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UnitVector3sAreLength1(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;
@@ -41,7 +41,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UnitVector4sAreLength1(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;
@@ -55,7 +55,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UnitVector2sUniformlyDistributed(int sampleSizePercentage)
 		{
 			var bucketCount = 72;
@@ -79,7 +79,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ScaledVector2sAreLengthR(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;
@@ -95,7 +95,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ScaledVector3sAreLengthR(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;
@@ -111,7 +111,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ScaledVector4sAreLengthR(int sampleSizePercentage)
 		{
 			int count = (10000 * sampleSizePercentage) / 100;

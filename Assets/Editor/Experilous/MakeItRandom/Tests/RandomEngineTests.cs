@@ -85,7 +85,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Next4BitsDistribution(int sampleSizePercentage)
 		{
 			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 4, 10000, 0.02f, sampleSizePercentage);
@@ -106,7 +106,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Next5BitsDistribution(int sampleSizePercentage)
 		{
 			ValidateNext32BitsDistribution(SplitMix64.Create(seed), 5, 10000, 0.03f, sampleSizePercentage);
@@ -127,7 +127,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ChancePowerOfTwoDenominatorDistribution(int sampleSizePercentage)
 		{
 			ValidateChanceDistribution(SplitMix64.Create(seed), 25, 32, 100000, 0.002f, sampleSizePercentage);
@@ -140,7 +140,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ChanceNonPowerOfTwoDenominatorDistribution(int sampleSizePercentage)
 		{
 			ValidateChanceDistribution(SplitMix64.Create(seed), 17, 25, 100000, 0.003f, sampleSizePercentage);
@@ -153,7 +153,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void ChanceDistribution(int sampleSizePercentage)
 		{
 			System.Action<int, int> validateRatio = (int numerator, int denominator) =>

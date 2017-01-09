@@ -262,7 +262,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeInt8(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (sbyte)((1 << 1) / 7 + 44), (sbyte)(1 << 1), 2, 0.015f, sampleSizePercentage);
@@ -271,7 +271,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeInt8(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (sbyte)((1 << 3) / 7 + 44), (sbyte)(1 << 3), 8, sampleSizePercentage);
@@ -280,7 +280,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeInt8(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 3; ++i)
@@ -295,7 +295,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeUInt8(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (byte)((1 << 1) / 7 + 44), (byte)(1 << 1), 2, 0.015f, sampleSizePercentage);
@@ -304,7 +304,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeUInt8(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (byte)((1 << 3) / 7 + 44), (byte)(1 << 3), 8, sampleSizePercentage);
@@ -314,7 +314,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeUInt8(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 4; ++i)
@@ -329,7 +329,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeInt16(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (short)((1 << 1) / 7 + 13894), (short)(1 << 1), 2, 0.015f, sampleSizePercentage);
@@ -339,7 +339,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeInt16(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (short)((1 << 3) / 7 + 13894), (short)(1 << 3), 8, sampleSizePercentage);
@@ -355,7 +355,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeInt16(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 7; ++i)
@@ -370,7 +370,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeUInt16(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (ushort)((1 << 1) / 7 + 13894), (ushort)(1 << 1), 2, 0.015f, sampleSizePercentage);
@@ -380,7 +380,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeUInt16(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (ushort)((1 << 3) / 7 + 13894), (ushort)(1 << 3), 8, sampleSizePercentage);
@@ -397,7 +397,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeUInt16(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 8; ++i)
@@ -412,7 +412,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeInt32(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1 << 1) / 7 + 40722, 1 << 1, 2, 0.015f, sampleSizePercentage);
@@ -423,7 +423,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeInt32(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1 << 3) / 7 + 40722, 1 << 3, 8, sampleSizePercentage);
@@ -454,7 +454,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeInt32(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 14; ++i)
@@ -469,7 +469,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeUInt32(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1U << 1) / 7 + 40722, 1U << 1, 2, 0.015f, sampleSizePercentage);
@@ -480,7 +480,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeUInt32(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1U << 3) / 7 + 40722, 1U << 3, 8, sampleSizePercentage);
@@ -512,7 +512,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeUInt32(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 15; ++i)
@@ -527,7 +527,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeInt64(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1L << 1) / 7L + 274566545L, 1L << 1, 2, 0.015f, sampleSizePercentage);
@@ -539,7 +539,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeInt64(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1L << 3) / 7 + 274566545, 1L << 3, 8, sampleSizePercentage);
@@ -601,7 +601,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeInt64(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 29; ++i)
@@ -616,7 +616,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void PowPow2RangeUInt64(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1UL  << 1) / 7L + 274566545L, 1UL  << 1, 2, 0.015f, sampleSizePercentage);
@@ -628,7 +628,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void Pow2RangeUInt64(int sampleSizePercentage)
 		{
 			ValidateRange(10000, (1UL << 3) / 7 + 274566545, 1UL << 3, 8, sampleSizePercentage);
@@ -691,7 +691,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void AnyRangeUInt64(int sampleSizePercentage)
 		{
 			for (int i = 1; i < 29; ++i)

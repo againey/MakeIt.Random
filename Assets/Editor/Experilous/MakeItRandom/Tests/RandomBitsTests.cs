@@ -80,7 +80,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformBit(int sampleSizePercentage)
 		{
 			var random = XorShift128Plus.Create(seed);
@@ -90,7 +90,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformBits32(int sampleSizePercentage)
 		{
 			for (int i = 1; i <= 32; ++i)
@@ -103,7 +103,7 @@ namespace Experilous.MakeItRandom.Tests
 		}
 
 		[TestCase(100, Category = "Statistical")]
-		[TestCase(1, Category = "StatisticalSmoke")]
+		[TestCase(1, Category = "Statistical, Smoke")]
 		public void UniformBits64(int sampleSizePercentage)
 		{
 			for (int i = 1; i <= 64; ++i)
