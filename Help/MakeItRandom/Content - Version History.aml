@@ -32,6 +32,7 @@
 									<listItem>piecewise Hermite spline distribution</listItem>
 								</list>
 							</listItem>
+							<listItem>Added some common color categories for generating random colors, such as bold, pastel, somber, warm, and cool.</listItem>
 						</list>
 					</content>
 				</section>
@@ -50,6 +51,8 @@
 					<content>
 						<list class="bullet">
 							<listItem>Control flow in <codeEntityReference linkText="RandomGeometry.Rotation()">M:Experilous.MakeItRandom.RandomGeometry.Rotation(Experilous.MakeItRandom.IRandom)</codeEntityReference> tweaked so that the updated compiler in Unity 5.5 will not complain about an unset out parameter.</listItem>
+							<listItem>Fixed the version 0.1 backward-compatible code path for seeding <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference> so that it works in both the Complete and Basic edition by not depending on the existence of <codeEntityReference>T:Experilous.MakeItRandom.SplitMix64</codeEntityReference>.</listItem>
+							<listItem>Corrected the version 0.1 backward-compatible code path for <codeEntityReference autoUpgrade="true" linkText="RandomGeometry.UnitVector2()">M:Experilous.MakeItRandom.RandomGeometry.UnitVector2(Experilous.MakeItRandom.IRandom)</codeEntityReference> to do the proper math instead of calling itself repeatedly and cause a stack overflow.</listItem>
 						</list>
 					</content>
 				</section>
@@ -80,6 +83,7 @@
 						<list class="bullet">
 							<listItem>Added a <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#distributions">distribution sampling demo scene</link>.</listItem>
 							<listItem>The <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#shuffle">shuffle and weighted index generation demo</link> will now repeatedly select new indices at a configurable frequency.</listItem>
+							<listItem>The <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#colors">random colors demo</link> allows a more flexible method of generating colors from a selected color category.</listItem>
 						</list>
 					</content>
 				</section>

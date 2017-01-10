@@ -227,10 +227,10 @@
 						// Generate a font style
 						var style = fontStyleGen.Next();
 						
-						// Pick a random color from the HCY color space
-						var color = random.ColorHCY();
+						// Pick a random warm color
+						var color = random.ColorWarm();
 						// Alter the color's hue randomly by no more than 1/10.
-						color = random.HueShift(color, 0.1f);
+						color = random.HueShift((ColorHSV)color, 0.1f);
 					]]>
 				</code>
 			</content>
