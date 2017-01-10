@@ -21,7 +21,10 @@ namespace Experilous.MakeItRandom
 	{
 #if UNITY_5_2 || UNITY_5_3_OR_NEWER
 		[UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.BeforeSceneLoad)]
+#if UNITY_EDITOR
+		[UnityEditor.InitializeOnLoadMethod]
 		[UnityEditor.Callbacks.DidReloadScripts]
+#endif
 		private static void InitializeStaticFields()
 		{
 			FindStandardCreator();
