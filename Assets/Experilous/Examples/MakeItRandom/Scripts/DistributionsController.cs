@@ -135,7 +135,11 @@ namespace Experilous.Examples.MakeItRandom
 
 			if (_texture == null || _texture.width != textureWidth)
 			{
+#if UNITY_WEBGL
+				_texture = new Texture2D(textureWidth, 2, TextureFormat.RGBAFloat, false);
+#else
 				_texture = new Texture2D(textureWidth, 2, TextureFormat.RFloat, false);
+#endif
 				_texture.filterMode = FilterMode.Point;
 				_texture.wrapMode = TextureWrapMode.Clamp;
 
