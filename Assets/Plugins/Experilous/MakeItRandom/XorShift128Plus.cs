@@ -26,7 +26,7 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	[System.Serializable]
-	public sealed class XorShift128Plus : RandomBase
+	public sealed class XorShift128Plus : RandomBase, System.IEquatable<XorShift128Plus>
 	{
 #if MAKEITRANDOM_OPTIMIZE_FOR_32BIT
 		[SerializeField] private uint _state0 = 0U;
@@ -339,22 +339,22 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void Seed()
 		{
-			Seed(SplitMix64.Create());
+			Seed(Seeder.Create());
 		}
 
 		public override void Seed(int seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 
 		public override void Seed(params int[] seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 
 		public override void Seed(string seed)
 		{
-			Seed(SplitMix64.Create(seed));
+			Seed(Seeder.Create(seed));
 		}
 #endif
 
@@ -401,22 +401,22 @@ namespace Experilous.MakeItRandom
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 		public override void MergeSeed()
 		{
-			MergeSeed(SplitMix64.Create());
+			MergeSeed(Seeder.Create());
 		}
 
 		public override void MergeSeed(int seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 
 		public override void MergeSeed(params int[] seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 
 		public override void MergeSeed(string seed)
 		{
-			MergeSeed(SplitMix64.Create(seed));
+			MergeSeed(Seeder.Create(seed));
 		}
 #endif
 
@@ -707,5 +707,158 @@ namespace Experilous.MakeItRandom
 		{
 			return new SystemRandomWrapper(this);
 		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns true if neither random engine is null and both have the same state, or if both are null, false otherwise.</returns>
+		public static bool operator ==(XorShift128Plus lhs, XorShift128Plus rhs)
+		{
+			return lhs != null && lhs.Equals(rhs) || lhs == null && rhs == null;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns false if neither random engine is null and both have the same state, or if both are null, true otherwise.</returns>
+		public static bool operator !=(XorShift128Plus lhs, XorShift128Plus rhs)
+		{
+			return lhs != null && !lhs.Equals(rhs) || lhs == null && rhs != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		public bool Equals(XorShift128Plus other)
+		{
+			return other != null && _state0 == other._state0 && _state1 == other._state1;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as XorShift128Plus);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			return _state0.GetHashCode() ^ _state1.GetHashCode();
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return string.Format("XorShift128Plus {{ 0x{0:X16}, 0x{1:X16} }}", _state0, _state1);
+		}
+
+#if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
+		private sealed class Seeder : IBitGenerator
+		{
+			private ulong _state;
+
+			private Seeder() { }
+
+			private static Seeder CreateUninitialized()
+			{
+				return new Seeder();
+			}
+
+			public static Seeder Create()
+			{
+				var instance = CreateUninitialized();
+				instance.Seed();
+				return instance;
+			}
+
+			public static Seeder Create(int seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			public static Seeder Create(params int[] seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			public static Seeder Create(string seed)
+			{
+				var instance = CreateUninitialized();
+				instance.Seed(seed);
+				return instance;
+			}
+
+			private static ulong Hash(byte[] seed)
+			{
+				ulong h = 14695981039346656037UL;
+				for (int i = 0; i < seed.Length; ++i)
+				{
+					h = (h ^ seed[i]) * 1099511628211UL;
+				}
+				return h;
+			}
+
+			public void Seed()
+			{
+				_state = Hash(System.BitConverter.GetBytes(System.Environment.TickCount));
+			}
+
+			public void Seed(int seed)
+			{
+				_state = Hash(System.BitConverter.GetBytes(seed));
+			}
+
+			public void Seed(params int[] seed)
+			{
+				var byteData = new byte[seed.Length * 4];
+				System.Buffer.BlockCopy(seed, 0, byteData, 0, byteData.Length);
+				_state = Hash(byteData);
+			}
+
+			public void Seed(string seed)
+			{
+				_state = Hash(new System.Text.UTF8Encoding().GetBytes(seed));
+			}
+
+			public uint Next32()
+			{
+				_state += 0x9E3779B97F4A7C15UL;
+				var z = _state;
+				z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+				z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+				return (uint)(z ^ (z >> 31));
+			}
+
+			public ulong Next64()
+			{
+				_state += 0x9E3779B97F4A7C15UL;
+				var z = _state;
+				z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+				z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+				return z ^ (z >> 31);
+			}
+
+			public void Next64(out uint lower, out uint upper)
+			{
+				ulong next = Next64();
+				lower = (uint)next;
+				upper = (uint)(next >> 32);
+			}
+		}
+#endif
 	}
 }

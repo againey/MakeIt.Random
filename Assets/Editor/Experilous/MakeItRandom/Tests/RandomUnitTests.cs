@@ -12,8 +12,10 @@ namespace Experilous.MakeItRandom.Tests
 	{
 		private const string seed = "random seed";
 
-		public static void ValidateOpenFloatUnitRange(int count, IRandom random)
+		public static void ValidateOpenFloatUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.FloatOO();
@@ -22,8 +24,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateOpenDoubleUnitRange(int count, IRandom random)
+		public static void ValidateOpenDoubleUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.DoubleOO();
@@ -32,8 +36,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateHalfOpenFloatUnitRange(int count, IRandom random)
+		public static void ValidateHalfOpenFloatUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.FloatCO();
@@ -42,8 +48,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateHalfOpenDoubleUnitRange(int count, IRandom random)
+		public static void ValidateHalfOpenDoubleUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.DoubleCO();
@@ -52,8 +60,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateHalfClosedFloatUnitRange(int count, IRandom random)
+		public static void ValidateHalfClosedFloatUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.FloatOC();
@@ -62,8 +72,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateHalfClosedDoubleUnitRange(int count, IRandom random)
+		public static void ValidateHalfClosedDoubleUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.DoubleOC();
@@ -72,8 +84,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateClosedFloatUnitRange(int count, IRandom random)
+		public static void ValidateClosedFloatUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.FloatCC();
@@ -82,8 +96,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateClosedDoubleUnitRange(int count, IRandom random)
+		public static void ValidateClosedDoubleUnitRange(int count, IRandom random, int sampleSizePercentage)
 		{
+			count = (count * sampleSizePercentage) / 100;
+
 			for (int i = 0; i < count; ++i)
 			{
 				var n = random.DoubleCC();
@@ -92,8 +108,11 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		public static void ValidateOpenFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -104,8 +123,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateOpenDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateOpenDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -116,8 +138,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -128,8 +153,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfOpenDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfOpenDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -140,8 +168,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -152,8 +183,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateHalfClosedDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateHalfClosedDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -164,8 +198,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedFloatUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -176,8 +213,11 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		public static void ValidateClosedDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance)
+		public static void ValidateClosedDoubleUnitBucketDistribution(IRandom random, int bucketCount, int hitsPerBucket, float tolerance, int sampleSizePercentage)
 		{
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
+
 			var buckets = new int[bucketCount];
 			for (int i = 0; i < bucketCount * hitsPerBucket; ++i)
 			{
@@ -188,244 +228,268 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		[Test]
-		public void OpenFloatUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenFloatUnitRange(int sampleSizePercentage)
 		{
-			ValidateOpenFloatUnitRange(10000, SystemRandom.Create(seed));
-			ValidateOpenFloatUnitRange(10000, SplitMix64.Create(seed));
-			ValidateOpenFloatUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateOpenFloatUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateOpenFloatUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateOpenFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateOpenFloatUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateOpenFloatUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateOpenFloatUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateOpenFloatUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void OpenDoubleUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenDoubleUnitRange(int sampleSizePercentage)
 		{
-			ValidateOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
-			ValidateOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
-			ValidateOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateOpenDoubleUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateOpenDoubleUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateOpenDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateOpenDoubleUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateOpenDoubleUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateOpenDoubleUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenFloatUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenFloatUnitRange(int sampleSizePercentage)
 		{
-			ValidateHalfOpenFloatUnitRange(10000, SystemRandom.Create(seed));
-			ValidateHalfOpenFloatUnitRange(10000, SplitMix64.Create(seed));
-			ValidateHalfOpenFloatUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateHalfOpenFloatUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenFloatUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateHalfOpenFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenFloatUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenFloatUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenFloatUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenFloatUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenDoubleUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenDoubleUnitRange(int sampleSizePercentage)
 		{
-			ValidateHalfOpenDoubleUnitRange(10000, SystemRandom.Create(seed));
-			ValidateHalfOpenDoubleUnitRange(10000, SplitMix64.Create(seed));
-			ValidateHalfOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateHalfOpenDoubleUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateHalfOpenDoubleUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateHalfOpenDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedFloatUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedFloatUnitRange(int sampleSizePercentage)
 		{
-			ValidateHalfClosedFloatUnitRange(10000, SystemRandom.Create(seed));
-			ValidateHalfClosedFloatUnitRange(10000, SplitMix64.Create(seed));
-			ValidateHalfClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateHalfClosedFloatUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedFloatUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateHalfClosedFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedFloatUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedFloatUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedFloatUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedFloatUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedDoubleUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedDoubleUnitRange(int sampleSizePercentage)
 		{
-			ValidateHalfClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
-			ValidateHalfClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
-			ValidateHalfClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateHalfClosedDoubleUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateHalfClosedDoubleUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateHalfClosedDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedFloatUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedFloatUnitRange(int sampleSizePercentage)
 		{
-			ValidateClosedFloatUnitRange(10000, SystemRandom.Create(seed));
-			ValidateClosedFloatUnitRange(10000, SplitMix64.Create(seed));
-			ValidateClosedFloatUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateClosedFloatUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateClosedFloatUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateClosedFloatUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateClosedFloatUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateClosedFloatUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateClosedFloatUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateClosedFloatUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedDoubleUnitRange()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedDoubleUnitRange(int sampleSizePercentage)
 		{
-			ValidateClosedDoubleUnitRange(10000, SystemRandom.Create(seed));
-			ValidateClosedDoubleUnitRange(10000, SplitMix64.Create(seed));
-			ValidateClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed));
-			ValidateClosedDoubleUnitRange(10000, XoroShiro128Plus.Create(seed));
-			ValidateClosedDoubleUnitRange(10000, XorShift1024Star.Create(seed));
+			ValidateClosedDoubleUnitRange(10000, SystemRandom.Create(seed), sampleSizePercentage);
+			ValidateClosedDoubleUnitRange(10000, SplitMix64.Create(seed), sampleSizePercentage);
+			ValidateClosedDoubleUnitRange(10000, XorShift128Plus.Create(seed), sampleSizePercentage);
+			ValidateClosedDoubleUnitRange(10000, XoroShiro128Plus.Create(seed), sampleSizePercentage);
+			ValidateClosedDoubleUnitRange(10000, XorShift1024Star.Create(seed), sampleSizePercentage);
 		}
 
-		[Test]
-		public void OpenFloatUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void OpenFloatUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void OpenDoubleUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.020f);
-			ValidateOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.020f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void OpenDoubleUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void OpenDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenFloatUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenFloatUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateHalfOpenFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenDoubleUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfOpenDoubleUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfOpenDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateHalfOpenDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfOpenDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedFloatUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedFloatUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateHalfClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedDoubleUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void HalfClosedDoubleUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void HalfClosedDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateHalfClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateHalfClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedFloatUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedFloatUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedFloatUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedFloatUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateClosedFloatUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedFloatUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedDoubleUnitTenBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedDoubleUnitTenBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f);
-			ValidateClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f);
+			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 10, 10000, 0.015f, sampleSizePercentage);
 		}
 
-		[Test]
-		public void ClosedDoubleUnitThousandBucketDistribution()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ClosedDoubleUnitThousandBucketDistribution(int sampleSizePercentage)
 		{
-			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f);
-			ValidateClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f);
+			ValidateClosedDoubleUnitBucketDistribution(SystemRandom.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(SplitMix64.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XorShift128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XoroShiro128Plus.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
+			ValidateClosedDoubleUnitBucketDistribution(XorShift1024Star.Create(seed), 1000, 100, 0.15f, sampleSizePercentage);
 		}
 	}
 }

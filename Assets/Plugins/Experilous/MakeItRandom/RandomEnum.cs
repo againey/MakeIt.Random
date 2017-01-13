@@ -396,12 +396,12 @@ namespace Experilous.MakeItRandom
 		#region Public Extension Methods
 
 		/// <summary>
-		/// Returns an enum generator which will return random enumeration items from <paramref name="TEnum"/>, uniformly distributed either by unique value or by name.
+		/// Returns an enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, uniformly distributed either by unique value or by name.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
 		/// <param name="byName">If false, indicates that multiple enumeration items with identical values should be treated as a single item.  Otherwise, each item name will be treated as a distinct item.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		public static IEnumGenerator<TEnum> MakeEnumGenerator<TEnum>(this IRandom random, bool byName = false) where TEnum : struct
 		{
 			if (byName == false)
@@ -415,12 +415,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, sbyte})"/> instead.</remarks>
@@ -431,12 +431,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, sbyte})"/> instead.</remarks>
@@ -447,12 +447,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, byte})"/> instead.</remarks>
@@ -463,12 +463,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, byte})"/> instead.</remarks>
@@ -479,12 +479,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, short})"/> instead.</remarks>
@@ -495,12 +495,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, short})"/> instead.</remarks>
@@ -511,12 +511,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ushort})"/> instead.</remarks>
@@ -527,12 +527,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ushort})"/> instead.</remarks>
@@ -543,12 +543,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, int})"/> instead.</remarks>
@@ -559,12 +559,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, int})"/> instead.</remarks>
@@ -575,12 +575,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, uint})"/> instead.</remarks>
@@ -591,12 +591,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, uint})"/> instead.</remarks>
@@ -607,12 +607,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, long})"/> instead.</remarks>
@@ -623,12 +623,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, long})"/> instead.</remarks>
@@ -639,12 +639,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, ulong})"/> instead.</remarks>
@@ -655,12 +655,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, ulong})"/> instead.</remarks>
@@ -671,12 +671,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, float})"/> instead.</remarks>
@@ -687,12 +687,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, float})"/> instead.</remarks>
@@ -703,12 +703,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration values to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>values</em>, any set of enumeration items with
 		/// different names but identical values will be treated as a single item.  If you would rather treat them each as a distinct
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{string, double})"/> instead.</remarks>
@@ -719,12 +719,12 @@ namespace Experilous.MakeItRandom
 		}
 
 		/// <summary>
-		/// Returns a weighted enum generator which will return random enumeration items from <paramref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
+		/// Returns a weighted enum generator which will return random enumeration items from <typeparamref name="TEnum"/>, non-uniformly distributed according to the weights provided by <paramref name="weightsAccessor"/>.
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type for which the generate will be created.  Must contain at least one enumeration item.</typeparam>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <paramref name="TEnum"/>.</param>
-		/// <returns>An enum generator which will return random enumeration items from <paramref name="TEnum"/>.</returns>
+		/// <param name="weightsAccessor">The delegate that maps enumeration names to the weights that will determine the distribution by which enumeration items are produced.  Must return valid weight values for all enumeration items in <typeparamref name="TEnum"/>.</param>
+		/// <returns>An enum generator which will return random enumeration items from <typeparamref name="TEnum"/>.</returns>
 		/// <remarks>Because the weights accessor delegate maps from enumeration <em>names</em>, any set of enumeration items with
 		/// identical values but different names will be treated as distinct items.  If you would rather treat them all as a single
 		/// item, then use <see cref="MakeWeightedEnumGenerator{TEnum}(IRandom, System.Func{TEnum, double})"/> instead.</remarks>

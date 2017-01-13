@@ -79,37 +79,38 @@
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Containers" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Core" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItColorful" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItRandom" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItTile" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.MakeItWrap" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Examples.Shared" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Internal" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItColorful.Detail" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItGenerate" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItRandom.Detail" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItTile" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.MakeItWrap" isExposed="False" />
-<Filter entryType="Namespace" fullName="Experilous.Numerics" isExposed="False" />
-<Filter entryType="Namespace" fullName="UnityEditor" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEditor.Editor" filterName="Editor" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEditor.EditorWindow" filterName="EditorWindow" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEditor.PropertyDrawer" filterName="PropertyDrawer" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="UnityEngine" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEngine.Behaviour" filterName="Behaviour" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Component" filterName="Component" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.MonoBehaviour" filterName="MonoBehaviour" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Object" filterName="Object" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.ScriptableObject" filterName="ScriptableObject" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="UnityEngine.Events" isExposed="True">
-  <Filter entryType="Class" fullName="UnityEngine.Events.UnityEvent`2" filterName="UnityEvent`2" isExposed="False" />
-  <Filter entryType="Class" fullName="UnityEngine.Events.UnityEventBase" filterName="UnityEventBase" isExposed="False" />
-</Filter></ApiFilter>
+      <Filter entryType="Namespace" fullName="Experilous" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Containers" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Core" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItColorful" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItRandom" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItTile" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.MakeItWrap" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Examples.Shared" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Internal" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItColorful.Detail" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItGenerate" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItRandom.Detail" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItTile" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.MakeItWrap" isExposed="False" />
+      <Filter entryType="Namespace" fullName="Experilous.Numerics" isExposed="False" />
+      <Filter entryType="Namespace" fullName="UnityEditor" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEditor.Editor" filterName="Editor" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEditor.EditorWindow" filterName="EditorWindow" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEditor.PropertyDrawer" filterName="PropertyDrawer" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="UnityEngine" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEngine.Behaviour" filterName="Behaviour" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Component" filterName="Component" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.MonoBehaviour" filterName="MonoBehaviour" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Object" filterName="Object" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.ScriptableObject" filterName="ScriptableObject" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="UnityEngine.Events" isExposed="True">
+        <Filter entryType="Class" fullName="UnityEngine.Events.UnityEvent`2" filterName="UnityEvent`2" isExposed="False" />
+        <Filter entryType="Class" fullName="UnityEngine.Events.UnityEventBase" filterName="UnityEventBase" isExposed="False" />
+      </Filter>
+    </ApiFilter>
     <ComponentPath>..\Temp\UnityVS_bin\Debug\</ComponentPath>
     <ProjectSummary>
     </ProjectSummary>
@@ -177,6 +178,8 @@ copy /Y /B "archive.php" "Build\archive.php"</PostBuildEvent>
     <None Include="Content - Example Scenes.aml" />
     <None Include="Content - Compile Options.aml" />
     <None Include="Content - Third Party Licenses.aml" />
+    <None Include="Content - Distribution Sampling.aml" />
+    <None Include="Content - Version History.aml" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="colors-demo-scene.png">
@@ -186,6 +189,50 @@ copy /Y /B "archive.php" "Build\archive.php"</PostBuildEvent>
     <Image Include="dice-demo-scene.png">
       <ImageId>dice-demo-scene</ImageId>
       <AlternateText>dice-demo-scene</AlternateText>
+    </Image>
+    <Image Include="exponential-prob-dist.png">
+      <ImageId>exponential-prob-dist</ImageId>
+      <AlternateText>exponential-prob-dist</AlternateText>
+    </Image>
+    <Image Include="distributions-demo-scene.png">
+      <ImageId>distributions-demo-scene</ImageId>
+      <AlternateText>distributions-demo-scene</AlternateText>
+    </Image>
+    <Image Include="normal-prob-dist.png">
+      <ImageId>normal-prob-dist</ImageId>
+      <AlternateText>normal-prob-dist</AlternateText>
+    </Image>
+    <Image Include="piecewise-uniform-prob-dist.png">
+      <ImageId>piecewise-uniform-prob-dist</ImageId>
+      <AlternateText>piecewise-uniform-prob-dist</AlternateText>
+    </Image>
+    <Image Include="piecewise-linear-prob-dist.png">
+      <ImageId>piecewise-linear-prob-dist</ImageId>
+      <AlternateText>piecewise-linear-prob-dist</AlternateText>
+    </Image>
+    <Image Include="piecewise-hermite-prob-dist.png">
+      <ImageId>piecewise-hermite-prob-dist</ImageId>
+      <AlternateText>piecewise-hermite-prob-dist</AlternateText>
+    </Image>
+    <Image Include="uniform-prob-dist.png">
+      <ImageId>uniform-prob-dist</ImageId>
+      <AlternateText>uniform-prob-dist</AlternateText>
+    </Image>
+    <Image Include="triangular-prob-dist.png">
+      <ImageId>triangular-prob-dist</ImageId>
+      <AlternateText>triangular-prob-dist</AlternateText>
+    </Image>
+    <Image Include="linear-prob-dist.png">
+      <ImageId>linear-prob-dist</ImageId>
+      <AlternateText>linear-prob-dist</AlternateText>
+    </Image>
+    <Image Include="hermite-prob-dist.png">
+      <ImageId>hermite-prob-dist</ImageId>
+      <AlternateText>hermite-prob-dist</AlternateText>
+    </Image>
+    <Image Include="trapezoidal-prob-dist.png">
+      <ImageId>trapezoidal-prob-dist</ImageId>
+      <AlternateText>trapezoidal-prob-dist</AlternateText>
     </Image>
     <Image Include="strings-demo-scene.png">
       <ImageId>strings-demo-scene</ImageId>

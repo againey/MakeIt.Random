@@ -334,5 +334,81 @@ namespace Experilous.MakeItRandom
 		{
 			return new SystemRandomWrapper(this);
 		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns true if neither random engine is null and both have the same state, or if both are null, false otherwise.</returns>
+		/// <remarks>Since Unity's random engine is a static global, all instances of the <see cref="UnityRandom"/> wrapper reference
+		/// the same underlying state and are therefore always equal.</remarks>
+		public static bool operator ==(UnityRandom lhs, UnityRandom rhs)
+		{
+			return (lhs == null) == (rhs == null);
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns false if neither random engine is null and both have the same state, or if both are null, true otherwise.</returns>
+		/// <remarks>Since Unity's random engine is a static global, all instances of the <see cref="UnityRandom"/> wrapper reference
+		/// the same underlying state and are therefore always equal.</remarks>
+		public static bool operator !=(UnityRandom lhs, UnityRandom rhs)
+		{
+			return (lhs == null) != (rhs == null);
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		/// <remarks>Since Unity's random engine is a static global, all instances of the <see cref="UnityRandom"/> wrapper reference
+		/// the same underlying state and are therefore always equal.</remarks>
+		public bool Equals(UnityRandom other)
+		{
+			return other != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		/// <remarks>Since Unity's random engine is a static global, all instances of the <see cref="UnityRandom"/> wrapper reference
+		/// the same underlying state and are therefore always equal.</remarks>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as UnityRandom);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+#if UNITY_5_4_OR_NEWER
+			var state = SaveState();
+			uint hashCode = 0;
+			for (int i = 0; i < state.Length; ++i)
+			{
+				hashCode = ((hashCode << 8) | (hashCode >> 24)) ^ (uint)state[i].GetHashCode();
+			}
+			return (int)hashCode;
+#else
+			throw new NotSupportedException("The Unity Random class does not expose any method to access its state.");
+#endif
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+#if UNITY_5_4_OR_NEWER
+			return string.Format("UnityRandom {{ 0x{0:X8} }}", GetHashCode());
+#else
+			return "UnityRandom";
+#endif
+		}
 	}
 }

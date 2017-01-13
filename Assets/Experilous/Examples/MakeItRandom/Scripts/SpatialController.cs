@@ -18,7 +18,7 @@ namespace Experilous.Examples.MakeItRandom
 
 		public float rotationSpeed = 1f;
 
-		private XorShift128Plus _random;
+		private IRandom _random;
 
 		private ParticleSystem.Particle[] _particles;
 
@@ -27,13 +27,21 @@ namespace Experilous.Examples.MakeItRandom
 
 		protected void Awake()
 		{
-			_random = XorShift128Plus.Create();
+			_random = MIRandom.CreateStandard();
 
+#if UNITY_5_5_OR_NEWER
+			_particles = new ParticleSystem.Particle[particleSystem.main.maxParticles];
+#else
 			_particles = new ParticleSystem.Particle[particleSystem.maxParticles];
+#endif
 			for (int i = 0; i < _particles.Length; ++i)
 			{
 				_particles[i].angularVelocity = 0f;
+#if UNITY_5_5_OR_NEWER
+				_particles[i].remainingLifetime = float.PositiveInfinity;
+#else
 				_particles[i].lifetime = float.PositiveInfinity;
+#endif
 #if UNITY_5_3_OR_NEWER
 				_particles[i].startSize = 0.1f;
 #else

@@ -10,7 +10,7 @@ namespace Experilous.MakeItRandom
 	/// <summary>
 	/// A static utility class to make it easier to seed PRNGs from a variety of common seed formats.
 	/// </summary>
-	public class RandomStateGenerator : IBitGenerator
+	public class RandomStateGenerator : IBitGenerator, IEquatable<RandomStateGenerator>
 	{
 		private byte[] _seedData;
 		private int _seedOffset;
@@ -293,6 +293,92 @@ namespace Experilous.MakeItRandom
 			ulong next = Next64();
 			lower = (uint)next;
 			upper = (uint)(next >> 32);
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random state generators are equal.
+		/// </summary>
+		/// <param name="lhs">The first random state generator whose state is to be compared.</param>
+		/// <param name="rhs">The second random state generator whose state is to be compared.</param>
+		/// <returns>Returns true if neither random state generator is null and both have the same state, or if both are null, false otherwise.</returns>
+		public static bool operator ==(RandomStateGenerator lhs, RandomStateGenerator rhs)
+		{
+			return lhs != null && lhs.Equals(rhs) || lhs == null && rhs == null;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random state generators are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random state generator whose state is to be compared.</param>
+		/// <param name="rhs">The second random state generator whose state is to be compared.</param>
+		/// <returns>Returns false if neither random state generator is null and both have the same state, or if both are null, true otherwise.</returns>
+		public static bool operator !=(RandomStateGenerator lhs, RandomStateGenerator rhs)
+		{
+			return lhs != null && !lhs.Equals(rhs) || lhs == null && rhs != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random state generator has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random state generator whose state is to be compared.</param>
+		/// <returns>Returns true if the other random state generator is not null and both state generators have the same state, false otherwise.</returns>
+		public bool Equals(RandomStateGenerator other)
+		{
+			if (other == null) return false;
+			if (_seedOffset != other._seedOffset) return false;
+			if (_seedOffsetIncrement != other._seedOffsetIncrement) return false;
+			if (_callSeed != other._callSeed) return false;
+			for (int i = 0; i < _seedData.Length; ++i)
+			{
+				if (_seedData[i] != other._seedData[i]) return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if the specified random state generator is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random state generator whose state is to be compared.</param>
+		/// <returns>Returns true if the other random state generator is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as RandomStateGenerator);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			uint hashCode = (uint)(_seedOffset.GetHashCode() ^ _seedOffsetIncrement.GetHashCode() ^ _callSeed.GetHashCode());
+			for (int i = 0; i < _seedData.Length; ++i)
+			{
+				hashCode = ((hashCode << 8) | (hashCode >> 24)) ^ (uint)_seedData[i].GetHashCode();
+			}
+			return (int)hashCode;
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			switch (_seedData.Length)
+			{
+				case 1:
+						return string.Format("RandomStateGenerator {{ 0x{0:X2}, {1}, {2}, {3} }}", _seedData[0], _seedOffset, _seedOffsetIncrement, _callSeed);
+				case 2:
+						return string.Format("RandomStateGenerator {{ 0x{0:X2}, 0x{1:X2}, {2}, {3}, {4} }}", _seedData[0], _seedData[1], _seedOffset, _seedOffsetIncrement, _callSeed);
+				case 3:
+						return string.Format("RandomStateGenerator {{ 0x{0:X2}, 0x{1:X2}, 0x{2:X2}, {3}, {4}, {5} }}", _seedData[0], _seedData[1], _seedData[2], _seedOffset, _seedOffsetIncrement, _callSeed);
+				case 4:
+						return string.Format("RandomStateGenerator {{ 0x{0:X2}, 0x{1:X2}, 0x{2:X2}, 0x{3:X2}, {4}, {5}, {6} }}", _seedData[0], _seedData[1], _seedData[2], _seedData[3], _seedOffset, _seedOffsetIncrement, _callSeed);
+				default:
+					if (_seedData.Length > 4)
+					{
+						return string.Format("RandomStateGenerator {{ 0x{0:X2}, 0x{1:X2}, 0x{2:X2}, 0x{3:X2}, ..., {4}, {5}, {6} }}", _seedData[0], _seedData[1], _seedData[2], _seedData[3], _seedOffset, _seedOffsetIncrement, _callSeed);
+					}
+					else
+					{
+						return string.Format("RandomStateGenerator {{ {0}, {1}, {2} }}", _seedOffset, _seedOffsetIncrement, _callSeed);
+					}
+			}
 		}
 	}
 }

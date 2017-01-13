@@ -147,6 +147,140 @@ namespace Experilous.MakeItRandom
 
 		#endregion
 
+		#region Color Categories
+
+		/// <summary>
+		/// Generates a random bold color, one that is at maximum saturation and value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque bold color.</returns>
+		public static Color ColorBold(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), 1f, 1f);
+		}
+
+		/// <summary>
+		/// Generates a random festive color, one that has a high saturation and value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque festive color.</returns>
+		public static Color ColorFestive(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.7f, 1f), random.RangeOC(0.8f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random pastel color, one that has a low saturation and high value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque pastel color.</returns>
+		public static Color ColorPastel(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.2f, 0.4f), random.RangeOC(0.8f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random pale color, one that has a very low saturation and moderately high value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque pale color.</returns>
+		public static Color ColorPale(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.05f, 0.2f), random.RangeOC(0.6f, 0.8f));
+		}
+
+		/// <summary>
+		/// Generates a random neutral color, one that has an extremely low saturation.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque neutral color.</returns>
+		public static Color ColorNeutral(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.05f, 0.1f), random.RangeOC(0.2f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random mellow color, one that has a low to moderate saturation and moderate to high value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque mellow color.</returns>
+		public static Color ColorMellow(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.3f, 0.5f), random.RangeOC(0.5f, 0.9f));
+		}
+
+		/// <summary>
+		/// Generates a random somber color, one that has a moderate saturation and lower to moderate value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque somber color.</returns>
+		public static Color ColorSomber(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.2f, 0.8f), random.RangeOC(0.2f, 0.6f));
+		}
+
+		/// <summary>
+		/// Generates a random subdued color, one that has a low to moderate saturation and moderate value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque subdued color.</returns>
+		public static Color ColorSubdued(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.1f, 0.5f), random.RangeOC(0.3f, 0.7f));
+		}
+
+		/// <summary>
+		/// Generates a random deep color, one that has a moderate to high saturation and low to moderate value.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque deep color.</returns>
+		public static Color ColorDeep(this IRandom random)
+		{
+			return new ColorHSV(random.FloatCO(), random.RangeOC(0.6f, 1f), random.RangeOC(0.1f, 0.5f));
+		}
+
+		/// <summary>
+		/// Generates a random warm color, one that has a hue loosely between red and yellow.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque warm color.</returns>
+		public static Color ColorWarm(this IRandom random)
+		{
+			return new ColorHSV(random.RangeCO(-0.1f, 0.2f), random.RangeOC(0.25f, 1f), random.RangeOC(0.25f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random hot color, one that has a hue strictly between red and yellow, with maximum saturation and moderate to high lightness.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque hot color.</returns>
+		public static Color ColorHot(this IRandom random)
+		{
+			return new ColorHSL(random.RangeCO(0f, 0.16667f), 1f, random.RangeOC(0.5f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random cool color, one that has a hue loosely between cyan and blue.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque cool color.</returns>
+		public static Color ColorCool(this IRandom random)
+		{
+			return new ColorHSV(random.RangeCO(0.4f, 0.7f), random.RangeOC(0.25f, 1f), random.RangeOC(0.25f, 1f));
+		}
+
+		/// <summary>
+		/// Generates a random cold color, one that is strictly between cyan and blue, with maximum saturation and low to moderate lightness.
+		/// </summary>
+		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
+		/// <returns>A random fully opaque cold color.</returns>
+		public static Color ColorCold(this IRandom random)
+		{
+			return new ColorHSL(random.RangeCO(0.5f, 0.66667f), 1f, random.RangeOC(0.1f, 0.5f));
+		}
+
+		#endregion
+
 		#region RGB
 
 		/// <summary>

@@ -24,7 +24,7 @@ namespace Experilous.MakeItRandom.Tests
 		private const int intRangeCount = 1024;
 		private const int floatRangeCount = 1024;
 		private const int geometryRangeCount = 1024;
-		private const string dataFolderPath = "TestData/MakeItRandom/";
+		private const string dataFolderPath = "Experilous/MakeItRandom/TestData";
 
 #if MAKEITRANDOM_OPTIMIZED_FOR_32BIT
 		private const string dataFilePathTemplate = "{0}_{1}_32opt.dat";
@@ -34,8 +34,7 @@ namespace Experilous.MakeItRandom.Tests
 		private const string dataFilePathTemplate_CrossPlatform = "{0}_{1}_32opt.dat";
 #endif
 
-#if MAKEITRANDOM_CALCULATE_TEST_VALUES && UNITY_EDITOR
-		private void CalculateTestValues(IRandom random, string operationName, System.Action<IRandom, BinaryWriter> writeTestValue, int testValueCount)
+		private static void CalculateTestValues(IRandom random, string operationName, System.Action<IRandom, BinaryWriter> writeTestValue, int testValueCount)
 		{
 			string dataFilePath = string.Format(dataFilePathTemplate, random.GetType().Name, operationName);
 			using (var file = File.Open(Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), dataFolderPath), dataFilePath), FileMode.Create, FileAccess.Write))
@@ -54,10 +53,10 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		[Test]
-		public void CalculateTestValues()
+		//[UnityEditor.MenuItem("Assets/Make It Random/Calculate Arch Identity Test Values")]
+		public static void CalculateAllTestValues()
 		{
-			Directory.CreateDirectory(Path.Combine(AssetUtility.canonicalProjectPath, dataFolderPath));
+			Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory().Replace('\\', '/').Trim('/'), dataFolderPath));
 
 			CalculateTestValues(XorShift128Plus.Create(seed), "Next32", (IRandom random, BinaryWriter writer) => { writer.Write(random.Next32()); }, next32Count);
 			CalculateTestValues(XorShift1024Star.Create(seed), "Next32", (IRandom random, BinaryWriter writer) => { writer.Write(random.Next32()); }, next32Count);
@@ -91,7 +90,6 @@ namespace Experilous.MakeItRandom.Tests
 			CalculateTestValues(XorShift128Plus.Create(seed), "PointWithinCircle", (IRandom random, BinaryWriter writer) => { writer.Write(random.PointWithinCircle()); }, geometryRangeCount);
 			CalculateTestValues(XorShift128Plus.Create(seed), "PointWithinSphere", (IRandom random, BinaryWriter writer) => { writer.Write(random.PointWithinSphere()); }, geometryRangeCount);
 		}
-#endif
 
 		private void CompareTestValues<TRandom>(System.Func<byte[], TRandom> randomFactory, string operationName, bool crossPlatform, System.Action<IRandom, BinaryReader> comparer) where TRandom : IRandom
 		{
@@ -117,325 +115,325 @@ namespace Experilous.MakeItRandom.Tests
 			{
 				Assert.Inconclusive(
 					crossPlatform == false
-						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
-						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
+						? "No test data to compare against.  First execute CalculateTestValues."
+						: "No test data to compare against.  First change the build settings to a different platform and execute CalculateTestValues().");
 			}
 			catch (FileNotFoundException)
 			{
 				Assert.Inconclusive(
 					crossPlatform == false
-						? "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define and run the test CalculateTestValues."
-						: "No test data to compare against.  First set the MAKEITRANDOM_CALCULATE_TEST_VALUES preprocessor define, change the build settings to a different platform, and run the test CalculateTestValues.");
+						? "No test data to compare against.  First execute CalculateTestValues."
+						: "No test data to compare against.  First change the build settings to a different platform and execute CalculateTestValues().");
 			}
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Next32()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Next32", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Next32_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Next32", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Next64()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Next64", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Next64_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Next64", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift1024Star_Next32()
 		{
 			CompareTestValues<XorShift1024Star>(XorShift1024Star.CreateWithState, "Next32", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift1024Star_Next32_CrossPlatform()
 		{
 			CompareTestValues<XorShift1024Star>(XorShift1024Star.CreateWithState, "Next32", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift1024Star_Next64()
 		{
 			CompareTestValues<XorShift1024Star>(XorShift1024Star.CreateWithState, "Next64", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift1024Star_Next64_CrossPlatform()
 		{
 			CompareTestValues<XorShift1024Star>(XorShift1024Star.CreateWithState, "Next64", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXoroShiro128Plus_Next32()
 		{
 			CompareTestValues<XoroShiro128Plus>(XoroShiro128Plus.CreateWithState, "Next32", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXoroShiro128Plus_Next32_CrossPlatform()
 		{
 			CompareTestValues<XoroShiro128Plus>(XoroShiro128Plus.CreateWithState, "Next32", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXoroShiro128Plus_Next64()
 		{
 			CompareTestValues<XoroShiro128Plus>(XoroShiro128Plus.CreateWithState, "Next64", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXoroShiro128Plus_Next64_CrossPlatform()
 		{
 			CompareTestValues<XoroShiro128Plus>(XoroShiro128Plus.CreateWithState, "Next64", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShiftAdd_Next32()
 		{
 			CompareTestValues<XorShiftAdd>(XorShiftAdd.CreateWithState, "Next32", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShiftAdd_Next32_CrossPlatform()
 		{
 			CompareTestValues<XorShiftAdd>(XorShiftAdd.CreateWithState, "Next32", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShiftAdd_Next64()
 		{
 			CompareTestValues<XorShiftAdd>(XorShiftAdd.CreateWithState, "Next64", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShiftAdd_Next64_CrossPlatform()
 		{
 			CompareTestValues<XorShiftAdd>(XorShiftAdd.CreateWithState, "Next64", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareSplitMix64_Next32()
 		{
 			CompareTestValues<SplitMix64>(SplitMix64.CreateWithState, "Next32", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareSplitMix64_Next32_CrossPlatform()
 		{
 			CompareTestValues<SplitMix64>(SplitMix64.CreateWithState, "Next32", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt32(), random.Next32()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareSplitMix64_Next64()
 		{
 			CompareTestValues<SplitMix64>(SplitMix64.CreateWithState, "Next64", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareSplitMix64_Next64_CrossPlatform()
 		{
 			CompareTestValues<SplitMix64>(SplitMix64.CreateWithState, "Next64", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadUInt64(), random.Next64()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_IntRange()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "IntRange", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadInt32(), random.RangeCO(71, 1500)); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_IntRange_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "IntRange", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadInt32(), random.RangeCO(71, 1500)); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_IntRange_Pow2()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "IntRange_Pow2", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadInt32(), random.RangeCO(71, 1095)); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_IntRange_Pow2_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "IntRange_Pow2", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadInt32(), random.RangeCO(71, 1095)); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatOO()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatOO", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatOO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatOO_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatOO", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatOO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatCO()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatCO", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatCO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatCO_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatCO", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatCO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatOC()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatOC", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatOC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatOC_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatOC", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatOC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatCC()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatCC", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatCC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_FloatCC_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "FloatCC", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadSingle(), random.FloatCC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleOO()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleOO", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleOO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleOO_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleOO", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleOO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleCO()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleCO", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleCO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleCO_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleCO", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleCO()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleOC()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleOC", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleOC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleOC_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleOC", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleOC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleCC()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleCC", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleCC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_DoubleCC_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "DoubleCC", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadDouble(), random.DoubleCC()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector2()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector2", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector2(), random.UnitVector2()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector2_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector2", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector2(), random.UnitVector2()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector3()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector3", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector3(), random.UnitVector3()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector3_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector3", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector3(), random.UnitVector3()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector4()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector4", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector4(), random.UnitVector4()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_UnitVector4_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "UnitVector4", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector4(), random.UnitVector4()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Rotation()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Rotation", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadQuaternion(), random.Rotation()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_Rotation_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "Rotation", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadQuaternion(), random.Rotation()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_PointWithinCircle()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "PointWithinCircle", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector2(), random.PointWithinCircle()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_PointWithinCircle_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "PointWithinCircle", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector2(), random.PointWithinCircle()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_PointWithinSphere()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "PointWithinSphere", false, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector3(), random.PointWithinSphere()); });
 		}
 
-		[Test]
+		[TestCase(Category = "Determinism")]
 		public void CompareXorShift128Plus_PointWithinSphere_CrossPlatform()
 		{
 			CompareTestValues<XorShift128Plus>(XorShift128Plus.CreateWithState, "PointWithinSphere", true, (IRandom random, BinaryReader reader) => { Assert.AreEqual(reader.ReadVector3(), random.PointWithinSphere()); });

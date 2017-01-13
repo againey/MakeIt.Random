@@ -10,7 +10,8 @@ namespace Experilous.MakeItRandom.Tests
 {
 	class RandomDiceTests
 	{
-		[Test]
+#if !MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
+		[TestCase(Category = "Normal")]
 		public void TwoSidedDie()
 		{
 			var random = Substitute.For<IRandom>();
@@ -21,7 +22,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void ThreeSidedDie()
 		{
 			var random = Substitute.For<IRandom>();
@@ -34,7 +35,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void SixSidedDie()
 		{
 			var random = Substitute.For<IRandom>();
@@ -53,7 +54,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void TwentySidedDie()
 		{
 			var random = Substitute.For<IRandom>();
@@ -72,7 +73,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D4()
 		{
 			var random = Substitute.For<IRandom>();
@@ -87,7 +88,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D6()
 		{
 			var random = Substitute.For<IRandom>();
@@ -106,7 +107,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D8()
 		{
 			var random = Substitute.For<IRandom>();
@@ -125,7 +126,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D10()
 		{
 			var random = Substitute.For<IRandom>();
@@ -144,7 +145,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D12()
 		{
 			var random = Substitute.For<IRandom>();
@@ -163,7 +164,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void D20()
 		{
 			var random = Substitute.For<IRandom>();
@@ -182,7 +183,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void TwoTwoSidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -208,7 +209,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void TwoThreeSidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -259,7 +260,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void TwoSixSidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -310,7 +311,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void TwoTwentySidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -361,7 +362,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveTwoSidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -391,7 +392,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDice()
 		{
 			var random = Substitute.For<IRandom>();
@@ -421,7 +422,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepOneHighest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -459,7 +460,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepOneLowest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -497,7 +498,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepTwoHighest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -535,7 +536,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepTwoLowest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -573,7 +574,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepFourHighest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -611,7 +612,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceKeepFourLowest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -649,7 +650,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceDropTwoHighest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -687,7 +688,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 		}
 
-		[Test]
+		[TestCase(Category = "Normal")]
 		public void FiveSixSidedDiceDropTwoLowest()
 		{
 			var random = Substitute.For<IRandom>();
@@ -724,6 +725,7 @@ namespace Experilous.MakeItRandom.Tests
 			random.Received().Next32();
 			random.Received().Next32();
 		}
+#endif
 	}
 }
 #endif
