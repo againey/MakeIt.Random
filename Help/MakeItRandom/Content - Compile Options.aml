@@ -59,6 +59,7 @@
 					version.  The following versions are available:
 					<list class="bullet">
 						<listItem><codeInline>MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1</codeInline> (shipped as part of Tile-Based Worlds v1.0)</listItem>
+						<listItem><codeInline>MAKEITRANDOM_BACKWARD_COMPATIBLE_V1_0</codeInline></listItem>
 					</list>
 				</para>
 			</content>

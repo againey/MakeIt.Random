@@ -12,45 +12,58 @@ namespace Experilous.MakeItRandom.Tests
 	{
 		private const string seed = "random seed";
 
-		[Test]
-		public void UnitVector2sAreLength1()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void UnitVector2sAreLength1(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var v = random.UnitVector2();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
 
-		[Test]
-		public void UnitVector3sAreLength1()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void UnitVector3sAreLength1(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var v = random.UnitVector3();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
 
-		[Test]
-		public void UnitVector4sAreLength1()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void UnitVector4sAreLength1(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var v = random.UnitVector4();
 				Assert.AreEqual(1.0, v.sqrMagnitude, 0.0001);
 			}
 		}
 
-		[Test]
-		public void UnitVector2sUniformlyDistributed()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void UnitVector2sUniformlyDistributed(int sampleSizePercentage)
 		{
 			var bucketCount = 72;
 			var hitsPerBucket = 144;
 			var tolerance = 0.1f;
+
+			hitsPerBucket = (hitsPerBucket * sampleSizePercentage) / 100;
+			tolerance = (tolerance * 100) / sampleSizePercentage;
 
 			var random = XorShift128Plus.Create(seed);
 			var buckets = new int[bucketCount];
@@ -65,11 +78,14 @@ namespace Experilous.MakeItRandom.Tests
 			Assert.LessOrEqual(RandomeEngineTests.CalculateStandardDeviation(buckets, hitsPerBucket), tolerance * hitsPerBucket);
 		}
 
-		[Test]
-		public void ScaledVector2sAreLengthR()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ScaledVector2sAreLengthR(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;
@@ -78,11 +94,14 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		[Test]
-		public void ScaledVector3sAreLengthR()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ScaledVector3sAreLengthR(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;
@@ -91,11 +110,14 @@ namespace Experilous.MakeItRandom.Tests
 			}
 		}
 
-		[Test]
-		public void ScaledVector4sAreLengthR()
+		[TestCase(100, Category = "Statistical")]
+		[TestCase(1, Category = "Statistical, Smoke")]
+		public void ScaledVector4sAreLengthR(int sampleSizePercentage)
 		{
+			int count = (10000 * sampleSizePercentage) / 100;
+
 			var random = XorShift128Plus.Create(seed);
-			for (int i = 0; i < 10000; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				var l = random.RangeCC(2f, 8f);
 				var l2 = l * l;

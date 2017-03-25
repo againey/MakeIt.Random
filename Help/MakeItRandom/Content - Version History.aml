@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4635519b-1f13-4e8c-a1ef-e237f89bdd6e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline lead="none">2</autoOutline>
+		</introduction>
+		<section address="v2-0">
+			<title>Version 2.0</title>
+			<sections>
+				<section>
+					<content>
+						<para>
+							An update focusing on non-uniform distribution sampling.
+						</para>
+					</content>
+				</section>
+				<section address="v2-0-features">
+					<title>Features</title>
+					<content>
+						<list class="bullet">
+							<listItem>Added <codeEntityReference linkText="distribution sampling">T:Experilous.MakeItRandom.RandomSample</codeEntityReference>, with initial support for continuous sampling from the following:
+								<list class="bullet">
+									<listItem>uniform distribution</listItem>
+									<listItem>triangular distribution</listItem>
+									<listItem>trapezoidal distribution</listItem>
+									<listItem>linear distribution</listItem>
+									<listItem>Hermite spline distribution</listItem>
+									<listItem>normal distribution</listItem>
+									<listItem>exponential distribution</listItem>
+									<listItem>piecewise uniform distribution</listItem>
+									<listItem>piecewise linear distribution</listItem>
+									<listItem>piecewise Hermite spline distribution</listItem>
+								</list>
+							</listItem>
+							<listItem>Added some common color categories for generating random colors, such as bold, pastel, somber, warm, and cool.</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v2-0-breaking-changes">
+					<title>Breaking Changes</title>
+					<content>
+						<list class="bullet">
+							<listItem>Changed the elementCount parameter order for <codeEntityReference autoUpgrade="true" linkText="RandomListAccess.WeightedIndex(...)">M:Experilous.MakeItRandom.RandomListAccess.WeightedIndex(Experilous.MakeItRandom.IRandom,System.Int32[])</codeEntityReference> for better consistency and flexibility.</listItem>
+							<listItem><codeEntityReference autoUpgrade="true" linkText="MIRandom.CreateStandard(...)">M:Experilous.MakeItRandom.MIRandom.CreateStandard</codeEntityReference> functions now return <codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference> instead of <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>.</listItem>
+							<listItem><codeEntityReference autoUpgrade="true" linkText="MIRandom.CreateStandard(...)">M:Experilous.MakeItRandom.MIRandom.CreateStandard</codeEntityReference> functions may return an instance of some engine type other than <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference>, depending on the platform and compiler defines.</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v2-0-bug-fixes">
+					<title>Bug Fixes</title>
+					<content>
+						<list class="bullet">
+							<listItem>Control flow in <codeEntityReference linkText="RandomGeometry.Rotation()">M:Experilous.MakeItRandom.RandomGeometry.Rotation(Experilous.MakeItRandom.IRandom)</codeEntityReference> tweaked so that the updated compiler in Unity 5.5 will not complain about an unset out parameter.</listItem>
+							<listItem>Fixed the version 0.1 backward-compatible code path for seeding <codeEntityReference>T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference> so that it works in both the Complete and Basic edition by not depending on the existence of <codeEntityReference>T:Experilous.MakeItRandom.SplitMix64</codeEntityReference>.</listItem>
+							<listItem>Corrected the version 0.1 backward-compatible code path for <codeEntityReference autoUpgrade="true" linkText="RandomGeometry.UnitVector2()">M:Experilous.MakeItRandom.RandomGeometry.UnitVector2(Experilous.MakeItRandom.IRandom)</codeEntityReference> to do the proper math instead of calling itself repeatedly and cause a stack overflow.</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v2-0-general-fixes">
+					<title>General Fixes</title>
+					<content>
+						<list class="bullet">
+							<listItem>Added missing <codeEntityReference linkText="float">T:System.Single</codeEntityReference> and <codeEntityReference linkText="double">T:System.Double</codeEntityReference> overloads for <codeEntityReference autoUpgrade="true" linkText="RandomListAccess.WeightedElement(...)">M:Experilous.MakeItRandom.RandomListAccess.WeightedElement``1(Experilous.MakeItRandom.IRandom,System.Collections.Generic.IList{``0},System.Int32[])</codeEntityReference>.</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v2-0-improvements">
+					<title>Improvements</title>
+					<content>
+						<list class="bullet">
+							<listItem>Improved weighted list index generation to only generate a single random value, instead of one per each weight.</listItem>
+							<listItem>Improved pre-computed weighted list index generation to operate in O(log n) time instead of O(n), by storing a cumulative weight sum array and performing a binary search on it.</listItem>
+							<listItem>Provided additional overloads for weighted list index/element generation to specify a subset of weights to use, convenient for manually resized arrays that may have more elements than are currently used.</listItem>
+							<listItem>Added <codeEntityReference autoUpgrade="true">M:Experilous.MakeItRandom.RandomListAccess.WeightedRandomIndex``1(System.Collections.Generic.IList{``0},Experilous.MakeItRandom.IRandom,System.Int32[])</codeEntityReference> and <codeEntityReference autoUpgrade="true">M:Experilous.MakeItRandom.RandomListAccess.WeightedRandomElement``1(System.Collections.Generic.IList{``0},Experilous.MakeItRandom.IRandom,System.Int32[])</codeEntityReference> extension functions for <codeEntityReference>T:System.Collections.Generic.IList`1</codeEntityReference>.</listItem>
+							<listItem>Random engines now support equality comparisons, which check that both type and internal state are equal.</listItem>
+							<listItem>Parameter requirements for <codeEntityReference autoUpgrade="true" linkText="RandomInteger.RangeCO(...)">M:Experilous.MakeItRandom.RandomInteger.RangeCO(Experilous.MakeItRandom.IRandom,System.Int32,System.Int32)</codeEntityReference> using unsigned types loosened; an upper exclusive value of 0 will now generate a value within the entire range of the unsigned integer type.</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v2-0-demos">
+					<title>Demos</title>
+					<content>
+						<list class="bullet">
+							<listItem>Added a <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#distributions">distribution sampling demo scene</link>.</listItem>
+							<listItem>The <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#shuffle">shuffle and weighted index generation demo</link> will now repeatedly select new indices at a configurable frequency.</listItem>
+							<listItem>The <link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#colors">random colors demo</link> allows a more flexible method of generating colors from a selected color category.</listItem>
+						</list>
+					</content>
+				</section>
+			</sections>
+		</section>
+		<section address="v1-0">
+			<title>Version 1.0</title>
+			<sections>
+				<section>
+					<content>
+						<para>
+							The initial release.
+						</para>
+					</content>
+				</section>
+				<section address="v1-0-architecture">
+					<title>Architecture</title>
+					<content>
+						<list class="bullet">
+							<listItem><codeEntityReference>T:Experilous.MakeItRandom.IRandom</codeEntityReference> interface</listItem>
+							<listItem><codeEntityReference linkText="Random state generator">T:Experilous.MakeItRandom.RandomStateGenerator</codeEntityReference></listItem>
+							<listItem>Random generator pattern</listItem>
+							<listItem><codeEntityReference>T:Experilous.MakeItRandom.MIRandom</codeEntityReference> static helper class</listItem>
+							<listItem>Range bound inclusivity naming pattern</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v1-0-engines">
+					<title>Engines</title>
+					<content>
+						<list class="bullet">
+							<listItem><codeEntityReference linkText="XorShift128+">T:Experilous.MakeItRandom.XorShift128Plus</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="XorShift1024*">T:Experilous.MakeItRandom.XorShift1024Star</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="XoroShiro128+">T:Experilous.MakeItRandom.XoroShiro128Plus</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="XorShiftAdd">T:Experilous.MakeItRandom.XorShiftAdd</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="SplitMix64">T:Experilous.MakeItRandom.SplitMix64</codeEntityReference></listItem>
+							<listItem><codeEntityReference qualifyHint="true">T:UnityEngine.Random</codeEntityReference> wrapper</listItem>
+							<listItem><codeEntityReference qualifyHint="true">T:System.Random</codeEntityReference> wrapper</listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v1-0-features">
+					<title>Features</title>
+					<content>
+						<list class="bullet">
+							<listItem><codeEntityReference linkText="bits">T:Experilous.MakeItRandom.RandomBits</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="integers">T:Experilous.MakeItRandom.RandomInteger</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="floating point numbers">T:Experilous.MakeItRandom.RandomFloatingPoint</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="angles">T:Experilous.MakeItRandom.RandomAngle</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="vectors and quaternions">T:Experilous.MakeItRandom.RandomGeometry</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="strings">T:Experilous.MakeItRandom.RandomString</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="dice rolls">T:Experilous.MakeItRandom.RandomDice</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="colors">T:Experilous.MakeItRandom.RandomColor</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="evaluating probabilities">T:Experilous.MakeItRandom.RandomChance</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="selecting elements from a list">T:Experilous.MakeItRandom.RandomListAccess</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="selecting values from an enumeration">T:Experilous.MakeItRandom.RandomEnum</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="selecting values from the set {-1, 0, +1}">T:Experilous.MakeItRandom.RandomSignOrZero</codeEntityReference></listItem>
+							<listItem><codeEntityReference linkText="shuffling a list">T:Experilous.MakeItRandom.RandomShuffle</codeEntityReference></listItem>
+						</list>
+					</content>
+				</section>
+				<section address="v1-0-demos">
+					<title>Demos</title>
+					<content>
+						<list class="bullet">
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#geometry">vectors and quaternions</link></listItem>
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#strings">strings</link></listItem>
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#dice">dice rolls</link></listItem>
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#colors">colors</link></listItem>
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#shuffle">shuffling and weighted element selection</link></listItem>
+							<listItem><link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b#performance">performance measurement</link></listItem>
+						</list>
+					</content>
+				</section>
+			</sections>
+		</section>
+	</developerConceptualDocument>
+</topic>

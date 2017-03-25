@@ -540,7 +540,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random byte greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.  If this parameter is zero, it is treated as byte.MaxValue + 1.</param>
 		/// <returns>A random byte in the range [0, <paramref name="upperExclusive"/>).</returns>
 		/// <remarks>
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates bytes in the range
@@ -552,7 +552,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static byte RangeCO(this IRandom random, byte upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint mask = upperExclusive - 1U;
 			mask |= mask >> 1;
 			mask |= mask >> 2;
@@ -631,7 +630,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random unsigned short integer greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.  If this parameter is zero, it is treated as ushort.MaxValue + 1.</param>
 		/// <returns>A random unsigned short integer in the range [0, <paramref name="upperExclusive"/>).</returns>
 		/// <remarks>
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
@@ -643,7 +642,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static ushort RangeCO(this IRandom random, ushort upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 			uint mask = upperExclusive - 1U;
 			mask |= mask >> 1;
 			mask |= mask >> 2;
@@ -723,7 +721,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random unsigned integer greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.  If this parameter is zero, it is treated as uint.MaxValue + 1.</param>
 		/// <returns>A random unsigned integer in the range [0, <paramref name="upperExclusive"/>).</returns>
 		/// <remarks>
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
@@ -735,7 +733,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static uint RangeCO(this IRandom random, uint upperExclusive)
 		{
-			if (upperExclusive == 0U) throw new System.ArgumentOutOfRangeException("upperBound");
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			if (upperExclusive == 1U) return 0U;
 #endif
@@ -824,7 +821,7 @@ namespace Experilous.MakeItRandom
 		/// Returns a random unsigned long integer greater than or equal to zero and strictly less than <paramref name="upperExclusive"/>.
 		/// </summary>
 		/// <param name="random">The pseudo-random engine that will be used to generate bits from which the return value is derived.</param>
-		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.</param>
+		/// <param name="upperExclusive">The exclusive upper bound of the custom range.  The generated number will be less than this value.  If this parameter is zero, it is treated as ulong.MaxValue + 1.</param>
 		/// <returns>A random unsigned long integer in the range [0, <paramref name="upperExclusive"/>).</returns>
 		/// <remarks>
 		/// <para>Limited only by the quality of the underlying random engine used, this method generates integers in the range
@@ -836,7 +833,6 @@ namespace Experilous.MakeItRandom
 		/// </remarks>
 		public static ulong RangeCO(this IRandom random, ulong upperExclusive)
 		{
-			if (upperExclusive == 0UL) throw new System.ArgumentOutOfRangeException("upperBound");
 #if MAKEITRANDOM_BACKWARD_COMPATIBLE_V0_1
 			if (upperExclusive == 1UL) return 0UL;
 #endif

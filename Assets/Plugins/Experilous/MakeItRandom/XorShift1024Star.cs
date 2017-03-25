@@ -19,7 +19,7 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="IRandom"/>
 	/// <seealso cref="RandomBase"/>
 	[System.Serializable]
-	public sealed class XorShift1024Star : RandomBase
+	public sealed class XorShift1024Star : RandomBase, System.IEquatable<XorShift1024Star>
 	{
 		[SerializeField] private ulong[] _state = new ulong[] { 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 0UL, 1UL, };
 		[SerializeField] private int _offset;
@@ -213,7 +213,7 @@ namespace Experilous.MakeItRandom
 		{
 			if (state == null) throw new System.ArgumentNullException("state");
 			if (state.Length != 16) throw new System.ArgumentException("The provided state array must have a length of exactly 16.", "state");
-			if (offset < 0 || offset >= 16) throw new System.ArgumentOutOfRangeException("The provided offset must be within the range [0, 15].", "offset");
+			if (offset < 0 || offset >= 16) throw new System.ArgumentOutOfRangeException("offset", offset, "The provided offset must be within the range [0, 15].");
 			for (int i = 0; i < 16; ++i)
 			{
 				if (state[i] != 0UL)
@@ -389,6 +389,70 @@ namespace Experilous.MakeItRandom
 		public override System.Random AsSystemRandom()
 		{
 			return new SystemRandomWrapper(this);
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns true if neither random engine is null and both have the same state, or if both are null, false otherwise.</returns>
+		public static bool operator ==(XorShift1024Star lhs, XorShift1024Star rhs)
+		{
+			return lhs != null && lhs.Equals(rhs) || lhs == null && rhs == null;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns false if neither random engine is null and both have the same state, or if both are null, true otherwise.</returns>
+		public static bool operator !=(XorShift1024Star lhs, XorShift1024Star rhs)
+		{
+			return lhs != null && !lhs.Equals(rhs) || lhs == null && rhs != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		public bool Equals(XorShift1024Star other)
+		{
+			if (other == null) return false;
+			for (int i = 0; i < 16; ++i)
+			{
+				if (_state[i] != other._state[i]) return false;
+			}
+			return _offset == other._offset;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as XorShift1024Star);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			int hashCode = _offset.GetHashCode();
+			for (int i = 0; i < 16; ++i)
+			{
+				hashCode ^= _state[i].GetHashCode();
+			}
+			return hashCode;
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return string.Format("XorShift1024Star {{ 0x{0:X16}, ..., {1} }}", _state[0], _offset);
 		}
 	}
 }

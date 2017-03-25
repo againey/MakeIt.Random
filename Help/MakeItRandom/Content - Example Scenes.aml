@@ -18,7 +18,7 @@
 					<externalLink>
 						<linkText>here</linkText>
 						<linkAlternateText>Random Geometry Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/geometry/</linkUri>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/geometry/</linkUri>
 					</externalLink>.
 				</para>
 				<mediaLink>
@@ -34,6 +34,32 @@
 				</para>
 			</content>
 		</section>
+		<section address="distributions">
+			<title>Distributions</title>
+			<content>
+				<para>
+					A web demo of this example can be found
+					<externalLink>
+						<linkText>here</linkText>
+						<linkAlternateText>Probability Distributions Online WebGL Demo</linkAlternateText>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/distributions/</linkUri>
+					</externalLink>.
+				</para>
+				<mediaLink>
+					<caption placement="after">The "Distributions.unity" demo scene.</caption>
+					<image placement="center" xlink:href="distributions-demo-scene"/>
+				</mediaLink>
+				<para>
+					The distributions scene demonstrates taking random samples from a
+					variety of probability distributions using the functions available in
+					<codeEntityReference>T:Experilous.MakeItRandom.RandomSample</codeEntityReference>.
+					Samples are taken slowly at first and then accelerate, and the
+					display shows the relative quantity of samples generated within
+					each narrow segment of the sampled range.  Taller areas indicate
+					values that are generated more frequently than shorter areas.
+				</para>
+			</content>
+		</section>
 		<section address="colors">
 			<title>Colors</title>
 			<content>
@@ -42,7 +68,7 @@
 					<externalLink>
 						<linkText>here</linkText>
 						<linkAlternateText>Random Colors Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/colors/</linkUri>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/colors/</linkUri>
 					</externalLink>.
 				</para>
 				<mediaLink>
@@ -97,7 +123,7 @@
 					<externalLink>
 						<linkText>here</linkText>
 						<linkAlternateText>Random Shuffle Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/shuffle/</linkUri>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/shuffle/</linkUri>
 					</externalLink>.
 				</para>
 				<mediaLink>
@@ -141,7 +167,7 @@
 					<externalLink>
 						<linkText>here</linkText>
 						<linkAlternateText>Random Dice Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/dice/</linkUri>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/dice/</linkUri>
 					</externalLink>.
 				</para>
 				<mediaLink>
@@ -176,7 +202,7 @@
 					<externalLink>
 						<linkText>here</linkText>
 						<linkAlternateText>Random Strings Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/strings/</linkUri>
+						<linkUri>http://experilous.com/1/product/make-it-random/2.0/example/strings/</linkUri>
 					</externalLink>.
 				</para>
 				<mediaLink>
@@ -210,14 +236,6 @@
 		<section address="performance">
 			<title>Performance</title>
 			<content>
-				<para>
-					A web demo of this example can be found
-					<externalLink>
-						<linkText>here</linkText>
-						<linkAlternateText>Random Performance Online WebGL Demo</linkAlternateText>
-						<linkUri>http://experilous.com/1/product/make-it-random/1.0/example/performance/</linkUri>
-					</externalLink>.
-				</para>
 				<mediaLink>
 					<caption placement="after">The "Performance.unity" demo scene.</caption>
 					<image placement="center" xlink:href="performance-demo-scene"/>

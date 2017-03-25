@@ -17,7 +17,7 @@ namespace Experilous.MakeItRandom
 	/// <seealso cref="RandomBase"/>
 	/// <seealso cref="System.Random"/>
 	[Serializable]
-	public sealed class SystemRandom : RandomBase
+	public sealed class SystemRandom : RandomBase, IEquatable<SystemRandom>, IEquatable<System.Random>
 	{
 		[SerializeField] private System.Random _random;
 
@@ -358,6 +358,98 @@ namespace Experilous.MakeItRandom
 		public override System.Random AsSystemRandom()
 		{
 			return _random;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns true if neither random engine is null and both have the same state, or if both are null, false otherwise.</returns>
+		public static bool operator ==(SystemRandom lhs, SystemRandom rhs)
+		{
+			return lhs != null && lhs.Equals(rhs) || lhs == null && rhs == null;
+		}
+
+		/// <summary>
+		/// Checks to see if the state of two random engines are not equal.
+		/// </summary>
+		/// <param name="lhs">The first random engine whose state is to be compared.</param>
+		/// <param name="rhs">The second random engine whose state is to be compared.</param>
+		/// <returns>Returns false if neither random engine is null and both have the same state, or if both are null, true otherwise.</returns>
+		public static bool operator !=(SystemRandom lhs, SystemRandom rhs)
+		{
+			return lhs != null && !lhs.Equals(rhs) || lhs == null && rhs != null;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		public bool Equals(SystemRandom other)
+		{
+			if (other == null) return false;
+			var state = SaveState();
+			var otherState = other.SaveState();
+			if (state.Length != otherState.Length) return false;
+			for (int i = 0; i < state.Length; ++i)
+			{
+				if (state[i] != otherState[i]) return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine has the same state as this one.
+		/// </summary>
+		/// <param name="other">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and both random engines have the same state, false otherwise.</returns>
+		public bool Equals(System.Random other)
+		{
+			if (other == null) return false;
+			var state = SaveState();
+			byte[] otherState;
+			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+			using (var stream = new System.IO.MemoryStream())
+			{
+				binaryFormatter.Serialize(stream, _random);
+				otherState = stream.ToArray();
+			}
+			if (state.Length != otherState.Length) return false;
+			for (int i = 0; i < state.Length; ++i)
+			{
+				if (state[i] != otherState[i]) return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if the specified random engine is the same type and has the same state as this one.
+		/// </summary>
+		/// <param name="obj">The other random engine whose state is to be compared.</param>
+		/// <returns>Returns true if the other random engine is not null and is the same type and has the same state as this one, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as SystemRandom);
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			var state = SaveState();
+			uint hashCode = 0;
+			for (int i = 0; i < state.Length; ++i)
+			{
+				hashCode = ((hashCode << 8) | (hashCode >> 24)) ^ (uint)state[i].GetHashCode();
+			}
+			return (int)hashCode;
+		}
+
+		/// <inheritdoc />
+		public override string ToString()
+		{
+			return string.Format("SystemRandom {{ 0x{0:X8} }}", GetHashCode());
 		}
 	}
 }
