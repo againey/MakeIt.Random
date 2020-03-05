@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<summary>
+			<para>
+				Some types of content require some initial setup before random data
+				can be generated.  Other types of data benefit from some form of
+				buffering when generating multiple instances of random data.  In both
+				of these cases, <newTerm>Generators</newTerm> can be useful, allowing
+				the initial setup to only be performed once for a given set of parameters,
+				and enabling any buffering behavior that needs to be performed.
+			</para>
+		</summary>
+		<section address="creating-using">
+			<title>Creating and Using Generators</title>
+			<content>
+				<para>
+					For content that is likely to benefit from generators, there will
+					be extension functions following the naming convention
+					<codeInline>Make<replaceable>&lt;function&gt;</replaceable>Generator()</codeInline>.
+					For example, <codeEntityReference linkText="MakeRangeOCGenerator(6)">M:MakeIt.Random.RandomRangeGenerator.MakeRangeOCGenerator(MakeIt.Random.IRandom,System.Int32)</codeEntityReference>
+					will return an <codeEntityReference linkText="IRangeGenerator&lt;int&gt;">T:MakeIt.Random.IRangeGenerator`1</codeEntityReference>
+					that will generate a number from 1 to 6 each time
+					<codeEntityReference>M:MakeIt.Random.IRangeGenerator`1.Next</codeEntityReference>
+					is called on the generator.
+				</para>
+				<para>
+					In general, generators will support a <codeInline>Next()</codeInline>
+					method or similar method for generating random data.  Some might
+					include additional members, such as
+					<codeEntityReference>T:MakeIt.Random.IEnumGenerator`1</codeEntityReference>,
+					which also includes
+					<codeEntityReference>M:MakeIt.Random.IEnumGenerator`1.NextName</codeEntityReference>
+					for getting the name of the next enumeration item, rather than its value, or
+					<codeEntityReference>T:MakeIt.Random.IDiceGenerator</codeEntityReference>,
+					which also includes the
+					<codeEntityReference>P:MakeIt.Random.IDiceGenerator.dice</codeEntityReference>
+					field to examine the individual dice rolls that produced the summed value.
+				</para>
+			</content>
+		</section>
+		<section address="support">
+			<title>Support for Generators</title>
+			<content>
+				<para>
+					The following types of random data have support for generators:
+					<list class="bullet">
+						<listItem><codeEntityReference linkText="bits">T:MakeIt.Random.RandomBits</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="numeric ranges">T:MakeIt.Random.RandomRangeGenerator</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="angles">T:MakeIt.Random.RandomAngle</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="dice">T:MakeIt.Random.RandomDice</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="probabilities">T:MakeIt.Random.RandomChance</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="list element access">T:MakeIt.Random.RandomListAccess</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="enumerations">T:MakeIt.Random.RandomEnum</codeEntityReference></listItem>
+						<listItem><codeEntityReference linkText="selection from {-1, 0, +1}">T:MakeIt.Random.RandomSignOrZero</codeEntityReference></listItem>
+					</list>
+				</para>
+			</content>
+		</section>
+		<relatedTopics>
+			<codeEntityReference>T:MakeIt.Random.IRangeGenerator`1</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IDiceGenerator</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IBooleanGenerator</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IElementGenerator`1</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IWeightedIndexGenerator`2</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IWeightedElementGenerator`3</codeEntityReference>
+			<codeEntityReference>T:MakeIt.Random.IEnumGenerator`1</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

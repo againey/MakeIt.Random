@@ -1,0 +1,22 @@
+{
+    "name": "MakeIt.Random",
+    "references": [
+        "GUID:b29e5b94a73ad954ca922da4c1587b97",
+        "GUID:d19cc27eacdb46f5a398be19647fb340"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.andygainey.makeit.colorful",
+            "expression": "2.0.0",
+            "define": "MAKEIT_COLORFUL_2_0_OR_NEWER"
+        }
+    ],
+    "noEngineReferences": false
+}
