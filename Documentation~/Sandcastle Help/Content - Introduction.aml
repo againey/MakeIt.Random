@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="cb0daf55-236d-4175-aedc-48751c1d0964" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<summary>
+			<para>
+				Welcome to the MakeIt.Random User's Manual.  This document will
+				assist in integrating this collection of random number generation
+				utilities into your Unity project.
+			</para>
+		</summary>
+		<introduction>
+			<autoOutline />
+		</introduction>
+		<section address="offer">
+			<title>What does MakeIt.Random offer?</title>
+			<content>
+				<para>
+					MakeIt.Random is a fast, flexible, extensible, and feature rich
+					random number generation library for Unity.  It provides classes
+					and functions, accessible from scripts, for generating random
+					data of various sorts, including:
+				</para>
+				<list class="bullet">
+					<listItem><codeEntityReference linkText="bits">T:MakeIt.Random.RandomBits</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="integers">T:MakeIt.Random.RandomInteger</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="floating point numbers">T:MakeIt.Random.RandomFloatingPoint</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="angles">T:MakeIt.Random.RandomAngle</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="vectors and quaternions">T:MakeIt.Random.RandomGeometry</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="strings">T:MakeIt.Random.RandomString</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="dice rolls">T:MakeIt.Random.RandomDice</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="colors">T:MakeIt.Random.RandomColor</codeEntityReference></listItem>
+				</list>
+				<para>
+					In addition to simply generating random data, it also includes
+					utilities for the following (with support for non-uniform weights,
+					where applicable):
+				</para>
+				<list class="bullet">
+					<listItem><codeEntityReference linkText="evaluating probabilities">T:MakeIt.Random.RandomChance</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="sampling from distributions">T:MakeIt.Random.RandomSample</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="selecting elements from a list">T:MakeIt.Random.RandomListAccess</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="selecting values from an enumeration">T:MakeIt.Random.RandomEnum</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="selecting values from the set {-1, 0, +1}">T:MakeIt.Random.RandomSignOrZero</codeEntityReference></listItem>
+					<listItem><codeEntityReference linkText="shuffling a list">T:MakeIt.Random.RandomShuffle</codeEntityReference></listItem>
+				</list>
+			</content>
+		</section>
+		<section address="organized">
+			<title>How is MakeIt.Random organized?</title>
+			<content>
+				<para>
+					The foundation of MakeIt.Random is the concept of a
+					<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#global-instance">Random Engine</link>,
+					an object providing the basic services of a pseudo-random number
+					generator (PRGN), responsible for generating a deterministic
+					sequence of seemingly random bits initialized by a seed value.
+					Unlike <codeEntityReference qualifyHint="true">T:UnityEngine.Random</codeEntityReference>, MakeIt.Random
+					engines are standard non-static classes which can be passed around,
+					copied, and serialized.  Multiple instances can exist simultaneously
+					and independently, making it easier to control deterministic behavior
+					when it is needed.  (A <link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#global-instance">static global instance</link>
+					does exist for convenience, however.)
+				</para>
+				<para>
+					On top of random engines, a wide variety of extension methods
+					are available for using the random bits they generate to produce
+					all of the more structured and complex data typically required
+					by games.  Because they are extension methods which apply to the
+					<codeEntityReference qualifyHint="true">T:MakeIt.Random.IRandom</codeEntityReference>
+					interface which all MakeIt.Random engines implement, it is easy
+					to add further extension methods that will immediately become
+					usable by any random engine type.  Similarly, if for some reason
+					none of the <link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#implementations">random engines</link>
+					supplied by MakeIt.Random are suitable and you need to create your own,
+					just make sure it implements <codeEntityReference qualifyHint="false">T:MakeIt.Random.IRandom</codeEntityReference>
+					and your new engine will automatically support all of the already existing utilities.
+					(See <link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#making-your-own">Making Your Own Random Engine</link> for more information.)
+				</para>
+				<alert type="note">
+					<para>
+						The MakeIt.Random library is located within the
+						<codeEntityReference qualifyHint="true">N:MakeIt.Random</codeEntityReference>
+						namespace.  Be sure to put the appropriate <codeInline>using</codeInline> directive at
+						the top of your scripts, or explicitly qualify type names within your code.
+					</para>
+				</alert>
+			</content>
+		</section>
+		<section address="using">
+			<title>Using MakeIt.Random</title>
+			<content>
+				<para>
+					The first step in using MakeIt.Random is to pull in the namespace
+					<codeEntityReference qualifyHint="true">N:MakeIt.Random</codeEntityReference>
+					near the top of any script file in which you plan to use it.
+					Without doing so, none of the extension functions for
+					<codeEntityReference>T:MakeIt.Random.IRandom</codeEntityReference>
+					will not be available, making usage syntax far more verbose.
+				</para>
+				<code language="C#" title="Pulling in the MakeIt.Random namespace.">
+					<![CDATA[
+						using MakeIt.Random;
+					]]>
+				</code>
+				<para>
+					The next step is to create an instance of a
+					<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386#implementations">random engine</link>,
+					probably within an <codeInline>Awake()</codeInline> or <codeInline>Start()</codeInline> function.
+					The easiest way to do that is by using <codeEntityReference linkText="MIRandom.CreateStandard()" autoUpgrade="true">M:MakeIt.Random.MIRandom.CreateStandard</codeEntityReference>.
+					This selects a random engine type that is suitable for general use
+					and constructs an instance of that type.  If you pass no parameters,
+					the engine will be set to a reasonably unpredictable state.  You
+					may instead pass a seed, such as an <codeEntityReference linkText="int">T:System.Int32</codeEntityReference>
+					or a <codeEntityReference linkText="string">T:System.String</codeEntityReference>,
+					to generate the same sequence each time the program is executed.
+				</para>
+				<code language="C#" title="Creating a standard random engine instance.">
+					<![CDATA[
+						// Create a random engine with an unpredictable state.
+						var random = MIRandom.CreateStandard();
+					]]>
+				</code>
+				<para>
+					If you know which random engine type you wish to use
+					(<codeEntityReference>T:MakeIt.Random.XorShift128Plus</codeEntityReference>
+					is a good choice for most circumstances), then you may use a
+					<codeInline>Create()</codeInline> function on that type to do so,
+					just as with <codeEntityReference linkText="MIRandom.CreateStandard()" autoUpgrade="true">M:MakeIt.Random.MIRandom.CreateStandard</codeEntityReference>.
+				</para>
+				<code language="C#" title="Creating an explicitly typed random engine instance.">
+					<![CDATA[
+						// Create a random engine, initializing its state with a string seed.
+						var random = XorShift128Plus.Create("My random seed!!1!11!~!");
+					]]>
+				</code>
+				<para>
+					Using that created instance, you can now call any of the numerous
+					extension methods, depending on your needs.  Here are some examples:
+				</para>
+				<code language="C#" title="MakeIt.Random Usage Examples">
+					<![CDATA[
+						// Generate an integer where 1 <= n <= 10
+						int num1to10 = random.RangeCC(1, 10);
+						
+						// Generate a number where 0 <= n < 1
+						float num0to1 = random.FloatCO();
+						
+						// Flip a coin
+						bool heads = random.Chance();
+						
+						// Check a 3 in 10 probability
+						bool criticalHit = random.Probability(3, 10);
+						
+						// Generate a random height for a male character in cm
+						float height = random.NormalSample(176f, 8f);
+						
+						// Generate an angle in degrees where -90 < n < +90
+						float angleNeg90toPos90 = random.SignedHalfAngleDegOO();
+						
+						// Generate +1, -1, or 0 where +1 is twice as likely as -1, and 0 is rare
+						int numPNZ = random.SignOrZero(200, 100, 1);
+						
+						// Roll 43 20-sided dice
+						int[] diceRolls = random.RollDice(43, 20);
+						
+						// Roll 5 4-sided dice and just keep the sum
+						int diceRollSum = random.SumRollDice(5, 4);
+						
+						// Shuffle the array of earlier dice rolls
+						random.Shuffle(diceRolls);
+						
+						// Select a random die roll from the array
+						int dieRoll = random.Element(diceRolls);
+						
+						// Select index where higher die rolls are more likely to be picked
+						int dieRollIndex = random.WeightedIndex(diceRolls);
+						
+						// Generate a random 3D unit vector
+						Vector3 direction = random.UnitVector3();
+						
+						// Generate a position within a cirle of radius = 5
+						Vector2 point = random.PointWithinCircle(5f);
+						
+						// Generate a 32-character string with only alpha-numeric characters.
+						string str = random.AlphaNumericString(32);
+						
+						// Make a generator which will produce random font styles.
+						var fontStyleGen = random.MakeEnumGenerator<UnityEngine.FontStyles>();
+						// Generate a font style
+						var style = fontStyleGen.Next();
+						
+						// Pick a random warm color
+						var color = random.ColorWarm();
+						// Alter the color's hue randomly by no more than 1/10.
+						color = random.HueShift((ColorHSV)color, 0.1f);
+					]]>
+				</code>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="fd2aa55f-9f2f-4c52-bc28-69bf962dc386" /> <!-- Random Engines -->
+			<link xlink:href="2d9c7e1c-ba2d-43b7-9012-c5e5d0e8618c" /> <!-- Numeric Ranges -->
+			<link xlink:href="608698f3-b1ba-494c-af62-0af699eb942f" /> <!-- Distribution Sampling -->
+			<link xlink:href="2d22293b-b08d-4b70-9b10-5e5ca6a7892f" /> <!-- Generators -->
+			<link xlink:href="8e0cd87c-2003-4da5-8d84-eaf85585778b" /> <!-- Example Scenes -->
+			<link xlink:href="73032fa5-81e7-462d-94ae-8f5ccf1c1d72" /> <!-- Compile Options -->
+			<codeEntityReference linkText="API Reference">R:Project_API_Reference</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

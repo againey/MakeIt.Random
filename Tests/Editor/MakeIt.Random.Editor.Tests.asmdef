@@ -1,0 +1,24 @@
+{
+    "name": "MakeIt.Random.Editor.Tests",
+    "references": [
+        "GUID:b73327a116c48944e84d3ff2de834a07",
+        "GUID:b29e5b94a73ad954ca922da4c1587b97",
+        "GUID:ce612ff1c73a472b802d9964321a3d31",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "NSubstitute.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

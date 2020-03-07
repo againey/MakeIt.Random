@@ -1,0 +1,165 @@
+<svg viewBox="2, -1 6 1" xmlns="http://www.w3.org/2000/svg">
+	<style>
+		svg
+		{
+			width: 1200px;
+			height: 600px;
+		}
+		text
+		{
+			font-family: Times New Roman, serif;
+		}
+		rect.background
+		{
+			stroke: none;
+			fill: black;
+		}
+		path.distribution
+		{
+			fill: #DDD;
+			stroke: none;
+		}
+		line.axis
+		{
+			stroke: black;
+			stroke-width: 0.02;
+			stroke-linecap: butt;
+		}
+		path.distribution-surface
+		{
+			stroke: black;
+			stroke-width: 0.02;
+			stroke-linecap: butt;
+			stroke-linejoin: bevel;
+			fill: none;
+		}
+		line.guide
+		{
+			stroke: black;
+			stroke-width: 0.01;
+			stroke-linecap: butt;
+			stroke-dasharray: 0.05, 0.05;
+		}
+		line.hatch-mark
+		{
+			stroke: black;
+			stroke-width: 0.02;
+			stroke-linecap: round;
+		}
+		line.arrow-stem
+		{
+			stroke: black;
+			stroke-width: 0.01;
+			stroke-linecap: butt;
+		}
+		polygon.arrow-head
+		{
+			fill: black;
+			stroke: none;
+		}
+		ellipse.vertex
+		{
+			stroke: black;
+			stroke-width: 0.02;
+			fill: white;
+		}
+		text.variable
+		{
+			fill: black;
+			font-size: 0.2px;
+			font-style: italic;
+		}
+		text.x.variable
+		{
+			text-anchor: middle;
+			dominant-baseline: alphabetic;
+		}
+		text.y.variable
+		{
+			text-anchor: middle;
+			dominant-baseline: middle;
+		}
+		text.m.variable
+		{
+			text-anchor: middle;
+			dominant-baseline: middle;
+		}
+		text.variable>tspan.index
+		{
+			font-size: 60%;
+		}
+	</style>
+	<style>
+		rect.background
+		{
+			fill: white;
+		}
+		path.distribution
+		{
+			fill: black;
+		}
+		ellipse.vertex
+		{
+			fill: black;
+		}
+	</style>
+
+	<rect class="background" x="0" y="-2" width="10" height="5" />
+	<path class="distribution" d="M 3,0 L 3,-0.3 C 3.333,-0.633 3.667,-0.111 4,0 C 4.333,-0.667 4.667,-0.533 5,-1.2 C 5.333,-1.2 5.667,-0.6 6,-0.6 C 6.333,-0.156 6.667,-0.267 7,-0.6 L 7,0 Z" />
+
+	<line class="axis" x1="0" y1="0" x2="10" y2="0" />
+
+	<path class="distribution-surface" d="M 3,-0.3 C 3.333,-0.633 3.667,-0.111 4,0 C 4.333,-0.667 4.667,-0.533 5,-1.2 C 5.333,-1.2 5.667,-0.6 6,-0.6 C 6.333,-0.156 6.667,-0.267 7,-0.6" />
+	<line class="guide" x1="3" y1="0" x2="3" y2="-0.3" />
+	<line class="guide" x1="5" y1="0" x2="5" y2="-1.2" />
+	<line class="guide" x1="6" y1="0" x2="6" y2="-0.6" />
+	<line class="guide" x1="7" y1="0" x2="7" y2="-0.6" />
+	<line class="hatch-mark" x1="3" y1="-0.05" x2="3" y2="0.05" />
+	<line class="hatch-mark" x1="5" y1="-0.05" x2="5" y2="0.05" />
+	<line class="hatch-mark" x1="6" y1="-0.05" x2="6" y2="0.05" />
+	<line class="hatch-mark" x1="7" y1="-0.05" x2="7" y2="0.05" />
+
+	<line class="arrow-stem" x1="3" y1="-0.3" x2="3.3" y2="-0.6" />
+	<g transform="translate(3.3,-0.6) rotate(-45)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="4" y1="0" x2="3.7" y2="-0.1" />
+	<g transform="translate(3.7,-0.1) rotate(-161.5)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="4" y1="0" x2="4.3" y2="-0.6" />
+	<g transform="translate(4.3,-0.6) rotate(-63.5)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="5" y1="-1.2" x2="4.7" y2="-0.6" />
+	<g transform="translate(4.7,-0.6) rotate(116.5)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="5" y1="-1.2" x2="5.3" y2="-1.2" />
+	<g transform="translate(5.3,-1.2) rotate(0)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="6" y1="-0.6" x2="5.7" y2="-0.6" />
+	<g transform="translate(5.7,-0.6) rotate(-180)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="6" y1="-0.6" x2="6.3" y2="-0.2" />
+	<g transform="translate(6.3,-0.2) rotate(53)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	<line class="arrow-stem" x1="7" y1="-0.6" x2="6.7" y2="-0.3" />
+	<g transform="translate(6.7,-0.3) rotate(135)"><polygon class="arrow-head" points="0,-0.015 0.06,0 0,0.015" /></g>
+	
+	<ellipse class="vertex" cx="3" cy="-0.3" rx="0.05" ry="0.05" />
+	<ellipse class="vertex" cx="4" cy="0" rx="0.05" ry="0.05" />
+	<ellipse class="vertex" cx="5" cy="-1.2" rx="0.05" ry="0.05" />
+	<ellipse class="vertex" cx="6" cy="-0.6" rx="0.05" ry="0.05" />
+	<ellipse class="vertex" cx="7" cy="-0.6" rx="0.05" ry="0.05" />
+
+	<text class="x variable" x="3" y="0.25">x<tspan class="index" dy="0.03">0</tspan></text>
+	<text class="x variable" x="4" y="0.25">x<tspan class="index" dy="0.03">1</tspan></text>
+	<text class="x variable" x="5" y="0.25">x<tspan class="index" dy="0.03">2</tspan></text>
+	<text class="x variable" x="6" y="0.25">x<tspan class="index" dy="0.03">3</tspan></text>
+	<text class="x variable" x="7" y="0.25">x<tspan class="index" dy="0.03">4</tspan></text>
+
+	<text class="y variable" x="2.8" y="-0.3">y<tspan class="index" dy="0.03">0</tspan></text>
+	<text class="y variable" x="3.95" y="-0.2">y<tspan class="index" dy="0.03">1</tspan></text>
+	<text class="y variable" x="4.8" y="-1.2">y<tspan class="index" dy="0.03">2</tspan></text>
+	<text class="y variable" x="6.1" y="-0.8">y<tspan class="index" dy="0.03">3</tspan></text>
+	<text class="y variable" x="7.2" y="-0.6">y<tspan class="index" dy="0.03">4</tspan></text>
+
+	<text class="m variable" x="3.45" y="-0.725">m<tspan class="index" dy="0.03">0</tspan></text>
+	<text class="m variable" x="3.5" y="-0.15">-m<tspan class="index" dy="0.03">1</tspan></text>
+	<text class="m variable" x="4.375" y="-0.75">m<tspan class="index" dy="0.03">2</tspan></text>
+	<text class="m variable" x="4.65" y="-0.45">-m<tspan class="index" dy="0.03">3</tspan></text>
+	<text class="m variable" x="5.5" y="-1.2">m<tspan class="index" dy="0.03">4</tspan></text>
+	<text class="m variable" x="5.475" y="-0.6">-m<tspan class="index" dy="0.03">5</tspan></text>
+	<text class="m variable" x="6.35" y="-0.075">m<tspan class="index" dy="0.03">6</tspan></text>
+	<text class="m variable" x="6.625" y="-0.175">-m<tspan class="index" dy="0.03">7</tspan></text>
+</svg>
